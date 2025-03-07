@@ -11,7 +11,8 @@ n = 2 # Number of decision variables
 m = 5 # Number of constraints
 nth = 2 # Number of parameters
 
-def generate_qp(n,m,nth=2):
+def generate_qp(n,m,given_seed, nth=2):
+    np.random.seed(seed = given_seed)
     # Objective function
     M = np.random.randn(n,n)
     H = M @ M.T # Ensure H symmetric and positive definite. 
@@ -26,7 +27,7 @@ def generate_qp(n,m,nth=2):
     return H,f,F,A,b,B
 
 
-def generate_rhs(f,F,b,B):
+def generate_rhs(f,F,b,B,given_seed):
     """ Example QP of the form 
 
     minimize_x  0.5 x' H x + ftot'x
@@ -34,6 +35,7 @@ def generate_rhs(f,F,b,B):
 
     for a given theta
     """
+    np.random.seed(seed = given_seed)
     theta = np.random.randn(nth)
     btot = b + B @ theta
     ftot = f + F @ theta

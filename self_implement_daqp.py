@@ -1,7 +1,6 @@
 import numpy as np
 import daqp
 import ipdb
-import self_implement_daqp_archive
 import numpy as np
 from ctypes import * 
 import ctypes.util
