@@ -19,8 +19,8 @@ from torch_geometric.data import Data
 def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
 
     #spit generated problems into train, test, val
-    iter_train = int(np.rint(0.75*number_of_graphs))
-    iter_test = int(np.rint(0.15*number_of_graphs))
+    iter_train = int(np.rint(0.8*number_of_graphs))
+    iter_test = int(np.rint(0.1*number_of_graphs))
     iter_val = number_of_graphs - iter_train - iter_test
     
     np.random.seed(seed)
@@ -85,10 +85,6 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         val_iterations[i] = list(info.values())[2]
     
     
-    
-    
-    
-    
     # get optimal active set (y)
     train_active_set = (lambda_train != 0).astype(int)
     y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
@@ -96,8 +92,6 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     y_test = torch.tensor((np.hstack((np.zeros((iter_test,n)),test_active_set)))) 
     active_set = (lambda_val != 0).astype(int)
     y_val = torch.tensor((np.hstack((np.zeros((iter_val,n)),active_set)))) 
-    
-    
     
     
     # Generate the graph from the training data

@@ -15,7 +15,9 @@ import torch
 import torch.nn.functional as func
 from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import GCNConv,GraphConv, LEConv
+from torch_geometric.nn import MessagePassing
+
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from naive_model import naive_model
@@ -26,9 +28,9 @@ n = 2
 m = 5
 nth = 2
 seed = 123
-data_points = 5000
+data_points = 1000
 lr = 0.001
-number_of_epochs = 10000
+number_of_epochs = 300
 # Start a new wandb run to track this script.
 run = wandb.init(
     entity="ella-schmidtobreick-4283-me",
@@ -39,7 +41,7 @@ run = wandb.init(
         "constraints": f"{m}",
         "datapoints": f"{data_points}",
         "epochs": f"{number_of_epochs}",
-        "architecture": "GCN",
+        "architecture": "LEConv with weights,4 layers, layer width 64",
         "learning_rate": f"{lr}"     
     },
 )
@@ -50,21 +52,20 @@ class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim):
         torch.manual_seed(123)
         super(GNN, self).__init__()
-        self.conv1 = GCNConv(input_dim, 128)
-        self.conv2 = GCNConv(128,128)
-        self.conv3 = GCNConv(128,128)
-        self.conv4 = GCNConv(128,128)
-        self.conv5 = GCNConv(128, output_dim)
-
-       
+        self.conv1 = LEConv(input_dim, 64)
+        self.conv2 = LEConv(64,64)
+        self.conv3 = LEConv(64,64)
+        self.conv4 = LEConv(64,64)
+        self.conv5 = LEConv(64, output_dim)
     def forward(self, data):
-        x, edge_index = data.x.float(), data.edge_index
-        x = func.leaky_relu(self.conv1(x, edge_index),negative_slope = 0.1)
-        x = func.leaky_relu(self.conv2(x,edge_index),negative_slope = 0.1)
-        x = func.leaky_relu(self.conv3(x,edge_index),negative_slope = 0.1)
-        x = func.leaky_relu(self.conv4(x,edge_index),negative_slope = 0.1)
-        x = func.leaky_relu(self.conv5(x,edge_index),negative_slope = 0.1)
-        return torch.sigmoid(x)   
+        x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
+        x = func.leaky_relu(self.conv1(x, edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.conv2(x,edge_index,edge_weight),negative_slope = 0.1)
+        #x = func.leaky_relu(self.conv3(x,edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.conv4(x,edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.conv5(x,edge_index,edge_weight),negative_slope = 0.1)
+        return torch.sigmoid(x)  
+
 
 class EarlyStopping: # https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
     def __init__(self, patience=50, delta=0):
@@ -108,11 +109,10 @@ class_weights = torch.tensor(class_weights, dtype=torch.float32)
 
 # Instantiate model and optimizer
 model = GNN(input_dim=3, output_dim=1)  # Output dimension 1 for binary classification
-#optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
 optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
 # Early stopping
-early_stopping = EarlyStopping(patience=100, delta=0.0001)
+early_stopping = EarlyStopping(patience=20, delta=0.00001)
 
 epoch = 0
 acc = 0
@@ -203,9 +203,9 @@ for epoch in range(number_of_epochs):
     early_stopping.load_best_model(model)
     
     #Final evaluation on test data
-    #
-    #
-    #
+    
+    
+    
     
     
 # Finish the run and upload any remaining data.
