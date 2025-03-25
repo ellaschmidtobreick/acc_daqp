@@ -21,8 +21,8 @@ def generate_qp(n,m,given_seed, nth=2):
 
     # Constraints
     A = np.random.randn(m,n)
-    b = np.random.rand(m)
-    T = np.random.randn(n,nth)#  A transformation such that x = F0*th is primal feasible
+    b = np.random.rand(m) #rand ensures that b >= 0, which in turns means that the origin is a feasible point (so the problem will have a solution)
+    T = np.random.randn(n,nth) # A transformation such that x = T*th is primal feasible
     B = A @ (-T)
     return H,f,F,A,b,B
 
