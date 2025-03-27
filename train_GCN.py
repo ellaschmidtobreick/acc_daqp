@@ -112,7 +112,7 @@ model = GNN(input_dim=3, output_dim=1)  # Output dimension 1 for binary classifi
 optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
 # Early stopping
-early_stopping = EarlyStopping(patience=20, delta=0.00001)
+early_stopping = EarlyStopping(patience=10, delta=0.0001)
 
 epoch = 0
 acc = 0
