@@ -32,6 +32,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     x_train = np.zeros((iter_train,n))
     lambda_train = np.zeros((iter_train,m))
     train_iterations = np.zeros((iter_train))
+    train_time= np.zeros((iter_train))
     f_train = np.zeros((iter_train,n))
     b_train = np.zeros((iter_train,m))
     theta_train = np.zeros((iter_train,nth))
@@ -47,30 +48,14 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         x_train[i,:]= x
         lambda_train[i,:]= list(info.values())[4]
         train_iterations[i] = list(info.values())[2]
+        train_time[i]= list(info.values())[0]
 
-    # Generate test set
-    np.random.seed(seed+1)
-    x_test = np.zeros((iter_test,n))
-    lambda_test = np.zeros((iter_test,m))
-    test_iterations = np.zeros((iter_test))
-    f_test = np.zeros((iter_test,n))
-    b_test = np.zeros((iter_test,m))
-    for i in range(iter_test):
-        theta = np.random.randn(2)
-        btot = b + B @ theta
-        ftot = f + F @ theta
-        b_test[i,:]=btot
-        f_test[i,:]=ftot
-        x,fval,exitflag,info = daqp.solve(H,ftot,A,btot,blower,sense)
-        x_test[i,:]= x
-        lambda_test[i,:]= list(info.values())[4]
-        test_iterations[i] = list(info.values())[2]
-        
     # Generate val set
     np.random.seed(seed+2)
     x_val = np.zeros((iter_val,n))
     lambda_val = np.zeros((iter_val,m))
     val_iterations = np.zeros((iter_val))
+    val_time = np.zeros((iter_val))
     f_val = np.zeros((iter_val,n))
     b_val = np.zeros((iter_val,m))
     for i in range(iter_val):
@@ -83,8 +68,28 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         x_val[i,:]= x
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
+        val_time[i] = list(info.values())[0]
     
-    
+    # Generate test set
+    np.random.seed(seed+1)
+    x_test = np.zeros((iter_test,n))
+    lambda_test = np.zeros((iter_test,m))
+    test_iterations = np.zeros((iter_test))
+    test_time = np.zeros((iter_test))
+    f_test = np.zeros((iter_test,n))
+    b_test = np.zeros((iter_test,m))
+    for i in range(iter_test):
+        theta = np.random.randn(2)
+        btot = b + B @ theta
+        ftot = f + F @ theta
+        b_test[i,:]=btot
+        f_test[i,:]=ftot
+        x,fval,exitflag,info = daqp.solve(H,ftot,A,btot,blower,sense)
+        x_test[i,:]= x
+        lambda_test[i,:]= list(info.values())[4]
+        test_iterations[i] = list(info.values())[2]
+        test_time[i] = list(info.values())[0]
+        
     # get optimal active set (y)
     train_active_set = (lambda_train != 0).astype(int)
     y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
@@ -96,8 +101,9 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     
     # Generate the graph from the training data
     graph_train = []
-    graph_test = []
     graph_val = []
+    graph_test = []
+
 
     # graph structure does not change, only vertex features
     #combine H and A
@@ -132,22 +138,6 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         # list of graph elements
         graph_train.append(data_point)
 
-    f1_test = np.hstack((f_test,np.zeros(np.shape(b_test))))
-    b1_test = np.hstack((np.zeros(np.shape(f_test)),b_test))
-    eq1_test = np.hstack((np.zeros(np.shape(f_test)),(np.zeros(np.shape(b_test)))))
-    #print(f1_test.shape,b1_test.shape,eq1_test.shape)
-
-    # test graph
-    x_test = torch.tensor([])
-    for i in range(iter_test):
-        features = np.array([f1_test[i], b1_test[i], eq1_test[i]]).T
-        x_test = torch.tensor(features, dtype=torch.float32)
-        #x_test = torch.tensor(np.array([f1_test[i],b1_test[i], eq1_test[i]])).T
-        data_point = Data(x= x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
-        # list of graph elements
-        graph_test.append(data_point)
-
-
     f1_val = np.hstack((f_val,np.zeros(np.shape(b_val))))
     b1_val = np.hstack((np.zeros(np.shape(f_val)),b_val))
     eq1_val = np.hstack((np.zeros(np.shape(f_val)),(np.zeros(np.shape(b_val)))))
@@ -163,6 +153,21 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         # list of graph elements
         graph_val.append(data_point)
         
-    return graph_train, graph_test, graph_val
+        f1_test = np.hstack((f_test,np.zeros(np.shape(b_test))))
+    b1_test = np.hstack((np.zeros(np.shape(f_test)),b_test))
+    eq1_test = np.hstack((np.zeros(np.shape(f_test)),(np.zeros(np.shape(b_test)))))
+    #print(f1_test.shape,b1_test.shape,eq1_test.shape)
+
+    # test graph
+    x_test = torch.tensor([])
+    for i in range(iter_test):
+        features = np.array([f1_test[i], b1_test[i], eq1_test[i]]).T
+        x_test = torch.tensor(features, dtype=torch.float32)
+        #x_test = torch.tensor(np.array([f1_test[i],b1_test[i], eq1_test[i]])).T
+        data_point = Data(x= x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
+        # list of graph elements
+        graph_test.append(data_point)
+        
+    return graph_train, graph_val, graph_test, test_iterations,test_time, H,f_test,A,b_test,blower,sense
 
 
