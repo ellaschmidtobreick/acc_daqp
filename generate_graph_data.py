@@ -20,8 +20,8 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
 
     #spit generated problems into train, test, val
     iter_train = int(np.rint(0.8*number_of_graphs))
-    iter_test = int(np.rint(0.1*number_of_graphs))
-    iter_val = number_of_graphs - iter_train - iter_test
+    iter_val = int(np.rint(0.1*number_of_graphs))
+    iter_test = number_of_graphs - iter_train - iter_val
     
     np.random.seed(seed)
     H,f,F,A,b,B = generate_qp(n,m,seed)
@@ -51,7 +51,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         train_time[i]= list(info.values())[0]
 
     # Generate val set
-    np.random.seed(seed+2)
+    np.random.seed(seed+1)
     x_val = np.zeros((iter_val,n))
     lambda_val = np.zeros((iter_val,m))
     val_iterations = np.zeros((iter_val))
@@ -71,7 +71,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         val_time[i] = list(info.values())[0]
     
     # Generate test set
-    np.random.seed(seed+1)
+    np.random.seed(seed+2)
     x_test = np.zeros((iter_test,n))
     lambda_test = np.zeros((iter_test,m))
     test_iterations = np.zeros((iter_test))
@@ -153,7 +153,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
         # list of graph elements
         graph_val.append(data_point)
         
-        f1_test = np.hstack((f_test,np.zeros(np.shape(b_test))))
+    f1_test = np.hstack((f_test,np.zeros(np.shape(b_test))))
     b1_test = np.hstack((np.zeros(np.shape(f_test)),b_test))
     eq1_test = np.hstack((np.zeros(np.shape(f_test)),(np.zeros(np.shape(b_test)))))
     #print(f1_test.shape,b1_test.shape,eq1_test.shape)

@@ -22,7 +22,7 @@ def fix_component(lam,lam_star,mu, W, B, p):
 
 
 def daqp_self(H,f,A,b,sense,W):
-    # transform matrices into M,d,v,R
+    # transform input into M,d,v,R
     try:
         R = np.linalg.cholesky(H, upper = True)
     except:
@@ -43,8 +43,9 @@ def daqp_self(H,f,A,b,sense,W):
 
     iter = 0
     while True:
-        if iter == 10:
-            break
+        if iter == 100:
+            print("This algorithm did not finish, but was breaked")
+            return None,None,W,iter
         iter += 1
         W = np.sort(W)
         W = list(W)

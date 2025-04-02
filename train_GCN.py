@@ -1,47 +1,42 @@
 import numpy as np
-import scipy
 import daqp
 import numpy as np
 from ctypes import * 
 import wandb
-import ctypes.util
 from sympy import Matrix
 import time
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score
 
-from generate_mpqp_v2 import generate_qp
-
 import torch
 import torch.nn.functional as func
-from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv,GraphConv, LEConv
-from torch_geometric.nn import MessagePassing
 
 from sklearn.utils.class_weight import compute_class_weight
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from naive_model import naive_model
 from generate_graph_data import generate_qp_graphs 
 from self_implement_daqp import daqp_self
+#from self_implement_daqp_with_comments import daqp_self
 
-n = 2#25 #15
-m = 5#100 #21
+n = 15 #25 #15
+m = 21 #100 #21
 nth = 2
 seed = 123
-data_points = 5000
+data_points = 5000 #5000
 lr = 0.001
-number_of_epochs = 2# 500 
+number_of_epochs = 70 #300 # 500 
 layer_width = 128
 number_of_layers = 3
-track_on_wandb = False
+track_on_wandb = True
 
-def boxplot_time(time_before,time_after, label):
+def boxplot_time(time_before,time_after, label, save):
     plt.boxplot([time_before,time_after],showfliers=False)
     plt.ylabel(label)
     plt.xticks([1, 2], ['without GNN', 'with GNN'])
     plt.show()
-    plt.savefig(f"boxplot_{label}.png")
+    if save == True:
+        plt.savefig(f"boxplot_{label}.png")
 class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim,layer_width):
         torch.manual_seed(123)
@@ -51,6 +46,7 @@ class GNN(torch.nn.Module):
         self.conv3 = LEConv(layer_width,layer_width)
         self.conv4 = LEConv(layer_width,layer_width)
         self.conv5 = LEConv(layer_width, output_dim)
+
     def forward(self, data,number_of_layers):
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
         x = func.leaky_relu(self.conv1(x, edge_index,edge_weight),negative_slope = 0.1)
@@ -60,7 +56,8 @@ class GNN(torch.nn.Module):
         #x = func.leaky_relu(self.conv3(x,edge_index,edge_weight),negative_slope = 0.1)
         #x = func.leaky_relu(self.conv4(x,edge_index,edge_weight),negative_slope = 0.1)
         x = func.leaky_relu(self.conv5(x,edge_index,edge_weight),negative_slope = 0.1)
-        return torch.sigmoid(x)  
+        x = torch.sigmoid(x)
+        return x  
 
 class EarlyStopping: # https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
     def __init__(self, patience=50, delta=0):
@@ -146,7 +143,6 @@ for epoch in range(number_of_epochs):
         optimizer.zero_grad()
         output = model(batch,number_of_layers)
         loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
-        
         loss.backward()
         optimizer.step()
         
@@ -156,7 +152,7 @@ for epoch in range(number_of_epochs):
 
         # Convert output to binary prediction (0 or 1)
         #save_loss += output.tolist()
-        preds = (output.squeeze() > 0.50).long()
+        preds = (output.squeeze() > 0.1).long()
         #save_preds += preds.tolist()
         train_preds.extend(preds.numpy())   # Store predictions
         train_all_labels.extend(batch.y.numpy())
@@ -192,7 +188,7 @@ for epoch in range(number_of_epochs):
             output = model(batch,number_of_layers)
             loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
             val_loss += loss.item()
-            preds = (output.squeeze() > 0.5).long()
+            preds = (output.squeeze() > 0.1).long()
             #correct += (preds == batch.y).sum().item()
             # total += batch.y.size(0)
             val_preds.extend(preds.numpy())   # Store predictions
@@ -237,12 +233,12 @@ test_time_before = np.zeros(len(test_loader))
 test_time_after = np.zeros(len(test_loader))
 test_iterations_before = np.zeros(len(test_loader))
 test_iterations_after = np.zeros(len(test_loader))
-
+test_iterations_difference = np.zeros(len(test_loader))
 
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
         output = model(batch,number_of_layers)
-        preds = (output.squeeze() > 0.5).long()
+        preds = (output.squeeze() > 0.1).long()
         correct += (preds == batch.y).sum().item()
         total += batch.y.size(0)
         # Store predictions and labels
@@ -251,28 +247,33 @@ with torch.no_grad():
         
         # reshape predictions for graph accuracy
         preds = preds.reshape(-1,n+m)
-        print(preds.shape, preds)
         
         # solve full QP
         W = []
-        print(f_test.shape, b_test.shape)
-        start_time = time.time()
-        x, _, _, test_iterations_before[i] = daqp_self(H,f_test,A,b_test,sense,W)
-        end_time = time.time()
-        test_time_before[i] = end_time - start_time
+        start_time_before = time.perf_counter()
+        x_before, lambda_before, _,it_before  = daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W)
+        end_time_before = time.perf_counter()
+        W_before = [j for j, value in enumerate(lambda_before) if value != 0]
+        x,_,_,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense)
+        lambda_true =list(info.values())[4]
+        W_true = np.where(lambda_true != 0)[0]
+        test_iterations_before[i] = it_before
+        test_time_before[i] = end_time_before- start_time_before
 
         # solve the reduced QPs to see the reduction
-        W = []
-        -np.linalg.inv(R)@(M[W,:].T@lam_star[W]+v), lam_star_normalized, W, test_iterations_after[i] = daqp_self(H,f_test,A,b_test,sense,W)
-        
-        # Solve the reduced QP using DAQP
-        # A_active = A[np.array(preds).squeeze().astype(bool)[n:],:]#.bool()]
-        # b_active = b_test[i,np.array(preds).squeeze().astype(bool)[n:]]
-        # sense_new = np.zeros(len(b_active), dtype=np.int32)
-        # blower_new = np.array([-np.inf for i in range(len(b_active))])
-        #x,fval,exitflag,info = daqp.solve(H,f_test[i,:],A_active,b_active,blower,sense)
-        #test_time_after[i]= list(info.values())[0]
-        #test_iterations_after[i] = list(info.values())[2]
+        preds_constraints = preds.flatten()[n:]
+        W_pred = torch.nonzero(preds_constraints, as_tuple=True)[0].numpy()
+        start_time_after = time.perf_counter()
+        x_after, lambda_after, _, it_after = daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred)
+        end_time_after = time.perf_counter()
+        output_constraints = output.flatten()[n:]
+        W_after = [j for j, value in enumerate(lambda_after) if value != 0]
+        print(f" {W_true} \n {W_pred} \n {output_constraints[W_pred].numpy()}")
+        print(output.flatten().numpy()[n:])
+        print(f"Difference in W {len(set(W_true)^set(W_pred))}, It before {it_before}, If after {it_after}, It diff {it_before - it_after}")
+        test_iterations_after[i] = it_after
+        test_time_after[i] = end_time_after - start_time_after
+        test_iterations_difference[i] = it_before-it_after
         
 # over graph metrices
 test_all_label_graph = np.array(test_all_labels).reshape(-1,n+m)
@@ -280,16 +281,28 @@ test_preds_graph = np.array(test_preds).reshape(-1,n+m)
 
 # Compute average over graphs
 acc_graph_test = np.mean(np.all(test_all_label_graph == test_preds_graph, axis=1))
-test_num_wrongly_pred_nodes_per_graph = np.abs((n+m) - np.sum(test_all_label_graph == test_preds_graph, axis=1))
+test_num_wrongly_pred_nodes_per_graph = np.abs((n+m) - np.sum(test_all_label_graph == test_preds_graph, axis=1)) ## CHECK THIS
 print(f'correct:{correct}, total: {total}')
 print(f'Accuracy of the model on the test data: {100 * correct / total:.2f}%')
 print(f'Number of graphs: {test_all_label_graph.shape[0]}, Correctly predicted graphs: {np.sum(np.all(test_all_label_graph == test_preds_graph, axis=1))}')
 print(f'Graph accuracy of the model on the test data: {100 * acc_graph_test:.2f}%')
 print(test_num_wrongly_pred_nodes_per_graph)
+print(f'Mean: {np.mean(test_num_wrongly_pred_nodes_per_graph)}')
+print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
+print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
+print(f'Test iter before: mean {np.mean(test_iterations_before)}, min {np.min(test_iterations_before)}, max {np.max(test_iterations_before)}')
+print(f'Test iter after: mean {np.mean(test_iterations_after)}, min {np.min(test_iterations_after)}, max {np.max(test_iterations_after)}')
+print(f'Test iter diff: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
+# Boxplot to show reduction
+boxplot_time(test_time_before,test_time_after,"time",save = False)
+boxplot_time(test_iterations_before,test_iterations_after, "iterations",save = False)
 
-boxplot_time(test_time_before,test_time_after,"time")
-boxplot_time(test_iterations_before,test_iterations_after, "iterations")
-    
+# boxplot iter differ
+plt.boxplot([test_iterations_difference],showfliers=False)
+plt.ylabel("iter difference")
+plt.xticks([1], ['from without to with GNN'])
+plt.show()
+
 # Finish the run and upload any remaining data.
 if track_on_wandb == True:
     run.finish()

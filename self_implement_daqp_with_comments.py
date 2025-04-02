@@ -68,9 +68,8 @@ def daqp_self(H,f,A,b,sense,W):
     print("mu",mu)
     iter = 0
     while True:
-        if iter == 10:
-            print("break because of iterations")
-            break
+        if iter == 100:
+            return None,None,W,iter
         iter += 1
         print("---------")
         print("Iteration",iter)
