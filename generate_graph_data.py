@@ -59,7 +59,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     f_val = np.zeros((iter_val,n))
     b_val = np.zeros((iter_val,m))
     for i in range(iter_val):
-        theta = np.random.randn(2)
+        theta = np.random.randn(nth)
         btot = b + B @ theta
         ftot = f + F @ theta
         b_val[i,:]=btot
@@ -79,7 +79,7 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     f_test = np.zeros((iter_test,n))
     b_test = np.zeros((iter_test,m))
     for i in range(iter_test):
-        theta = np.random.randn(2)
+        theta = np.random.randn(nth)
         btot = b + B @ theta
         ftot = f + F @ theta
         b_test[i,:]=btot
@@ -93,10 +93,10 @@ def generate_qp_graphs(n,m,nth,seed,number_of_graphs):
     # get optimal active set (y)
     train_active_set = (lambda_train != 0).astype(int)
     y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
+    val_active_set = (lambda_val != 0).astype(int)
+    y_val = torch.tensor((np.hstack((np.zeros((iter_val,n)),val_active_set))))
     test_active_set = (lambda_test != 0).astype(int)
     y_test = torch.tensor((np.hstack((np.zeros((iter_test,n)),test_active_set)))) 
-    active_set = (lambda_val != 0).astype(int)
-    y_val = torch.tensor((np.hstack((np.zeros((iter_val,n)),active_set)))) 
     
     
     # Generate the graph from the training data
