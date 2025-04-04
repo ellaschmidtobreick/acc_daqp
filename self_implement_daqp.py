@@ -86,13 +86,12 @@ def daqp_self(H,f,A,b,sense,W):
                 p[W] = np.zeros((1,len(W)))
             else:
                 if nullspace.shape[1]>1:
-                    p[W] = nullspace[0]
+                    p[W] = nullspace[:,0]
                     if p.T@d>= 1e-12:
                         p = -p
 
                 else:
                     p[W] = nullspace.reshape(-1)
-
                     if p.T@d>= 1e-12:
                         p = -p
    
