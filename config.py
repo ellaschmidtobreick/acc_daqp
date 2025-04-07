@@ -9,3 +9,4 @@ number_of_epochs = 2 #70 #300 # 500
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False
+t = 0.4

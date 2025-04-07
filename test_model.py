@@ -5,25 +5,20 @@ import daqp
 import torch
 from torch_geometric.loader import DataLoader
 
-#from naive_model import naive_model
-from generate_graph_data import generate_qp_graphs 
-import self_implement_daqp
-#import self_implement_daqp_with_comments
+from generate_graph_data import generate_qp_graphs_test_data_only
 from generate_plots import barplot_iterations, boxplot_time
 import config
 from model import GNN
 
+# to scale a bigger n,m can be used in testing than in training
 n = config.n
 m= config.m
 
-# Generate QP problems and the corresponding graphs
-graph_train, graph_val, graph_test, test_iterations_before,test_time_before,H,f_test,A,b_test,blower,sense = generate_qp_graphs(n,m,config.nth,config.seed,config.data_points)
+# Generate test problems and the corresponding graphs
+graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
 
 # Load Data
-train_loader = DataLoader(graph_train, batch_size=64, shuffle=True)
-val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
-test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False) #len(graph_test)
-
+test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False)
 
 model = GNN(input_dim=3, output_dim=1,layer_width = 128) 
 optimizer = torch.optim.AdamW(model.parameters(), lr = config.lr)
@@ -54,7 +49,8 @@ with torch.no_grad():
         # Store predictions and labels
         test_preds.extend(preds.numpy())
         test_all_labels.extend(batch.y.numpy())
-        
+        print(f"Batch size: {batch.num_graphs}, Num nodes: {batch.num_nodes}, Output shape: {output.shape}")
+
         # reshape predictions for graph accuracy
         preds = preds.reshape(-1,n+m)
         
@@ -117,7 +113,7 @@ print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_
 print(f'Test iter before: mean {np.mean(test_iterations_before)}, min {np.min(test_iterations_before)}, max {np.max(test_iterations_before)}')
 print(f'Test iter after: mean {np.mean(test_iterations_after)}, min {np.min(test_iterations_after)}, max {np.max(test_iterations_after)}')
 print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
-print(output_FN)
+#print(output_FN)
 # threshold tuning
 # print(best_threshold)
 # print(best_mean)
@@ -127,9 +123,3 @@ print(output_FN)
 boxplot_time(test_time_before,test_time_after,"time",save = False)
 boxplot_time(test_iterations_before,test_iterations_after, "iterations",save = False)
 barplot_iterations(test_iterations_before,test_iterations_after, "iterations",save = False)
-
-# boxplot iter differ
-plt.boxplot([test_iterations_difference],showfliers=False)
-plt.ylabel("iter difference")
-plt.xticks([1], ['from without to with GNN'])
-plt.show()
