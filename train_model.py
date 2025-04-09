@@ -14,7 +14,7 @@ from model import EarlyStopping
 
 
 # Set parameters
-n = config.m
+n = config.n
 m = config.m
 
 nth = config.nth
@@ -34,8 +34,9 @@ t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 #for t in threshold:
 
 # Generate QP problems and the corresponding graphs
-graph_train, graph_val = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
-
+graph_train, graph_val,H,A = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+# print(H)
+# print(A)
 # Load Data
 train_loader = DataLoader(graph_train, batch_size=64, shuffle=True)
 val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
@@ -76,6 +77,7 @@ if track_on_wandb ==True:
 
 
 for epoch in range(number_of_epochs):
+    #print(f"Epoch {epoch}")
 #while acc != 1:
     epoch += 1
     train_loss = 0

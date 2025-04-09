@@ -24,6 +24,8 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
     
     np.random.seed(seed)
     H,f,F,A,b,B = generate_qp(n,m,seed)
+    print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape)
+    np.savez("generated_qp_data.npz", H=H, f=f, F=F, A=A, b=b, B=B)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
 
@@ -130,15 +132,24 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         graph_val.append(data_point)
         
         
-    return graph_train, graph_val
+    return graph_train, graph_val, H, A
 
 def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
-
+    np.random.seed(seed)
     #spit generated problems into train, test, val
     iter_test = int(np.rint(0.1*number_of_graphs))
+    data = np.load("generated_qp_data.npz", allow_pickle=True)
     
-    np.random.seed(seed)
-    H,f,F,A,b,B = generate_qp(n,m,seed)
+    if n == data["H"].shape[0] and m == data["A"].shape[0]:
+        H = data["H"]
+        f = data["f"]
+        F = data["F"]
+        A = data["A"]
+        b = data["b"]
+        B = data["B"]
+    else:
+        H,f,F,A,b,B = generate_qp(n,m,seed)
+        print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
 

@@ -6,13 +6,13 @@ import torch
 from torch_geometric.loader import DataLoader
 
 from generate_graph_data import generate_qp_graphs_test_data_only
-from generate_plots import barplot_iterations, boxplot_time
+from utils import barplot_iterations, boxplot_time, histogram_time
 import config
 from model import GNN
 
 # to scale a bigger n,m can be used in testing than in training
-n = config.n
-m= config.m
+n = 10 # config.n
+m= 40 # config.m
 
 # Generate test problems and the corresponding graphs
 graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
@@ -49,7 +49,6 @@ with torch.no_grad():
         # Store predictions and labels
         test_preds.extend(preds.numpy())
         test_all_labels.extend(batch.y.numpy())
-        print(f"Batch size: {batch.num_graphs}, Num nodes: {batch.num_nodes}, Output shape: {output.shape}")
 
         # reshape predictions for graph accuracy
         preds = preds.reshape(-1,n+m)
@@ -61,9 +60,10 @@ with torch.no_grad():
         # end_time_before = time.perf_counter()
         # W_before = [j for j, value in enumerate(lambda_before) if value != 0]
         # x,_,_,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense)
-        #lambda_true =list(info.values())[4]
+        # lambda_before =list(info.values())[4]
         W_true = (batch.y.numpy()[n:] != 0).astype(int).nonzero()[0]
-        # test_iterations_before[i] = it_before
+        # test_iterations_before[i] = list(info.values())[2]
+        # test_time_before[i]= list(info.values())[0]
         # test_time_before[i] = end_time_before- start_time_before
                 
         # solve the reduced QPs to see the reduction
@@ -73,12 +73,12 @@ with torch.no_grad():
         # x_after, lambda_after, _, it_after = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred) # sense flag 1 if active, 4 if ignore
         # end_time_after = time.perf_counter()
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
-        
+
         x,fval,exitflag,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense_active)
         lambda_after= list(info.values())[4]
         test_iterations_after[i] = list(info.values())[2]
         test_time_after[i]= list(info.values())[0]
-        
+
         output_constraints = output.flatten()[n:]
         W_pred_set = set(W_pred)
         W_true_set = set(W_true)
@@ -86,9 +86,11 @@ with torch.no_grad():
         W_diff_FN = sorted(W_true_set.difference(W_pred_set))
         output_FN.extend(output.flatten().numpy()[n:][W_diff_FN])
         # print(f"Difference in W {len(set(W_true)^set(W_pred))}, It before {it_before}, If after {it_after}, It diff {it_before - it_after}")
-        print(f" W true {W_true} \n W pred {W_pred}")
-        print(output.flatten().numpy()[n:][W_diff_FN])
-        print(output.flatten().numpy()[n:][W_diff])
+        
+        # print(f" W true {W_true} \n W pred {W_pred}")
+        # print(output.flatten().numpy()[n:][W_diff_FN])
+        # print(output.flatten().numpy()[n:][W_diff])
+        
         #print(output_constraints[W_pred].numpy())
         #print(output.flatten().numpy()[n:])
         # test_iterations_after[i] = it_after
@@ -118,8 +120,10 @@ print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np
 # print(best_threshold)
 # print(best_mean)
 
-
 #Boxplot to show reduction
 boxplot_time(test_time_before,test_time_after,"time",save = False)
+histogram_time(test_time_before, test_time_after,save= False)
+
 boxplot_time(test_iterations_before,test_iterations_after, "iterations",save = False)
+
 barplot_iterations(test_iterations_before,test_iterations_after, "iterations",save = False)
