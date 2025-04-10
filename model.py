@@ -6,21 +6,16 @@ class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim,layer_width):
         torch.manual_seed(123)
         super(GNN, self).__init__()
-        self.input = LEConv(input_dim, layer_width)
-        #self.conv2 = LEConv(layer_width,layer_width)
-        #self.conv3 = LEConv(layer_width,layer_width)
-        self.inner = LEConv(layer_width,layer_width)
-        self.output = LEConv(layer_width, output_dim)
+        self.input_layer = LEConv(input_dim, layer_width)
+        self.inner_layer = LEConv(layer_width,layer_width)
+        self.output_layer = LEConv(layer_width, output_dim)
 
     def forward(self, data,number_of_layers):
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
-        x = func.leaky_relu(self.input(x, edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
         for i in range(number_of_layers-2):
-            x = func.leaky_relu(self.inner(x,edge_index,edge_weight),negative_slope = 0.1)
-        #x = func.leaky_relu(self.conv2(x,edge_index,edge_weight),negative_slope = 0.1)
-        #x = func.leaky_relu(self.conv3(x,edge_index,edge_weight),negative_slope = 0.1)
-        #x = func.leaky_relu(self.conv4(x,edge_index,edge_weight),negative_slope = 0.1)
-        x = func.leaky_relu(self.output(x,edge_index,edge_weight),negative_slope = 0.1)
+            x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
         x = torch.sigmoid(x)
         return x  
 

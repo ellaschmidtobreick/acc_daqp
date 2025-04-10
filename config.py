@@ -1,6 +1,6 @@
 # Set parameters
-n = 10 #25
-m = 40 #100
+n = 25 #10 #25
+m = 100 #40 #100
 nth = 2
 seed = 123
 data_points = 5000

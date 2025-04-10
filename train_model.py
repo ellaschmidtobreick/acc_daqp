@@ -158,9 +158,9 @@ for epoch in range(number_of_epochs):
     
     # Log metrics to wandb.
     if track_on_wandb == True:
-        run.log({"acc_train": acc,"acc_test": val_acc,"loss_train": train_loss, "loss_test": val_loss, "prec": prec, "rec": rec, "f1": f1, "acc_graph": acc_graph, "acc_graph_test": acc_graph_val,"num_wrong_pred_nodes_per_graph":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
+        run.log({"acc_train": acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec": prec, "rec": rec, "f1": f1, "acc_graph": acc_graph, "acc_graph_val": acc_graph_val,"num_wrong_pred_nodes_per_graph":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
 
-    early_stopping(val_mean_wrongly_pred_nodes_per_graph, model)
+    # early_stopping(val_mean_wrongly_pred_nodes_per_graph, model)
     if early_stopping.early_stop:
         print(f"Early stopping after {epoch} epochs.")
         break
@@ -173,7 +173,7 @@ for epoch in range(number_of_epochs):
 # Load the best model
 early_stopping.load_best_model(model)
 
-torch.save(model.state_dict(), "current_model.pth")
+torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c.pth")
 
 #Final evaluation on test data
 # model.eval()
