@@ -35,7 +35,8 @@ def barplot_iterations(iterations_before, iterations_after, label, save):
     # Labels and legend
     plt.xlabel("Number of Iterations")
     plt.ylabel("Frequency")
-    plt.xticks(x, all_iterations,fontsize=7)
+    #plt.xticks(x, all_iterations,fontsize=7)
+    plt.xticks(ticks=x[::5], labels=all_iterations[::5], fontsize=7)
     plt.xlim(x[0] - width, x[-1] + width)
     plt.legend()
     plt.title(label)
@@ -47,14 +48,15 @@ def barplot_iterations(iterations_before, iterations_after, label, save):
 
 def histogram_time(time_before, time_after,save):
     # Find common bin edges based on the data range
-    min_val = min(np.min(time_before), np.min(time_after))
-    max_val = max(np.max(time_before), np.max(time_after))
+    min_val = min(np.min(time_before), np.min(time_after))#,np.min(prediction_time))
+    max_val = max(np.max(time_before), np.max(time_after))#,np.max(prediction_time))
     n_bins = 50  # Set the desired number of bins
-    print(max_val)
     bin_edges = np.linspace(min_val, max_val, n_bins+1)
 
-    plt.hist(time_before, bins=50, range=(0,0.00005), alpha=0.7, label='without GNN', color='blue')
-    plt.hist(time_after, bins=50, range=(0,0.00005), alpha=0.7, label='with GNN', color='orange')
+    plt.hist(time_before, bins=50, range=(0,0.0003), alpha=0.7, label='without GNN', color='blue')
+    plt.hist(time_after, bins=50, range=(0,0.0003), alpha=0.7, label='with GNN', color='orange') #0.00005
+    #plt.hist(prediction_time, bins = 50, range=(0,max_val), alpha = 0.7, label ='prediction time',color ='green')
+    #plt.hist(prediction_time+time_after, bins = 50, range=(0,max_val), alpha = 0.7, label ='with GNN and prediction time',color ='red')
 
     plt.xlabel('Time')
     plt.ylabel('Frequency')

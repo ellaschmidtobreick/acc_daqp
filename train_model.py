@@ -160,7 +160,7 @@ for epoch in range(number_of_epochs):
     if track_on_wandb == True:
         run.log({"acc_train": acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec": prec, "rec": rec, "f1": f1, "acc_graph": acc_graph, "acc_graph_val": acc_graph_val,"num_wrong_pred_nodes_per_graph":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
 
-    # early_stopping(val_mean_wrongly_pred_nodes_per_graph, model)
+    early_stopping(val_mean_wrongly_pred_nodes_per_graph, model)
     if early_stopping.early_stop:
         print(f"Early stopping after {epoch} epochs.")
         break
