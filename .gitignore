@@ -1,7 +1,3 @@
 .ipynb_checkpoints/
 __pycache__/
 wandb/
-*.pth
-saved_models/
-*.npz
-data/
