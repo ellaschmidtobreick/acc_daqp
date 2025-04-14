@@ -48,7 +48,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         x_train[i,:]= x
         lambda_train[i,:]= list(info.values())[4]
         train_iterations[i] = list(info.values())[2]
-        train_time[i]= list(info.values())[0]
+        train_time[i]= list(info.values())[0] + list(info.values())[1]
 
     # Generate val set
     np.random.seed(seed+1)
@@ -68,7 +68,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         x_val[i,:]= x
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
-        val_time[i] = list(info.values())[0]
+        val_time[i] = list(info.values())[0] + list(info.values())[1]
         
     # get optimal active set (y)
     train_active_set = (lambda_train != 0).astype(int)
@@ -133,6 +133,76 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         
     return graph_train, graph_val, H, A
 
+# function to create a new data set with variable H and As
+def generate_qp_graphs_different_sizes(n_min,n_max,m_min,m_max,nth,seed,number_of_graphs,usage_of_dataset):
+    # idea - add sth like "mode" - a flag if you want to generate train / val / test data & then only have one function that retruns one graph object
+    # set if, else in the beginning to check, which case we are in and set the parameters accordingly
+
+    if usage_of_dataset == "train":
+        iter = int(np.rint(0.8*number_of_graphs))
+        np.random.seed(seed)
+    elif usage_of_dataset =="val":
+        iter = int(np.rint(0.1*number_of_graphs))
+        np.random.seed(seed+1)
+    elif usage_of_dataset == "test":
+        iter = int(np.rint(0.1*number_of_graphs))
+        np.random.seed(seed+2)
+    else:
+        print("No suitable dataset was given as input")
+        return [], []
+  
+    # Generate the graph from the training data
+    graph = []
+    n_vector = []
+    m_vector = []
+    for i in range(iter):
+        n = np.random.randint(n_min,n_max+1)
+        m = np.random.randint(m_min,m_max+1)
+        n_vector.append(n)
+        m_vector.append(m)
+        H,f,F,A,b,B = generate_qp(n,m,seed)
+        sense = np.zeros(m, dtype=np.int32)
+        blower = np.array([-np.inf for i in range(m)])
+
+        theta = np.random.randn(nth)
+        btot = b + B @ theta
+        ftot = f + F @ theta
+        
+        _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
+        lambda_dual= list(info.values())[4]
+
+        # get optimal active set (y)
+        active_set = (lambda_dual != 0).astype(int)
+        y = torch.tensor((np.hstack((np.zeros(n),active_set)))) 
+        
+        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+
+        # create edge_index and edge_attributes
+        edge_index = torch.tensor([])
+        edge_attr = torch.tensor([])
+        for j in range(np.shape(edge_matrix)[0]):
+            for k in range(np.shape(edge_matrix)[1]):
+                # add edge
+                if edge_matrix[j,k] != 0:
+                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        edge_index = edge_index.long().T
+
+        # create new vectors filled with zeros to capture vertex features better
+        f1 = np.hstack((ftot,np.zeros(np.shape(btot))))
+        b1= np.hstack((np.zeros(np.shape(ftot)),btot))
+        eq1 = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
+
+        # create matrix with vertex features
+        x = torch.tensor([])
+        features = np.array([f1, b1, eq1]).T
+        x= torch.tensor(features, dtype=torch.float32)
+        data_point = Data(x= x, edge_index=edge_index, edge_attr=edge_attr,y=y)
+        # list of graph elements
+        graph.append(data_point)
+                 
+    return graph,n_vector, m_vector
+
 def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     np.random.seed(seed)
     #spit generated problems into train, test, val
@@ -149,6 +219,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
         
     else:
         H,f,F,A,b,B = generate_qp(n,m,seed)
+        np.savez(f"data/generated_qp_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B)
         print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
@@ -159,6 +230,8 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     lambda_test = np.zeros((iter_test,m))
     test_iterations = np.zeros((iter_test))
     test_time = np.zeros((iter_test))
+    test_time_solve = np.zeros((iter_test))
+    test_time_setup = np.zeros((iter_test))
     f_test = np.zeros((iter_test,n))
     b_test = np.zeros((iter_test,m))
     for i in range(iter_test):
@@ -171,7 +244,8 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
         x_test[i,:]= x
         lambda_test[i,:]= list(info.values())[4]
         test_iterations[i] = list(info.values())[2]
-        test_time[i] = list(info.values())[0]
+        test_time_solve[i] = list(info.values())[0]
+        test_time_setup = list(info.values())[1]
         
     # get optimal active set (y)
     test_active_set = (lambda_test != 0).astype(int)
@@ -212,7 +286,9 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
         data_point = Data(x= x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
         # list of graph elements
         graph_test.append(data_point)
-        
-    return graph_test, test_iterations,test_time, H,f_test,A,b_test,blower,sense
+    
+    test_time = test_time_setup + test_time_solve
+      
+    return graph_test, test_iterations,test_time_solve,test_time_setup, H,f_test,A,b_test,blower,sense
 
 
