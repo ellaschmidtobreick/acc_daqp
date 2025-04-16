@@ -15,7 +15,7 @@ from model import GNN
 # to scale a bigger n,m can be used in testing than in training
 n = 10 #config.n
 m= 40 #config.m
-model_path = "saved_models/model_10v_40c.pth"
+model_path = "saved_models/model_10_25v_25_100c.pth" #"saved_models/model_10v_40c.pth"
 
 # Generate test problems and the corresponding graphs
 graph_test, test_iterations_before,test_time_before_solve,test_time_before_setup, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
