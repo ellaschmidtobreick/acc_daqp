@@ -11,7 +11,7 @@ import numpy as np
 # m = 5 # Number of constraints
 # nth = 2 # Number of parameters
 
-def generate_qp(n,m,given_seed, nth=2):
+def generate_qp(n,m,given_seed, nth = 2):
     np.random.seed(seed = given_seed)
     # Objective function
     M = np.random.randn(n,n)
@@ -27,7 +27,7 @@ def generate_qp(n,m,given_seed, nth=2):
     return H,f,F,A,b,B
 
 
-def generate_rhs(f,F,b,B,given_seed):
+def generate_rhs(f,F,b,B,nth,given_seed):
     """ Example QP of the form 
 
     minimize_x  0.5 x' H x + ftot'x

@@ -3,7 +3,7 @@ import daqp
 from ctypes import * 
 import os
 from generate_mpqp_v2 import generate_qp
-
+from collections import Counter
 import torch
 from torch_geometric.data import Data
 
@@ -153,27 +153,94 @@ def generate_qp_graphs_different_sizes(n_min,n_max,m_min,m_max,nth,seed,number_o
   
     # Generate the graph from the training data
     graph = []
-    n_vector = []
-    m_vector = []
-    for i in range(iter):
-        n = np.random.randint(n_min,n_max+1)
-        m = np.random.randint(m_min,m_max+1)
-        n_vector.append(n)
-        m_vector.append(m)
-        H,f,F,A,b,B = generate_qp(n,m,seed)
-        sense = np.zeros(m, dtype=np.int32)
-        blower = np.array([-np.inf for i in range(m)])
+    # generate different n,m for different sized graphs
+    n_vector = np.random.randint(n_min,n_max+1,size = iter)
+    m_vector = np.random.randint(m_min,m_max+1, size = iter)
+    theta_vector = np.random.randn(nth,iter)
+    
+    # generate variables only dependent on n (M,f,F)
+    n_unique, n_counts = np.unique(n_vector, return_counts=True)
+    n_dict = dict(zip(n_unique, n_counts))
+    #print(n_unique, n_counts)
+    M_array = [0 for i in range(iter)]
+    f_array = [0 for i in range(iter)]
+    F_array = [0 for i in range(iter)]
+    T_array = [0 for i in range(iter)]
+    
+    for n in n_dict:
+        n_count = n_dict[n]
+        #print(n,n_count)
+        indices, = np.where(n_vector == n)
+        #print(indices)
+        M = np.random.randn(n,n,n_count)
+        f = np.random.randn(n)
+        F = np.random.randn(n,nth)
+        T = np.random.randn(n,nth)   #transformation matrix
 
-        theta = np.random.randn(nth)
-        btot = b + B @ theta
-        ftot = f + F @ theta
+        # all the same values for all indices
+        # f_array[indices] = f
+        # F_array[indices] = F
+        # T_array[indices] = T
+        # distinc values for indices
+        for position, i in enumerate(indices):
+            M_array[i] = M[:,:,position]
+            f_array[i] = f
+            F_array[i] = F
+            T_array[i] = T
+
+    # generate variables only dependent on m (b,B)
+    m_unique, m_counts = np.unique(m_vector, return_counts=True)
+    m_dict = dict(zip(m_unique, m_counts))
+    print(n_unique, n_counts)
+    b_array = [0 for i in range(iter)]
+    sense_array = [0 for i in range(iter)]
+    blower_array = [0 for i in range(iter)]
+    for m in m_dict:
+        indices, = np.where(m_vector == m)
+        # generate b
+        b = np.random.rand(m)
+        for i in indices:
+            b_array[i] = b
+            sense_array[i] = np.zeros(m, dtype=np.int32)
+            blower_array[i] = np.array([-np.inf for i in range(m)])
         
-        _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
+    # generate variables dependent on n and m (A)
+    A_array = [0 for i in range(iter)]     
+    A_dict = {}
+    pairs = Counter(list(zip(n_vector, m_vector)))       # returns dict
+    for (n_val, m_val), count in pairs.items():       
+        A_dict[(n_val, m_val)] = np.random.randn(m_val,n_val,count)
+    
+    # track how many times each pair has been assigned to A_array
+    pair_usage_counter = {key: 0 for key in pairs}
+
+    # save values in A_array
+    for i in range(iter):
+        n = n_vector[i]
+        m = m_vector[i]
+        number_pair_used = pair_usage_counter[(n, m)]
+        A_array[i] = A_dict[(n, m)][:,:,number_pair_used]
+        pair_usage_counter[(n, m)] += 1
+
+    print("All QPs generated - now transfer into graph")
+
+    # generate H, btot, ftot and put everything as graph together
+    for i in range(iter):
+        A = A_array[i]
+        H = M_array[i] @ M_array[i].T
+        B = A @ (-T_array[i])
+        btot = b_array[i] + B @ theta_vector[:,i]
+        ftot = f_array[i] + F_array[i] @ theta_vector[:,i]
+        #print(np.linalg.inv(H))
+        # solve problem
+        #print(H.shape,ftot.shape,A.shape,btot.shape,blower_array[i].shape,sense_array[i].shape)
+        _,_,exitflag,info = daqp.solve(H,ftot,A,btot,blower_array[i],sense_array[i])
+        #print(exitflag)
         lambda_dual= list(info.values())[4]
 
         # get optimal active set (y)
         active_set = (lambda_dual != 0).astype(int)
-        y = torch.tensor((np.hstack((np.zeros(n),active_set)))) 
+        y = torch.tensor((np.hstack((np.zeros(n_vector[i]),active_set)))) 
         
         edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
 
@@ -200,7 +267,8 @@ def generate_qp_graphs_different_sizes(n_min,n_max,m_min,m_max,nth,seed,number_o
         data_point = Data(x= x, edge_index=edge_index, edge_attr=edge_attr,y=y)
         # list of graph elements
         graph.append(data_point)
-                 
+    
+    print("All graphs saved")   
     return graph,n_vector, m_vector
 
 def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
