@@ -103,8 +103,8 @@ def histogram_time(time_before, time_after, save):
     n_bins = 50  # Set the desired number of bins
     bin_edges = np.linspace(min_val, max_val, n_bins+1)
 
-    plt.hist(time_before, bins=50,range=(0,0.00003),  alpha=0.7, label='without GNN', color='blue') #0.0003 range=(0,max_val),
-    plt.hist(time_after, bins=50,range=(0,0.00003),  alpha=0.7, label='with GNN', color='orange') #0.00005 range=(0,max_val,),
+    plt.hist(time_before, bins=50,range=(0,max_val),  alpha=0.7, label='without GNN', color='blue') #0.0003 range=(0,max_val),
+    plt.hist(time_after, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN', color='orange') #0.00005 range=(0,max_val,),
     #plt.hist(time_after_no_ignored_constraints, bins=50,range=(0,0.00005),  alpha=0.3, label='with GNN, no ignored constraints', color='green') #0.00005 range=(0,max_val,),
 
     #plt.hist(prediction_time, bins = 50, range=(0,max_val), alpha = 0.7, label ='prediction time',color ='green')
@@ -125,8 +125,8 @@ def histogram_time_no_ignoed_constraints(time_after_no_ignored_constraints, time
     n_bins = 50  # Set the desired number of bins
     bin_edges = np.linspace(min_val, max_val, n_bins+1)
 
-    plt.hist(time_after_no_ignored_constraints, bins=50,range=(0,0.00003),  alpha=0.7, label='with GNN,no ignored components', color='green') #0.0003 range=(0,max_val),
-    plt.hist(time_after, bins=50,range=(0,0.00003),  alpha=0.7, label='with GNN', color='orange') #0.00005 range=(0,max_val,),
+    plt.hist(time_after_no_ignored_constraints, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN,no ignored components', color='green') #0.0003 range=(0,max_val),
+    plt.hist(time_after, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN', color='orange') #0.00005 range=(0,max_val,),
     #plt.hist(time_after_no_ignored_constraints, bins=50,range=(0,0.00005),  alpha=0.3, label='with GNN, no ignored constraints', color='green') #0.00005 range=(0,max_val,),
 
     #plt.hist(prediction_time, bins = 50, range=(0,max_val), alpha = 0.7, label ='prediction time',color ='green')
