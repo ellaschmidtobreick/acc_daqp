@@ -3,6 +3,7 @@ import daqp
 from ctypes import * 
 import os
 from generate_mpqp_v2 import generate_qp
+from collections import Counter
 
 import torch
 from torch_geometric.data import Data
@@ -15,6 +16,7 @@ from torch_geometric.data import Data
 
 #default train - test - val split: 80%, 10%, 10%
 
+# generate data with fixed H and A
 def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
 
     #spit generated problems into train, test, val
@@ -27,6 +29,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
     np.savez(f"data/generated_qp_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
+    print("original function")
 
     # Generate training set - only change theta
     x_train = np.zeros((iter_train,n))
@@ -49,7 +52,8 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         lambda_train[i,:]= list(info.values())[4]
         train_iterations[i] = list(info.values())[2]
         train_time[i]= list(info.values())[0]
-
+    print(f"f_train {f_train[:5,:]}")
+    
     # Generate val set
     np.random.seed(seed+1)
     x_val = np.zeros((iter_val,n))
@@ -69,7 +73,9 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
         val_time[i] = list(info.values())[0]
-        
+    
+    print(f"f_val {f_val[:5,:]}")
+
     # get optimal active set (y)
     train_active_set = (lambda_train != 0).astype(int)
     y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
@@ -81,11 +87,9 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
     graph_train = []
     graph_val = []
 
-
     # graph structure does not change, only vertex features
     #combine H and A
     edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
-    #print("edge matrix shape",edge_matrix.shape)
 
     # create edge_index and edge_attributes
     edge_index = torch.tensor([])
@@ -102,12 +106,14 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
     f1_train = np.hstack((f_train,np.zeros(np.shape(b_train))))
     b1_train = np.hstack((np.zeros(np.shape(f_train)),b_train))
     eq1_train = np.hstack((np.zeros(np.shape(f_train)),(np.zeros(np.shape(b_train)))))
+    node_type_train = np.hstack((np.zeros(np.shape(f_train)),(np.ones(np.shape(b_train)))))
+
     #print(f1_train.shape,b1_train.shape,eq1_train.shape)
 
     # create matrix with vertex features
     x_train = torch.tensor([])
     for i in range(iter_train):
-        features = np.array([f1_train[i], b1_train[i], eq1_train[i]]).T
+        features = np.array([f1_train[i], b1_train[i], eq1_train[i],node_type_train[i]]).T
         x_train = torch.tensor(features, dtype=torch.float32)
         #x_train = torch.tensor([f1_train[i],b1_train[i], eq1_train[i]]).T
         data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train[i,:])
@@ -118,12 +124,13 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs):
     f1_val = np.hstack((f_val,np.zeros(np.shape(b_val))))
     b1_val = np.hstack((np.zeros(np.shape(f_val)),b_val))
     eq1_val = np.hstack((np.zeros(np.shape(f_val)),(np.zeros(np.shape(b_val)))))
+    node_type_val = np.hstack((np.zeros(np.shape(f_val)),(np.ones(np.shape(b_val)))))
     #print(f1_val.shape,b1_val.shape,eq1_val.shape)
 
     # val graph
     x_val = torch.tensor([])
     for i in range(iter_val):
-        features = np.array([f1_val[i], b1_val[i], eq1_val[i]]).T
+        features = np.array([f1_val[i], b1_val[i], eq1_val[i],node_type_val[i]]).T
         x_val = torch.tensor(features, dtype=torch.float32)
         #x_val = torch.tensor(np.array([f1_val[i],b1_val[i], eq1_val[i]])).T
         data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:])
@@ -181,7 +188,6 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     # Generate the graph from the training data
     graph_test = []
 
-
     # graph structure does not change, only vertex features
     #combine H and A
     edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
@@ -201,12 +207,15 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     f1_test = np.hstack((f_test,np.zeros(np.shape(b_test))))
     b1_test = np.hstack((np.zeros(np.shape(f_test)),b_test))
     eq1_test = np.hstack((np.zeros(np.shape(f_test)),(np.zeros(np.shape(b_test)))))
+    node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
+    node_type = np.tile(node_type, (500, 1))
+
     #print(f1_test.shape,b1_test.shape,eq1_test.shape)
 
     # test graph
     x_test = torch.tensor([])
     for i in range(iter_test):
-        features = np.array([f1_test[i], b1_test[i], eq1_test[i]]).T
+        features = np.array([f1_test[i], b1_test[i], eq1_test[i],node_type[i]]).T
         x_test = torch.tensor(features, dtype=torch.float32)
         #x_test = torch.tensor(np.array([f1_test[i],b1_test[i], eq1_test[i]])).T
         data_point = Data(x= x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
@@ -216,3 +225,143 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     return graph_test, test_iterations,test_time, H,f_test,A,b_test,blower,sense
 
 
+
+
+###########################
+# generate data with fixed H and A
+def generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,number_of_graphs):
+
+    #spit generated problems into train, test, val
+    iter_train = int(np.rint(0.8*number_of_graphs))
+    iter_val = int(np.rint(0.1*number_of_graphs))
+    
+    np.random.seed(seed)
+    H,f,F,A,b,B = generate_qp(n,m,seed)
+    print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape)
+    np.savez(f"data/generated_qp_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B)
+    sense = np.zeros(m, dtype=np.int32)
+    blower = np.array([-np.inf for i in range(m)])
+    
+    print("flexible H")
+
+    # Generate training set - only change theta and A
+    x_train = np.zeros((iter_train,n))
+    lambda_train = np.zeros((iter_train,m))
+    train_iterations = np.zeros((iter_train))
+    train_time= np.zeros((iter_train))
+    f_train = np.zeros((iter_train,n))
+    b_train = np.zeros((iter_train,m))
+    theta_train = np.zeros((iter_train,nth))
+    # Generate the graph from the training data
+    graph_train = []
+    
+
+    for i in range(iter_train):
+        theta = np.random.randn(nth)
+        btot = b + B @ theta
+        ftot = f + F @ theta
+        
+        M = np.random.randn(n,n)
+        H = M @ M.T 
+
+        x,fval,exitflag,info = daqp.solve(H,ftot,A,btot,blower,sense)
+        lambda_train[i,:]= list(info.values())[4]
+        train_iterations[i] = list(info.values())[2]
+        train_time[i]= list(info.values())[0]
+    
+        # get optimal active set (y)
+        train_active_set = (lambda_train != 0).astype(int)
+        y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
+        
+        # graph structure does not change, only vertex features
+        #combine H and A
+        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+        
+        # create edge_index and edge_attributes
+        edge_index = torch.tensor([])
+        edge_attr = torch.tensor([])
+        for j in range(np.shape(edge_matrix)[0]):
+            for k in range(np.shape(edge_matrix)[1]):
+                # add edge
+                if edge_matrix[j,k] != 0:
+                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        edge_index = edge_index.long().T
+        
+        # create new vectors filled with zeros to capture vertex features better
+        f1_train = np.hstack((ftot,np.zeros(np.shape(btot))))
+        b1_train = np.hstack((np.zeros(np.shape(ftot)),btot))
+        eq1_train = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
+        node_type_train = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
+
+        #print(f1_train.shape,b1_train.shape,eq1_train.shape)
+
+        features = np.array([f1_train, b1_train, eq1_train,node_type_train]).T
+        x_train = torch.tensor(features, dtype=torch.float32)
+        data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train[i,:])
+        #print(data_point)
+        # list of graph elements
+        graph_train.append(data_point)
+
+
+    
+    # Generate val set
+    np.random.seed(seed+1)
+    x_val = np.zeros((iter_val,n))
+    lambda_val = np.zeros((iter_val,m))
+    val_iterations = np.zeros((iter_val))
+    val_time = np.zeros((iter_val))
+    f_val = np.zeros((iter_val,n))
+    b_val = np.zeros((iter_val,m))
+    
+    graph_val = []
+    
+    for i in range(iter_val):
+        theta = np.random.randn(nth)
+        btot = b + B @ theta
+        ftot = f + F @ theta
+        
+        M = np.random.randn(n,n)
+        H = M @ M.T 
+    
+        x,fval,exitflag,info = daqp.solve(H,ftot,A,btot,blower,sense)
+        lambda_val[i,:]= list(info.values())[4]
+        val_iterations[i] = list(info.values())[2]
+        val_time[i] = list(info.values())[0]
+    
+
+        val_active_set = (lambda_val != 0).astype(int)
+        y_val = torch.tensor((np.hstack((np.zeros((iter_val,n)),val_active_set))))
+        
+        # graph structure does not change, only vertex features
+        #combine H and A
+        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+
+        # create edge_index and edge_attributes
+        edge_index = torch.tensor([])
+        edge_attr = torch.tensor([])
+        for j in range(np.shape(edge_matrix)[0]):
+            for k in range(np.shape(edge_matrix)[1]):
+                # add edge
+                if edge_matrix[j,k] != 0:
+                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        edge_index = edge_index.long().T
+
+        f1_val = np.hstack((ftot,np.zeros(np.shape(btot))))
+        b1_val = np.hstack((np.zeros(np.shape(ftot)),btot))
+        eq1_val = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
+        node_type_val = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
+        #print(f1_val.shape,b1_val.shape,eq1_val.shape)
+
+        # val graph
+        x_val = torch.tensor([])
+        features = np.array([f1_val, b1_val, eq1_val,node_type_val]).T
+        x_val = torch.tensor(features, dtype=torch.float32)
+        #x_val = torch.tensor(np.array([f1_val[i],b1_val[i], eq1_val[i]])).T
+        data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:])
+        # list of graph elements
+        graph_val.append(data_point)
+        
+        
+    return graph_train, graph_val, H, A

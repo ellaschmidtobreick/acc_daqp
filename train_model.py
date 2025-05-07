@@ -7,15 +7,15 @@ import wandb
 import torch
 from torch_geometric.loader import DataLoader
 
-from generate_graph_data import generate_qp_graphs_train_val 
+from generate_graph_data import generate_qp_graphs_train_val, generate_qp_graphs_train_val_flexible_H
 import config 
 from model import GNN
 from model import EarlyStopping
 
 
 # Set parameters
-n = config.n
-m = config.m
+n = 10 #config.n
+m = 40 #config.m
 
 nth = config.nth
 seed = config.seed
@@ -23,7 +23,7 @@ data_points = config.data_points
 lr = config.lr
 number_of_epochs = config.number_of_epochs  
 layer_width = config.layer_width
-number_of_layers = config.number_of_layers
+number_of_layers = 5 #config.number_of_layers
 track_on_wandb = config.track_on_wandb
 t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 
@@ -33,7 +33,10 @@ t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 #for t in threshold:
 
 # Generate QP problems and the corresponding graphs
-graph_train, graph_val,H,A = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+graph_train, graph_val,H,A = generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,data_points)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+
+#graph_train,graph_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
+# graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
 
 # Load Data
 train_loader = DataLoader(graph_train, batch_size=64, shuffle=True)
@@ -45,7 +48,7 @@ class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels
 class_weights = torch.tensor(class_weights, dtype=torch.float32)
 
 # Instantiate model and optimizer
-model = GNN(input_dim=3, output_dim=1,layer_width = 128)  # Output dimension 1 for binary classification
+model = GNN(input_dim=4, output_dim=1,layer_width = 128)  # Output dimension 1 for binary classification
 optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
 # Early stopping
@@ -96,6 +99,7 @@ for epoch in range(number_of_epochs):
         # Convert output to binary prediction (0 or 1)
         #save_loss += output.tolist()
         preds = (output.squeeze() > t).long()
+
         #save_preds += preds.tolist()
         train_preds.extend(preds.numpy())   # Store predictions
         train_all_labels.extend(batch.y.numpy())
@@ -154,7 +158,7 @@ for epoch in range(number_of_epochs):
     if track_on_wandb == True:
         run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train, "acc_graph_val": acc_graph_val,"perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
 
-    early_stopping(val_mean_wrongly_pred_nodes_per_graph, model)
+    early_stopping(val_loss, model) #val_mean_wrongly_pred_nodes_per_graph
     if early_stopping.early_stop:
         print(f"Early stopping after {epoch} epochs.")
         break
@@ -167,7 +171,7 @@ for epoch in range(number_of_epochs):
 # Load the best model
 early_stopping.load_best_model(model)
 
-torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c.pth")
+torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c_flex_H_5 layers.pth")
 
 # Finish the run and upload any remaining data.
 if track_on_wandb == True:

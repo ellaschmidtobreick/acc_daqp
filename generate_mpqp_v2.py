@@ -12,6 +12,7 @@ import numpy as np
 # nth = 2 # Number of parameters
 
 def generate_qp(n,m,given_seed, nth = 2):
+    print(given_seed)
     np.random.seed(seed = given_seed)
     # Objective function
     M = np.random.randn(n,n)
