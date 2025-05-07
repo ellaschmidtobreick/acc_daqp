@@ -430,3 +430,300 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
     return graph_test, test_iterations, test_time,H,f_test,A,b_test,blower,sense
 
 
+##########################################
+# Generate data with flexible size
+def generate_qp_graphs_different_sizes(n_min,n_max,m_min,m_max,nth,seed,number_of_graphs,mode,H= None,A = None):
+
+    # mode: train / test / val - detects size and seed of to generate dataset
+    print(f"{mode} data")
+    # if mode == "train":
+    iter = int(np.rint(0.8*number_of_graphs))
+    current_seed = seed
+    np.random.seed(seed)
+    print(seed)
+    # elif mode =="val":
+    #     iter = int(np.rint(0.1*number_of_graphs))
+    #     current_seed = seed
+    #     np.random.seed(current_seed)
+    #     print(seed+1)
+    # elif mode == "test":
+    #     iter = int(np.rint(0.1*number_of_graphs))
+    #     current_seed = seed+2
+    #     np.random.seed(current_seed)
+    # else:
+    #     print("No suitable mode was given as input")
+    #     return [], []
+    
+    if H is not None:
+        print(f"H: {H}")
+        H_given =True
+    else:
+        H_given = False
+        
+    if A is not None:
+        print(f"A: {A}")
+        A_given =True
+    else:
+        A_given = False    
+        
+    # sample n,m for different sized graphs
+    graph = []
+    n_vector = np.random.randint(n_min,n_max+1,size = iter)
+    m_vector = np.random.randint(m_min,m_max+1, size = iter)
+    theta_vector = np.random.randn(nth,iter)
+    
+    # generate variables only dependent on n (M,f,F,T)
+    n_unique, n_counts = np.unique(n_vector, return_counts=True)
+    n_dict = dict(zip(n_unique, n_counts))
+    #print(n_unique, n_counts)
+    if H_given== False:
+        M_array = [0 for i in range(iter)]
+    f_array = [0 for i in range(iter)]
+    F_array = [0 for i in range(iter)]
+    T_array = [0 for i in range(iter)]
+    
+    print(n_dict)
+    
+    # sample for each n 
+    for n in n_dict:
+        n_count = n_dict[n]
+        #print(n,n_count)
+        indices, = np.where(n_vector == n)
+        #print(indices)
+        if H_given==False:
+            M = np.random.randn(n,n,n_count)
+        
+        f = np.random.randn(n)
+        F = np.random.randn(n,nth)
+        T = np.random.randn(n,nth)   #transformation matrix
+        
+        # linear transformation to generate A and H
+        #M_base = np.random.randn(n,n)
+        #A_base = M = np.random.randn(m,n)
+
+        # save the sampled variables
+        for position, i in enumerate(indices):
+            if H_given == False:
+                M_array[i] = M[:,:,position]
+            f_array[i] = f
+            F_array[i] = F
+            T_array[i] = T
+
+    # generate variables only dependent on m (b,sense, blower)
+    m_unique, m_counts = np.unique(m_vector, return_counts=True)
+    m_dict = dict(zip(m_unique, m_counts))
+    b_array = [0 for i in range(iter)]
+    sense_array = [0 for i in range(iter)]
+    blower_array = [0 for i in range(iter)]
+    
+    # sample for each m
+    for m in m_dict:
+        indices, = np.where(m_vector == m)
+        b = np.random.rand(m)
+        #save variables
+        for i in indices:
+            b_array[i] = b
+            sense_array[i] = np.zeros(m, dtype=np.int32)
+            blower_array[i] = np.array([-np.inf for i in range(m)])
+    
+    print(f"b {b_array[:2]}")
+    # generate variables dependent on n and m (A)
+    if A_given == False:
+        A_array = [0 for i in range(iter)]     
+        A_dict = {}
+        # pair the combinations of n and m
+        pairs = Counter(list(zip(n_vector, m_vector)))       # returns dict with pairs as key and count as value
+        for (n_val, m_val), count in pairs.items():       
+            A_dict[(n_val, m_val)] = np.random.randn(m_val,n_val,count)
+
+        # save values in A_array
+        pair_usage_counter = {key: 0 for key in pairs} # track how many times each pair has been assigned to A_array to find correct place to save it
+        for i in range(iter):
+            n = n_vector[i]
+            m = m_vector[i]
+            number_pair_used = pair_usage_counter[(n, m)]
+            A_array[i] = A_dict[(n, m)][:,:,number_pair_used]
+            pair_usage_counter[(n, m)] += 1
+
+    print("All QPs generated - now transfer problems into graphs")
+
+    # express problem as graph
+    for i in range(iter):
+        # generate H, btot, ftot
+        if A_given == False:
+            A = A_array[i]
+        if H_given == False:
+            H = M_array[i] @ M_array[i].T
+        B = A @ (-T_array[i])
+        btot = b_array[i] + B @ theta_vector[:,i]
+        ftot = f_array[i] + F_array[i] @ theta_vector[:,i]
+        
+        # solve problem to get the active set 
+        _,_,exitflag,info = daqp.solve(H,ftot,A,btot,blower_array[i],sense_array[i])
+        lambda_dual= list(info.values())[4]
+        active_set = (lambda_dual != 0).astype(int)
+        y = torch.tensor((np.hstack((np.zeros(n_vector[i]),active_set)))) 
+
+        # create edge matrix
+        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+
+        # create edge_index and edge_attributes
+        edge_index = torch.tensor([])
+        edge_attr = torch.tensor([])
+        for j in range(np.shape(edge_matrix)[0]):
+            for k in range(np.shape(edge_matrix)[1]):
+                # add edge
+                if edge_matrix[j,k] != 0:
+                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        edge_index = edge_index.long().T
+
+        # create new vectors filled with zeros to capture vertex features better
+        f1 = np.hstack((ftot,np.zeros(np.shape(btot))))
+        b1= np.hstack((np.zeros(np.shape(ftot)),btot))
+        eq1 = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
+        node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
+        # create matrix with vertex features
+        x = torch.tensor([])
+        features = np.array([f1, b1, eq1, node_type]).T
+        x= torch.tensor(features, dtype=torch.float32)
+        data_point = Data(x = x, edge_index=edge_index, edge_attr=edge_attr,y=y)
+        
+        # save graph
+        graph.append(data_point)
+        graph_train = graph
+    print("All graphs saved")   
+    
+    
+    iter = int(np.rint(0.1*number_of_graphs))
+    current_seed = seed
+    np.random.seed(current_seed)
+    print(seed+1)
+    # sample n,m for different sized graphs
+    graph = []
+    n_vector = np.random.randint(n_min,n_max+1,size = iter)
+    m_vector = np.random.randint(m_min,m_max+1, size = iter)
+    theta_vector = np.random.randn(nth,iter)
+    
+    # generate variables only dependent on n (M,f,F,T)
+    n_unique, n_counts = np.unique(n_vector, return_counts=True)
+    n_dict = dict(zip(n_unique, n_counts))
+    #print(n_unique, n_counts)
+    if H_given== False:
+        M_array = [0 for i in range(iter)]
+    f_array = [0 for i in range(iter)]
+    F_array = [0 for i in range(iter)]
+    T_array = [0 for i in range(iter)]
+    
+    print(n_dict)
+    
+    # sample for each n 
+    for n in n_dict:
+        n_count = n_dict[n]
+        #print(n,n_count)
+        indices, = np.where(n_vector == n)
+        #print(indices)
+        if H_given==False:
+            M = np.random.randn(n,n,n_count)
+        
+        f = np.random.randn(n)
+        F = np.random.randn(n,nth)
+        T = np.random.randn(n,nth)   #transformation matrix
+        
+        # linear transformation to generate A and H
+        #M_base = np.random.randn(n,n)
+        #A_base = M = np.random.randn(m,n)
+
+        # save the sampled variables
+        for position, i in enumerate(indices):
+            if H_given == False:
+                M_array[i] = M[:,:,position]
+            f_array[i] = f
+            F_array[i] = F
+            T_array[i] = T
+
+    # generate variables only dependent on m (b,sense, blower)
+    m_unique, m_counts = np.unique(m_vector, return_counts=True)
+    m_dict = dict(zip(m_unique, m_counts))
+    b_array = [0 for i in range(iter)]
+    sense_array = [0 for i in range(iter)]
+    blower_array = [0 for i in range(iter)]
+    
+    # sample for each m
+    for m in m_dict:
+        indices, = np.where(m_vector == m)
+        b = np.random.rand(m)
+        #save variables
+        for i in indices:
+            b_array[i] = b
+            sense_array[i] = np.zeros(m, dtype=np.int32)
+            blower_array[i] = np.array([-np.inf for i in range(m)])
+    
+    print(f"b {b_array[:2]}")
+    # generate variables dependent on n and m (A)
+    if A_given == False:
+        A_array = [0 for i in range(iter)]     
+        A_dict = {}
+        # pair the combinations of n and m
+        pairs = Counter(list(zip(n_vector, m_vector)))       # returns dict with pairs as key and count as value
+        for (n_val, m_val), count in pairs.items():       
+            A_dict[(n_val, m_val)] = np.random.randn(m_val,n_val,count)
+
+        # save values in A_array
+        pair_usage_counter = {key: 0 for key in pairs} # track how many times each pair has been assigned to A_array to find correct place to save it
+        for i in range(iter):
+            n = n_vector[i]
+            m = m_vector[i]
+            number_pair_used = pair_usage_counter[(n, m)]
+            A_array[i] = A_dict[(n, m)][:,:,number_pair_used]
+            pair_usage_counter[(n, m)] += 1
+
+    print("All QPs generated - now transfer problems into graphs")
+
+    # express problem as graph
+    for i in range(iter):
+        # generate H, btot, ftot
+        if A_given == False:
+            A = A_array[i]
+        if H_given == False:
+            H = M_array[i] @ M_array[i].T
+        B = A @ (-T_array[i])
+        btot = b_array[i] + B @ theta_vector[:,i]
+        ftot = f_array[i] + F_array[i] @ theta_vector[:,i]
+        
+        # solve problem to get the active set 
+        _,_,exitflag,info = daqp.solve(H,ftot,A,btot,blower_array[i],sense_array[i])
+        lambda_dual= list(info.values())[4]
+        active_set = (lambda_dual != 0).astype(int)
+        y = torch.tensor((np.hstack((np.zeros(n_vector[i]),active_set)))) 
+
+        # create edge matrix
+        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+
+        # create edge_index and edge_attributes
+        edge_index = torch.tensor([])
+        edge_attr = torch.tensor([])
+        for j in range(np.shape(edge_matrix)[0]):
+            for k in range(np.shape(edge_matrix)[1]):
+                # add edge
+                if edge_matrix[j,k] != 0:
+                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        edge_index = edge_index.long().T
+
+        # create new vectors filled with zeros to capture vertex features better
+        f1 = np.hstack((ftot,np.zeros(np.shape(btot))))
+        b1= np.hstack((np.zeros(np.shape(ftot)),btot))
+        eq1 = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
+        node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
+        # create matrix with vertex features
+        x = torch.tensor([])
+        features = np.array([f1, b1, eq1, node_type]).T
+        x= torch.tensor(features, dtype=torch.float32)
+        data_point = Data(x = x, edge_index=edge_index, edge_attr=edge_attr,y=y)
+        
+        # save graph
+        graph.append(data_point)
+        graph_val = graph
+    print("All graphs saved")   
+    return graph_train,graph_val

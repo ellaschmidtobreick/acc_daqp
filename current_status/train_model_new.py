@@ -36,7 +36,6 @@ t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 # Generate QP problems and the corresponding graphs
 graph_train, graph_val = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
 
-
 # Load Data
 train_loader = DataLoader(graph_train, batch_size=64, shuffle=True)
 val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
@@ -142,7 +141,6 @@ for epoch in range(number_of_epochs):
             val_all_labels.extend(batch.y.numpy()) # Store true labels
 
     val_loss /= len(val_loader)
-    #val_acc = correct / total
     val_acc = accuracy_score(val_all_labels, val_preds)
 
     # over graph metrices
