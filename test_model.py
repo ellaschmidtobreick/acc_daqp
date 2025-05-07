@@ -13,8 +13,8 @@ import config
 from model import GNN
 
 # to scale a bigger n,m can be used in testing than in training
-n = 10 #config.n
-m= 40 #config.m
+n = 25 #10  #config.n
+m= 100 #40  #config.m
 
 # Generate test problems and the corresponding graphs
 graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
@@ -47,12 +47,12 @@ W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
-        start_time = time.time()
+        start_time = time.process_time()
         output = model(batch,config.number_of_layers)
         #preds = (output.squeeze() > config.t).long() # original prediction
         # add a new class of constraints that should get ignored
         preds = torch.where(output.squeeze() < 0.1, torch.tensor(4), torch.where(output.squeeze() > config.t, torch.tensor(1),torch.tensor(0)))
-        end_time = time.time()
+        end_time = time.process_time()
         prediction_time[i] = end_time - start_time
         correct += (((output.squeeze() > config.t).long()) == batch.y).sum().item()
         total += batch.y.size(0)
@@ -65,9 +65,9 @@ with torch.no_grad():
 
         # solve full QP
         #W = []
-        # start_time_before = time.perf_counter()
+        # start_time_before = time.process_time()
         # x_before, lambda_before, _,it_before  = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W)
-        # end_time_before = time.perf_counter()
+        # end_time_before = time.process_time()
         # W_before = [j for j, value in enumerate(lambda_before) if value != 0]
         # x,_,_,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense)
         # lambda_before =list(info.values())[4]
@@ -79,9 +79,9 @@ with torch.no_grad():
         # solve the reduced QPs to see the reduction
         preds_constraints = (preds.flatten()[n:] == 1)
         W_pred = torch.nonzero(preds_constraints, as_tuple=True)[0].numpy()
-        # start_time_after = time.perf_counter()
+        # start_time_after = time.process_time()
         # x_after, lambda_after, _, it_after = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred) # sense flag 1 if active, 4 if ignore
-        # end_time_after = time.perf_counter()
+        # end_time_after = time.process_time()
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
         exitflag = -6
         while exitflag == -6:

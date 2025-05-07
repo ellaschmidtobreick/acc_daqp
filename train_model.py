@@ -14,8 +14,8 @@ from model import EarlyStopping
 
 
 # Set parameters
-n = config.n
-m = config.m
+n = 25 #config.n
+m = 100 #config.m
 
 nth = config.nth
 seed = config.seed
