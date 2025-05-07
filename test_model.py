@@ -13,8 +13,8 @@ import config
 from model import GNN
 
 # to scale a bigger n,m can be used in testing than in training
-n = 25 #10  #config.n
-m= 100 #40  #config.m
+n =  10  #config.n
+m= 40  #config.m
 
 # Generate test problems and the corresponding graphs
 graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
@@ -22,11 +22,11 @@ graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,se
 # Load Data
 test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False)
 
-model = GNN(input_dim=3, output_dim=1,layer_width = 128) 
+model = GNN(input_dim=4, output_dim=1,layer_width = 128) 
 optimizer = torch.optim.AdamW(model.parameters(), lr = config.lr)
    
 #Final evaluation on test data
-model.load_state_dict(torch.load("saved_models/model_10v_40c.pth"))
+model.load_state_dict(torch.load("saved_models/model_10v_40c_new_generate.pth"))
 model.eval()
 correct = 0
 total = 0
@@ -47,12 +47,12 @@ W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
-        start_time = time.process_time()
+        start_time = time.perf_counter()
         output = model(batch,config.number_of_layers)
-        #preds = (output.squeeze() > config.t).long() # original prediction
+        preds = (output.squeeze() > config.t).long() # original prediction
         # add a new class of constraints that should get ignored
-        preds = torch.where(output.squeeze() < 0.1, torch.tensor(4), torch.where(output.squeeze() > config.t, torch.tensor(1),torch.tensor(0)))
-        end_time = time.process_time()
+        #preds = torch.where(output.squeeze() < 0.001, torch.tensor(4), torch.where(output.squeeze() > config.t, torch.tensor(1),torch.tensor(0)))
+        end_time = time.perf_counter()
         prediction_time[i] = end_time - start_time
         correct += (((output.squeeze() > config.t).long()) == batch.y).sum().item()
         total += batch.y.size(0)
@@ -65,9 +65,9 @@ with torch.no_grad():
 
         # solve full QP
         #W = []
-        # start_time_before = time.process_time()
+        # start_time_before = time.perf_counter()
         # x_before, lambda_before, _,it_before  = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W)
-        # end_time_before = time.process_time()
+        # end_time_before = time.perf_counter()
         # W_before = [j for j, value in enumerate(lambda_before) if value != 0]
         # x,_,_,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense)
         # lambda_before =list(info.values())[4]
@@ -79,9 +79,9 @@ with torch.no_grad():
         # solve the reduced QPs to see the reduction
         preds_constraints = (preds.flatten()[n:] == 1)
         W_pred = torch.nonzero(preds_constraints, as_tuple=True)[0].numpy()
-        # start_time_after = time.process_time()
+        # start_time_after = time.perf_counter()
         # x_after, lambda_after, _, it_after = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred) # sense flag 1 if active, 4 if ignore
-        # end_time_after = time.process_time()
+        # end_time_after = time.perf_counter()
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
         exitflag = -6
         while exitflag == -6:
@@ -95,6 +95,16 @@ with torch.no_grad():
             # If there's at least one 1, set the last occurrence to 0
             if last_one_index is not None:
                 sense_active[last_one_index] = 0
+        # solve one more time without inactive constraints to make sure no active constraints are in there
+        #print(np.where(sense_active == 1)[0])
+        sense_new = (lambda_after != 0).astype(np.int32)
+        # print(np.where(sense_new ==1)[0])
+        # print()
+        x,fval,exitflag,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense_new)
+        # print(list(info.values())[2])
+        test_iterations_after[i] += list(info.values())[2]
+        test_time_after[i] += list(info.values())[0]   # only consider solve time, set-up could be optimized and only done once
+        #print(list(info.values())[2])
 
         # analyze FN
         output_constraints = output.flatten()[n:]
@@ -176,12 +186,12 @@ print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np
 # print(best_mean)
 
 #Boxplot to show reduction
-boxplot_time(test_time_before,test_time_after,"time",save = False)
+#boxplot_time(test_time_before,test_time_after,"time",save = False)
 histogram_time(test_time_before, test_time_after, save= False)
 
 plt.hist(prediction_time, bins=50,range=(np.min(prediction_time),0.01), alpha=0.7, label='prediction time', color='green')
 plt.show()
 
-boxplot_time(test_iterations_before,test_iterations_after, "iterations",save = False)
+#boxplot_time(test_iterations_before,test_iterations_after, "iterations",save = False)
 
 barplot_iterations(test_iterations_before,test_iterations_after, "iterations",save = False)
