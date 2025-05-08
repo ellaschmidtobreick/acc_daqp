@@ -17,7 +17,7 @@ n =  10  #config.n
 m= 40  #config.m
 
 # Generate test problems and the corresponding graphs
-graph_test, test_iterations_before,test_time_before, H,f_test,A,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points)
+graph_test, test_iterations_before,test_time_before, H_test,f_test,A_test,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points,H_flexible=True,A_flexible=True)
 
 # Load Data
 test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False)
@@ -45,6 +45,7 @@ output_TN = []
 output_FP = []
 W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
+print(len(test_loader))
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
         start_time = time.perf_counter()
@@ -85,7 +86,7 @@ with torch.no_grad():
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
         exitflag = -6
         while exitflag == -6:
-            x,fval,exitflag,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense_active)#sense_active
+            x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i,:],A_test[i],b_test[i,:],blower,sense_active)#sense_active
             #print(x,fval,exitflag,info)
             lambda_after= list(info.values())[4]
             test_iterations_after[i] = list(info.values())[2]
@@ -100,7 +101,7 @@ with torch.no_grad():
         sense_new = (lambda_after != 0).astype(np.int32)
         # print(np.where(sense_new ==1)[0])
         # print()
-        x,fval,exitflag,info = daqp.solve(H,f_test[i,:],A,b_test[i,:],blower,sense_new)
+        x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i,:],A_test[i],b_test[i,:],blower,sense_new)
         # print(list(info.values())[2])
         test_iterations_after[i] += list(info.values())[2]
         test_time_after[i] += list(info.values())[0]   # only consider solve time, set-up could be optimized and only done once
