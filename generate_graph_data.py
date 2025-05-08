@@ -185,12 +185,14 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
     np.random.seed(seed+2)
     x_test = np.zeros((iter_test,n))
     lambda_test = np.zeros((iter_test,m))
-    test_iterations = np.zeros((iter_test))
-    test_time = np.zeros((iter_test))
-    f_test = np.zeros((iter_test,n))
-    b_test = np.zeros((iter_test,m))
+    test_iterations = []
+    test_time = []
+    f_test = []
+    b_test = []
     H_test = []
     A_test = []
+    blower_test = []
+    sense_test = []
     # Generate the graph from the training data
     graph_test = []
     
@@ -208,15 +210,17 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
             M = np.random.randn(n,n)
             H = M @ M.T
         
-        b_test[i,:] = btot
-        f_test[i,:] = ftot
+        b_test.append(btot)
+        f_test.append(ftot)
         H_test.append(H)
         A_test.append(A)
+        blower_test.append(blower)
+        sense_test.append(sense)
         
         _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_test[i,:]= list(info.values())[4]
-        test_iterations[i] = list(info.values())[2]
-        test_time[i] = list(info.values())[0]
+        test_iterations.append(list(info.values())[2])
+        test_time.append(list(info.values())[0])
         
         # get optimal active set (y)
         test_active_set = (lambda_test != 0).astype(int)
@@ -253,4 +257,4 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         # list of graph elements
         graph_test.append(data_point)
         
-    return graph_test, test_iterations,test_time, H_test,f_test,A_test,b_test,blower,sense
+    return graph_test, test_iterations,test_time, H_test,f_test,A_test,b_test,blower_test,sense_test,n,m

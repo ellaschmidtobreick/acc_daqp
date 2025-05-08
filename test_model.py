@@ -17,7 +17,28 @@ n =  10  #config.n
 m= 40  #config.m
 
 # Generate test problems and the corresponding graphs
-graph_test, test_iterations_before,test_time_before, H_test,f_test,A_test,b_test,blower,sense = generate_qp_graphs_test_data_only(n,m,config.nth,config.seed,config.data_points,H_flexible=True,A_flexible=True)
+graph_test1, test_iterations_before1,test_time_before1, H_test1,f_test1,A_test1,b_test1,blower1,sense1,n1,m1 = generate_qp_graphs_test_data_only(2,5,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
+graph_test2, test_iterations_before2,test_time_before2, H_test2,f_test2,A_test2,b_test2,blower2,sense2,n2,m2 = generate_qp_graphs_test_data_only(3,7,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
+
+graph_test =graph_test1 + graph_test2
+test_iterations_before =test_iterations_before1+test_iterations_before2
+test_time_before =test_time_before1 + test_time_before2
+H_test =H_test1 + H_test2
+f_test =f_test1 + f_test2
+A_test =A_test1 + A_test2
+b_test =b_test1 + b_test2
+blower= blower1 + blower2
+
+print(blower[:3])
+
+n_vector = [n1 for i in range(len(test_iterations_before1))] + [n2 for i in range(len(test_iterations_before2))]
+m_vector= [m1 for i in range(len(test_iterations_before1))] + [m2 for i in range(len(test_iterations_before2))]
+#print(blower[:3])
+#print[sense[:3]]
+
+# print("len blower",blower1.shape, blower2.shape)
+# print("len sense", sense1.shape, sense2.shape)
+
 
 # Load Data
 test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False)
@@ -26,7 +47,7 @@ model = GNN(input_dim=4, output_dim=1,layer_width = 128)
 optimizer = torch.optim.AdamW(model.parameters(), lr = config.lr)
    
 #Final evaluation on test data
-model.load_state_dict(torch.load("saved_models/model_10v_40c_new_generate.pth"))
+model.load_state_dict(torch.load("saved_models/model_10_3v_40_8c_.pth")) #"saved_models/model_10v_40c_new_generate.pth"))
 model.eval()
 correct = 0
 total = 0
@@ -45,9 +66,11 @@ output_TN = []
 output_FP = []
 W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
-print(len(test_loader))
+
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
+        n = int(n_vector[i])
+        m = int(m_vector[i])
         start_time = time.perf_counter()
         output = model(batch,config.number_of_layers)
         preds = (output.squeeze() > config.t).long() # original prediction
@@ -84,15 +107,18 @@ with torch.no_grad():
         # x_after, lambda_after, _, it_after = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred) # sense flag 1 if active, 4 if ignore
         # end_time_after = time.perf_counter()
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
+        print("sense_active",sense_active)
         exitflag = -6
+        blower_i = np.array(blower[i], copy=True)
+        #print(sense)
+
         while exitflag == -6:
-            x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i,:],A_test[i],b_test[i,:],blower,sense_active)#sense_active
-            #print(x,fval,exitflag,info)
+            x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
             lambda_after= list(info.values())[4]
             test_iterations_after[i] = list(info.values())[2]
             test_time_after[i]= list(info.values())[0]
             # change last constraint claimed being active in the initial working set to not being active           
-            last_one_index = np.where(sense_active == 1)[0][-1]
+            last_one_index = np.where(sense_active == 1)[-1]
             # If there's at least one 1, set the last occurrence to 0
             if last_one_index is not None:
                 sense_active[last_one_index] = 0
@@ -101,7 +127,7 @@ with torch.no_grad():
         sense_new = (lambda_after != 0).astype(np.int32)
         # print(np.where(sense_new ==1)[0])
         # print()
-        x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i,:],A_test[i],b_test[i,:],blower,sense_new)
+        x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_new)
         # print(list(info.values())[2])
         test_iterations_after[i] += list(info.values())[2]
         test_time_after[i] += list(info.values())[0]   # only consider solve time, set-up could be optimized and only done once

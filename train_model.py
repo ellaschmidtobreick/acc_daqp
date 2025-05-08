@@ -178,7 +178,7 @@ for epoch in range(number_of_epochs):
 #Load the best model
 early_stopping.load_best_model(model)
 
-torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c_flex_H_A.pth")
+torch.save(model.state_dict(), f"saved_models/model_{n}_3v_{m}_8c_.pth")
 utils.hist_output_vs_true_label(output_val, val_all_labels, save = False)
 
 # Finish the run and upload any remaining data.
