@@ -1,6 +1,7 @@
 import numpy as np
 from ctypes import * 
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score
 import daqp
 import torch
 from torch_geometric.loader import DataLoader
@@ -13,32 +14,40 @@ import config
 from model import GNN
 
 # to scale a bigger n,m can be used in testing than in training
-n =  10  #config.n
-m= 40  #config.m
+n =  [10,11]  #config.n
+m= [40,44]  #config.m
 
 # Generate test problems and the corresponding graphs
-graph_test1, test_iterations_before1,test_time_before1, H_test1,f_test1,A_test1,b_test1,blower1,sense1,n1,m1 = generate_qp_graphs_test_data_only(2,5,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
-graph_test2, test_iterations_before2,test_time_before2, H_test2,f_test2,A_test2,b_test2,blower2,sense2,n2,m2 = generate_qp_graphs_test_data_only(3,7,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
 
-graph_test =graph_test1 + graph_test2
-test_iterations_before =test_iterations_before1+test_iterations_before2
-test_time_before =test_time_before1 + test_time_before2
-H_test =H_test1 + H_test2
-f_test =f_test1 + f_test2
-A_test =A_test1 + A_test2
-b_test =b_test1 + b_test2
-blower= blower1 + blower2
+graph_test = []
+H_test = []
+test_iterations_before = []
+test_time_before = []
+H_test = []
+f_test = []
+A_test = []
+b_test = []
+blower = []
+n_vector = []
+m_vector = []
 
-print(blower[:3])
+for i in range(len(n)):
+    n_i = n[i]
+    m_i = m[i]
+    graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,sense_i,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
+    #graph_test2, test_iterations_before2,test_time_before2, H_test2,f_test2,A_test2,b_test2,blower2,sense2,n2,m2 = generate_qp_graphs_test_data_only(11,44,config.nth,config.seed,config.data_points,H_flexible=False,A_flexible=False)
 
-n_vector = [n1 for i in range(len(test_iterations_before1))] + [n2 for i in range(len(test_iterations_before2))]
-m_vector= [m1 for i in range(len(test_iterations_before1))] + [m2 for i in range(len(test_iterations_before2))]
-#print(blower[:3])
-#print[sense[:3]]
+    graph_test = graph_test + graph_test_i
+    test_iterations_before = test_iterations_before + test_iterations_before_i
+    test_time_before = test_time_before + test_time_before_i
+    H_test = H_test + H_test_i
+    f_test = f_test + f_test_i
+    A_test = A_test + A_test_i
+    b_test = b_test + b_test_i
+    blower = blower + blower_i
 
-# print("len blower",blower1.shape, blower2.shape)
-# print("len sense", sense1.shape, sense2.shape)
-
+    n_vector = n_vector + [n_i for i in range(len(test_iterations_before_i))]
+    m_vector= m_vector + [m_i for i in range(len(test_iterations_before_i))]
 
 # Load Data
 test_loader = DataLoader(graph_test, batch_size = 1, shuffle = False)
@@ -55,9 +64,7 @@ test_num_wrongly_pred_nodes_per_graph = 0
 
 test_all_labels = []
 test_preds = []
-#test_time_before = np.zeros(len(test_loader))
 test_time_after = np.zeros(len(test_loader))
-#test_iterations_before = np.zeros(len(test_loader))
 test_iterations_after = np.zeros(len(test_loader))
 test_iterations_difference = np.zeros(len(test_loader))
 W_diff_FN = 0
@@ -66,7 +73,8 @@ output_TN = []
 output_FP = []
 W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
-
+graph_pred = []
+num_wrongly_pred_nodes_per_graph = []
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
         n = int(n_vector[i])
@@ -86,6 +94,11 @@ with torch.no_grad():
 
         # reshape predictions for graph accuracy
         preds = preds.reshape(-1,n+m)
+        preds_numpy = preds.numpy().reshape(-1,n+m)
+        all_labels = batch.y.numpy().reshape(-1,n+m)
+        graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
+        
+        num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
 
         # solve full QP
         #W = []
@@ -107,10 +120,9 @@ with torch.no_grad():
         # x_after, lambda_after, _, it_after = self_implement_daqp.daqp_self(H,f_test[i,:],A,b_test[i,:],sense,W_pred) # sense flag 1 if active, 4 if ignore
         # end_time_after = time.perf_counter()
         sense_active = preds.flatten().numpy().astype(np.int32)[n:]
-        print("sense_active",sense_active)
+
         exitflag = -6
         blower_i = np.array(blower[i], copy=True)
-        #print(sense)
 
         while exitflag == -6:
             x,fval,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
@@ -164,20 +176,32 @@ with torch.no_grad():
         # test_time_after[i] = end_time_after - start_time_after
         test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
         
-# over graph metrices
-test_all_label_graph = np.array(test_all_labels).reshape(-1,n+m)
-test_preds_graph = np.array(test_preds).reshape(-1,n+m)
-test_preds_graph[test_preds_graph == 4] = 0
+ # Compute metrics
+test_acc = accuracy_score(test_all_labels, test_preds)
+test_acc_graph = np.mean(graph_pred)
+test_prec = precision_score(test_all_labels, test_preds)
+test_rec = recall_score(test_all_labels, test_preds)
+test_f1 = f1_score(test_all_labels, test_preds)
+    
+# # over graph metrices
+# test_all_label_graph = np.array(test_all_labels).reshape(-1,n+m)
+# test_preds_graph = np.array(test_preds).reshape(-1,n+m)
+# test_preds_graph[test_preds_graph == 4] = 0
 
 # Compute average over graphs
-acc_graph_test = np.mean(np.all(test_all_label_graph == test_preds_graph, axis=1))
-test_num_wrongly_pred_nodes_per_graph = np.abs((n+m) - np.sum(test_all_label_graph == test_preds_graph, axis=1)) ## CHECK THIS
-print(f'correct:{correct}, total: {total}')
-print(f'Accuracy of the model on the test data: {100 * correct / total:.2f}%')
-print(f'Number of graphs: {test_all_label_graph.shape[0]}, Correctly predicted graphs: {np.sum(np.all(test_all_label_graph == test_preds_graph, axis=1))}')
-print(f'Graph accuracy of the model on the test data: {100 * acc_graph_test:.2f}%')
-print(test_num_wrongly_pred_nodes_per_graph)
-print(f'Mean: {np.mean(test_num_wrongly_pred_nodes_per_graph)}')
+#test_num_wrongly_pred_nodes_per_graph = np.abs((n+m) - np.sum(test_all_label_graph == test_preds_graph, axis=1)) ## CHECK THIS
+print(f'Nodes - correct:{correct}, total: {total}')
+print(f"Accuracy (node level) of the model on the test data: {test_acc}")
+print(f"Accuracy (graph level) of the model on the test data: {test_acc_graph}")
+print(f"Precision of the model on the test data: {test_prec}")
+print(f"Recall of the model on the test data: {test_rec}")
+print(f"F1-Score of the model on the test data: {test_f1}")
+
+#print(f'Accuracy of the model on the test data: {100 * correct / total:.2f}%')
+print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
+#print(f'Graph accuracy of the model on the test data: {100 * acc_graph_test:.2f}%')
+print(num_wrongly_pred_nodes_per_graph)
+print(f'Mean: {np.mean(num_wrongly_pred_nodes_per_graph)}')
 print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
 print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
 print(f'Test iter before: mean {np.mean(test_iterations_before)}, min {np.min(test_iterations_before)}, max {np.max(test_iterations_before)}')
