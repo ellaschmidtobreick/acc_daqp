@@ -56,7 +56,7 @@ model = GNN(input_dim=4, output_dim=1,layer_width = 128)
 optimizer = torch.optim.AdamW(model.parameters(), lr = config.lr)
    
 #Final evaluation on test data
-model.load_state_dict(torch.load("saved_models/model_10_3v_40_8c_.pth")) #"saved_models/model_10v_40c_new_generate.pth"))
+model.load_state_dict(torch.load("saved_models/model_10_11v_40_44c_flexHA.pth")) #"saved_models/model_10v_40c_new_generate.pth"))
 model.eval()
 correct = 0
 total = 0
@@ -75,6 +75,7 @@ W_diff_list = []
 prediction_time = np.zeros(len(test_loader))
 graph_pred = []
 num_wrongly_pred_nodes_per_graph = []
+perc_wrongly_pred_nodes_per_graph = []
 with torch.no_grad():
     for i,batch in enumerate(test_loader):
         n = int(n_vector[i])
@@ -99,6 +100,7 @@ with torch.no_grad():
         graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
         
         num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
+        perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
         # solve full QP
         #W = []
@@ -182,14 +184,8 @@ test_acc_graph = np.mean(graph_pred)
 test_prec = precision_score(test_all_labels, test_preds)
 test_rec = recall_score(test_all_labels, test_preds)
 test_f1 = f1_score(test_all_labels, test_preds)
-    
-# # over graph metrices
-# test_all_label_graph = np.array(test_all_labels).reshape(-1,n+m)
-# test_preds_graph = np.array(test_preds).reshape(-1,n+m)
-# test_preds_graph[test_preds_graph == 4] = 0
 
 # Compute average over graphs
-#test_num_wrongly_pred_nodes_per_graph = np.abs((n+m) - np.sum(test_all_label_graph == test_preds_graph, axis=1)) ## CHECK THIS
 print(f'Nodes - correct:{correct}, total: {total}')
 print(f"Accuracy (node level) of the model on the test data: {test_acc}")
 print(f"Accuracy (graph level) of the model on the test data: {test_acc_graph}")
@@ -197,20 +193,15 @@ print(f"Precision of the model on the test data: {test_prec}")
 print(f"Recall of the model on the test data: {test_rec}")
 print(f"F1-Score of the model on the test data: {test_f1}")
 
-#print(f'Accuracy of the model on the test data: {100 * correct / total:.2f}%')
 print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
-#print(f'Graph accuracy of the model on the test data: {100 * acc_graph_test:.2f}%')
-print(num_wrongly_pred_nodes_per_graph)
-print(f'Mean: {np.mean(num_wrongly_pred_nodes_per_graph)}')
+print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
+print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
 print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
 print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
 print(f'Test iter before: mean {np.mean(test_iterations_before)}, min {np.min(test_iterations_before)}, max {np.max(test_iterations_before)}')
 print(f'Test iter after: mean {np.mean(test_iterations_after)}, min {np.min(test_iterations_after)}, max {np.max(test_iterations_after)}')
 print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
-#print(output_FN)
-#print(output_FP)
-#print([val for val in output_FN if 1e-5 < val < 0.1])
-#print(np.min(output_FP))
+
 
 # plot which output values the FP have
 # plt.hist(output_FP, bins=50,range=(np.min(output_FP),np.max(output_FP)), alpha=0.7, label='FN', color='blue')
