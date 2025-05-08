@@ -150,3 +150,27 @@ def histogram_prediction_time(prediction_time,save=False):
     plt.show()
     if save == True:
         plt.savefig(f"histogram_prediction_time.png")
+        
+def hist_output_vs_true_label(output, true_label, save = False):    
+    # Separate predictions based on true label (0 = inactive, 1 = active)
+    output = np.array(output)
+    true_label = np.array(true_label)
+
+    active_preds = output[true_label == 1]
+    inactive_preds = output[true_label == 0]
+
+    # Plot histograms
+    plt.figure(figsize=(8, 5))
+    plt.hist(inactive_preds, bins=100, alpha=0.6, label='True inactive nodes', color='blue')
+    plt.hist(active_preds, bins=100, alpha=0.6, label='Ture active nodes', color='orange')
+    plt.xlabel('Predicted output')
+    plt.ylabel('Count')
+    plt.legend()
+    plt.title('Distribution of Output with regards to True Label')
+    plt.yscale('log')
+    plt.tight_layout()
+    plt.show()
+
+    if save == True:
+        plt.savefig(f"histogram_output_vs_true_label.png")
+   
