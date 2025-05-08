@@ -6,12 +6,13 @@ import wandb
 
 import torch
 from torch_geometric.loader import DataLoader
+import matplotlib.pyplot as plt
 
-from generate_graph_data import generate_qp_graphs_train_val, generate_qp_graphs_train_val_flexible_H
+from generate_graph_data import generate_qp_graphs_train_val
 import config 
 from model import GNN
 from model import EarlyStopping
-
+import utils
 
 # Set parameters
 n = 10 #config.n
@@ -21,11 +22,11 @@ nth = config.nth
 seed = config.seed
 data_points = config.data_points 
 lr = config.lr
-number_of_epochs = config.number_of_epochs  
-layer_width = config.layer_width
-number_of_layers = 5 #config.number_of_layers
+number_of_epochs = 40 #config.number_of_epochs  
+layer_width = 128 # config.layer_width
+number_of_layers = config.number_of_layers
 track_on_wandb = config.track_on_wandb
-t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
+t = 0.5 #config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 
 # Threshold tuning
 # best_threshold = 0
@@ -33,7 +34,11 @@ t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 #for t in threshold:
 
 # Generate QP problems and the corresponding graphs
-graph_train, graph_val,H,A = generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,data_points)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+graph_train1, graph_val1 = generate_qp_graphs_train_val(2,5,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+graph_train2, graph_val2 = generate_qp_graphs_train_val(3,7,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+
+graph_train = graph_train1 + graph_train2
+graph_val = graph_val1 + graph_val2
 
 #graph_train,graph_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
 # graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
@@ -85,14 +90,14 @@ for epoch in range(number_of_epochs):
     train_all_labels = []
     train_preds = []
     model.train()
-    
+    output_train = []
     for batch in train_loader:
         optimizer.zero_grad()
         output = model(batch,number_of_layers)
+        output_train.extend(output.squeeze().detach().numpy().reshape(-1))
         loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
         loss.backward()
         optimizer.step()
-        
         # Compute loss
         train_loss += loss.item()
 
@@ -127,9 +132,11 @@ for epoch in range(number_of_epochs):
     val_num_wrongly_pred_nodes_per_graph = 0
     val_all_labels = []
     val_preds = []
+    output_val = []
     with torch.no_grad():
         for batch in val_loader:
             output = model(batch,number_of_layers)
+            output_val.extend(output.squeeze().detach().numpy().reshape(-1))
             loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
             val_loss += loss.item()
             preds = (output.squeeze() > t).long()
@@ -168,10 +175,11 @@ for epoch in range(number_of_epochs):
     #     best_threshold = t
     #     best_mean = val_mean_wrongly_pred_nodes_per_graph
 
-# Load the best model
+#Load the best model
 early_stopping.load_best_model(model)
 
-torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c_flex_H_5 layers.pth")
+torch.save(model.state_dict(), f"saved_models/model_{n}v_{m}c_flex_H_A.pth")
+utils.hist_output_vs_true_label(output_val, val_all_labels, save = False)
 
 # Finish the run and upload any remaining data.
 if track_on_wandb == True:
