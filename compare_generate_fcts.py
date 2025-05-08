@@ -14,8 +14,8 @@ from model import EarlyStopping
 
 
 # Set parameters
-n = 2 #config.n
-m = 5 #config.m
+n = 10 #config.n
+m = 40 #config.m
 
 nth = config.nth
 seed = config.seed
@@ -31,12 +31,13 @@ t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 # Generate QP problems and the corresponding graphs
 #graph_train, graph_val,H,A = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
 np.random.seed(123)
-f = np.random.randn(n)
-F = np.random.randn(n,nth)
-print(f)
-print(F)
+# f = np.random.randn(n)
+# F = np.random.randn(n,nth)
+# print(f)
+# print(F)
 #print(H)
 #print(A)
-generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,data_points)
+graph_train, graph_val = generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,data_points)
+print(graph_train)
 # graph_train,n_train, m_train = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
 # graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
