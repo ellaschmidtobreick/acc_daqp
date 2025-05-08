@@ -36,19 +36,27 @@ t = 0.5 #config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 # Generate QP problems and the corresponding graphs
 graph_train = []
 graph_val = []
+n_vector_train = []
+m_vector_train = []
+n_vector_val = []
+m_vector_val = []
+
 for i in range(len(n)):
-    graph_train_i, graph_val_i = generate_qp_graphs_train_val(n[i],m[i],nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+    n_i = n[i]
+    m_i = m[i]
+    graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=True,A_flexible=True)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
     #graph_train2, graph_val2 = generate_qp_graphs_train_val(n[],44,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
     graph_train = graph_train + graph_train_i
     graph_val = graph_val + graph_val_i
-#graph_train = graph_train1 + graph_train2
-#graph_val = graph_val1 + graph_val2
+    n_vector_train = n_vector_train + [n_i for i in range(len(graph_train_i))]
+    m_vector_train= m_vector_train + [m_i for i in range(len(graph_train_i))]
+    n_vector_val = n_vector_val + [n_i for i in range(len(graph_val_i))]
+    m_vector_val = m_vector_val + [m_i for i in range(len(graph_val_i))]
 
-#graph_train,graph_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
-# graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
 
 # Load Data
-train_loader = DataLoader(graph_train, batch_size=64, shuffle=True)
+train_batch_size = 64
+train_loader = DataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
 val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
 # Compute class weights for imbalanced classes
@@ -63,8 +71,6 @@ optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 # Early stopping
 early_stopping = EarlyStopping(patience=5, delta=0.001)
 
-#epoch = 0
-#acc = 0
 
 if track_on_wandb ==True:
     # Start a new wandb run to track this script.
@@ -87,14 +93,17 @@ if track_on_wandb ==True:
 
 
 for epoch in range(number_of_epochs):
-    #print(f"Epoch {epoch}")
-#while acc != 1:
     epoch += 1
     train_loss = 0
     train_all_labels = []
     train_preds = []
     model.train()
     output_train = []
+    train_all_label_graph = []
+    train_preds_graph = []
+    train_graph_preds = []
+    train_graph_labels = []
+    
     for batch in train_loader:
         optimizer.zero_grad()
         output = model(batch,number_of_layers)
@@ -112,6 +121,16 @@ for epoch in range(number_of_epochs):
         #save_preds += preds.tolist()
         train_preds.extend(preds.numpy())   # Store predictions
         train_all_labels.extend(batch.y.numpy())
+        
+        for i in range(batch.num_graphs):
+            mask = batch.batch == i
+            preds_graph = preds[mask].numpy()
+            labels_graph = batch.y[mask].numpy()
+
+            # Save per-graph data
+            train_preds_graph.append(preds_graph)
+            train_all_label_graph.append(labels_graph)
+
 
     # Compute the loss
     train_loss /= len(train_loader)
@@ -123,11 +142,12 @@ for epoch in range(number_of_epochs):
     train_f1 = f1_score(train_all_labels,train_preds)
     
     # over graph metrices
-    all_label_graph = np.array(train_all_labels).reshape(-1,n+m)
-    train_preds_graph = np.array(train_preds).reshape(-1,n+m)
+    #all_label_graph = np.array(train_all_labels).reshape(-1,n+m)
+    #train_preds_graph = np.array(train_preds).reshape(-1,n+m)
 
     # Compute average over graphs
-    acc_graph_train = np.mean(np.all(all_label_graph == train_preds_graph, axis=1))
+    #acc_graph_train = np.mean(np.all(all_label_graph == train_preds_graph, axis=1))
+    acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_graph_preds, train_all_label_graph)])
     
     # Validation step
     model.eval()
@@ -137,6 +157,8 @@ for epoch in range(number_of_epochs):
     val_all_labels = []
     val_preds = []
     output_val = []
+    val_preds_graph = []
+    val_all_label_graph = []
     with torch.no_grad():
         for batch in val_loader:
             output = model(batch,number_of_layers)
@@ -144,10 +166,18 @@ for epoch in range(number_of_epochs):
             loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
             val_loss += loss.item()
             preds = (output.squeeze() > t).long()
-            #correct += (preds == batch.y).sum().item()
-            # total += batch.y.size(0)
+
             val_preds.extend(preds.numpy())   # Store predictions
             val_all_labels.extend(batch.y.numpy()) # Store true labels
+            
+            for i in range(batch.num_graphs):
+                mask = batch.batch == i
+                preds_graph = preds[mask].numpy()
+                labels_graph = batch.y[mask].numpy()
+
+                # Save per-graph data
+                val_preds_graph.append(preds_graph)
+                val_all_label_graph.append(labels_graph)
 
     val_loss /= len(val_loader)
     val_acc = accuracy_score(val_all_labels, val_preds)
@@ -155,15 +185,19 @@ for epoch in range(number_of_epochs):
     val_rec = recall_score(val_all_labels, val_preds)
     val_f1 = f1_score(val_all_labels,val_preds)
     
-    # over graph metrices
-    val_all_label_graph = np.array(val_all_labels).reshape(-1,n+m)
-    val_preds_graph = np.array(val_preds).reshape(-1,n+m)
+    # # over graph metrices
+    # val_all_label_graph = np.array(val_all_labels).reshape(-1,n+m)
+    # val_preds_graph = np.array(val_preds).reshape(-1,n+m)
 
-    # Compute average over graphs
-    acc_graph_val = np.mean(np.all(val_all_label_graph == val_preds_graph, axis=1))
-    val_mean_wrongly_pred_nodes_per_graph = np.mean((n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1))
-    val_num_wrongly_pred_nodes_per_graph = (n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1)
-    val_perc_wrongly_pred_nodes_per_graph = val_mean_wrongly_pred_nodes_per_graph/(n+m)
+    # # Compute average over graphs
+    # acc_graph_val = np.mean(np.all(val_all_label_graph == val_preds_graph, axis=1))
+    # val_mean_wrongly_pred_nodes_per_graph = np.mean((n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1))
+    # val_num_wrongly_pred_nodes_per_graph = (n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1)
+    # val_perc_wrongly_pred_nodes_per_graph = val_mean_wrongly_pred_nodes_per_graph/(n+m)
+    
+    val_num_wrongly_pred_nodes_per_graph = [int(n_i + m_i) - np.sum(pred == label) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
+    val_perc_wrongly_pred_nodes_per_graph = [wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)]
+    val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
     
     # Log metrics to wandb.
     if track_on_wandb == True:
@@ -182,7 +216,7 @@ for epoch in range(number_of_epochs):
 #Load the best model
 early_stopping.load_best_model(model)
 
-torch.save(model.state_dict(), f"saved_models/model_{n}_3v_{m}_8c_.pth")
+torch.save(model.state_dict(), f"saved_models/model_10_11v_40_44c_flex_HA.pth")
 utils.hist_output_vs_true_label(output_val, val_all_labels, save = False)
 
 # Finish the run and upload any remaining data.
