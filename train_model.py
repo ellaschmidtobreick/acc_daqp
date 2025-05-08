@@ -15,8 +15,8 @@ from model import EarlyStopping
 import utils
 
 # Set parameters
-n = 10 #config.n
-m = 40 #config.m
+n = [10,11] #config.n
+m = [40,44] #config.m
 
 nth = config.nth
 seed = config.seed
@@ -34,11 +34,15 @@ t = 0.5 #config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 #for t in threshold:
 
 # Generate QP problems and the corresponding graphs
-graph_train1, graph_val1 = generate_qp_graphs_train_val(2,5,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
-graph_train2, graph_val2 = generate_qp_graphs_train_val(3,7,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
-
-graph_train = graph_train1 + graph_train2
-graph_val = graph_val1 + graph_val2
+graph_train = []
+graph_val = []
+for i in range(len(n)):
+    graph_train_i, graph_val_i = generate_qp_graphs_train_val(n[i],m[i],nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+    #graph_train2, graph_val2 = generate_qp_graphs_train_val(n[],44,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
+    graph_train = graph_train + graph_train_i
+    graph_val = graph_val + graph_val_i
+#graph_train = graph_train1 + graph_train2
+#graph_val = graph_val1 + graph_val2
 
 #graph_train,graph_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
 # graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
