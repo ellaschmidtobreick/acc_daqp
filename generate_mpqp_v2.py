@@ -12,7 +12,6 @@ import numpy as np
 # nth = 2 # Number of parameters
 
 def generate_qp(n,m,given_seed, nth = 2):
-    print(given_seed)
     np.random.seed(seed = given_seed)
     # Objective function
     M = np.random.randn(n,n)
@@ -25,7 +24,7 @@ def generate_qp(n,m,given_seed, nth = 2):
     b = np.random.rand(m) #rand ensures that b >= 0, which in turns means that the origin is a feasible point (so the problem will have a solution)
     T = np.random.randn(n,nth) # A transformation such that x = T*th is primal feasible
     B = A @ (-T)
-    return H,f,F,A,b,B
+    return H,f,F,A,b,B,T
 
 
 def generate_rhs(f,F,b,B,nth,given_seed):
