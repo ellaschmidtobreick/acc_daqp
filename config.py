@@ -29,3 +29,6 @@ for t in threshold:
     if val_mean_wrongly_pred_nodes_per_graph_save[epoch-6] < best_mean:
         best_threshold = t
         best_mean = val_mean_wrongly_pred_nodes_per_graph_save[epoch-6]
+        
+print("Best threshold: t=",best_threshold)
+print("with best mean per wrongly predicted noder per graph:", best_mean)
