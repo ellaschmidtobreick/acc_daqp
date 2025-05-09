@@ -9,7 +9,6 @@ from torch_geometric.loader import DataLoader
 import matplotlib.pyplot as plt
 
 from generate_graph_data import generate_qp_graphs_train_val
-import config 
 from model import GNN
 from model import EarlyStopping
 import utils
