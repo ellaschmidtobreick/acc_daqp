@@ -2,8 +2,8 @@ from train_model import train_GNN
 import numpy as np
 
 # Set parameters
-n = 10 #25
-m = 40 #100
+n = [10] #25
+m = [40] #100
 
 # n = [10,11,12,13,14,15] #[2,3]#[10,11] #config.n
 # m = [40,44,48,52,56,60] #[5,7]#[40,44] #config.m
