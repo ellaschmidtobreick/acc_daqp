@@ -14,211 +14,206 @@ from model import GNN
 from model import EarlyStopping
 import utils
 
-# Set parameters
-n = [10,11] #config.n
-m = [40,44] #config.m
 
-nth = config.nth
-seed = config.seed
-data_points = config.data_points 
-lr = config.lr
-number_of_epochs = 40 #config.number_of_epochs  
-layer_width = 128 # config.layer_width
-number_of_layers = config.number_of_layers
-track_on_wandb = config.track_on_wandb
-t = 0.5 #config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
-
-# Threshold tuning
-# best_threshold = 0
-# best_mean = np.inf
-#for t in threshold:
-
-# Generate QP problems and the corresponding graphs
-graph_train = []
-graph_val = []
-n_vector_train = []
-m_vector_train = []
-n_vector_val = []
-m_vector_val = []
-
-for i in range(len(n)):
-    n_i = n[i]
-    m_i = m[i]
-    graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=True,A_flexible=True)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
-    #graph_train2, graph_val2 = generate_qp_graphs_train_val(n[],44,nth,seed,data_points,H_flexible=False,A_flexible=False)#generate_qp_graphs_train_val(n,m,nth,seed,data_points)
-    graph_train = graph_train + graph_train_i
-    graph_val = graph_val + graph_val_i
-    n_vector_train = n_vector_train + [n_i for i in range(len(graph_train_i))]
-    m_vector_train= m_vector_train + [m_i for i in range(len(graph_train_i))]
-    n_vector_val = n_vector_val + [n_i for i in range(len(graph_val_i))]
-    m_vector_val = m_vector_val + [m_i for i in range(len(graph_val_i))]
-
-
-# Load Data
-train_batch_size = 64
-train_loader = DataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
-val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
-
-# Compute class weights for imbalanced classes
-all_labels = torch.cat([data.y for data in graph_train])
-class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
-class_weights = torch.tensor(class_weights, dtype=torch.float32)
-
-# Instantiate model and optimizer
-model = GNN(input_dim=4, output_dim=1,layer_width = 128)  # Output dimension 1 for binary classification
-optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
-
-# Early stopping
-early_stopping = EarlyStopping(patience=5, delta=0.001)
-
-
-if track_on_wandb ==True:
-    # Start a new wandb run to track this script.
-    run = wandb.init(
-        entity="ella-schmidtobreick-4283-me",
-        project="Thesis",
-        # Track hyperparameters and run metadata.
-        config={
-            "variables": f"{n}",
-            "constraints": f"{m}",
-            "datapoints": f"{data_points}",
-            "epochs": f"{number_of_epochs}",
-            "architecture": "LEConv with weights",
-            "learning_rate": f"{lr}",
-            "layer width": f"{layer_width}",
-            "number of layers": f"{number_of_layers}",
-            "threshold": f"{t}"
-        },
-    )
-
-
-for epoch in range(number_of_epochs):
-    epoch += 1
-    train_loss = 0
-    train_all_labels = []
-    train_preds = []
-    model.train()
-    output_train = []
-    train_all_label_graph = []
-    train_preds_graph = []
-    train_graph_preds = []
-    train_graph_labels = []
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible):
     
-    for batch in train_loader:
-        optimizer.zero_grad()
-        output = model(batch,number_of_layers)
-        output_train.extend(output.squeeze().detach().numpy().reshape(-1))
-        loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
-        loss.backward()
-        optimizer.step()
-        # Compute loss
-        train_loss += loss.item()
+    # Initialization
+    n_min = np.min(n)
+    n_max = np.max(n)
+    m_min = np.min(m)
+    m_max = np.max(m)
+       
+    graph_train = []
+    graph_val = []
+    n_vector_train = []
+    m_vector_train = []
+    n_vector_val = []
+    m_vector_val = []
 
-        # Convert output to binary prediction (0 or 1)
-        #save_loss += output.tolist()
-        preds = (output.squeeze() > t).long()
+    train_acc_save = []
+    val_acc_save = []
+    train_loss_save = []
+    val_loss_save = []
+    train_prec_save = []
+    val_prec_save = []
+    train_rec_save = []
+    val_rec_save = []
+    train_f1_save = []
+    val_f1_save = []
+    acc_graph_train_save = []
+    acc_graph_val_save = []
+    val_perc_wrongly_pred_nodes_per_graph_save = []
+    val_mean_wrongly_pred_nodes_per_graph_save = []
 
-        #save_preds += preds.tolist()
-        train_preds.extend(preds.numpy())   # Store predictions
-        train_all_labels.extend(batch.y.numpy())
+    # Generate QP problems and the corresponding graphs
+    for i in range(len(n)):
+        n_i = n[i]
+        m_i = m[i]
+        graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+        graph_train = graph_train + graph_train_i
+        graph_val = graph_val + graph_val_i
+        n_vector_train = n_vector_train + [n_i for i in range(len(graph_train_i))]
+        m_vector_train= m_vector_train + [m_i for i in range(len(graph_train_i))]
+        n_vector_val = n_vector_val + [n_i for i in range(len(graph_val_i))]
+        m_vector_val = m_vector_val + [m_i for i in range(len(graph_val_i))]
+
+
+    # Load Data
+    train_batch_size = 64
+    train_loader = DataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
+    val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
+
+    # Compute class weights for imbalanced classes
+    all_labels = torch.cat([data.y for data in graph_train])
+    class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
+    class_weights = torch.tensor(class_weights, dtype=torch.float32)
+
+    # Instantiate model and optimizer
+    model = GNN(input_dim=4, output_dim=1,layer_width = 128)  # Output dimension 1 for binary classification
+    optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
+
+    # Early stopping
+    early_stopping = EarlyStopping(patience=5, delta=0.001)
+
+    # Track parameters on wandb
+    if track_on_wandb ==True:
+        run = wandb.init(
+            entity="ella-schmidtobreick-4283-me",
+            project="Thesis",
+            config={
+                "variables": f"{n}",
+                "constraints": f"{m}",
+                "datapoints": f"{data_points}",
+                "epochs": f"{number_of_max_epochs}",
+                "architecture": "LEConv with weights",
+                "learning_rate": f"{lr}",
+                "layer width": f"{layer_width}",
+                "number of layers": f"{number_of_layers}",
+                "threshold": f"{t}"
+            },
+        )
+
+    # Training
+    for epoch in range(number_of_max_epochs):
+        epoch += 1
+        train_loss = 0
+        train_all_labels = []
+        train_preds = []
+        model.train()
+        output_train = []
+        train_all_label_graph = []
+        train_preds_graph = []
         
-        for i in range(batch.num_graphs):
-            mask = batch.batch == i
-            preds_graph = preds[mask].numpy()
-            labels_graph = batch.y[mask].numpy()
-
-            # Save per-graph data
-            train_preds_graph.append(preds_graph)
-            train_all_label_graph.append(labels_graph)
-
-
-    # Compute the loss
-    train_loss /= len(train_loader)
-
-    # Compute metrics
-    train_acc = accuracy_score(train_all_labels, train_preds)
-    train_prec = precision_score(train_all_labels,train_preds)
-    train_rec = recall_score(train_all_labels, train_preds)
-    train_f1 = f1_score(train_all_labels,train_preds)
-    
-    # over graph metrices
-    #all_label_graph = np.array(train_all_labels).reshape(-1,n+m)
-    #train_preds_graph = np.array(train_preds).reshape(-1,n+m)
-
-    # Compute average over graphs
-    #acc_graph_train = np.mean(np.all(all_label_graph == train_preds_graph, axis=1))
-    acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_graph_preds, train_all_label_graph)])
-    
-    # Validation step
-    model.eval()
-    val_loss = 0
-    val_mean_wrongly_pred_nodes_per_graph = 0
-    val_num_wrongly_pred_nodes_per_graph = 0
-    val_all_labels = []
-    val_preds = []
-    output_val = []
-    val_preds_graph = []
-    val_all_label_graph = []
-    with torch.no_grad():
-        for batch in val_loader:
+        for batch in train_loader:
+            optimizer.zero_grad()
             output = model(batch,number_of_layers)
-            output_val.extend(output.squeeze().detach().numpy().reshape(-1))
-            loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
-            val_loss += loss.item()
+            output_train.extend(output.squeeze().detach().numpy().reshape(-1))
+            loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
+            loss.backward()
+            optimizer.step()
+            train_loss += loss.item()
+
+            # Convert output to binary prediction (0 or 1)
             preds = (output.squeeze() > t).long()
 
-            val_preds.extend(preds.numpy())   # Store predictions
-            val_all_labels.extend(batch.y.numpy()) # Store true labels
+            # Store predictions and true labels
+            train_preds.extend(preds.numpy())   
+            train_all_labels.extend(batch.y.numpy())
             
+            # Save per graph predictions and labels
             for i in range(batch.num_graphs):
                 mask = batch.batch == i
                 preds_graph = preds[mask].numpy()
                 labels_graph = batch.y[mask].numpy()
 
-                # Save per-graph data
-                val_preds_graph.append(preds_graph)
-                val_all_label_graph.append(labels_graph)
+                train_preds_graph.append(preds_graph)
+                train_all_label_graph.append(labels_graph)
 
-    val_loss /= len(val_loader)
-    val_acc = accuracy_score(val_all_labels, val_preds)
-    val_prec = precision_score(val_all_labels,val_preds)
-    val_rec = recall_score(val_all_labels, val_preds)
-    val_f1 = f1_score(val_all_labels,val_preds)
-    
-    # # over graph metrices
-    # val_all_label_graph = np.array(val_all_labels).reshape(-1,n+m)
-    # val_preds_graph = np.array(val_preds).reshape(-1,n+m)
+        # Compute metrics
+        train_loss /= len(train_loader)
+        train_acc = accuracy_score(train_all_labels, train_preds)
+        train_prec = precision_score(train_all_labels,train_preds)
+        train_rec = recall_score(train_all_labels, train_preds)
+        train_f1 = f1_score(train_all_labels,train_preds)
+        acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_preds_graph, train_all_label_graph)]) # average on graph level
 
-    # # Compute average over graphs
-    # acc_graph_val = np.mean(np.all(val_all_label_graph == val_preds_graph, axis=1))
-    # val_mean_wrongly_pred_nodes_per_graph = np.mean((n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1))
-    # val_num_wrongly_pred_nodes_per_graph = (n+m) - np.sum(val_all_label_graph == val_preds_graph, axis=1)
-    # val_perc_wrongly_pred_nodes_per_graph = val_mean_wrongly_pred_nodes_per_graph/(n+m)
-    
-    val_num_wrongly_pred_nodes_per_graph = [int(n_i + m_i) - np.sum(pred == label) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
-    val_perc_wrongly_pred_nodes_per_graph = [wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)]
-    val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
-    
-    # Log metrics to wandb.
+        # Validation step
+        model.eval()
+        val_loss = 0
+        val_mean_wrongly_pred_nodes_per_graph = 0
+        val_num_wrongly_pred_nodes_per_graph = 0
+        val_all_labels = []
+        val_preds = []
+        output_val = []
+        val_preds_graph = []
+        val_all_label_graph = []
+        
+        with torch.no_grad():
+            for batch in val_loader:
+                output = model(batch,number_of_layers)
+                output_val.extend(output.squeeze().detach().numpy().reshape(-1))
+                loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+                val_loss += loss.item()
+                preds = (output.squeeze() > t).long()
+
+                # Store predictions and labels
+                val_preds.extend(preds.numpy())
+                val_all_labels.extend(batch.y.numpy())
+                
+                # Store per graph predictions and labels
+                for i in range(batch.num_graphs):
+                    mask = batch.batch == i
+                    preds_graph = preds[mask].numpy()
+                    labels_graph = batch.y[mask].numpy()
+
+                    val_preds_graph.append(preds_graph)
+                    val_all_label_graph.append(labels_graph)                
+        
+        # Compute metrics      
+        val_loss /= len(val_loader)
+        val_acc = accuracy_score(val_all_labels, val_preds)
+        val_prec = precision_score(val_all_labels,val_preds)
+        val_rec = recall_score(val_all_labels, val_preds)
+        val_f1 = f1_score(val_all_labels,val_preds)
+        acc_graph_val = np.mean([np.all(pred == true) for pred, true in zip(val_preds_graph, val_all_label_graph)]) # accuracy on graph level
+
+        val_num_wrongly_pred_nodes_per_graph = [int(n_i + m_i) - np.sum(pred == label) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
+        val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
+        val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
+        
+        # Log metrics to wandb.
+        if track_on_wandb == True:
+            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train, "acc_graph_val": acc_graph_val,"perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
+
+        # Save metrics
+        train_acc_save.append(train_acc)
+        val_acc_save.append(val_acc)
+        train_loss_save.append(train_loss)
+        val_loss_save.append(val_loss)
+        train_prec_save.append(train_prec)
+        val_prec_save.append(val_prec)
+        train_rec_save.append(train_rec)
+        val_rec_save.append(val_rec)
+        train_f1_save.append(train_f1)
+        val_f1_save.append(val_f1)
+        acc_graph_train_save.append(acc_graph_train)
+        acc_graph_val_save.append(acc_graph_val)
+        val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
+        val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
+
+        # Early stopping
+        early_stopping(val_loss, model)
+        if early_stopping.early_stop:
+            print(f"Early stopping after {epoch} epochs.")
+            break
+
+    # Save best model
+    early_stopping.load_best_model(model)
+    torch.save(model.state_dict(), f"saved_models/model_{n_min}_{n_max}v_{m_min}_{m_max}c_Hflex{H_flexible}_Aflex{A_flexible}.pth")
+    utils.hist_output_vs_true_label(output_val, val_all_labels, save = True)
+
+    # Finish the run and upload any remaining data.
     if track_on_wandb == True:
-        run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train, "acc_graph_val": acc_graph_val,"perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
-
-    early_stopping(val_loss, model) #val_mean_wrongly_pred_nodes_per_graph
-    if early_stopping.early_stop:
-        print(f"Early stopping after {epoch} epochs.")
-        break
+        run.finish()
     
-    # Threshold tuning
-    # if val_mean_wrongly_pred_nodes_per_graph < best_mean:
-    #     best_threshold = t
-    #     best_mean = val_mean_wrongly_pred_nodes_per_graph
-
-#Load the best model
-early_stopping.load_best_model(model)
-
-torch.save(model.state_dict(), f"saved_models/model_10_11v_40_44c_flex_HA.pth")
-utils.hist_output_vs_true_label(output_val, val_all_labels, save = False)
-
-# Finish the run and upload any remaining data.
-if track_on_wandb == True:
-    run.finish()
+    return epoch, train_acc_save, val_acc_save, train_loss_save, val_loss_save, train_prec_save, val_prec_save, train_rec_save, val_rec_save, train_f1_save, val_f1_save, acc_graph_train_save, acc_graph_val_save, val_perc_wrongly_pred_nodes_per_graph_save, val_mean_wrongly_pred_nodes_per_graph_save
