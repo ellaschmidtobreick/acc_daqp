@@ -3,7 +3,6 @@ import daqp
 from ctypes import * 
 import os
 from generate_mpqp_v2 import generate_qp
-from collections import Counter
 
 import torch
 from torch_geometric.data import Data
@@ -153,7 +152,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
         features = np.array([f1_val, b1_val, eq1_val,node_type_val]).T
         x_val = torch.tensor(features, dtype=torch.float32)
         #x_val = torch.tensor(np.array([f1_val[i],b1_val[i], eq1_val[i]])).T
-        data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:])
+        data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:],index = i)
         # list of graph elements
         graph_val.append(data_point)
         
@@ -253,7 +252,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         features = np.array([f1_test, b1_test, eq1_test,node_type]).T
         x_test = torch.tensor(features, dtype=torch.float32)
         #x_test = torch.tensor(np.array([f1_test[i],b1_test[i], eq1_test[i]])).T
-        data_point = Data(x= x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
+        data_point = Data(x=x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
         # list of graph elements
         graph_test.append(data_point)
         
