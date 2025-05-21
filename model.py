@@ -19,7 +19,7 @@ class GNN(torch.nn.Module):
         x = torch.sigmoid(x)
         return x  
 
-class EarlyStopping: # https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
+class EarlyStopping: # cite: https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
     def __init__(self, patience=50, delta=0):
         self.patience = patience
         self.delta = delta
@@ -28,12 +28,13 @@ class EarlyStopping: # https://www.geeksforgeeks.org/how-to-handle-overfitting-i
         self.counter = 0
         self.best_model_state = None
 
-    def __call__(self, val_loss, model):
+    def __call__(self, val_loss, model, epoch):
         score = -val_loss
 
         if self.best_score is None:
             self.best_score = score
             self.best_model_state = model.state_dict()
+            self.epoch = epoch
         elif score < self.best_score + self.delta:
             self.counter += 1
             if self.counter >= self.patience:
@@ -41,7 +42,9 @@ class EarlyStopping: # https://www.geeksforgeeks.org/how-to-handle-overfitting-i
         else:
             self.best_score = score
             self.best_model_state = model.state_dict()
+            self.epoch = epoch
             self.counter = 0
 
     def load_best_model(self, model):
         model.load_state_dict(self.best_model_state)
+        return self.epoch
