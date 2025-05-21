@@ -11,17 +11,11 @@ import matplotlib.pyplot as plt
 from generate_graph_data import generate_qp_graphs_train_val
 from model import GNN
 from model import EarlyStopping
-import utils
 
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname):
     
-    # Initialization
-    n_min = np.min(n)
-    n_max = np.max(n)
-    m_min = np.min(m)
-    m_max = np.max(m)
-       
+    # Initialization      
     graph_train = []
     graph_val = []
     n_vector_train = []
@@ -43,6 +37,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     acc_graph_val_save = []
     val_perc_wrongly_pred_nodes_per_graph_save = []
     val_mean_wrongly_pred_nodes_per_graph_save = []
+    train_perc_wrongly_pred_nodes_per_graph_save = []
+    train_mean_wrongly_pred_nodes_per_graph_save = []
 
     # Generate QP problems and the corresponding graphs
     for i in range(len(n)):
@@ -60,7 +56,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Load Data
     train_batch_size = 64
     train_loader = DataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
-    val_loader =DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
+    val_loader = DataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train])
@@ -94,7 +90,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
-        epoch += 1
         train_loss = 0
         train_all_labels = []
         train_preds = []
@@ -136,6 +131,11 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         train_f1 = f1_score(train_all_labels,train_preds)
         acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_preds_graph, train_all_label_graph)]) # average on graph level
 
+        train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(train_preds_graph, train_all_label_graph, n_vector_train, m_vector_train)]
+        train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(train_num_wrongly_pred_nodes_per_graph, n_vector_train, m_vector_train)])
+        train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
+        
+       
         # Validation step
         model.eval()
         val_loss = 0
@@ -176,7 +176,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_f1 = f1_score(val_all_labels,val_preds)
         acc_graph_val = np.mean([np.all(pred == true) for pred, true in zip(val_preds_graph, val_all_label_graph)]) # accuracy on graph level
 
-        val_num_wrongly_pred_nodes_per_graph = [int(n_i + m_i) - np.sum(pred == label) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
+        val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
         val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
         val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
         
@@ -199,20 +199,38 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         acc_graph_val_save.append(acc_graph_val)
         val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
         val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
+        train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
+        train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
 
         # Early stopping
-        early_stopping(val_loss, model)
+        early_stopping(val_loss, model,epoch)
         if early_stopping.early_stop:
             print(f"Early stopping after {epoch} epochs.")
             break
 
     # Save best model
-    early_stopping.load_best_model(model)
-    torch.save(model.state_dict(), f"saved_models/model_{n_min}_{n_max}v_{m_min}_{m_max}c_Hflex{H_flexible}_Aflex{A_flexible}.pth")
-    utils.hist_output_vs_true_label(output_val, val_all_labels, save = True)
+    best_epoch = early_stopping.load_best_model(model)
+    torch.save(model.state_dict(), f"saved_models/{modelname}.pth")
 
     # Finish the run and upload any remaining data.
     if track_on_wandb == True:
         run.finish()
     
-    return epoch, train_acc_save, val_acc_save, train_loss_save, val_loss_save, train_prec_save, val_prec_save, train_rec_save, val_rec_save, train_f1_save, val_f1_save, acc_graph_train_save, acc_graph_val_save, val_perc_wrongly_pred_nodes_per_graph_save, val_mean_wrongly_pred_nodes_per_graph_save
+    # Print metrics
+    print("TRAINING")
+    print(f"Accuracy (node level) of the final model: {train_acc_save[best_epoch-1]}")
+    print(f"Precision of the model on the test data: {train_prec_save[best_epoch-1]}")
+    print(f"Recall of the model on the test data: {train_rec_save[best_epoch-1]}")
+    print(f"F1-Score of the model on the test data: {train_f1_save[best_epoch-1]}")
+    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_train_save[best_epoch-1]}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {train_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+
+    print("VALIDATION")
+    print(f"Accuracy (node level) of the final model: {val_acc_save[best_epoch-1]}")
+    print(f"Precision of the model on the test data: {val_prec_save[best_epoch-1]}")
+    print(f"Recall of the model on the test data: {val_rec_save[best_epoch-1]}")
+    print(f"F1-Score of the model on the test data: {val_f1_save[best_epoch-1]}")
+    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+
+    #return epoch, train_acc_save, val_acc_save, train_loss_save, val_loss_save, train_prec_save, val_prec_save, train_rec_save, val_rec_save, train_f1_save, val_f1_save, acc_graph_train_save, acc_graph_val_save, train_perc_wrongly_pred_nodes_per_graph_save,val_perc_wrongly_pred_nodes_per_graph_save, train_mean_wrongly_pred_nodes_per_graph_save, val_mean_wrongly_pred_nodes_per_graph_save
