@@ -11,7 +11,6 @@ from torch_geometric.data import Data
 # n - number of variables
 # m - number of constraints
 # nth - dimension of theta
-# seed?
 
 #default train - test - val split: 80%, 10%, 10%
 
@@ -34,9 +33,10 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
     lambda_train = np.zeros((iter_train,m))
     train_iterations = np.zeros((iter_train))
     train_time= np.zeros((iter_train))
+    
     # Generate the graph from the training data
     graph_train = []
-
+    
     for i in range(iter_train):
         theta = np.random.randn(nth)
         
@@ -90,16 +90,12 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
         # list of graph elements
         graph_train.append(data_point)
 
-
-    
     # Generate val set
     np.random.seed(seed+1)
     x_val = np.zeros((iter_val,n))
     lambda_val = np.zeros((iter_val,m))
     val_iterations = np.zeros((iter_val))
     val_time = np.zeros((iter_val))
-    f_val = np.zeros((iter_val,n))
-    b_val = np.zeros((iter_val,m))
     
     graph_val = []
     
@@ -117,7 +113,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
             M = np.random.randn(n,n)
             H = M @ M.T 
         
-        x,fval,exitflag,info = daqp.solve(H,ftot,A,btot,blower,sense)
+        _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
         val_time[i] = list(info.values())[0]
@@ -145,13 +141,11 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
         b1_val = np.hstack((np.zeros(np.shape(ftot)),btot))
         eq1_val = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
         node_type_val = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
-        #print(f1_val.shape,b1_val.shape,eq1_val.shape)
 
         # val graph
         x_val = torch.tensor([])
         features = np.array([f1_val, b1_val, eq1_val,node_type_val]).T
         x_val = torch.tensor(features, dtype=torch.float32)
-        #x_val = torch.tensor(np.array([f1_val[i],b1_val[i], eq1_val[i]])).T
         data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:],index = i)
         # list of graph elements
         graph_val.append(data_point)
@@ -245,13 +239,10 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         b1_test = np.hstack((np.zeros(np.shape(ftot)),btot))
         eq1_test = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
         node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
-        #node_type = np.tile(node_type, (500, 1))
-        #print(f1_test.shape,b1_test.shape,eq1_test.shape)
 
         # test graph
         features = np.array([f1_test, b1_test, eq1_test,node_type]).T
         x_test = torch.tensor(features, dtype=torch.float32)
-        #x_test = torch.tensor(np.array([f1_test[i],b1_test[i], eq1_test[i]])).T
         data_point = Data(x=x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
         # list of graph elements
         graph_test.append(data_point)

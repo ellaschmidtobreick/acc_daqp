@@ -11,10 +11,6 @@ from generate_graph_data import generate_qp_graphs_test_data_only
 from utils import barplot_iterations, histogram_time, histogram_prediction_time
 from model import GNN
 from naive_model import naive_model
-# # to scale a bigger n,m can be used in testing than in training
-# n =  [25,26] #[10,11] 
-
-# m= [100,104] #[40,44] 
 
 # Generate test problems and the corresponding graphs
 def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name):
@@ -79,8 +75,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # Prediction on test data
             start_time = time.perf_counter()
             output = model(batch,number_of_layers)
-            preds = (output.squeeze() > t).long() # 0.8
-            #preds = torch.where(output.squeeze() < 0.001, torch.tensor(4), torch.where(output.squeeze() > config.t, torch.tensor(1),torch.tensor(0)))
+            preds = (output.squeeze() > t).long()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
             
@@ -157,5 +152,4 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # Plots to vizualize iterations and time
     histogram_time(test_time_before, test_time_after,model_name, save= True)
     histogram_prediction_time(prediction_time,model_name, save = True)
-    #plt.hist(prediction_time, bins=50,range=(np.min(prediction_time),0.01), alpha=0.7, label='prediction time', color='green')
     barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)

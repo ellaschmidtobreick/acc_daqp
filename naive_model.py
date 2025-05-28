@@ -37,17 +37,4 @@ def naive_model(n_vector,m_vector,all_labels):
 
         current += (n+m)
         
-    
-    # for i in range(len(n_vector)):
-    #     n = int(n_vector[i])
-    #     m = int(m_vector[i])
-        
-    #     # Compute grph metrics
-    #     preds_graph = np.asarray(preds).reshape(-1,n+m)
-    #     all_labels_graph = np.asarray(all_labels).reshape(-1,n+m)
-    #     graph_pred.extend(np.all(preds_graph == all_labels_graph, axis=1))
-        
-    #     num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels_graph == preds_graph, axis=1)))
-    #     perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
-
     return acc, prec, rec, f1, perc_wrongly_pred_nodes_per_graph

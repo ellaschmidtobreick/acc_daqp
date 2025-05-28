@@ -7,9 +7,9 @@ subject to  A x <= b + B*theta
 """
 import numpy as np
 
-# n = 2 # Number of decision variables
-# m = 5 # Number of constraints
-# nth = 2 # Number of parameters
+# n: Number of decision variables
+# m: Number of constraints
+# nth: Number of parameters
 
 def generate_qp(n,m,given_seed, nth = 2):
     np.random.seed(seed = given_seed)

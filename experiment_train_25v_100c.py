@@ -1,6 +1,5 @@
 from train_model import train_GNN
 from test_model import test_GNN
-from utils import map_train_acc
 
 # Set parameters
 n = [25]
@@ -16,6 +15,6 @@ track_on_wandb = True
 t = 0.6
 
 # Train the model on scaled data
-#train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_25v_100c_fixedHA")
+train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_25v_100c_fixedHA")
 test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_25v_100c_fixedHA") 
 
