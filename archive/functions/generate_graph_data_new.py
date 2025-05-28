@@ -431,7 +431,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs):
 
 
 ##########################################
-# Generate data with flexible size
+# Generate data with flexible size (newest version)
 def generate_qp_graphs_different_sizes(n_min,n_max,m_min,m_max,nth,seed,number_of_graphs,mode,H= None,A = None):
 
     # mode: train / test / val - detects size and seed of to generate dataset

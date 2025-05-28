@@ -141,6 +141,7 @@ for epoch in range(number_of_epochs):
             val_all_labels.extend(batch.y.numpy()) # Store true labels
 
     val_loss /= len(val_loader)
+    #val_acc = correct / total
     val_acc = accuracy_score(val_all_labels, val_preds)
 
     # over graph metrices

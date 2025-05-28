@@ -7,7 +7,7 @@ import wandb
 import torch
 from torch_geometric.loader import DataLoader
 
-from generate_graph_data import generate_qp_graphs_train_val, generate_qp_graphs_train_val_flexible_H
+from generate_graph_data import generate_qp_graphs_train_val
 import config 
 from model import GNN
 from model import EarlyStopping
@@ -27,6 +27,8 @@ number_of_layers = config.number_of_layers
 track_on_wandb = config.track_on_wandb
 t = config.t # tuned by gridsearch threshold = np.arange(0.1,1,0.1)
 
+n = [10,10] #config.n
+m = [40,40] #config.m
 
 # Generate QP problems and the corresponding graphs
 #graph_train, graph_val,H,A = generate_qp_graphs_train_val(n,m,nth,seed,data_points)
@@ -37,7 +39,6 @@ np.random.seed(123)
 # print(F)
 #print(H)
 #print(A)
-graph_train, graph_val = generate_qp_graphs_train_val_flexible_H(n,m,nth,seed,data_points)
-print(graph_train)
 # graph_train,n_train, m_train = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"train",H=H,A =A)
 # graph_val,n_val, m_val = generate_qp_graphs_different_sizes(n,n,m,m,nth,seed,data_points,"val",H=H,A =A)
+print(np.min(n))
