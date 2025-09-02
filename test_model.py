@@ -7,7 +7,7 @@ import torch
 from torch_geometric.loader import DataLoader
 import time
 
-from generate_graph_data import generate_qp_graphs_test_data_only
+from generate_graph_data import generate_qp_graphs_test_data_only, generate_qp_graphs_test_data_only_lmpc
 from utils import barplot_iterations, histogram_time, histogram_prediction_time
 from model import GNN
 from naive_model import naive_model
@@ -33,7 +33,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+        #graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+        graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
 
         graph_test = graph_test + graph_test_i
         test_iterations_before = test_iterations_before + test_iterations_before_i
@@ -83,7 +84,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             test_preds.extend(preds.numpy())
             test_all_labels.extend(batch.y.numpy())
 
-            # Compute grph metrics
+            # Compute graph metrics
             preds = preds.reshape(-1,n+m)
             preds_numpy = preds.numpy().reshape(-1,n+m)
             all_labels = batch.y.numpy().reshape(-1,n+m)
@@ -126,7 +127,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_f1 = f1_score(test_all_labels, test_preds)
 
     # Compute naive metrics
-    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph = naive_model(n_vector,m_vector,test_all_labels) 
+    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs = naive_model(n_vector,m_vector,test_all_labels) 
     # Compute average over graphs
     print("TESTING")
     print(f"Accuracy (node level) of the model on the test data: {test_acc}")
@@ -137,8 +138,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
     print()
     print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
-    print(f"Naice model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
-
+    print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
+    print(f"Correctly predicted graphs: {correctly_predicted_graphs} out of {len(graph_pred)}")
     print()
     print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
     print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
