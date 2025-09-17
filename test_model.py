@@ -1,7 +1,8 @@
 import numpy as np
 from ctypes import * 
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score
+from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score,precision_recall_curve, auc
+
 import daqp
 import torch
 from torch_geometric.loader import DataLoader
@@ -101,6 +102,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             exitflag = -6
             blower_i = np.array(blower[i], copy=True)
 
+            # solve system until it is solvable
             while exitflag == -6:   # system not solvable
                 _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
                 lambda_after= list(info.values())[4]
@@ -113,10 +115,10 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                     sense_active[last_one_index] = 0
                     
             # Solve system one more time without inactive constraints to make sure no active constraints are in there
-            sense_new = (lambda_after != 0).astype(np.int32)
-            _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_new)
-            test_iterations_after[i] += list(info.values())[2]
-            test_time_after[i] += list(info.values())[0]   # only consider solve time, since the daqp solver could be optimized such that the set-up only needs to be done once
+            # sense_new = (lambda_after != 0).astype(np.int32)
+            # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_new)
+            # test_iterations_after[i] += list(info.values())[2]
+            # test_time_after[i] += list(info.values())[0]   # only consider solve time, since the daqp solver could be optimized such that the set-up only needs to be done once
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
             
     # Compute metrics
@@ -126,8 +128,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_rec = recall_score(test_all_labels, test_preds)
     test_f1 = f1_score(test_all_labels, test_preds)
 
+    precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
+    pr_auc = auc(recall, precision)
+
     # Compute naive metrics
-    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs = naive_model(n_vector,m_vector,test_all_labels) 
+    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs,pr_auc_naive = naive_model(n_vector,m_vector,test_all_labels) 
     # Compute average over graphs
     print("TESTING")
     print(f"Accuracy (node level) of the model on the test data: {test_acc}")
@@ -136,10 +141,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print(f"F1-Score of the model on the test data: {test_f1}")
     print(f"Accuracy (graph level) of the model on the test data: {test_acc_graph}")
     print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
+    # Print the PR AUC
+    print(f'PR AUC: {pr_auc}')
     print()
     print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
     print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
     print(f"Correctly predicted graphs: {correctly_predicted_graphs} out of {len(graph_pred)}")
+    print(f'Naive PR AUC: {pr_auc_naive}')
     print()
     print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
     print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
@@ -150,7 +158,10 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print(f'Test iter after: mean {np.mean(test_iterations_after)}, min {np.min(test_iterations_after)}, max {np.max(test_iterations_after)}')
     print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
 
-    # Plots to vizualize iterations and time
+
+    #Plots to vizualize iterations and time
     histogram_time(test_time_before, test_time_after,model_name, save= True)
     histogram_prediction_time(prediction_time,model_name, save = True)
     barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+
+    # return test_prec, test_rec
