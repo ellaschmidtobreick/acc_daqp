@@ -24,7 +24,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
     np.random.seed(seed)
     H,f,F,A,b,B,T = generate_qp(n,m,seed)
     print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape,T.shape)
-    np.savez(f"data/generated_qp_data_{n}v_{m}c_flex_H.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
+    np.savez(f"data/generated_qp_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
     
