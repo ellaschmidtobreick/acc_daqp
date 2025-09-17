@@ -26,15 +26,18 @@ def naive_model(n_vector,m_vector,all_labels):
     
     # Compute graph metric
     current = 0
+    correctly_predicted_graphs = 0
     for n, m in zip(n_vector, m_vector):
         all_labels_graph = np.array(all_labels[current:current+(n+m)])
         preds_graph = np.array(preds[current:current+(n+m)])     
         graph_pred.append(preds_graph == all_labels_graph)
         
+        correctly_predicted_graphs += int(np.all(preds_graph == all_labels_graph))
+
         wrong = np.abs((n+m) - np.sum(all_labels_graph == preds_graph))
         num_wrongly_pred_nodes_per_graph.append(wrong)
         perc_wrongly_pred_nodes_per_graph.append([wrong / (n + m)])
 
         current += (n+m)
         
-    return acc, prec, rec, f1, perc_wrongly_pred_nodes_per_graph
+    return acc, prec, rec, f1, perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs

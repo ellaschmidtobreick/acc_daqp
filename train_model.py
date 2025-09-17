@@ -8,13 +8,13 @@ import torch
 from torch.utils.data import DataLoader as MLPDataLoader
 from torch_geometric.loader import DataLoader as GraphDataLoader
 
-from generate_graph_data import generate_qp_graphs_train_val
+from generate_graph_data import generate_qp_graphs_train_val,generate_qp_graphs_train_val_lmpc
 from generate_MLP_data import generate_qp_MLP_train_val
 from model import GNN,MLP
 from model import EarlyStopping
 
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1):
     
     # Initialization      
     graph_train = []
@@ -45,7 +45,9 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+        #graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
+        graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
+
         graph_train = graph_train + graph_train_i
         graph_val = graph_val + graph_val_i
         n_vector_train = n_vector_train + [n_i for i in range(len(graph_train_i))]
@@ -115,11 +117,19 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             train_preds.extend(preds.numpy())   
             train_all_labels.extend(batch.y.numpy())
             
+
+            # print("true labels",batch.y.shape, torch.nonzero(batch.y).squeeze().detach().numpy())
+            # print("preds",preds.shape, torch.nonzero(preds).squeeze().detach().numpy())
+            # print("output",output.squeeze()[torch.nonzero(batch.y).squeeze().detach().numpy()].detach().numpy())
+            # print("loss",loss.item())
+
             # Save per graph predictions and labels
             for i in range(batch.num_graphs):
                 mask = batch.batch == i
                 preds_graph = preds[mask].numpy()
                 labels_graph = batch.y[mask].numpy()
+                
+                print(np.sum(preds_graph),np.sum(labels_graph))
 
                 train_preds_graph.append(preds_graph)
                 train_all_label_graph.append(labels_graph)

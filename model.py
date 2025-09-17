@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as func
-from torch_geometric.nn import LEConv
+from torch_geometric.nn import LEConv,GCNConv
 
 class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim,layer_width):
@@ -16,10 +16,30 @@ class GNN(torch.nn.Module):
         for i in range(number_of_layers-2):
             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
         #x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-        #x = torch.sigmoid(x)
-        x = torch.sigmoid(self.output_layer(x,edge_index,edge_weight))
+        x = self.output_layer(x,edge_index,edge_weight)
+        # print("x", x)
+        x = torch.sigmoid(x)
+        # print("x after sigmoid", x)
         return x  
 
+# Define a simple GNN
+# class GNN(torch.nn.Module):
+#     def __init__(self,input_dim, output_dim,layer_width):
+#         super().__init__()
+#         self.input_layer = GCNConv(input_dim, layer_width)
+#         self.inner_layer = GCNConv(layer_width, layer_width)
+#         self.output_layer = GCNConv(layer_width, output_dim)
+#         self.fc = torch.nn.Linear(1, 1)
+
+#     def forward(self, data, number_of_layers):
+#         x, edge_index, edge_weight= data.x, data.edge_index, data.edge_attr.float()
+#         edge_weight = (edge_weight - edge_weight.min()) / (edge_weight.max() - edge_weight.min() + 1e-6)
+#         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
+#         for i in range(number_of_layers-2):
+#             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+#         x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+#         return torch.sigmoid(x)  # Match y's shape
+    
 class EarlyStopping: # cite: https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
     def __init__(self, patience=50, delta=0):
         self.patience = patience
