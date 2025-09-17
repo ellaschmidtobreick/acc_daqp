@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 from collections import Counter
 import numpy as np
+from matplotlib.ticker import ScalarFormatter
 
 def boxplot_time(time_before,time_after, label, save):
+    plt.rcParams.update({'font.size': 12})
     plt.boxplot([time_before,time_after],showfliers=False)
     plt.ylabel(label)
     plt.xticks([1, 2], ['without GNN', 'with GNN'])
@@ -12,6 +14,8 @@ def boxplot_time(time_before,time_after, label, save):
 
         
 def barplot_iterations(iterations_before, iterations_after, model_name, save):
+    plt.rcParams.update({'font.size': 12})
+    
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
     
@@ -41,36 +45,44 @@ def barplot_iterations(iterations_before, iterations_after, model_name, save):
     plt.xlabel("Number of Iterations")
     plt.ylabel("Frequency")
     
-    plt.xticks(ticks=x[::5], labels=all_iterations[::5], fontsize=7)
+    plt.xticks(ticks=x[::5], labels=all_iterations[::5])
     plt.xlim(x[0] - width, x[-1] + width)
     plt.legend()
-    plt.title("Iterations")
+    #plt.title("Iterations")
 
     # Save and show
     if save == True:
-        plt.savefig(f"plots/bar_it_{model_name}.png")
+        plt.savefig(f"plots/bar_it_{model_name}.pdf")
     plt.show()
 
 
 def histogram_time(time_before, time_after, model_name,save):
+    plt.rcParams.update({'font.size': 12})
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
-    max_val = 0.00005 # 10v40c: 0.00005 #25v50c: 0.0003
+    max_val = 0.0003 # 10v40c: 0.00005 #25v100c: 0.0003
 
     plt.hist(time_before, bins=50,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
     plt.hist(time_after, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
 
     plt.xlabel('Time in seconds')
     plt.ylabel('Frequency')
-    plt.title('Histogram of Time without GNN vs with GNN')
+    #plt.title('Histogram of Time without GNN vs with GNN')
     plt.legend()
+    
+    formatter = ScalarFormatter(useMathText=True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((-3, 3))
+    plt.gca().xaxis.set_major_formatter(formatter)
+
     if save == True:
-        plt.savefig(f"plots/histo_time_{model_name}.png")
+        plt.savefig(f"plots/histo_time_{model_name}.pdf")
     plt.show()
         
         
 def map_train_acc(train_acc_fixedHA,train_acc_fixedH,train_acc_fixedA,train_acc_flex,figure_name,save = False):
+    plt.rcParams.update({'font.size': 12})
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
         
@@ -81,26 +93,27 @@ def map_train_acc(train_acc_fixedHA,train_acc_fixedH,train_acc_fixedA,train_acc_
 
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.title('Training accuracy for differently generated H and A')
+    #plt.title('Training accuracy for differently generated H and A')
     plt.legend()
     
     if save == True:
-        plt.savefig(f"plots/train_acc_{figure_name}.png")
+        plt.savefig(f"plots/train_acc_{figure_name}.pdf")
     plt.show()
     
 def histogram_prediction_time(prediction_time,model_name, save = False):
+    plt.rcParams.update({'font.size': 12})
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
     
-    max = 0.007 # 10v40c:0.007 # 25v50c: 0.01
+    max = 0.01 # 10v40c:0.007 # 25v50c: 0.01
     
     plt.hist(prediction_time, bins=70,range=(np.min(prediction_time),max), alpha=0.7, label='prediction time', color=colors[1])
 
     plt.xlabel('Prediction time in seconds')
     plt.ylabel('Frequency')
-    plt.title('Time of active-set prediction')
+    #plt.title('Time of active-set prediction')
     plt.legend()
     
     if save == True:
-        plt.savefig(f"plots/histo_pred_time_{model_name}.png")
+        plt.savefig(f"plots/histo_pred_time_{model_name}.pdf")
     plt.show()
