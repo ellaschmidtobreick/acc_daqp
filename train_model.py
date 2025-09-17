@@ -128,7 +128,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                 preds_graph = preds[mask].numpy()
                 labels_graph = batch.y[mask].numpy()
                 
-                print(np.sum(preds_graph),np.sum(labels_graph))
+                #print(np.sum(preds_graph),np.sum(labels_graph))
 
                 train_preds_graph.append(preds_graph)
                 train_all_label_graph.append(labels_graph)
