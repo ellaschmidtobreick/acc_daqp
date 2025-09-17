@@ -15,8 +15,9 @@ class GNN(torch.nn.Module):
         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
         for i in range(number_of_layers-2):
             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-        x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-        x = torch.sigmoid(x)
+        #x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+        #x = torch.sigmoid(x)
+        x = torch.sigmoid(self.output_layer(x,edge_index,edge_weight))
         return x  
 
 class EarlyStopping: # cite: https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
@@ -48,3 +49,16 @@ class EarlyStopping: # cite: https://www.geeksforgeeks.org/how-to-handle-overfit
     def load_best_model(self, model):
         model.load_state_dict(self.best_model_state)
         return self.epoch
+    
+class MLP(torch.nn.Module):
+    def __init__(self, input_dim, output_dim,layer_width=128):
+        super().__init__()
+        torch.manual_seed(123)
+        self.input_layer = torch.nn.Linear(input_dim, layer_width)
+        self.hidden_layer = torch.nn.Linear(layer_width, layer_width)
+        self.output_layer = torch.nn.Linear(layer_width, output_dim)
+
+    def forward(self, x):
+        x = func.leaky_relu(self.input_layer(x),negative_slope = 0.1)
+        x = func.leaky_relu(self.hidden_layer(x),negative_slope = 0.1)
+        return torch.sigmoid(self.output_layer(x)) 
