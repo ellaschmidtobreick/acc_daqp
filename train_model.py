@@ -14,7 +14,7 @@ from model import GNN,MLP
 from model import EarlyStopping
 
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard"):
     
     # Initialization      
     graph_train = []
@@ -45,8 +45,10 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        #graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
-        graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
+        if dataset_type == "standard":
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+        elif dataset_type == "lmpc":
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
 
         graph_train = graph_train + graph_train_i
         graph_val = graph_val + graph_val_i
@@ -245,7 +247,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
 
 
-def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname):
+def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
     
     # Initialization      
     data_train = []
@@ -276,7 +278,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        data_train_i, data_val_i = generate_qp_MLP_train_val(n_i,m_i,nth,seed,number_of_graphs,H_flexible=H_flexible,A_flexible=A_flexible)
+        data_train_i, data_val_i = generate_qp_MLP_train_val(n_i,m_i,nth,seed,number_of_graphs,H_flexible=H_flexible,A_flexible=A_flexible,dataset_type=dataset_type)
         data_train.extend(data_train_i)
         data_val.extend(data_val_i)
         n_vector_train = n_vector_train + [n_i for i in range(len(data_train_i))]
