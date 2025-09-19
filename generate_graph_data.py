@@ -22,10 +22,10 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
     iter_val = int(np.rint(0.1*number_of_graphs))
     
     np.random.seed(seed)
-    H,f,F,A,b,B,T = generate_qp(n,m,seed)
+    H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
     print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape,T.shape)
-    print("H",H)
-    print("condition number",np.linalg.cond(H))
+
+    print("condition number of H",np.linalg.cond(H))
     np.savez(f"data/generated_qp_data_{n}v_{m}c_flex_H.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])

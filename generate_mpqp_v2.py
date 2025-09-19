@@ -14,6 +14,7 @@ import numpy as np
 def generate_qp(n,m,given_seed, nth = 2):
     np.random.seed(seed = given_seed)
     # Objective function
+    print(n,m,nth)
     M = np.random.randn(n,n)
     H = M @ M.T # Ensure H symmetric and positive definite. 
     f = np.random.randn(n)
@@ -26,6 +27,26 @@ def generate_qp(n,m,given_seed, nth = 2):
     B = A @ (-T)
     return H,f,F,A,b,B,T
 
+def generate_qp_twosided_constraints(n,m,given_seed, nth = 2):
+    np.random.seed(seed = given_seed)
+    # Objective function
+    M = np.random.randn(n,n)
+    H = M @ M.T # Ensure H symmetric and positive definite. 
+    f = np.random.randn(n)
+    F = np.random.randn(n,nth)
+
+    # Constraints
+    m1 = m/2
+    A1 = np.random.randn(m1,n)
+    A = np.vstack((A1,-A1))
+    print(A.shape)
+    b1 = np.random.rand(m1) #rand ensures that b >= 0, which in turns means that the origin is a feasible point (so the problem will have a solution)
+    b = np.hstack((b1,-b1))     # does not center btot around 0!
+    print(b.shape)
+
+    T = np.random.randn(n,nth) # A transformation such that x = T*th is primal feasible
+    B = A @ (-T)
+    return H,f,F,A,b,B,T
 
 def generate_rhs(f,F,b,B,nth,given_seed):
     """ Example QP of the form 
