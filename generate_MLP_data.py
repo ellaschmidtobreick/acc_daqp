@@ -7,19 +7,30 @@ from torch.utils.data import TensorDataset
 import os
       
                
-def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False):
+def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False,dataset_type="standard"):
 
     #spit generated problems into train, test, val
     iter_train = int(np.rint(0.8*number_of_graphs))
     iter_val = int(np.rint(0.1*number_of_graphs))
     
     np.random.seed(seed)
-    # Generate general matrices
-    H,f,F,A,b,B,T = generate_qp(n,m,seed)
-    np.savez(f"data/generated_MLP_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
+
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
-    
+
+    if dataset_type == "standard":
+        # Generate general matrices
+        H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
+        np.savez(f"data/generated_MLP_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
+    elif dataset_type == "lmpc":
+        # Load given lmpc data
+        data = np.load(f'data/mpc_mpqp_N{n}.npz')
+        H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
+        # dimension reduction for daqp solver
+        f = f.squeeze()
+        b = b.squeeze()
+
+
     # Generate training data
     x_train = np.zeros((iter_train,n*n+m*n+n+m))
     y_train = np.zeros((iter_train,n+m))
@@ -30,7 +41,7 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
         if A_flexible == True:
             A = np.random.randn(m,n)
             B = A @ (-T)
-            
+
         btot = b + B @ theta
         ftot = f + F @ theta
         
@@ -85,24 +96,33 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
     QP_val = TensorDataset(x_val, y_val)
     return QP_train, QP_val
 
-def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False,A_flexible = False):
+def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False,A_flexible = False,dataset_type="standard"):
     np.random.seed(seed)
     #spit generated problems into train, test, val
     iter_test = int(np.rint(0.1*number_of_graphs))
 
-    file_path = f"data/generated_MLP_data_{n}v_{m}c.npz"
-    if os.path.exists(file_path):
-        data = np.load(file_path, allow_pickle=True)
-        H = data["H"]
-        f = data["f"]
-        F = data["F"]
-        A = data["A"]
-        b = data["b"]
-        B = data["B"]
-        T = data["T"]
-    else:
-        H,f,F,A,b,B,T = generate_qp(n,m,seed)
-        print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
+    if dataset_type == "standard":
+        file_path = f"data/generated_MLP_data_{n}v_{m}c.npz"
+        if os.path.exists(file_path):
+            data = np.load(file_path, allow_pickle=True)
+            H = data["H"]
+            f = data["f"]
+            F = data["F"]
+            A = data["A"]
+            b = data["b"]
+            B = data["B"]
+            T = data["T"]
+        else:
+            H,f,F,A,b,B,T = generate_qp(n,m,nth,seed)
+            print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
+    elif dataset_type == "lmpc":
+        # Load given lmpc data
+        data = np.load(f'data/mpc_mpqp_N{n}.npz')
+        H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
+        # dimension reduction for daqp solver
+        f = f.squeeze()
+        b = b.squeeze()
+        
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
 
