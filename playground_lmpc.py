@@ -1,37 +1,61 @@
-# import numpy
-# from lmpc import MPC,ExplicitMPC
+import numpy
+from lmpc import MPC,ExplicitMPC
 
-# import os, juliacode
+# import os, julia
 # os.add_dll_directory(r"acc_daqp_env/julia_env/pyjuliapkg/install/bin")
 
-# # Continuous time system dx = A x + B u
-# A = numpy.array([[0, 1, 0, 0], [0, -10, 9.81, 0], [0, 0, 0, 1], [0, -20, 39.24, 0]])
-# B = 100*numpy.array([0,1.0,0,2.0])
-# C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
+# Continuous time system dx = A x + B u
+A = numpy.array([[0, 1, 0, 0], [0, -10, 9.81, 0], [0, 0, 0, 1], [0, -20, 39.24, 0]])
+B = 100*numpy.array([0,1.0,0,2.0])
+C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
 
 
-# # create an MPC control with sample time 0.01, prediction horizon 10 and control horizon 5 
-# Np,Nc = 10,5
-# Ts = 0.01
-# mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
+# create an MPC control with sample time 0.01, prediction horizon 10 and control horizon 5 
+Np,Nc = 100,100
+Ts = 0.01
+mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
 
-# # set the objective functions weights
-# mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[1.0])
+# set the objective functions weights
+mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[1.0])
 
-# # set actuator limits
-# mpc.set_bounds(umin=[-2.0],umax=[2.0])
+# set actuator limits
+mpc.set_bounds(umin=[-2.0],umax=[2.0])
 
-# # run 
-# mpc.mpqp(singlesided=True)
+# run 
+res = mpc.mpqp(singlesided=True)
+
+H = res["H"]
+f = res["f"]
+H_theta = res["H_theta"]
+f_theta = res["f_theta"]
+A = res["A"]
+b = res["b"]
+W = res["W"]
+senses = res["senses"]
+prio = res["prio"]
+has_binaries = res["has_binaries"]
+
+print("H",H)
+print("condition number",numpy.linalg.cond(H))
+print("f",f)
+print("H_theta",H_theta)
+print("f_theta",f_theta)
+print("A",A)
+print("b",b)
+print("W",W)
+print("senses",senses)
+print("prio",prio)
+print("has_binaries",has_binaries)
+#numpy.savez(f"data/mpc_mpqp_N{int(A.shape[1])}.npz", H=H, f=f, f_theta=f_theta, A=A, b=b, W=W)
 
 import numpy as np
-from generate_mpqp_v2 import generate_rhs 
-from generate_graph_data import generate_qp_graphs_train_val_lmpc, generate_qp_graphs_test_data_only_lmpc
-from train_model import train_GNN
-from test_model import test_GNN
-import daqp
-import torch
-from torch_geometric.data import Data
+# from generate_mpqp_v2 import generate_rhs 
+# from generate_graph_data import generate_qp_graphs_train_val_lmpc, generate_qp_graphs_test_data_only_lmpc
+# from train_model import train_GNN
+# from test_model import test_GNN
+# import daqp
+# import torch
+# from torch_geometric.data import Data
 
 # data = np.load('data/mpc_mpqp_N5.npz')
 
@@ -45,16 +69,16 @@ from torch_geometric.data import Data
 # print(data['b'])    # (5+5))x1 (all 2)
 # print(data['W'])    # (5+5)x7 (all 0)
 
-print("here")
-data = np.load('data/mpc_mpqp_N50.npz')
-print(data.files)
+# print("here")
+# data = np.load('data/mpc_mpqp_N50.npz')
+# print(data.files)
 
-print(data['H'])    # 10x10
-print(data['f'])    # 10x1 (all 0)
-print(data['f_theta'])  # 10x7
-print(data['A'])    # (10+10)x10 (upper & lower constraints)
-print(data['b'])    # (10+10)x1 (all 2)
-print(data['W'])    # (10+10)x7 (all 0)
+# print(data['H'])    # 10x10
+# print(data['f'])    # 10x1 (all 0)
+# print(data['f_theta'])  # 10x7
+# print(data['A'])    # (10+10)x10 (upper & lower constraints)
+# print(data['b'])    # (10+10)x1 (all 2)
+# print(data['W'])    # (10+10)x7 (all 0)
 
 # 7 is the dimension of theta (=nth)
 
