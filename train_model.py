@@ -95,6 +95,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
+        print(f"Epoch {epoch}")
         train_loss = 0
         train_all_labels = []
         train_preds = []
@@ -329,6 +330,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
 
     # Training
     for epoch in range(number_of_max_epochs):
+        print(f"Epoch {epoch}")
         train_loss = 0
         train_all_labels = []
         train_preds = []
