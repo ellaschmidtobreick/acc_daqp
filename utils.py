@@ -61,7 +61,7 @@ def histogram_time(time_before, time_after, model_name,save):
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
-    max_val = 0.0003 # 10v40c: 0.00005 #25v100c: 0.0003
+    max_val = 0.00002 # 10v40c: 0.00005 #25v100c: 0.0003
 
     plt.hist(time_before, bins=50,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
     plt.hist(time_after, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])

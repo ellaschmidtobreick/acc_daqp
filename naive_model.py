@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.metrics import precision_recall_curve, auc
 
 # Naive model
 def naive_model(n_vector,m_vector,all_labels):
@@ -39,5 +40,11 @@ def naive_model(n_vector,m_vector,all_labels):
         perc_wrongly_pred_nodes_per_graph.append([wrong / (n + m)])
 
         current += (n+m)
-        
-    return acc, prec, rec, f1, perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs
+    
+    # Step 5: Compute Precision and Recall for different thresholds.
+    precision, recall, thresholds = precision_recall_curve(all_labels,preds)
+
+    # Step 6: Calculate Area Under the PR curve.
+    pr_auc = auc(recall, precision)
+
+    return acc, prec, rec, f1, perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs, pr_auc
