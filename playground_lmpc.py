@@ -33,28 +33,28 @@ import daqp
 import torch
 from torch_geometric.data import Data
 
-# data = np.load('data/mpc_mpqp_N5.npz')
+data = np.load('data/mpc_mpqp_N5.npz')
 
-# # ['H', 'f', 'f_theta', 'A', 'b', 'W']
-# print(data.files)
-
-# print(data['H'])    # 5x5
-# print(data['f'])    # 5x1 (all 0)
-# print(data['f_theta'])  # 5x7
-# print(data['A'])    # (5+5)x5 (upper & lower constraints)
-# print(data['b'])    # (5+5))x1 (all 2)
-# print(data['W'])    # (5+5)x7 (all 0)
-
-print("here")
-data = np.load('data/mpc_mpqp_N50.npz')
+# ['H', 'f', 'f_theta', 'A', 'b', 'W']
 print(data.files)
 
-print(data['H'])    # 10x10
-print(data['f'])    # 10x1 (all 0)
-print(data['f_theta'])  # 10x7
-print(data['A'])    # (10+10)x10 (upper & lower constraints)
-print(data['b'])    # (10+10)x1 (all 2)
-print(data['W'])    # (10+10)x7 (all 0)
+print(data['H'])    # 5x5
+print(data['f'])    # 5x1 (all 0)
+print(data['f_theta'])  # 5x7
+print(data['A'])    # (5+5)x5 (upper & lower constraints)
+print(data['b'])    # (5+5))x1 (all 2)
+print(data['W'])    # (5+5)x7 (all 0)
+
+# print("here")
+# data = np.load('data/mpc_mpqp_N50.npz')
+# print(data.files)
+
+# print(data['H'])    # 10x10
+# print(data['f'])    # 10x1 (all 0)
+# print(data['f_theta'])  # 10x7
+# print(data['A'])    # (10+10)x10 (upper & lower constraints)
+# print(data['b'])    # (10+10)x1 (all 2)
+# print(data['W'])    # (10+10)x7 (all 0)
 
 # 7 is the dimension of theta (=nth)
 
