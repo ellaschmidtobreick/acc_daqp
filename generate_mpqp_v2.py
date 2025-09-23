@@ -61,3 +61,47 @@ def generate_rhs(f,F,b,B,nth,given_seed):
     btot = b + B @ theta
     ftot = f + F @ theta
     return ftot,btot
+
+## Try this out
+def banded_matrix(n, bandwidth):
+    M = np.zeros((n, n))
+    for i in range(n):
+        for j in range(max(0, i-bandwidth), min(n, i+bandwidth+1)):
+            M[i, j] = np.random.randn()
+    return M
+
+def generate_banded_qp(n, m, given_seed, bandwidth=3, nth=2):
+    np.random.seed(given_seed)
+
+    # Banded H
+    M = banded_matrix(n, bandwidth)
+    H = M @ M.T
+    f = np.random.randn(n)
+    F = np.random.randn(n, nth)
+
+    # Sparse A
+    A = banded_matrix(m, min(bandwidth, n-1))[:, :n]
+    b = np.random.rand(m)
+
+    T = np.random.randn(n, nth)
+    B = A @ (-T)
+    return H, f, F, A, b, B, T
+
+def generate_sparse_qp(n, m, given_seed, density=0.1, nth=2):
+    np.random.seed(given_seed)
+
+    # Objective (H)
+    M = np.random.randn(n, n)
+    H = M @ M.T
+    f = np.random.randn(n)
+    F = np.random.randn(n, nth)
+
+    # Constraints with sparsity
+    mask = np.random.rand(m, n) < density   # keep ~density fraction of entries
+    A = np.random.randn(m, n) * mask
+    b = np.random.rand(m)
+
+    # Transformation
+    T = np.random.randn(n, nth)
+    B = A @ (-T)
+    return H, f, F, A, b, B, T

@@ -2,7 +2,7 @@ import numpy as np
 import daqp
 from ctypes import * 
 import os
-from generate_mpqp_v2 import generate_qp
+from generate_mpqp_v2 import generate_qp, generate_banded_qp, generate_sparse_qp
 
 import torch
 from torch_geometric.data import Data
@@ -22,7 +22,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
     iter_val = int(np.rint(0.1*number_of_graphs))
     
     np.random.seed(seed)
-    H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
+    H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=3, nth = nth) #generate_qp(n,m,seed,nth)
     print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape,T.shape)
 
     print("condition number of H",np.linalg.cond(H))
@@ -151,7 +151,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
         data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:],index = i)
         # list of graph elements
         graph_val.append(data_point)
-        
+    print("Done generating train data")
         
     return graph_train, graph_val
 
@@ -171,7 +171,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         B = data["B"]
         T = data["T"]
     else:
-        H,f,F,A,b,B,T = generate_qp(n,m,seed)
+        H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=3, nth = nth) #generate_qp(n,m,seed)
         print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
     sense = np.zeros(m, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m)])
@@ -248,7 +248,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         data_point = Data(x=x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
         # list of graph elements
         graph_test.append(data_point)
-        
+
     return graph_test, test_iterations,test_time, H_test,f_test,A_test,b_test,blower_test,sense_test,n,m
 
 
