@@ -1,26 +1,28 @@
-import numpy
-from lmpc import MPC,ExplicitMPC
+# import numpy
+# from lmpc import MPC,ExplicitMPC
+
+# import os, juliacode
+# os.add_dll_directory(r"acc_daqp_env/julia_env/pyjuliapkg/install/bin")
+
+# # Continuous time system dx = A x + B u
+# A = numpy.array([[0, 1, 0, 0], [0, -10, 9.81, 0], [0, 0, 0, 1], [0, -20, 39.24, 0]])
+# B = 100*numpy.array([0,1.0,0,2.0])
+# C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
 
 
-# Continuous time system dx = A x + B u
-A = numpy.array([[0, 1, 0, 0], [0, -10, 9.81, 0], [0, 0, 0, 1], [0, -20, 39.24, 0]])
-B = 100*numpy.array([0,1.0,0,2.0])
-C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
+# # create an MPC control with sample time 0.01, prediction horizon 10 and control horizon 5 
+# Np,Nc = 10,5
+# Ts = 0.01
+# mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
 
+# # set the objective functions weights
+# mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[1.0])
 
-# create an MPC control with sample time 0.01, prediction horizon 10 and control horizon 5 
-Np,Nc = 10,5
-Ts = 0.01
-mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
+# # set actuator limits
+# mpc.set_bounds(umin=[-2.0],umax=[2.0])
 
-# set the objective functions weights
-mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[1.0])
-
-# set actuator limits
-mpc.set_bounds(umin=[-2.0],umax=[2.0])
-
-# run 
-mpc.mpqp(singlesided=True)
+# # run 
+# mpc.mpqp(singlesided=True)
 
 import numpy as np
 from generate_mpqp_v2 import generate_rhs 
@@ -43,7 +45,8 @@ from torch_geometric.data import Data
 # print(data['b'])    # (5+5))x1 (all 2)
 # print(data['W'])    # (5+5)x7 (all 0)
 
-data = np.load('data/mpc_mpqp_N10.npz')
+print("here")
+data = np.load('data/mpc_mpqp_N50.npz')
 print(data.files)
 
 print(data['H'])    # 10x10
@@ -77,51 +80,51 @@ print(data['W'])    # (10+10)x7 (all 0)
 
 
 # Set parameters
-n = [10]
-m = [20]
-nth = 7 #2
-seed = 123
-data_points = 100 #5000
-lr = 0.001
-number_of_max_epochs = 100
-layer_width = 2560 #128
-number_of_layers = 3
-track_on_wandb = False #True
-t = 0.6
+# n = [10]
+# m = [20]
+# nth = 7 #2
+# seed = 123
+# data_points = 100 #5000
+# lr = 0.001
+# number_of_max_epochs = 100
+# layer_width = 2560 #128
+# number_of_layers = 3
+# track_on_wandb = False #True
+# t = 0.6
 
-H_flexible = False
-A_flexible = False
-modelname = f"model_{n}v_{m}c_lmpc"
+# H_flexible = False
+# A_flexible = False
+# modelname = f"model_{n}v_{m}c_lmpc"
 
-import wandb
-from torch_geometric.loader import DataLoader
-from sklearn.utils.class_weight import compute_class_weight
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from model import GNN, EarlyStopping
-import torch.nn.functional as func
-import torch
-
-
+# import wandb
+# from torch_geometric.loader import DataLoader
+# from sklearn.utils.class_weight import compute_class_weight
+# from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+# from model import GNN, EarlyStopping
+# import torch.nn.functional as func
+# import torch
 
 
-#spit generated problems into train, test, val
-# iter_train = int(np.rint(0.8*number_of_graphs))
-# iter_val = int(np.rint(0.1*number_of_graphs))
 
-np.random.seed(seed)
-data_path = 'data/mpc_mpqp_N50.npz'
-data = np.load('data/mpc_mpqp_N50.npz')
-# H,f,F,A,b,B,T = generate_qp(n,m,seed)
-import re
 
-n = int(re.search(r"N(\d+)", data_path).group(1))
-m = 2*n
-print("n=",n)  # 10
-print("m=",m)  # 20
+# #spit generated problems into train, test, val
+# # iter_train = int(np.rint(0.8*number_of_graphs))
+# # iter_val = int(np.rint(0.1*number_of_graphs))
 
-H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
-print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape) #,T.shape)
-print("condition number",np.linalg.cond(H))
+# np.random.seed(seed)
+# data_path = 'data/mpc_mpqp_N50.npz'
+# data = np.load('data/mpc_mpqp_N50.npz')
+# # H,f,F,A,b,B,T = generate_qp(n,m,seed)
+# import re
+
+# n = int(re.search(r"N(\d+)", data_path).group(1))
+# m = 2*n
+# print("n=",n)  # 10
+# print("m=",m)  # 20
+
+# H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
+# print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape) #,T.shape)
+# print("condition number",np.linalg.cond(H))
 # # dimension reduction for daqp solver
 # f = f.squeeze()
 # b=b.squeeze()
