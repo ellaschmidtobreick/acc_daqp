@@ -16,7 +16,7 @@ from model import GNN, MLP
 from naive_model import naive_model
 
 # Generate test problems and the corresponding graphs
-def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard"):
+def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv"):
 
     
     # Initialization for data generation
@@ -57,7 +57,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
     # Load model
-    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width) 
+    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
     
@@ -80,7 +80,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             
             # Prediction on test data
             start_time = time.perf_counter()
-            output = model(batch,number_of_layers)
+            output = model(batch,number_of_layers,conv_type)
             preds = (output.squeeze() > t).long()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
@@ -127,12 +127,12 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                     sense_active[last_one_index] = 0
                     
             # Solve system one more time without inactive constraints to make sure no active constraints are in there
-            # print(sense_active)
+            #print(sense_active)
             # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
             # print(f"Info before: {info}")
 
             # sense_new = (lambda_after != 0).astype(np.int32)
-            # print(sense_new)
+            # #print(sense_new)
             # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_new)
             # print(f"Info after: {info}")
             # test_iterations_after[i] += list(info.values())[2]
@@ -179,11 +179,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
 
     #Plots to vizualize iterations and time
-    histogram_time(test_time_before, test_time_after,model_name, save= True)
-    histogram_prediction_time(prediction_time,model_name, save = True)
-    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    # histogram_time(test_time_before, test_time_after,model_name, save= True)
+    # histogram_prediction_time(prediction_time,model_name, save = True)
+    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
-    return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    return np.mean(prediction_time), np.mean(test_time_after)
+
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
 
@@ -227,6 +229,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     # Load model
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
+
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width) 
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
@@ -343,9 +346,9 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
 
     # Plots to vizualize iterations and time
-    histogram_time(test_time_before, test_time_after,model_name, save= True)
-    histogram_prediction_time(prediction_time,model_name, save = True)
-    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    # histogram_time(test_time_before, test_time_after,model_name, save= True)
+    # histogram_prediction_time(prediction_time,model_name, save = True)
+    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
     
-    return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-
+    #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    return np.mean(prediction_time), np.mean(test_time_after)

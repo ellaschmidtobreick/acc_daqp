@@ -14,7 +14,7 @@ from model import GNN,MLP
 from model import EarlyStopping
 
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard"):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv"):
     
     # Initialization      
     graph_train = []
@@ -69,7 +69,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     class_weights = torch.tensor(class_weights, dtype=torch.float32)
 
     # Instantiate model and optimizer
-    model = GNN(input_dim=4, output_dim=1,layer_width = 128)  # Output dimension 1 for binary classification
+    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
     # Early stopping
@@ -95,7 +95,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
-        print(f"Epoch {epoch}")
+        # print(f"Epoch {epoch}")
         train_loss = 0
         train_all_labels = []
         train_preds = []
@@ -106,7 +106,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         
         for batch in train_loader:
             optimizer.zero_grad()
-            output = model(batch,number_of_layers)
+            output = model(batch,number_of_layers,conv_type)
             output_train.extend(output.squeeze().detach().numpy().reshape(-1))
             loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
             loss.backward()
@@ -162,7 +162,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         
         with torch.no_grad():
             for batch in val_loader:
-                output = model(batch,number_of_layers)
+                output = model(batch,number_of_layers,conv_type)
                 output_val.extend(output.squeeze().detach().numpy().reshape(-1))
                 loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
                 val_loss += loss.item()
@@ -246,7 +246,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
     print(f"Perc num_wrongly_pred_nodes_per_graph: {val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
 
-
+    return val_acc_save[best_epoch-1]
 
 def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
     
@@ -304,7 +304,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     # Instantiate model and optimizer
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
-    model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = 128)  # Output dimension 1 for binary classification
+    model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)  # Output dimension 1 for binary classification
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
     # Early stopping
@@ -330,7 +330,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
 
     # Training
     for epoch in range(number_of_max_epochs):
-        print(f"Epoch {epoch}")
+        #print(f"Epoch {epoch}")
         train_loss = 0
         train_all_labels = []
         train_preds = []
@@ -481,3 +481,5 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     print(f"F1-Score of the model on the test data: {val_f1_save[best_epoch-1]}")
     print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
     print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+
+    return val_acc_save[best_epoch-1]
