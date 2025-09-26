@@ -1,7 +1,7 @@
 import numpy as np
 import daqp
 from ctypes import * 
-from generate_mpqp_v2 import generate_qp, generate_banded_qp, generate_sparse_qp
+from generate_mpqp_v2 import generate_qp, generate_banded_qp, generate_sparse_qp,generate_qp_block_sparse
 import torch
 from torch.utils.data import TensorDataset
 import os
@@ -20,7 +20,7 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
 
     if dataset_type == "standard":
         # Generate general matrices
-        H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=3, nth = nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
+        H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)# generate_qp_block_sparse(n, m, num_blocks=4, inter_block_prob=0.05, given_seed=seed, nth=nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
         np.savez(f"data/generated_MLP_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
     elif dataset_type == "lmpc":
         # Load given lmpc data
@@ -113,7 +113,7 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
             B = data["B"]
             T = data["T"]
         else:
-            H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=3, nth = nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#  #generate_qp(n,m,seed,nth)
+            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)# generate_qp_block_sparse(n, m, num_blocks=4, inter_block_prob=0.05, given_seed=seed, nth=nth)# generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#generate_qp(n,m,seed,nth)
             print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
     elif dataset_type == "lmpc":
         # Load given lmpc data
