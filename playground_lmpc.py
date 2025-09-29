@@ -11,7 +11,7 @@ C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
 
 
 # create an MPC control with sample time 0.01, prediction horizon 10 and control horizon 5 
-Np,Nc = 100,100
+Np,Nc = 50,5
 Ts = 0.01
 mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
 
