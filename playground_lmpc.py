@@ -28,7 +28,7 @@ C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
 
 # could be scenarios with varying horizons (3 differnet, tradeoff performance vs. computational time)
 # given a MPC problem with fixed horizon has a fixed sparsity pattern
-Np,Nc = 50,5
+Np,Nc = 50,50
 # Ts: sample time (discrete-time conversion of A, B to F, G)
 Ts = 0.01
 # creates the QP problem template with constraints
@@ -65,18 +65,18 @@ senses = res["senses"]
 prio = res["prio"]
 has_binaries = res["has_binaries"]
 
-# print("H",H)
-# print("condition number",numpy.linalg.cond(H))
-# print("f",f)
-# print("H_theta",H_theta)
-# print("f_theta",f_theta)
-# print("A",A)
-# print("b",b)
-# print("W",W)
-# print("senses",senses)
-# print("prio",prio)
-# print("has_binaries",has_binaries)
-#numpy.savez(f"data/mpc_mpqp_N{int(A.shape[1])}.npz", H=H, f=f, f_theta=f_theta, A=A, b=b, W=W)
+print("H",H)
+print("condition number",numpy.linalg.cond(H))
+print("f",f)
+print("H_theta",H_theta)
+print("f_theta",f_theta)
+print("A",A)
+print("b",b)
+print("W",W)
+print("senses",senses)
+print("prio",prio)
+print("has_binaries",has_binaries)
+numpy.savez(f"data/mpc_mpqp_N{int(A.shape[1])}_more_constraints.npz", H=H, f=f, f_theta=f_theta, A=A, b=b, W=W)
 
 # import numpy as np
 # from generate_mpqp_v2 import generate_rhs 
