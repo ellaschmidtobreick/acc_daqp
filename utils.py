@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
+import matplotlib.patches as mpatches
+import matplotlib.lines as mlines
 
 def boxplot_time(time_before,time_after, label, save):
     plt.rcParams.update({'font.size': 12})
@@ -116,4 +118,77 @@ def histogram_prediction_time(prediction_time,model_name, save = False):
     
     if save == True:
         plt.savefig(f"plots/histo_pred_time_{model_name}.pdf")
+    plt.show()
+
+
+def pareto_front(points):
+    """
+    points: list of (x, y) pairs
+    returns the indices of the Pareto-optimal points
+    """
+    points = np.array(points)
+    is_pareto = np.ones(points.shape[0], dtype=bool)
+    for i, (x, y) in enumerate(points):
+        if is_pareto[i]:
+            # dominated if another point is <= in both and strictly < in one
+            is_pareto[is_pareto] = np.any(points[is_pareto] < [x, y], axis=1) | np.all(points[is_pareto] == [x, y], axis=1)
+            is_pareto[i] = True  # keep current
+    return np.where(is_pareto)[0]
+
+def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
+    plt.figure(figsize=(10, 6))  # increase figure size (width x height in inches)
+    plt.tight_layout(rect=[0, 0, 0.85, 1])  # leave space on the right for the legend
+    points = np.array(points)
+    idx = pareto_front(points)
+
+    # Extract model_type and variant from the label tuples
+    model_types = [lbl[0] for lbl in labels]
+    variants = [lbl[1] for lbl in labels]
+
+    # Assign colors per model type
+    unique_types = sorted(set(model_types))
+    cmap = plt.cm.tab10
+    type_to_color = {t: cmap(i % 10) for i, t in enumerate(unique_types)}
+
+    # Assign markers per variant
+    markers = ["o", "s", "D", "^", "v", "P", "X", "*", "h", "<", ">"]
+    unique_variants = sorted(set(variants))
+    variant_to_marker = {v: markers[i % len(markers)] for i, v in enumerate(unique_variants)}
+
+    # Plot all points
+    for (x, y), t, v in zip(points, model_types, variants):
+        plt.scatter(
+            x, y,
+            color=type_to_color[t],
+            marker=variant_to_marker[v],
+            alpha=0.8, s=70, edgecolor="k",
+            label=f"{t}-{v}"
+        )
+
+    # Plot all points
+    # for (x, y), label in zip(points, labels):
+    #     plt.scatter(x, y, color=label_to_color[label], label=label, alpha=0.7, s=70, edgecolor="k")
+
+    # Plot Pareto front (sorted for line plotting)
+    pareto_points = points[idx]
+    pareto_points = pareto_points[np.argsort(pareto_points[:,0])]
+    plt.plot(pareto_points[:,0], pareto_points[:,1], "r--", linewidth=2, label="Pareto front")
+
+    # Create legend handles for model types (colors)
+    type_handles = [mpatches.Patch(color=type_to_color[t], label=t) for t in unique_types]
+    # Create legend handles for variants (markers)
+    variant_handles = [mlines.Line2D([], [], color='k', marker=variant_to_marker[v], linestyle='None', markersize=8, label=str(v)) for v in unique_variants]
+
+    # Combine legends
+    plt.legend(handles=type_handles + variant_handles, loc='upper left', title="Model Type & Layer Width")
+
+    # plt.yscale("log")
+    # plt.xscale("log")
+    # plt.xlim([np.min(points)*0.9, np.max(points)*1.1])
+    # plt.ylim([np.min(points)*0.9, np.max(points)*1.1])
+    plt.ylabel("Prediction time")
+    plt.xlabel("Solve time")
+    plt.title("Prediction vs Solve Time (Pareto Front)")
+    plt.grid(True)
+    plt.savefig(file_name)
     plt.show()
