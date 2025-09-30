@@ -28,7 +28,7 @@ C = numpy.array([[1.0, 0, 0, 0], [0, 0, 1.0, 0]])
 
 # could be scenarios with varying horizons (3 differnet, tradeoff performance vs. computational time)
 # given a MPC problem with fixed horizon has a fixed sparsity pattern
-Np,Nc = 50,5
+Np,Nc = 50,20
 # Ts: sample time (discrete-time conversion of A, B to F, G)
 Ts = 0.01
 # creates the QP problem template with constraints
@@ -40,7 +40,7 @@ mpc = MPC(A,B,Ts,C=C,Nc=Nc,Np=Np);
 # Rr: weight on input change delta u(k) = u(k)-u(k-1)
 # directly used to built matrices H and f (long complicated formula to explicitly built it)
 # scale down R<1 to get more active constraints
-mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[1.0])
+mpc.set_objective(Q=[1.44,1],R=[0.0],Rr=[0.1])
 
 
 # add more constraints
@@ -78,7 +78,7 @@ print("prio",prio)
 print("has_binaries",has_binaries)
 
 # save data
-#numpy.savez(f"data/mpc_mpqp_N{int(A.shape[1])}_more_constraints.npz", H=H, f=f, f_theta=f_theta, A=A, b=b, W=W)
+numpy.savez(f"data/mpc_mpqp_N{int(A.shape[1])}_test.npz", H=H, f=f, f_theta=f_theta, A=A, b=b, W=W)
 
 
 
