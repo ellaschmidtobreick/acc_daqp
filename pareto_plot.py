@@ -9,8 +9,8 @@ import pickle
 import daqp
 from generate_mpqp_v2 import generate_qp
 # Parameters
-n = [25]
-m = [100]
+n = [10]
+m = [40]
 nth = 7
 seed = 123
 data_points = 2000 #5000
@@ -98,12 +98,12 @@ label_vector.append(("Non-learned", "-"))
 # Save data 
 points = list(zip(solving_time_vector,prediction_time_vector))
 labels = label_vector
-with open("./data/pareto_data_25_100.pkl", "wb") as f:
+with open("./data/pareto_data_10_40.pkl", "wb") as f:
     pickle.dump((points, label_vector), f)
 
 
 # Load data
-with open("./data/pareto_data_25_100.pkl", "rb") as f:
+with open("./data/pareto_data_10_40.pkl", "rb") as f:
     points_loaded, label_vector_loaded = pickle.load(f)
 
-plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_25_100.pdf")
+plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_10_40.pdf")
