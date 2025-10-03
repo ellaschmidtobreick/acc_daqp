@@ -182,8 +182,8 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
     # Combine legends
     plt.legend(handles=type_handles + variant_handles, loc='upper left', title="Model Type & Layer Width")
 
-    # plt.yscale("log")
-    # plt.xscale("log")
+    plt.yscale("log")
+    plt.xscale("log")
     # plt.xlim([np.min(points)*0.9, np.max(points)*1.1])
     # plt.ylim([np.min(points)*0.9, np.max(points)*1.1])
     plt.ylabel("Prediction time")
@@ -191,4 +191,5 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
     plt.title("Prediction vs Solve Time (Pareto Front)")
     plt.grid(True)
     plt.savefig(file_name)
+    plt.savefig(file_name.replace(".pdf", ".png"))
     plt.show()
