@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from ctypes import * 
 from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score
+from sklearn.utils.class_weight import compute_class_weight
 
 import torch
 from torch_geometric.loader import DataLoader as GraphDataLoader
@@ -72,11 +73,11 @@ def generate_qp_graphs_svm(X,y,budget,C,gamma,seed):
         support_set.append(t)
         if len(support_set) > budget:
             # Simple budget policy: drop oldest
-            support_set.pop(0)
-            # Remove the one least contributing to the margin
-            # alphas = solve_svm_dual(X[support_set], y[support_set], C=C, gamma=gamma)
-            # min_alpha_idx = np.argmin(alphas)
-            # support_set.pop(min_alpha_idx)
+            #support_set.pop(0)
+            # # Remove the one least contributing to the margin
+            alphas = solve_svm_dual(X[support_set], y[support_set], C=C, gamma=gamma)
+            min_alpha_idx = np.argmin(alphas)
+            support_set.pop(min_alpha_idx)
         Xs, ys = X[support_set], y[support_set]
         #print(Xs.shape,ys.shape, support_set)
         
@@ -84,37 +85,58 @@ def generate_qp_graphs_svm(X,y,budget,C,gamma,seed):
 
         # optimal labels for current support set
         #y_train1 = torch.tensor(((np.zeros((Xs.shape[0])*3)))) #,np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0),np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0)))))      #### HERE HERE HERE        # 
-        y_train = torch.tensor(((np.hstack((np.zeros((X[:(t+1)].shape[0])),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0))))))
-
-        ### WRONG wRONG WRONG
-        # check def. of y_train and what should be predicted
-
-        #print(y_train.shape)
-        #print(y_train)
-        K = rbf_kernel(Xs, gamma=gamma)
-        K = rbf_kernel(X[:(t+1)], gamma=gamma)
+        #y_train = torch.tensor(((np.hstack((np.zeros((X[:(t+1)].shape[0])),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0))))))
+        # Constraints don't need to be extra nodes - so easy
+        #y_train = torch.tensor(((np.zeros((X[:(t+1)].shape[0])))))
+        y_train = torch.tensor((np.where(np.array([i in support_set for i in range(X[:(t+1)].shape[0])]), 1, 0)))
+        # print(y_train.shape)
+        # print(y_train)
         
-
-        # = np.transpose(ys)*K * ys
+        #K = rbf_kernel(Xs, gamma=gamma)
+        K = rbf_kernel(X[:(t+1)], gamma=gamma)
         H = np.transpose(y[:(t+1)])*K * y[:(t+1)]
         f = np.ones(len(y[:(t+1)])) * -1    #np.where(np.array([i in support_set for i in range(len(y))]), -1, 0)
         A = np.vstack((-np.eye(t+1), np.eye(t+1)))# , ys, -ys))
         b = np.hstack(((np.zeros(t+1)), C*np.ones(t+1))) #, 0, 0))
-        print(K.shape,H.shape,f.shape,A.shape,b.shape)
+        #print(K.shape,H.shape,f.shape,A.shape,b.shape)
 
         # graph structure does not change, only vertex features
         #combine H and A
-        edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
-        
+        #edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
+        edge_matrix = H
+
+        # normalize edge matrix 
+        row_sum = edge_matrix.sum(axis=1, keepdims=True)
+        edge_matrix = edge_matrix / (row_sum + 1e-6)
+
         # create edge_index and edge_attributes
         edge_index = torch.tensor([])
         edge_attr = torch.tensor([])
-        for j in range(np.shape(edge_matrix)[0]):
-            for k in range(np.shape(edge_matrix)[1]):
-                # add edge
-                if edge_matrix[j,k] != 0:
-                    edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
-                    edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
+        # make edge-matrix sparse by only keeping k nearest neighbors per point
+        #k = 10
+        # for j in range(t+1):
+        #     neighbors = np.argsort(edge_matrix[j])[-k:]  # top-k
+        #     print(neighbors)
+        #     for k_idx in neighbors:
+        #         edge_index = torch.cat((edge_index, torch.tensor([[j, k_idx]])), 0)
+        #         edge_attr = torch.cat((edge_attr, torch.tensor([edge_matrix[j, k_idx]])), 0)
+
+        # or only keep neighbors with stronger connection than threshold
+        threshold = 0.1  # keep only edges with |H_ij| >= threshold
+        for j in range(t+1):
+            for k in range(t+1):
+                if abs(H[j,k]) >= threshold:
+                    edge_index = torch.cat((edge_index, torch.tensor([[j, k]])), 0)
+                    edge_attr = torch.cat((edge_attr, torch.tensor([edge_matrix[j, k]])), 0)
+
+        print(t+1, edge_index.shape)
+
+        # for j in range(np.shape(edge_matrix)[0]):
+        #     for k in range(np.shape(edge_matrix)[1]):
+        #         # add edge
+        #         if edge_matrix[j,k] != 0:
+        #             edge_index = torch.cat((edge_index,torch.tensor([[j,k]])),0)
+        #             edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
         edge_index = edge_index.long().T
         
         # create new vectors filled with zeros to capture vertex features better
@@ -125,14 +147,18 @@ def generate_qp_graphs_svm(X,y,budget,C,gamma,seed):
 
         #print(f1_train.shape,b1_train.shape,eq1_train.shape)
 
-        features = np.array([f1_train, b1_train, eq1_train,node_type_train]).T
+        #features = np.array([f1_train, b1_train, eq1_train,node_type_train]).T
+        ## add coordinates to features
+        features = np.array([X[:(t+1),0],X[:(t+1),1],y[:(t+1)]]).T
+        # print(features)
+        # print(features.shape)
         x_train = torch.tensor(features, dtype=torch.float32)
-        # print(y_train)
+
         data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train)
-        #print(data_point)
+
         # list of graph elements
         graphs.append(data_point)
-        print(data_point)
+        # print(data_point)
     return graphs
 
 def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epochs,layer_width,number_of_layers,t, conv_type, model_name):
@@ -154,12 +180,12 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
     val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
     # Compute class weights for imbalanced classes
-    all_labels = np.concat([data.y for data in graph_train])
-    # class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
-    # class_weights = torch.tensor(class_weights, dtype=torch.float32)
+    all_labels = torch.tensor(np.concat([data.y for data in graph_train]))
+    class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
+    class_weights = torch.tensor(class_weights, dtype=torch.float32)
 
     # Instantiate model and optimizer
-    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
+    model = GNN(input_dim=3, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
     optimizer = torch.optim.AdamW(model.parameters(), lr = 0.001)
 
     # Early stopping
@@ -184,8 +210,8 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
             # print(output)
             output_train.extend(output.squeeze().detach().numpy().reshape(-1))
             # print(batch.y.shape)
-            print("dimensions",output.squeeze().shape, batch.y.shape)
-            loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float()) #weight=class_weights[batch.y.long()]
+            #print("dimensions",output.squeeze().shape, batch.y.shape)
+            loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float()) #weight=class_weights[batch.y.long()]
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
@@ -234,7 +260,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
             for batch in val_loader:
                 output = model(batch,number_of_layers,conv_type)
                 output_val.extend(output.squeeze().detach().numpy().reshape(-1))
-                loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+                loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
                 val_loss += loss.item()
                 preds = (output.squeeze() > t).long()
 
@@ -298,7 +324,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
     # Load model
-    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
+    model = GNN(input_dim=3, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
     
@@ -318,7 +344,9 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
             loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
             val_loss += loss.item()
             preds = (output.squeeze() > t).long()
-
+            print(output)
+            print(preds)
+            print(batch.y)
             # Store predictions and labels
             test_preds.extend(preds.numpy())
             test_all_labels.extend(batch.y.numpy())
@@ -331,7 +359,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
 
                 test_preds_graph.append(preds_graph)
                 test_all_label_graph.append(labels_graph)   
-                print(preds_graph, labels_graph)    
+                # print(preds_graph, labels_graph)    
             
     # Compute metrics
     test_acc = accuracy_score(test_all_labels, test_preds)
@@ -347,7 +375,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
     print(f"F1-Score of the model on the test data: {test_f1}")
 
 # Simulated online process
-number_of_graphs = 100
+number_of_graphs = 100 #100 #20
 support_set = []
 budget = 10
 C = 1.0
@@ -371,10 +399,14 @@ layer_width = 128
 conv_type = "LEConv"
 number_of_max_epochs = 100
 number_of_layers = 3
-t = 0.9
+t = 0.7
 model_name = "GNN_oSVM_test"
 
-print(len(graph_train), len(graph_val),len(graph_test))
-print(graph_val[0],graph_val[1])
-train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epochs,layer_width,number_of_layers,t, conv_type, model_name)
+# print(len(graph_train), len(graph_val),len(graph_test))
+# print(graph_val[0],graph_val[1])
 
+
+# for t in [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]: #=> t = 0.7 for 100 data points
+#     print("threshold:", t)
+train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epochs,layer_width,number_of_layers,t, conv_type, model_name)
+#     print()

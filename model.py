@@ -1,11 +1,15 @@
 import torch
 import torch.nn.functional as func
+from torch.nn import init 
 from torch_geometric.nn import LEConv,GCNConv,GATConv
 
 class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim,layer_width,conv_type="LEConv"):
         torch.manual_seed(123)
         super(GNN, self).__init__()
+
+        # gain = init.calculate_gain('leaky_relu', 0.1)  # for LeakyReLU slope 0.1
+        
         if conv_type == "LEConv":
             self.input_layer = LEConv(input_dim, layer_width)
             self.inner_layer = LEConv(layer_width,layer_width)
@@ -19,21 +23,37 @@ class GNN(torch.nn.Module):
             self.inner_layer = GATConv(layer_width, layer_width, heads=4, concat=False)
             self.output_layer = GATConv(layer_width, output_dim, heads=4, concat=False)
 
+        # --- initialize weights ---
+        # for layer in [self.input_layer, self.inner_layer, self.output_layer]:
+        #     if hasattr(layer, 'lin'):  # for PyG GNN layers, linear weight is usually `lin`
+        #         init.xavier_uniform_(layer.lin.weight, gain=gain)
+        #         if layer.lin.bias is not None:
+        #             init.zeros_(layer.lin.bias)
+        #     elif hasattr(layer, 'weight'):  # some layers have direct weight
+        #         init.xavier_uniform_(layer.weight, gain=gain)
+        #         if layer.bias is not None:
+        #             init.zeros_(layer.bias)
+
     def forward(self, data,number_of_layers,conv_type):
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
-
+        # print("x before standardized",x)
+        # standardize input
+        x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
+        # print("x after standardization",x)
+        # only positive edge weights
         if conv_type == "GCN" or conv_type == "GAT":
-            edge_weight = edge_weight - edge_weight.min() + 1e-6  # make all weights positive
+            edge_weight = edge_weight - edge_weight.min() + 1e-6  
             x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
 
         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
-
+        # print("x after first layer",x)
         for i in range(number_of_layers-2):
             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-
+        # print("x after inner layers",x)
         x = self.output_layer(x,edge_index,edge_weight)
+        # print("x before sigmoid",x)
         x = torch.sigmoid(x)
-        
+        # print("x after sigmoid",x)
         return x  
 
 # Define a simple GNN
