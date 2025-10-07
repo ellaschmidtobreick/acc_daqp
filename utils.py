@@ -193,3 +193,50 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
     plt.savefig(file_name)
     plt.savefig(file_name.replace(".pdf", ".png"))
     plt.show()
+
+def plot_scaling(points, labels, file_name="plots/scaling_plot_test.pdf"):
+    plt.figure(figsize=(10, 6))  # increase figure size (width x height in inches)
+    plt.tight_layout(rect=[0, 0, 0.85, 1])  # leave space on the right for the legend
+    points = np.array(points)
+    idx = pareto_front(points)
+
+    # Extract model_type and variant from the label tuples
+    model_types = [lbl[0] for lbl in labels]
+    variants = [lbl[1] for lbl in labels]
+
+    # Assign colors per model type
+    unique_types = sorted(set(model_types))
+    cmap = plt.cm.tab10
+    type_to_color = {t: cmap(i % 10) for i, t in enumerate(unique_types)}
+
+    # Plot all points
+    for (x, y), t in zip(points, model_types):
+        plt.scatter(
+            x, y,
+            color=type_to_color[t],
+            alpha=0.8, s=70, edgecolor="k",
+            label=f"{t}"
+        )
+
+    # Plot all points
+    # for (x, y), label in zip(points, labels):
+    #     plt.scatter(x, y, color=label_to_color[label], label=label, alpha=0.7, s=70, edgecolor="k")
+
+    # Create legend handles for model types (colors)
+    type_handles = [mpatches.Patch(color=type_to_color[t], label=t) for t in unique_types]
+    # Combine legends
+    plt.legend(handles=type_handles, loc='upper left', title="Model Type")
+
+    plt.yscale("log")
+    plt.xscale("log")
+    plt.xlim([np.min(points)*0.9, np.max(points)*1.1])
+    plt.ylim([np.min(points)*0.9, np.max(points)*1.1])
+    plt.ylabel("Prediction time")
+    plt.xlabel("Solve time")
+    plt.title("Prediction vs Solve Time with scaling size")
+    plt.grid(True)
+    plt.savefig(file_name)
+    plt.savefig(file_name.replace(".pdf", ".png"))
+    plt.show()
+
+    
