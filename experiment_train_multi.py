@@ -4,11 +4,13 @@ from test_model import test_GNN, test_MLP
 import matplotlib.pyplot as plt
 import time
 # Set parameters
-n = [101] #[10]
-m = [202] #[40]
-nth = 2
+n = [20, 40, 60] #[10]
+m = [40,80,120] #[40]
+# n = [500]
+# m = [1250]
+nth = 7 #2
 seed = 123
-data_points = 2000 #5000
+data_points = 1000 #5000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
@@ -17,16 +19,34 @@ track_on_wandb = False #True
 t = 0.6
 
 #GNN
+print("---- GNN ----")
 train_time_start = time.time()
 train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_100v_250c_fixedHA",dataset_type="standard")
 train_time_end = time.time()
 print(f"Training time (s): {train_time_end - train_time_start}")
-test_time_start = time.time()
+# test_time_start = time.time()
+# test_acc, test_prec, test_rec, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_100v_250c_fixedHA",dataset_type="standard") 
+# test_time_end = time.time()
+# print(f"Testing time (s): {test_time_end - test_time_start}")
+n = [80] #[10]
+m = [160]
+print("--- Testing on larger problem ---")
 test_acc, test_prec, test_rec, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_100v_250c_fixedHA",dataset_type="standard") 
-test_time_end = time.time()
-print(f"Testing time (s): {test_time_end - test_time_start}")
+
+n = [85] #[10]
+m = [170]
+print("--- Testing on larger problem ---")
+test_acc, test_prec, test_rec, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_100v_250c_fixedHA",dataset_type="standard") 
+
+
+n = [100] #[10]
+m = [200]
+print("--- Testing on larger problem ---")
+test_acc, test_prec, test_rec, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_100v_250c_fixedHA",dataset_type="standard") 
 
 # MLP 
+# print()
+# print("---- MLP ----")
 # train_time_start = time.time()
 # train_MLP(n,m,7, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,0.99, False,False,"MLP_model_100v_250c_fixedHA_lmpc",dataset_type="standard")
 # train_time_end = time.time()
@@ -35,6 +55,10 @@ print(f"Testing time (s): {test_time_end - test_time_start}")
 # MLP_test_acc, MLP_test_prec, MLP_test_rec, MLP_test_f1 = test_MLP(n,m,7, seed, data_points,layer_width,number_of_layers,0.99, False,False,"MLP_model_100v_250c_fixedHA_lmpc",dataset_type="standard")
 # test_time_end = time.time()
 # print(f"Testing time (s): {test_time_end - test_time_start}")
+# n = [80] #[10]
+# m = [160]
+# print("--- Testing on larger problem ---")
+# MLP_test_acc, MLP_test_prec, MLP_test_rec, MLP_test_f1 = test_MLP(n,m,7, seed, data_points,layer_width,number_of_layers,0.99, False,False,"MLP_model_100v_250c_fixedHA_lmpc",dataset_type="standard")
 
 
 # n_vector = list(range(1, 16, 1))

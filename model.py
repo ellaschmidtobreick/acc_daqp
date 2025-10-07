@@ -1,24 +1,45 @@
 import torch
 import torch.nn.functional as func
-from torch_geometric.nn import LEConv,GCNConv
+from torch_geometric.nn import LEConv,GCNConv,GATConv
 
 class GNN(torch.nn.Module):
-    def __init__(self, input_dim, output_dim,layer_width):
+    def __init__(self, input_dim, output_dim,layer_width,conv_type="LEConv"):
         torch.manual_seed(123)
         super(GNN, self).__init__()
-        self.input_layer = LEConv(input_dim, layer_width)
-        self.inner_layer = LEConv(layer_width,layer_width)
-        self.output_layer = LEConv(layer_width, output_dim)
+        if conv_type == "LEConv":
+            self.input_layer = LEConv(input_dim, layer_width)
+            self.inner_layer = LEConv(layer_width,layer_width)
+            self.output_layer = LEConv(layer_width, output_dim)
+        if conv_type == "GCN":
+            self.input_layer = GCNConv(input_dim, layer_width)
+            self.inner_layer = GCNConv(layer_width,layer_width)
+            self.output_layer = GCNConv(layer_width, output_dim)
+        if conv_type == "GAT":
+            self.input_layer = GATConv(input_dim, layer_width, heads=4, concat=False)
+            self.inner_layer = GATConv(layer_width, layer_width, heads=4, concat=False)
+            self.output_layer = GATConv(layer_width, output_dim, heads=4, concat=False)
 
-    def forward(self, data,number_of_layers):
+    def forward(self, data,number_of_layers,conv_type):
+        #print(data.x.min(), data.x.max())
+        #data.x = (data.x - data.x.mean(dim=0)) / (data.x.std(dim=0) + 1e-6)
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
+        if conv_type == "GCN" or conv_type == "GAT":
+            edge_weight = edge_weight - edge_weight.min() + 1e-6  # make all weights positive
+        #print(x.min(), x.max())
+            x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
+        #print(x.min(), x.max())
+        #print(torch.isnan(edge_weight).any(), edge_weight.min(), edge_weight.max())
+        #print("x before conv:", torch.isnan(x).any(), x.min(), x.max())
         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
+        #print("x after conv:", torch.isnan(x).any(), x.min(), x.max())
         for i in range(number_of_layers-2):
             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+            #print(torch.isnan(x).any())
         #x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
         x = self.output_layer(x,edge_index,edge_weight)
         # print("x", x)
         x = torch.sigmoid(x)
+        #print(torch.isnan(x).any())
         # print("x after sigmoid", x)
         return x  
 
