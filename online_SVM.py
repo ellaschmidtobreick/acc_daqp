@@ -72,25 +72,35 @@ def generate_qp_graphs_svm(X,y,budget,C,gamma,seed):
         support_set.append(t)
         if len(support_set) > budget:
             # Simple budget policy: drop oldest
-            #support_set.pop(0)
+            support_set.pop(0)
             # Remove the one least contributing to the margin
-            alphas = solve_svm_dual(X[support_set], y[support_set], C=C, gamma=gamma)
-            min_alpha_idx = np.argmin(alphas)
-            support_set.pop(min_alpha_idx)
+            # alphas = solve_svm_dual(X[support_set], y[support_set], C=C, gamma=gamma)
+            # min_alpha_idx = np.argmin(alphas)
+            # support_set.pop(min_alpha_idx)
         Xs, ys = X[support_set], y[support_set]
-
+        #print(Xs.shape,ys.shape, support_set)
+        
         alpha = solve_svm_dual(Xs, ys, C=C, gamma=gamma)
 
         # optimal labels for current support set
         #y_train1 = torch.tensor(((np.zeros((Xs.shape[0])*3)))) #,np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0),np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0)))))      #### HERE HERE HERE        # 
-        y_train = torch.tensor(((np.hstack((np.zeros((Xs.shape[0])),np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0),np.where(np.array([i in support_set for i in range(len(ys))]), 1, 0))))))
-    
+        y_train = torch.tensor(((np.hstack((np.zeros((X[:(t+1)].shape[0])),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0),np.where(np.array([i in support_set for i in range(len(y[:(t+1)]))]), 1, 0))))))
+
+        ### WRONG wRONG WRONG
+        # check def. of y_train and what should be predicted
+
+        #print(y_train.shape)
+        #print(y_train)
         K = rbf_kernel(Xs, gamma=gamma)
-        H = np.transpose(ys)*K * ys
-        f = np.ones(len(support_set)) * -1    #np.where(np.array([i in support_set for i in range(len(y))]), -1, 0)
-        A = np.vstack((-np.eye(len(support_set)), np.eye(len(support_set))))# , ys, -ys))
-        b = np.hstack((np.zeros(len(support_set)), C*np.ones(len(support_set)))) #, 0, 0))
-        #print(H.shape,f.shape,A.shape,b.shape)
+        K = rbf_kernel(X[:(t+1)], gamma=gamma)
+        
+
+        # = np.transpose(ys)*K * ys
+        H = np.transpose(y[:(t+1)])*K * y[:(t+1)]
+        f = np.ones(len(y[:(t+1)])) * -1    #np.where(np.array([i in support_set for i in range(len(y))]), -1, 0)
+        A = np.vstack((-np.eye(t+1), np.eye(t+1)))# , ys, -ys))
+        b = np.hstack(((np.zeros(t+1)), C*np.ones(t+1))) #, 0, 0))
+        print(K.shape,H.shape,f.shape,A.shape,b.shape)
 
         # graph structure does not change, only vertex features
         #combine H and A
@@ -122,7 +132,7 @@ def generate_qp_graphs_svm(X,y,budget,C,gamma,seed):
         #print(data_point)
         # list of graph elements
         graphs.append(data_point)
-
+        print(data_point)
     return graphs
 
 def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epochs,layer_width,number_of_layers,t, conv_type, model_name):
@@ -139,9 +149,8 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
     val_f1_save = []
 
     # Load Data
-    train_batch_size = 64
+    train_batch_size = 16
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=False)
-    print((graph_val))
     val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
     # Compute class weights for imbalanced classes
@@ -175,7 +184,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
             # print(output)
             output_train.extend(output.squeeze().detach().numpy().reshape(-1))
             # print(batch.y.shape)
-            
+            print("dimensions",output.squeeze().shape, batch.y.shape)
             loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float()) #weight=class_weights[batch.y.long()]
             loss.backward()
             optimizer.step()
@@ -321,7 +330,8 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
                 labels_graph = batch.y[mask].numpy()
 
                 test_preds_graph.append(preds_graph)
-                test_all_label_graph.append(labels_graph)       
+                test_all_label_graph.append(labels_graph)   
+                print(preds_graph, labels_graph)    
             
     # Compute metrics
     test_acc = accuracy_score(test_all_labels, test_preds)
@@ -337,7 +347,7 @@ def train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epo
     print(f"F1-Score of the model on the test data: {test_f1}")
 
 # Simulated online process
-number_of_graphs = 200
+number_of_graphs = 100
 support_set = []
 budget = 10
 C = 1.0
@@ -364,5 +374,7 @@ number_of_layers = 3
 t = 0.9
 model_name = "GNN_oSVM_test"
 
+print(len(graph_train), len(graph_val),len(graph_test))
+print(graph_val[0],graph_val[1])
 train_val_test_GNN_oSVM(graph_train, graph_val,graph_test, number_of_max_epochs,layer_width,number_of_layers,t, conv_type, model_name)
 

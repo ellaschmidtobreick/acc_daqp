@@ -1,16 +1,14 @@
-import torch.nn as nn
-import torch_geometric.nn as pyg_nn
 from train_model import train_GNN, train_MLP
 from test_model import test_GNN, test_MLP
 import numpy as np
 from utils import plot_pareto
-import matplotlib.pyplot as plt
 import pickle
 import daqp
 from generate_mpqp_v2 import generate_qp
+
 # Parameters
-n = [10]
-m = [40]
+n = [250]
+m = [1000]
 nth = 7
 seed = 123
 data_points = 2000 #5000
@@ -34,16 +32,16 @@ for j in layer_width:
     for k in number_of_layers:
         for i in conv_types:
             print(f"--- GNN, Conv: {i}, Layer width: {j}, Number of layers: {k} ---")
-            train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"model_10v_40c_pareto",dataset_type="standard", conv_type=i)
-            prediction_time, test_time_after = test_GNN(n,m,nth, seed, data_points,j,k,t, False,False,"model_10v_40c_pareto",dataset_type="standard",conv_type=i) 
+            train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"model_pareto",dataset_type="standard", conv_type=i)
+            prediction_time, test_time_after = test_GNN(n,m,nth, seed, data_points,j,k,t, False,False,"model_pareto",dataset_type="standard",conv_type=i) 
             prediction_time_vector.append(prediction_time)
             solving_time_vector.append(test_time_after)
             label_vector.append((f"GNN - {i}", f"{k} layers"))
             print()
 
         print(f"--- MLP, Layer width: {j}, Number of layers: {k} ---")
-        train_MLP(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"MLP_model_10v_40c_pareto",dataset_type="standard")
-        prediction_time, test_time_after = test_MLP(n,m,nth, seed, data_points,j,k,t, False,False,"MLP_model_10v_40c_pareto",dataset_type="standard")
+        train_MLP(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"MLP_model_pareto",dataset_type="standard")
+        prediction_time, test_time_after = test_MLP(n,m,nth, seed, data_points,j,k,t, False,False,"MLP_model_pareto",dataset_type="standard")
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         label_vector.append(("MLP",f"{k} layers"))
@@ -98,12 +96,12 @@ label_vector.append(("Non-learned", "-"))
 # Save data 
 points = list(zip(solving_time_vector,prediction_time_vector))
 labels = label_vector
-with open("./data/pareto_data_10_40.pkl", "wb") as f:
+with open("./data/pareto_data_250_1000.pkl", "wb") as f:
     pickle.dump((points, label_vector), f)
 
 
 # Load data
-with open("./data/pareto_data_10_40.pkl", "rb") as f:
+with open("./data/pareto_data_250_1000.pkl", "rb") as f:
     points_loaded, label_vector_loaded = pickle.load(f)
 
-plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_10_40.pdf")
+plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_250_1000.pdf")
