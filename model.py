@@ -20,27 +20,20 @@ class GNN(torch.nn.Module):
             self.output_layer = GATConv(layer_width, output_dim, heads=4, concat=False)
 
     def forward(self, data,number_of_layers,conv_type):
-        #print(data.x.min(), data.x.max())
-        #data.x = (data.x - data.x.mean(dim=0)) / (data.x.std(dim=0) + 1e-6)
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
+
         if conv_type == "GCN" or conv_type == "GAT":
             edge_weight = edge_weight - edge_weight.min() + 1e-6  # make all weights positive
-        #print(x.min(), x.max())
             x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
-        #print(x.min(), x.max())
-        #print(torch.isnan(edge_weight).any(), edge_weight.min(), edge_weight.max())
-        #print("x before conv:", torch.isnan(x).any(), x.min(), x.max())
+
         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
-        #print("x after conv:", torch.isnan(x).any(), x.min(), x.max())
+
         for i in range(number_of_layers-2):
             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-            #print(torch.isnan(x).any())
-        #x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+
         x = self.output_layer(x,edge_index,edge_weight)
-        # print("x", x)
         x = torch.sigmoid(x)
-        #print(torch.isnan(x).any())
-        # print("x after sigmoid", x)
+        
         return x  
 
 # Define a simple GNN
