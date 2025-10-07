@@ -5,6 +5,7 @@ from generate_graph_data import generate_qp_graphs_train_val_lmpc, generate_qp_g
 from train_model import train_GNN, train_MLP
 from test_model import test_GNN, test_MLP
 import matplotlib.pyplot as plt
+import time
 
 # data = np.load('data/mpc_mpqp_N50.npz')
 # print(data.files)
@@ -18,8 +19,8 @@ import matplotlib.pyplot as plt
 
 
 # Set parameters
-n = [25]
-m = [50]
+n = [10,25]
+m = [20,50]
 nth = 7
 seed = 123
 data_points = 5000 #5000
@@ -48,27 +49,52 @@ n_number = n[0]
 # for t in [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]:
 #     print("threshold:", t)
 
-text_time_before_vector , text_time_after_vector, test_time_reduction_vector, prediction_time_vector = [], [], [], []
-for i in range(5):
-    # train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",scale_H=scale,dataset_type="lmpc")
-    # text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
+# train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",scale_H=scale,dataset_type="lmpc")
+# text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
+
+# n = [50]
+# m = [100]
+# text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
+
+
+
+# Fill the table including std
+# text_time_before_vector , text_time_after_vector, test_time_reduction_vector, prediction_time_vector = [], [], [], []
+# for i in range(5):
+#     # train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",scale_H=scale,dataset_type="lmpc")
+#     # text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
     
-    # test MLP on given lmpc data 
-    train_MLP(n,m,7, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,0.99, False,False,"MLP_model_25v_50c_fixedHA_lmpc",dataset_type="lmpc")
-    text_time_before, text_time_after, test_time_reduction, prediction_time = test_MLP(n,m,7, seed, data_points,layer_width,number_of_layers,0.99, False,False,"MLP_model_25v_50c_fixedHA_lmpc",dataset_type="lmpc")
+#     # test MLP on given lmpc data 
+#     train_MLP(n,m,7, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,0.99, False,False,"MLP_model_25v_50c_fixedHA_lmpc",dataset_type="lmpc")
+#     text_time_before, text_time_after, test_time_reduction, prediction_time = test_MLP(n,m,7, seed, data_points,layer_width,number_of_layers,0.99, False,False,"MLP_model_25v_50c_fixedHA_lmpc",dataset_type="lmpc")
 
 
 
-    text_time_before_vector.append(text_time_before)
-    text_time_after_vector.append(text_time_after)
-    test_time_reduction_vector.append(test_time_reduction)
-    prediction_time_vector.append(prediction_time)
-    # recall_scores.append(recall)
-    # precision_scores.append(precision)
+#     text_time_before_vector.append(text_time_before)
+#     text_time_after_vector.append(text_time_after)
+#     test_time_reduction_vector.append(test_time_reduction)
+#     prediction_time_vector.append(prediction_time)
+#     # recall_scores.append(recall)
+#     # precision_scores.append(precision)
 
-print(f"Average test time before: {np.mean(text_time_before_vector), np.std(text_time_before_vector)}")
-print(f"Average test time after: {np.mean(text_time_after_vector), np.std(text_time_after_vector)}")   
-print(f"Average test time reduction: {np.mean(test_time_reduction_vector), np.std(test_time_reduction_vector)}")
-print(f"Average prediction time: {np.mean(prediction_time_vector), np.std(prediction_time_vector)}")
+# print(f"Average test time before: {np.mean(text_time_before_vector), np.std(text_time_before_vector)}")
+# print(f"Average test time after: {np.mean(text_time_after_vector), np.std(text_time_after_vector)}")   
+# print(f"Average test time reduction: {np.mean(test_time_reduction_vector), np.std(test_time_reduction_vector)}")
+# print(f"Average prediction time: {np.mean(prediction_time_vector), np.std(prediction_time_vector)}")
 
+# n = [10] #5,10, 20,50
+# m = [20] # 206,216, 236, 296
+
+# train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",scale_H=scale,dataset_type="lmpc")
+# prediction_time,text_time_after = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",dataset_type="lmpc")
+
+n = [10] #5,10, 20,50
+m = [216] # 206,216, 236, 296
+
+train_time_start = time.time()
+train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",scale_H=scale,dataset_type="lmpc")
+train_time_end = time.time()
+# n=[20]
+# m=[40]
+prediction_time,text_time_after = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",dataset_type="lmpc")
 

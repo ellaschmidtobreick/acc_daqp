@@ -246,6 +246,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
     print(f"Perc num_wrongly_pred_nodes_per_graph: {val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
 
+    print(np.sum(train_all_labels), len(train_all_labels),np.sum(train_all_labels)/len(train_all_labels))
     return val_acc_save[best_epoch-1]
 
 def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
