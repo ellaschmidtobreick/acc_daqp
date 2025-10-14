@@ -261,7 +261,7 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
     
     np.random.seed(seed)
     
-    data = np.load(f'data/mpc_mpqp_N{n}_more_constraints.npz') #test #_more_constraints
+    data = np.load(f'data/mpc_mpqp_N{n}_R_01.npz') #test #_more_constraints
 
     H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
     

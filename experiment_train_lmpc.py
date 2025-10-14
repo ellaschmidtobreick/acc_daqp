@@ -29,7 +29,7 @@ number_of_max_epochs = 100 # 20 #100
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t = 0.99 #9
+t = 0.5 #9
 scale = 0.01
 n_number = n[0]
 
@@ -49,8 +49,9 @@ n_number = n[0]
 # for t in [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]:
 #     print("threshold:", t)
 
-# train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",scale_H=scale,dataset_type="lmpc")
-# text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
+#     train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",scale_H=scale,dataset_type="lmpc")
+#     text_time_before, text_time_after, test_time_reduction, prediction_time = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n_number}v_{2*n_number}c_lmpc",dataset_type="lmpc")
+#     print()
 
 # n = [50]
 # m = [100]
@@ -88,13 +89,13 @@ n_number = n[0]
 # train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",scale_H=scale,dataset_type="lmpc")
 # prediction_time,text_time_after = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",dataset_type="lmpc")
 
-n = [10] #5,10, 20,50
-m = [216] # 206,216, 236, 296
+n = [50] #5,10, 20,50
+m = [296] # 206,216, 236, 296
 
 train_time_start = time.time()
-train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",scale_H=scale,dataset_type="lmpc")
+train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc_R_00001",scale_H=scale,dataset_type="lmpc")
 train_time_end = time.time()
 # n=[20]
 # m=[40]
-prediction_time,text_time_after = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc",dataset_type="lmpc")
+prediction_time,text_time_after = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc_R_00001",dataset_type="lmpc")
 
