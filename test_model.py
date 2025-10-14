@@ -71,7 +71,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     graph_pred = []
     num_wrongly_pred_nodes_per_graph = []
     perc_wrongly_pred_nodes_per_graph = []
-    
+    test_all_label_graph = []
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
@@ -98,15 +98,16 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             preds_numpy = preds.numpy().reshape(-1,n+m)
             all_labels = batch.y.numpy().reshape(-1,n+m)
             graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
-            
+            test_all_label_graph.append(np.array(all_labels))
+
             num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
             perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
-            #if i<5:
-            #    W_true = (batch.y.numpy()[n:] != 0).astype(int).nonzero()[0]
-            #    W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-            #    print(f"W_true: {W_true}")
-            #    print(f"W_pred: {W_pred}")
+            if i<5:
+               W_true = (batch.y.numpy()[n:] != 0).astype(int).nonzero()[0]
+               W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
+               print(f"W_true: {W_true}")
+               print(f"W_pred: {W_pred}")
 
 
             # Solve QPs with predicted active sets
@@ -138,7 +139,15 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # test_iterations_after[i] += list(info.values())[2]
             # test_time_after[i] += list(info.values())[0]   # only consider solve time, since the daqp solver could be optimized such that the set-up only needs to be done once
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
-            
+
+
+
+    count_all_zero = 0
+    for labels_graph in test_all_label_graph:
+        if np.all(labels_graph == 0):
+            count_all_zero += 1
+
+
     # Compute metrics
     test_acc = accuracy_score(test_all_labels, test_preds)
     test_acc_graph = np.mean(graph_pred)
@@ -169,6 +178,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print()
     print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
     print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
+    print(len(test_all_label_graph))
+    print(f"Number of graph without an active constraint: {count_all_zero} / {count_all_zero / len(test_all_label_graph)*100}%")
     print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
     print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
     print(f'Test time reduction: mean {np.mean(np.array(test_time_before)-np.array(test_time_after))}, min {np.min(np.array(test_time_before)-np.array(test_time_after))}, max {np.max(np.array(test_time_before)-np.array(test_time_after))}')
@@ -179,9 +190,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
 
     #Plots to vizualize iterations and time
-    # histogram_time(test_time_before, test_time_after,model_name, save= True)
-    # histogram_prediction_time(prediction_time,model_name, save = True)
-    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    histogram_time(test_time_before, test_time_after,model_name, save= True)
+    histogram_prediction_time(prediction_time,model_name, save = True)
+    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
     return np.mean(prediction_time), np.mean(test_time_after)
