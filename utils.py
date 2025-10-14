@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
+import matplotlib
 
 def boxplot_time(time_before,time_after, label, save):
     plt.rcParams.update({'font.size': 12})
@@ -239,4 +240,41 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test.pdf"):
     plt.savefig(file_name.replace(".pdf", ".png"))
     plt.show()
 
-    
+def plot_scaling2(points, labels, file_name="plots/scaling_plot_test.pdf"):
+    plt.rcParams.update({'font.size': 12})
+
+    points = np.array(points)
+    labels = np.array(labels)[:, 0]
+
+    model_types = np.unique(labels)
+    colors = ["blue", "orange"]
+
+    fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
+    if len(model_types) == 1:
+        axes = [axes]
+
+    for ax, model in zip(axes, model_types):
+        ax.set_title(model)
+        ax.set_xlabel("Total graph size")
+        ax.set_yscale("log")
+        ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+
+        # use ax, not plt
+        ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
+        ax.grid(which="major", linestyle="-", linewidth=0.7)
+        ax.grid(which="minor", visible=False)
+
+        model_mask = labels == model
+        model_points = points[model_mask]
+
+        ax.scatter(np.arange(len(model_points)) * 5, model_points[:, 0], color=colors[1], label="Solving Time")
+        if model != "Non-learned":
+            ax.scatter(np.arange(len(model_points)) * 5, model_points[:, 1], color=colors[0], label="Prediction Time")
+
+    axes[0].set_ylabel("Time (seconds)")
+    axes[0].legend(loc="upper left")
+
+    plt.tight_layout()
+    plt.savefig(file_name)
+    plt.savefig(file_name.replace(".pdf", ".png"))
+    # plt.show()
