@@ -91,8 +91,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             prediction_time[i] = end_time - start_time
             
             # Store predictions and labels
-            test_preds.extend(preds.numpy())
-            test_all_labels.extend(batch.y.numpy())
+            test_preds.extend(preds.cpu().numpy())
+            test_all_labels.extend(batch.y.cpu().numpy())
 
             # print(np.where(preds.numpy() == 1)[0])
             # print(np.where(batch.y.numpy() == 1)[0])
@@ -100,8 +100,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             # Compute graph metrics
             preds = preds.reshape(-1,n+m)
-            preds_numpy = preds.numpy().reshape(-1,n+m)
-            all_labels = batch.y.numpy().reshape(-1,n+m)
+            preds_numpy = preds.cpu().numpy().reshape(-1,n+m)
+            all_labels = batch.y.cpu().numpy().reshape(-1,n+m)
             graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
             test_all_label_graph.append(np.array(all_labels))
 
@@ -109,14 +109,14 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
             if i<5:
-               W_true = (batch.y.numpy()[n:] != 0).astype(int).nonzero()[0]
+               W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0]
                W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
                print(f"W_true: {W_true}")
                print(f"W_pred: {W_pred}")
 
 
             # Solve QPs with predicted active sets
-            sense_active = preds.flatten().numpy().astype(np.int32)[n:]
+            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]
             exitflag = -6
             blower_i = np.array(blower[i], copy=True)
 
@@ -281,8 +281,8 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
             prediction_time[i] = end_time - start_time
         
             # Store predictions and labels
-            test_preds.extend(preds.numpy().flatten())
-            test_all_labels.extend(batch[1].numpy().flatten())
+            test_preds.extend(preds.cpu().numpy().flatten())
+            test_all_labels.extend(batch[1].cpu().numpy().flatten())
 
             # print(np.where(preds.numpy().flatten() == 1)[0])
             # print(np.where(batch[1].numpy().flatten()== 1)[0])
@@ -292,8 +292,8 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
 
             # Compute graph metrics
             preds = preds.reshape(-1,n+m)
-            preds_numpy = preds.numpy().reshape(-1,n+m)
-            all_labels = batch[1].numpy().reshape(-1,n+m)
+            preds_numpy = preds.cpu().numpy().reshape(-1,n+m)
+            all_labels = batch[1].cpu().numpy().reshape(-1,n+m)
             graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
             
             num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
@@ -307,7 +307,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
 
 
             # Solve QPs with predicted active sets
-            sense_active = preds.flatten().numpy().astype(np.int32)[n:]
+            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]
             exitflag = -6
             #blower_i = np.array(blower[i], copy=True)
 
