@@ -32,6 +32,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     n_vector = []
     m_vector = []
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+
     # Generate test data
     for i in range(len(n)):
         n_i = n[i]
@@ -58,6 +61,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
     # Load model
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
+    model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
     
@@ -75,6 +79,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
+            batch = batch.to(device)
             n = int(n_vector[i])
             m = int(m_vector[i])
             
@@ -213,6 +218,9 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     n_vector = []
     m_vector = []
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+
     # Generate test data
     #data_test, test_iterations_before,test_time_before, H_test,f_test,A_test,b_test,blower,_,n,m = generate_MLP_test_data_only(n,m,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
 
@@ -241,7 +249,8 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
 
-    model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width) 
+    model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)
+    model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
     
@@ -260,6 +269,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
+            batch = batch.to(device)
             n = int(n_vector[i])
             m = int(m_vector[i])
             
