@@ -70,7 +70,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train])
     class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
-    class_weights = torch.tensor(class_weights, dtype=torch.float32)
+    class_weights = torch.tensor(class_weights, dtype=torch.float32).to(device)
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
@@ -311,7 +311,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     #all_labels = data_train.tensors[1]
     all_labels = torch.cat([data[1] for data in data_train])
     class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy().flatten())
-    class_weights = torch.tensor(class_weights, dtype=torch.float32)
+    class_weights = torch.tensor(class_weights, dtype=torch.float32).to(device)
 
     # Instantiate model and optimizer
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
