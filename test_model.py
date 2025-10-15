@@ -269,7 +269,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
-            batch = batch.to(device)
+            batch = [b.to(device) for b in batch]
             n = int(n_vector[i])
             m = int(m_vector[i])
             

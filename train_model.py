@@ -353,7 +353,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         train_preds_graph = []
         
         for batch in train_loader:
-            batch = batch.to(device) 
+            batch = [b.to(device) for b in batch]
             optimizer.zero_grad()
             output = model(batch[0])
             output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
