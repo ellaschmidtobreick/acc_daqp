@@ -113,7 +113,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             batch = batch.to(device)
             optimizer.zero_grad()
             output = model(batch,number_of_layers,conv_type)
-            output_train.extend(output.squeeze().detach().numpy().reshape(-1))
+            output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
             loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
             loss.backward()
             optimizer.step()
@@ -123,8 +123,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             preds = (output.squeeze() > t).long()
 
             # Store predictions and true labels
-            train_preds.extend(preds.numpy())   
-            train_all_labels.extend(batch.y.numpy())
+            train_preds.extend(preds.cpu().numpy())   
+            train_all_labels.extend(batch.y.cpu().numpy())
             
 
             # print("true labels",batch.y.shape, torch.nonzero(batch.y).squeeze().detach().numpy())
@@ -135,8 +135,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             # Save per graph predictions and labels
             for i in range(batch.num_graphs):
                 mask = batch.batch == i
-                preds_graph = preds[mask].numpy()
-                labels_graph = batch.y[mask].numpy()
+                preds_graph = preds[mask].cpu().numpy()
+                labels_graph = batch.y[mask].cpu().numpy()
                 
                 #print(np.sum(preds_graph),np.sum(labels_graph))
 
@@ -170,21 +170,21 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             for batch in val_loader:
                 batch = batch.to(device)
                 output = model(batch,number_of_layers,conv_type)
-                output_val.extend(output.squeeze().detach().numpy().reshape(-1))
+                output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
                 loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
 
                 val_loss += loss.item()
                 preds = (output.squeeze() > t).long()
 
                 # Store predictions and labels
-                val_preds.extend(preds.numpy())
-                val_all_labels.extend(batch.y.numpy())
+                val_preds.extend(preds.cpu().numpy())
+                val_all_labels.extend(batch.y.cpu().numpy())
                 
                 # Store per graph predictions and labels
                 for i in range(batch.num_graphs):
                     mask = batch.batch == i
-                    preds_graph = preds[mask].numpy()
-                    labels_graph = batch.y[mask].numpy()
+                    preds_graph = preds[mask].cpu().numpy()
+                    labels_graph = batch.y[mask].cpu().numpy()
 
                     val_preds_graph.append(preds_graph)
                     val_all_label_graph.append(labels_graph)                
@@ -356,7 +356,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             batch = batch.to(device) 
             optimizer.zero_grad()
             output = model(batch[0])
-            output_train.extend(output.squeeze().detach().numpy().reshape(-1))
+            output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
             loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())
             loss.backward()
             optimizer.step()
@@ -366,14 +366,14 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             preds = (output.squeeze() > t).long()
 
             # Store predictions and true labels
-            train_preds.extend(preds.numpy().flatten())   
-            train_all_labels.extend(batch[1].numpy().flatten())
+            train_preds.extend(preds.cpu().numpy().flatten())   
+            train_all_labels.extend(batch[1].cpu().numpy().flatten())
             
             # # Save per graph predictions and labels
             for i in range(batch[1].shape[0]):
                 #mask = batch.batch == i
-                preds_graph = preds[i].numpy()
-                labels_graph = batch[1][i].numpy()
+                preds_graph = preds[i].cpu().numpy()
+                labels_graph = batch[1][i].cpu().numpy()
 
                 train_preds_graph.append(preds_graph)
                 train_all_label_graph.append(labels_graph)
@@ -409,20 +409,20 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         with torch.no_grad():
             for batch in val_loader:
                 output = model(batch[0])
-                output_val.extend(output.squeeze().detach().numpy().reshape(-1))
+                output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
                 loss = torch.nn.BCELoss()(output.squeeze(), batch[1].float())
                 val_loss += loss.item()
                 preds = (output.squeeze() > t).long()
 
                 # Store predictions and labels
-                val_preds.extend(preds.numpy().flatten())
-                val_all_labels.extend(batch[1].numpy().flatten())
+                val_preds.extend(preds.cpu().numpy().flatten())
+                val_all_labels.extend(batch[1].cpu().numpy().flatten())
                 
                 # Store per graph predictions and labels
                 for i in range(batch[1].shape[0]):
                     #mask = batch.batch == i
-                    preds_graph = preds[i].numpy()
-                    labels_graph = batch[1][i].numpy()
+                    preds_graph = preds[i].cpu().numpy()
+                    labels_graph = batch[1][i].cpu().numpy()
 
                     val_preds_graph.append(preds_graph)
                     val_all_label_graph.append(labels_graph)                
