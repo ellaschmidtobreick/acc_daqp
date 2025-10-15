@@ -41,6 +41,10 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     train_perc_wrongly_pred_nodes_per_graph_save = []
     train_mean_wrongly_pred_nodes_per_graph_save = []
 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+
+
     # Generate QP problems and the corresponding graphs
     for i in range(len(n)):
         n_i = n[i]
@@ -70,6 +74,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
+    model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
     # Early stopping
@@ -105,10 +110,11 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         train_preds_graph = []
         
         for batch in train_loader:
+            batch = batch.to(device)
             optimizer.zero_grad()
             output = model(batch,number_of_layers,conv_type)
             output_train.extend(output.squeeze().detach().numpy().reshape(-1))
-            loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()])(output.squeeze(), batch.y.float())
+            loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
@@ -162,9 +168,11 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         
         with torch.no_grad():
             for batch in val_loader:
+                batch = batch.to(device)
                 output = model(batch,number_of_layers,conv_type)
                 output_val.extend(output.squeeze().detach().numpy().reshape(-1))
                 loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+
                 val_loss += loss.item()
                 preds = (output.squeeze() > t).long()
 
@@ -276,6 +284,9 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     train_perc_wrongly_pred_nodes_per_graph_save = []
     train_mean_wrongly_pred_nodes_per_graph_save = []
     
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+
     # Generate QP problems and the corresponding graphs
     for i in range(len(n)):
         n_i = n[i]
@@ -306,6 +317,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)  # Output dimension 1 for binary classification
+    model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
     # Early stopping
@@ -341,10 +353,11 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         train_preds_graph = []
         
         for batch in train_loader:
+            batch = batch.to(device) 
             optimizer.zero_grad()
             output = model(batch[0])
             output_train.extend(output.squeeze().detach().numpy().reshape(-1))
-            loss = torch.nn.BCELoss(weight=class_weights[batch[1]])(output.squeeze(), batch[1].float())
+            loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())
             loss.backward()
             optimizer.step()
             train_loss += loss.item()

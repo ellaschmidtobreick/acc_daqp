@@ -18,8 +18,8 @@ import time
 # n = np.arange(0,2001,10)
 # m = np.arange(0,2001,10)*4
 
-n = [2000]
-m = [8000]
+n = [20] #00]
+m = [80] #00]
 
 print(n)
 print(m)
