@@ -63,14 +63,15 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
 
     # Load Data
-    train_batch_size = 16
+    train_batch_size = 16 #32 # 64
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
     val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
     # Compute class weights for imbalanced classes
-    all_labels = torch.cat([data.y for data in graph_train])
-    class_weights = compute_class_weight('balanced', classes=torch.unique(all_labels).numpy(), y=all_labels.numpy())
-    class_weights = torch.tensor(class_weights, dtype=torch.float32).to(device)
+    all_labels = torch.cat([data.y for data in graph_train]).to(device)
+    unique_classes = torch.unique(all_labels)
+    class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu.numpy()) # torch.unique(all_labels).numpy()
+    class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device) # torch.tensor(class_weights, dtype=torch.float32).to(device)
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
