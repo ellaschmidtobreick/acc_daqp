@@ -241,7 +241,7 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test.pdf"):
     plt.show()
 
 def plot_scaling2(points, labels, file_name="plots/scaling_plot_test.pdf"):
-    plt.rcParams.update({'font.size': 12})
+    plt.rcParams.update({'font.size': 14})
 
     points = np.array(points)
     labels = np.array(labels)[:, 0]
