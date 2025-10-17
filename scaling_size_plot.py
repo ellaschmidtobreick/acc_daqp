@@ -9,17 +9,17 @@ import pickle
 import daqp
 from generate_mpqp_v2 import generate_qp
 import time
+import torch
 # Parameters
 # n = [20,40,60,80,100,120,140,160,180,200] # 2h 20 min 
 # m = [80,160,240,320,400,480,560,640,720,800]
 # # n= [2,4,8,16]
 # # m = [8,16,32,64]
+n = np.arange(0,301,10)[1:]
+m = np.arange(0,301,10)[1:]*4
 
-# n = np.arange(0,2001,10)
-# m = np.arange(0,2001,10)*4
-
-n = [20] #00]
-m = [80] #00]
+#n = [400]
+#m = [1600]
 
 print(n)
 print(m)
@@ -37,6 +37,7 @@ A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
 
+torch.cuda.empty_cache()
 start_time = time.time()
 # Run experiments
 prediction_time_vector , solving_time_vector, label_vector = [], [], []
@@ -103,19 +104,17 @@ for n_i,m_i in zip(n,m):
     solving_time_vector.append(np.mean(daqp_time))
     prediction_time_vector.append(np.mean(daqp_time))
     label_vector.append(("Non-learned", "-"))
+    # Save data 
+    points = list(zip(solving_time_vector,prediction_time_vector))
+    labels = label_vector
+    with open("./data/scaling_data_big_test.pkl", "wb") as f:
+        pickle.dump((points, label_vector), f)
 
 end_time = time.time()
-print("Total time for experiments (s):", end_time - start_time)
-
-# Save data 
-points = list(zip(solving_time_vector,prediction_time_vector))
-labels = label_vector
-with open("./data/scaling_data_big_test.pkl", "wb") as f:
-    pickle.dump((points, label_vector), f)
-
-
+print("Total time for experiments(s):", end_time - start_time)
 # Load data
 with open("./data/scaling_data_big_test.pkl", "rb") as f:
     points_loaded, label_vector_loaded = pickle.load(f)
 
 plot_scaling2(points_loaded, label_vector_loaded,"plots/scaling_plot_new_test.pdf")
+print("Done")

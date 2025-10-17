@@ -1,0 +1,2931 @@
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_scatter/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:97: UserWarning: An issue occurred while importing 'torch-cluster'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_cluster/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-cluster'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:113: UserWarning: An issue occurred while importing 'torch-spline-conv'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_spline_conv/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_sparse/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'repr' attribute with value False was provided to the `Field()` function, which has no effect in the context it was used. 'repr' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'frozen' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'frozen' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+[ 10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170 180
+ 190 200 210 220 230 240 250 260 270 280 290 300]
+[  40   80  120  160  200  240  280  320  360  400  440  480  520  560
+  600  640  680  720  760  800  840  880  920  960 1000 1040 1080 1120
+ 1160 1200]
+--- GNN, variables [np.int64(10)], constraints [np.int64(40)] ---
+Using device: cuda
+(10, 10) (10,) (10, 7) (40, 10) (40,) (40, 7) (10, 7)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 22 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8523
+Precision of the model on the test data: 0.5083751381685231
+Recall of the model on the test data: 0.9793611793611794
+F1-Score of the model on the test data: 0.6693160192544498
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1477
+VALIDATION
+Accuracy (node level) of the final model: 0.8407
+Precision of the model on the test data: 0.4913086257789439
+Recall of the model on the test data: 0.9727272727272728
+F1-Score of the model on the test data: 0.652865548049684
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15930000000000002
+12210.0 80000 0.152625
+Using device: cuda
+W_true: [ 3  4  6  9 11 12 14 15 16]
+W_pred: [ 0  2  3  4  5  6  7  8  9 11 12 14 15 16]
+W_true: [ 2  5  6  9 10 12 15 18]
+W_pred: [ 0  2  3  4  5  6  7  9 10 11 12 15 16 17 18]
+W_true: [ 3  4  6  9 11 12 14 16]
+W_pred: [ 0  1  2  3  4  6  7  8  9 11 12 13 14 15 16 17 18]
+W_true: [ 2  6  7  9 11 12 15 18]
+W_pred: [ 2  3  4  5  6  7  9 10 11 12 15 16 17 18]
+W_true: [ 1  3  4  6 11 12 14 15 16 18]
+W_pred: [ 0  1  2  3  4  6  7  8  9 11 12 13 14 15 16 17 18]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8476
+Precision of the model on the test data: 0.503592423252776
+Recall of the model on the test data: 0.9974126778783958
+F1-Score of the model on the test data: 0.6692708333333334
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15187363184079605
+PR AUC: 0.7507025505655859
+
+NAIVE MODEL: acc = 0.8454, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.15460000000000002
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5773
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 7.62
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 5.84959e-06, min 2.275e-06, max 1.7946e-05
+Test time after: mean 5.982489999999999e-06, min 2.082e-06, max 1.5224e-05
+Test time reduction: mean -1.329e-07, min -3.1100000000000007e-06, max 4.4969999999999995e-06
+Prediction time: mean 0.0010542152542620897, min 0.0010156184434890747, max 0.001658424735069275
+Test iter before: mean 13.35, min 4, max 24
+Test iter after: mean 13.35, min 4.0, max 24.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(10)], constraints [np.int64(40)] ---
+Using device: cuda
+10 40 7
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9603125
+Precision of the model on the test data: 0.9518856629751571
+Recall of the model on the test data: 0.8339998688782535
+F1-Score of the model on the test data: 0.8890519621204179
+Accuracy (graph level) of the model on the test data: 0.15625
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9603125
+VALIDATION
+Accuracy (node level) of the final model: 0.9597
+Precision of the model on the test data: 0.9359122401847575
+Recall of the model on the test data: 0.847360167276529
+F1-Score of the model on the test data: 0.889437585733882
+Accuracy (graph level) of the model on the test data: 0.1
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9597
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.958
+Precision of the model on the test data: 0.9383995394358089
+Recall of the model on the test data: 0.8389089037570767
+F1-Score of the model on the test data: 0.8858695652173914
+Accuracy (graph level) of the model on the test data: 0.15
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9588636815920398
+
+NAIVE MODEL: acc = 0.8057, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.1943
+PR AUC: 0.59715
+
+Number of graphs: 200, Correctly predicted graphs: 30
+Mean num_wrongly_pred_nodes_per_graph: 2.1
+Test time before: mean 1.194685e-05, min 4.916e-06, max 2.1488e-05
+Test time after: mean 4.217535e-06, min 1.098e-06, max 1.9245e-05
+Time reduction: mean 7.729315e-06, min -1.998e-06, max 1.8069000000000003e-05
+Prediction time: mean 0.00019217144697904586, min 0.0001839231699705124, max 0.0002944972366094589
+Test iter before: mean 25.545, min 9, max 47
+Test iter after: mean 6.7, min 1.0, max 39.0
+Test iter reduction: mean 18.845, min 0.0, max 42.0
+
+--- Non-learned model ---
+10 40 7
+Average solving time (s): 1.0633934e-05
+--- GNN, variables [np.int64(20)], constraints [np.int64(80)] ---
+Using device: cuda
+(20, 20) (20,) (20, 7) (80, 20) (80,) (80, 7) (20, 7)
+condition number of H 3615.598048478377
+Done generating train data
+Early stopping after 14 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.786775
+Precision of the model on the test data: 0.28854619945542914
+Recall of the model on the test data: 0.6480539521060753
+F1-Score of the model on the test data: 0.3993027432475261
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21322499999999997
+VALIDATION
+Accuracy (node level) of the final model: 0.7857
+Precision of the model on the test data: 0.288906784779545
+Recall of the model on the test data: 0.6555504796710827
+F1-Score of the model on the test data: 0.4010620458356624
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2143
+17497.0 160000 0.10935625
+Using device: cuda
+W_true: [ 0  4  5  6 10 13 19 20 23 28]
+W_pred: [ 0  4  5  7 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28]
+W_true: [ 3  4  5  9 14 15 16 19 20 21]
+W_pred: [ 0  3  4  5  7 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28]
+W_true: [ 0  2  4  5  6 10 13 16 17 20 21 23 28]
+W_pred: [ 0  1  4  5  7 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28]
+W_true: [ 0  2  3  4  5  9 13 14 15 16 19 20 21]
+W_pred: [ 0  4  5  7 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28]
+W_true: [ 3  4  5  9 10 13 14 19 20 23 25 28]
+W_pred: [ 0  3  4  5 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29]
+TESTING
+Accuracy (node level) of the model on the test data: 0.78425
+Precision of the model on the test data: 0.313951395139514
+Recall of the model on the test data: 0.7758007117437722
+F1-Score of the model on the test data: 0.44700756119441243
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21600348258706467
+PR AUC: 0.557476053441643
+
+NAIVE MODEL: acc = 0.8876, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11240000000000001
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5562
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 21.575
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1382849999999999e-05, min 4.653e-06, max 2.2281e-05
+Test time after: mean 1.221412e-05, min 5.275e-06, max 3.6016e-05
+Test time reduction: mean -8.3127e-07, min -2.7349000000000002e-05, max 3.729999999999998e-06
+Prediction time: mean 0.0010333769861608744, min 0.0010116752237081528, max 0.001210082322359085
+Test iter before: mean 15.23, min 6, max 32
+Test iter after: mean 16.18, min 6.0, max 32.0
+Test iter reduction: mean -0.95, min -14.0, max 0.0
+
+--- MLP, variables [np.int64(20)], constraints [np.int64(80)] ---
+Using device: cuda
+20 80 7
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.94281875
+Precision of the model on the test data: 0.9199830651989839
+Recall of the model on the test data: 0.771736673877248
+F1-Score of the model on the test data: 0.8393644104995172
+Accuracy (graph level) of the model on the test data: 0.00125
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.94281875
+VALIDATION
+Accuracy (node level) of the final model: 0.9419
+Precision of the model on the test data: 0.9070609535304768
+Recall of the model on the test data: 0.7787564766839378
+F1-Score of the model on the test data: 0.8380262057429607
+Accuracy (graph level) of the model on the test data: 0.005
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9419
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9414
+Precision of the model on the test data: 0.9030140256639809
+Recall of the model on the test data: 0.7813064807642655
+F1-Score of the model on the test data: 0.8377630121816169
+Accuracy (graph level) of the model on the test data: 0.005
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9413313432835821
+
+NAIVE MODEL: acc = 0.80635, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19365
+PR AUC: 0.5968249999999999
+
+Number of graphs: 200, Correctly predicted graphs: 1
+Mean num_wrongly_pred_nodes_per_graph: 5.86
+Test time before: mean 6.803729e-05, min 4.4437e-05, max 0.000104259
+Test time after: mean 2.8725019999999998e-05, min 2.649e-06, max 0.000128087
+Time reduction: mean 3.9312270000000004e-05, min -2.422700000000001e-05, max 8.1049e-05
+Prediction time: mean 0.00019347291439771651, min 0.0001858007162809372, max 0.0002609323710203171
+Test iter before: mean 57.695, min 36, max 89
+Test iter after: mean 19.735, min 1.0, max 89.0
+Test iter reduction: mean 37.96, min 0.0, max 75.0
+
+--- Non-learned model ---
+20 80 7
+Average solving time (s): 6.5069557e-05
+--- GNN, variables [np.int64(30)], constraints [np.int64(120)] ---
+Using device: cuda
+(30, 30) (30,) (30, 7) (120, 30) (120,) (120, 7) (30, 7)
+condition number of H 1333.0378031055013
+Done generating train data
+Early stopping after 10 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.79705
+Precision of the model on the test data: 0.3254229726483407
+Recall of the model on the test data: 0.6687235543018336
+F1-Score of the model on the test data: 0.43779865647868144
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.20295000000000002
+VALIDATION
+Accuracy (node level) of the final model: 0.7940333333333334
+Precision of the model on the test data: 0.3203274215552524
+Recall of the model on the test data: 0.6623413258110014
+F1-Score of the model on the test data: 0.431816091954023
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2059666666666667
+28360.0 240000 0.11816666666666667
+Using device: cuda
+W_true: [ 0  2  5  7  8  9 14 18 19 20 21 22 23 25 27 30 31 33 34 35 36]
+W_pred: [ 0  1  2  3  4  6  7  8  9 10 11 12 13 14 15 16 17 20 22 25 26 31 32 35
+ 38 39]
+W_true: [ 4  5 17 19 20 22 23 25 31 35 36]
+W_pred: [ 0  1  2  3  4  6  7  8  9 10 11 12 13 14 15 16 17 20 22 24 25 31 32 34
+ 35 38 39]
+W_true: [ 1  2  4  7  8  9 14 18 19 20 21 22 23 28 33 34 35 36 37]
+W_pred: [ 0  1  2  3  4  6  7  8  9 10 11 12 13 14 15 16 17 20 22 24 25 26 31 32
+ 34 35 38 39]
+W_true: [ 1  2  4  7 13 17 19 22 23 24 33 34 35 37]
+W_pred: [ 0  1  2  3  4  6  7  8  9 10 11 12 13 14 15 16 17 20 22 24 25 26 31 32
+ 34 35 38 39]
+W_true: [ 0  5  6  7  8 14 15 18 19 22 25 26 27 28 30 31 33 35]
+W_pred: [ 0  1  2  3  4  6  7  8  9 10 11 12 13 14 15 16 17 20 22 24 25 26 31 32
+ 34 35 38 39]
+TESTING
+Accuracy (node level) of the model on the test data: 0.7950666666666667
+Precision of the model on the test data: 0.3190234535728981
+Recall of the model on the test data: 0.6628669136506127
+F1-Score of the model on the test data: 0.43074074074074076
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.20557114427860698
+PR AUC: 0.510661850278422
+
+NAIVE MODEL: acc = 0.8830333333333333, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11696666666666668
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5584833333333333
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 30.74
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 3.0033125e-05, min 1.5078e-05, max 4.7501e-05
+Test time after: mean 3.3714135e-05, min 2.2626e-05, max 5.1584e-05
+Test time reduction: mean -3.6810100000000003e-06, min -1.8132000000000002e-05, max 1.0104000000000004e-05
+Prediction time: mean 0.0010428192745894193, min 0.0010146815329790115, max 0.0012472793459892273
+Test iter before: mean 24.405, min 13, max 38
+Test iter after: mean 33.87, min 25.0, max 49.0
+Test iter reduction: mean -9.465, min -24.0, max 6.0
+
+--- MLP, variables [np.int64(30)], constraints [np.int64(120)] ---
+Using device: cuda
+30 120 7
+Early stopping after 18 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9298916666666667
+Precision of the model on the test data: 0.9049400791714115
+Recall of the model on the test data: 0.7147507281137571
+F1-Score of the model on the test data: 0.7986790782263276
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9298916666666667
+VALIDATION
+Accuracy (node level) of the final model: 0.9255666666666666
+Precision of the model on the test data: 0.8863148863148863
+Recall of the model on the test data: 0.7081405312767781
+F1-Score of the model on the test data: 0.7872725540630656
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9255666666666666
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9303
+Precision of the model on the test data: 0.8917568692756037
+Recall of the model on the test data: 0.7316823228010247
+F1-Score of the model on the test data: 0.8038277511961722
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9303538971807629
+
+NAIVE MODEL: acc = 0.8048333333333333, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19516666666666668
+PR AUC: 0.5975833333333334
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 10.455
+Test time before: mean 0.00052790499, min 0.000278172, max 0.00087353
+Test time after: mean 0.000222632525, min 5.0083e-05, max 0.000840718
+Time reduction: mean 0.000305272465, min -0.00011348, max 0.000770705
+Prediction time: mean 0.00019631667993962764, min 0.00018778443336486816, max 0.00026355311274528503
+Test iter before: mean 164.26, min 101, max 232
+Test iter after: mean 51.55, min 10.0, max 211.0
+Test iter reduction: mean 112.71, min 0.0, max 206.0
+
+--- Non-learned model ---
+30 120 7
+Average solving time (s): 0.0005207905075
+--- GNN, variables [np.int64(40)], constraints [np.int64(160)] ---
+Using device: cuda
+(40, 40) (40,) (40, 7) (160, 40) (160,) (160, 7) (40, 7)
+condition number of H 10783.831193257649
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.84074375
+Precision of the model on the test data: 0.42157333150547216
+Recall of the model on the test data: 0.9911366566394499
+F1-Score of the model on the test data: 0.5915393616850745
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15925625
+VALIDATION
+Accuracy (node level) of the final model: 0.84525
+Precision of the model on the test data: 0.4312713192587812
+Recall of the model on the test data: 0.995530964034901
+F1-Score of the model on the test data: 0.6018268364852695
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15474999999999997
+37232.0 320000 0.11635
+Using device: cuda
+W_true: [ 1  2  3  4  5  6  7 10 12 13 16 18 19 22 23 24 28 29 32 34 35 36 37 38
+ 39 40 41 44]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48]
+W_true: [ 0  2  4  5  8  9 10 11 13 14 16 20 21 22 25 26 31 34 35 36 37 38 40 41
+ 44 45]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49]
+W_true: [ 2  4  6  7  9 10 11 12 21 22 24 26 27 28 29 34 35 36 37 38 40 41 44]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+ 49]
+W_true: [ 2  4  8  9 10 11 12 13 14 16 20 25 26 28 33 34 35 36 37 38 40 44]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49]
+W_true: [ 0  4  6 12 13 16 17 18 19 21 22 23 25 27 29 31 33 36 38 39 40 41 44 45]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49]
+TESTING
+Accuracy (node level) of the model on the test data: 0.843625
+Precision of the model on the test data: 0.4254102895076526
+Recall of the model on the test data: 0.9950398964847962
+F1-Score of the model on the test data: 0.5960085254795582
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15703880597014924
+PR AUC: 0.7105125929962244
+
+NAIVE MODEL: acc = 0.884075, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11592500000000001
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5579625
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 31.275
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 7.036299500000001e-05, min 3.8165e-05, max 0.000102658
+Test time after: mean 7.279473e-05, min 4.0139e-05, max 0.000105211
+Test time reduction: mean -2.4317349999999994e-06, min -9.917999999999996e-06, max 6.429000000000002e-06
+Prediction time: mean 0.00105547939427197, min 0.0010252110660076141, max 0.0012344960123300552
+Test iter before: mean 37.735, min 21, max 56
+Test iter after: mean 37.735, min 21.0, max 56.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(40)], constraints [np.int64(160)] ---
+Using device: cuda
+40 160 7
+Early stopping after 39 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.939
+Precision of the model on the test data: 0.9135413901634372
+Recall of the model on the test data: 0.7630737068828989
+F1-Score of the model on the test data: 0.8315556936246591
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9390000000000001
+VALIDATION
+Accuracy (node level) of the final model: 0.93105
+Precision of the model on the test data: 0.890765251787616
+Recall of the model on the test data: 0.7416086130462318
+F1-Score of the model on the test data: 0.8093724080729887
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.93105
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.934925
+Precision of the model on the test data: 0.8904635370534396
+Recall of the model on the test data: 0.7642214620549854
+F1-Score of the model on the test data: 0.8225267607554374
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9342358208955224
+
+NAIVE MODEL: acc = 0.802675, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19732500000000003
+PR AUC: 0.5986625
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 13.015
+Test time before: mean 0.00067003381, min 0.000457112, max 0.000936101
+Test time after: mean 0.00023914979500000002, min 4.2433e-05, max 0.000893338
+Time reduction: mean 0.00043088401499999997, min -7.492400000000008e-05, max 0.000818808
+Prediction time: mean 0.00032354928553104403, min 0.000195428729057312, max 0.02407274954020977
+Test iter before: mean 160.625, min 108, max 230
+Test iter after: mean 52.1, min 8.0, max 195.0
+Test iter reduction: mean 108.525, min 0.0, max 200.0
+
+--- Non-learned model ---
+40 160 7
+Average solving time (s): 0.0006620500540000001
+--- GNN, variables [np.int64(50)], constraints [np.int64(200)] ---
+Using device: cuda
+(50, 50) (50,) (50, 7) (200, 50) (200,) (200, 7) (50, 7)
+condition number of H 12875.982864100943
+Done generating train data
+Early stopping after 16 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8329425
+Precision of the model on the test data: 0.4174138518085227
+Recall of the model on the test data: 0.998058617234469
+F1-Score of the model on the test data: 0.5886423097048231
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16705749999999994
+VALIDATION
+Accuracy (node level) of the final model: 0.83294
+Precision of the model on the test data: 0.41764993367311315
+Recall of the model on the test data: 0.997997997997998
+F1-Score of the model on the test data: 0.5888664665058818
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16705999999999996
+47904.0 400000 0.11976
+Using device: cuda
+W_true: [ 3  4  5  8 11 12 16 20 21 22 23 24 25 26 27 28 29 30 31 33 35 37 41 42
+ 43 45 46 49 51 53 56 59]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59]
+W_true: [ 1  2  3  4  6  7  9 12 14 17 22 24 25 26 29 32 35 37 39 40 41 42 46 47
+ 48 49 51 52 53 55 59]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+ 49 50 51 52 53 54 55 56 57 58 59]
+W_true: [ 3  4  5  7 12 13 15 16 19 20 22 23 24 25 26 28 29 31 33 35 37 41 42 43
+ 46 51 52 53 56 59]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 31 32 33 34 35 36 37 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59]
+W_true: [ 1  2  3  6  7  9 13 16 18 21 24 25 26 29 32 35 37 39 41 42 46 47 49 51
+ 59]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 58 59]
+W_true: [ 3  4  5 10 11 14 17 19 20 21 22 23 24 25 27 30 31 33 37 39 41 42 43 46
+ 49 51 53 56 59]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59]
+TESTING
+Accuracy (node level) of the model on the test data: 0.83514
+Precision of the model on the test data: 0.4195008131230998
+Recall of the model on the test data: 0.9944686557157224
+F1-Score of the model on the test data: 0.5900840419712566
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1663255721393035
+PR AUC: 0.7073147344194111
+
+NAIVE MODEL: acc = 0.88068, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11932000000000002
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.55966
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 41.215
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00012064022000000001, min 8.0438e-05, max 0.000175354
+Test time after: mean 0.00012203805, min 8.0285e-05, max 0.00018103
+Test time reduction: mean -1.3978300000000004e-06, min -1.0765999999999998e-05, max 9.270000000000025e-06
+Prediction time: mean 0.0010544847417622806, min 0.0010271240025758743, max 0.0012411735951900482
+Test iter before: mean 42.85, min 28, max 61
+Test iter after: mean 42.85, min 28.0, max 61.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(50)], constraints [np.int64(200)] ---
+Using device: cuda
+50 200 7
+Early stopping after 45 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.938375
+Precision of the model on the test data: 0.9099045618521394
+Recall of the model on the test data: 0.7614158886242341
+F1-Score of the model on the test data: 0.8290639779204749
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.938375
+VALIDATION
+Accuracy (node level) of the final model: 0.93258
+Precision of the model on the test data: 0.8886210221793636
+Recall of the model on the test data: 0.750789286078012
+F1-Score of the model on the test data: 0.8139111233784156
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.93258
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.93342
+Precision of the model on the test data: 0.8862232779097388
+Recall of the model on the test data: 0.7588731821417675
+F1-Score of the model on the test data: 0.8176190215307073
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9324101492537313
+
+NAIVE MODEL: acc = 0.80334, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19665999999999997
+PR AUC: 0.59833
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 16.645
+Test time before: mean 0.001374798845, min 0.000847072, max 0.001874899
+Test time after: mean 0.00042955898500000004, min 8.2018e-05, max 0.001683522
+Time reduction: mean 0.0009452398600000001, min -4.8019000000000056e-05, max 0.001561713
+Prediction time: mean 0.00020090551115572452, min 0.00019430555403232574, max 0.0002774503082036972
+Test iter before: mean 214.695, min 131, max 301
+Test iter after: mean 65.16, min 11.0, max 263.0
+Test iter reduction: mean 149.535, min 0.0, max 252.0
+
+--- Non-learned model ---
+50 200 7
+Average solving time (s): 0.0013501282780000001
+--- GNN, variables [np.int64(60)], constraints [np.int64(240)] ---
+Using device: cuda
+(60, 60) (60,) (60, 7) (240, 60) (240,) (240, 7) (60, 7)
+condition number of H 129790.59509236208
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8145854166666666
+Precision of the model on the test data: 0.3276495171630285
+Recall of the model on the test data: 0.5871094389007034
+F1-Score of the model on the test data: 0.4205831993281294
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1854145833333333
+VALIDATION
+Accuracy (node level) of the final model: 0.80385
+Precision of the model on the test data: 0.3165261890427453
+Recall of the model on the test data: 0.6101842448861163
+F1-Score of the model on the test data: 0.41682770923145535
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.19615000000000002
+55017.0 480000 0.11461875
+Using device: cuda
+W_true: [ 1  2  3  4 11 12 15 16 17 19 21 27 28 35 37 40 41 42 51 52 54 55 57 62
+ 63 64 67 68]
+W_pred: [ 0  1  3  4  5  6  7  8  9 10 12 13 17 18 20 21 26 27 28 30 32 35 37 38
+ 39 41 42 45 50 51 52 56 57 58 59 60 61 62 64 65 67 69]
+W_true: [ 0  1  2  3  5  7 10 11 12 13 17 18 19 21 22 23 25 26 27 28 29 31 33 37
+ 38 40 43 44 46 49 50 51 54 55 57 58 59 60 61 62 65 67 69]
+W_pred: [ 0  3  5  6  7  9 10 12 13 18 20 21 24 26 27 28 29 30 31 32 35 38 40 47
+ 48 50 51 52 54 56 57 58 59 60 61 62 63 67 69]
+W_true: [ 1  2  3  4  6  7 11 14 16 17 18 19 26 27 28 32 35 37 39 40 41 42 47 50
+ 52 55 56 57 61 63 64 67 68]
+W_pred: [ 0  1  3  4  5  6  7  8  9 10 12 13 17 18 20 26 28 30 32 35 37 38 39 42
+ 45 48 50 51 52 53 54 56 57 58 59 60 61 62 64 67 68 69]
+W_true: [ 0  1  2  3  7 10 11 12 17 18 19 21 22 23 25 26 27 28 29 31 38 40 43 44
+ 51 54 57 59 60 62 64 66 67 69]
+W_pred: [ 0  1  3  5  6  7  8  9 10 12 13 18 20 26 27 28 30 31 32 35 37 38 40 42
+ 48 50 51 52 54 56 57 58 59 60 61 62 63 64 67 69]
+W_true: [ 6  7 10 12 15 16 17 18 19 24 26 27 28 29 32 34 37 38 42 44 47 49 50 54
+ 57 60 64 66 67 69]
+W_pred: [ 0  1  3  5  6  7  9 10 12 13 17 18 20 26 27 28 30 32 34 37 38 39 41 42
+ 43 45 48 49 50 51 52 56 57 58 59 60 61 62 63 67 69]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8011166666666667
+Precision of the model on the test data: 0.30819304152637483
+Recall of the model on the test data: 0.6052012929767852
+F1-Score of the model on the test data: 0.4084081106539091
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.19981028192371475
+PR AUC: 0.4790888339182467
+
+NAIVE MODEL: acc = 0.8865666666666666, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11343333333333333
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5567166666666666
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 59.665
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00020962024, min 0.000124873, max 0.000324373
+Test time after: mean 0.000168885815, min 9.5754e-05, max 0.000251371
+Test time reduction: mean 4.0734424999999996e-05, min -1.6426999999999983e-05, max 0.000124826
+Prediction time: mean 0.0010512910783290863, min 0.0010235253721475601, max 0.001299666240811348
+Test iter before: mean 59.8, min 32, max 91
+Test iter after: mean 60.485, min 42.0, max 92.0
+Test iter reduction: mean -0.685, min -25.0, max 38.0
+
+--- MLP, variables [np.int64(60)], constraints [np.int64(240)] ---
+Using device: cuda
+60 240 7
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93021875
+Precision of the model on the test data: 0.9015133538980727
+Recall of the model on the test data: 0.7243541536473505
+F1-Score of the model on the test data: 0.8032818657536016
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.93021875
+VALIDATION
+Accuracy (node level) of the final model: 0.9269
+Precision of the model on the test data: 0.8797546012269939
+Recall of the model on the test data: 0.7282884713052311
+F1-Score of the model on the test data: 0.7968880244512364
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9269000000000001
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9269333333333334
+Precision of the model on the test data: 0.8835474513054289
+Recall of the model on the test data: 0.7234475738038684
+F1-Score of the model on the test data: 0.7955223880597015
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9270882255389719
+
+NAIVE MODEL: acc = 0.8035333333333333, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19646666666666668
+PR AUC: 0.5982333333333334
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 21.92
+Test time before: mean 0.0020814404450000003, min 0.001382641, max 0.002892603
+Test time after: mean 0.00075259017, min 0.000275297, max 0.002328375
+Time reduction: mean 0.0013288502750000001, min -5.574100000000021e-05, max 0.002357059
+Prediction time: mean 0.0002011617925018072, min 0.00019479542970657349, max 0.00029782019555568695
+Test iter before: mean 224.31, min 148, max 314
+Test iter after: mean 79.83, min 27.0, max 245.0
+Test iter reduction: mean 144.48, min 0.0, max 255.0
+
+--- Non-learned model ---
+60 240 7
+Average solving time (s): 0.0020801664320000005
+--- GNN, variables [np.int64(70)], constraints [np.int64(280)] ---
+Using device: cuda
+(70, 70) (70,) (70, 7) (280, 70) (280,) (280, 7) (70, 7)
+condition number of H 95536.39657447563
+Done generating train data
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8609803571428571
+Precision of the model on the test data: 0.4185194343906661
+Recall of the model on the test data: 0.9954905176101526
+F1-Score of the model on the test data: 0.5892916493012509
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13901964285714286
+VALIDATION
+Accuracy (node level) of the final model: 0.8654857142857143
+Precision of the model on the test data: 0.4246936274509804
+Recall of the model on the test data: 0.9961195745903996
+F1-Score of the model on the test data: 0.5954978950081622
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13451428571428573
+56104.0 560000 0.10018571428571428
+Using device: cuda
+W_true: [ 1  2  3  4  5  6 11 12 15 18 19 23 30 35 36 41 42 48 49 51 53 59 61 64
+ 65 66 69 70 72 73 75 76 78 79]
+W_pred: [ 0  1  2  3  4  5  6  7  9 11 12 13 14 15 17 18 19 20 21 23 24 25 26 27
+ 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51
+ 52 53 54 55 56 57 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76
+ 77 78 79]
+W_true: [ 3  5  6  8  9 10 12 16 17 18 22 23 24 26 29 32 34 36 38 40 41 45 49 51
+ 53 54 55 56 60 61 62 64 70 72 75 79]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 59 60 61 62 63 64 65 66 67 68 69 70 71 72
+ 73 74 75 76 77 78 79]
+W_true: [ 3  5  6 12 13 15 18 19 20 28 30 31 35 40 42 45 46 48 51 52 53 54 56 60
+ 61 62 63 64 65 66 69 72 75 78]
+W_pred: [ 0  1  2  3  4  5  6  7 10 11 12 13 14 15 17 18 19 20 21 22 23 24 25 26
+ 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+ 51 52 53 54 55 56 57 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+ 76 77 78]
+W_true: [ 3  5  6  8  9 10 12 17 18 22 23 26 29 30 33 34 40 41 45 49 51 53 54 55
+ 56 60 61 62 63 64 66 70 72 75 78]
+W_pred: [ 0  1  2  3  4  5  6  8  9 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25
+ 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 45 46 47 48 49 50
+ 51 52 53 54 55 56 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76
+ 77 78 79]
+W_true: [ 0  2  3  4  5  6 11 12 15 18 19 21 22 23 27 32 33 34 48 49 50 51 52 53
+ 54 55 56 61 62 63 64 65 69 70 72 75 77 78]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 59 60 61 62 63 64 65 66 67 68 69 70 71 72
+ 73 74 75 76 77 78]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8675285714285714
+Precision of the model on the test data: 0.4295805192391102
+Recall of the model on the test data: 0.9904285714285714
+F1-Score of the model on the test data: 0.5992480228186179
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13264662402274344
+PR AUC: 0.7104831167624123
+
+NAIVE MODEL: acc = 0.9, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.1
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.55
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 46.365
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00025375588, min 0.000181294, max 0.000363845
+Test time after: mean 0.00025732962, min 0.000188264, max 0.000393449
+Test time reduction: mean -3.573739999999999e-06, min -0.000144717, max 7.449000000000003e-06
+Prediction time: mean 0.001053156154230237, min 0.0010204873979091644, max 0.001368299126625061
+Test iter before: mean 55.42, min 39, max 87
+Test iter after: mean 55.42, min 39.0, max 87.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(70)], constraints [np.int64(280)] ---
+Using device: cuda
+70 280 7
+Early stopping after 50 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9280375
+Precision of the model on the test data: 0.8984906474656733
+Recall of the model on the test data: 0.7161232507196263
+F1-Score of the model on the test data: 0.7970079335096335
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9280375
+VALIDATION
+Accuracy (node level) of the final model: 0.9247142857142857
+Precision of the model on the test data: 0.8875578546147563
+Recall of the model on the test data: 0.7081311997683006
+F1-Score of the model on the test data: 0.7877567458719291
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9247142857142857
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9254428571428571
+Precision of the model on the test data: 0.8920345926263086
+Recall of the model on the test data: 0.7084297281665702
+F1-Score of the model on the test data: 0.7897006084538825
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9254176261549396
+
+NAIVE MODEL: acc = 0.8024, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19760000000000003
+PR AUC: 0.5988
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 26.095
+Test time before: mean 0.005046923295, min 0.003360446, max 0.00674119
+Test time after: mean 0.001780273585, min 0.000742529, max 0.003479974
+Time reduction: mean 0.00326664971, min 0.0007892469999999999, max 0.00528353
+Prediction time: mean 0.00020219456404447556, min 0.00019553489983081818, max 0.0002821683883666992
+Test iter before: mean 421.37, min 276, max 564
+Test iter after: mean 144.73, min 55.0, max 295.0
+Test iter reduction: mean 276.64, min 60.0, max 443.0
+
+--- Non-learned model ---
+70 280 7
+Average solving time (s): 0.005035106094999999
+--- GNN, variables [np.int64(80)], constraints [np.int64(320)] ---
+Using device: cuda
+(80, 80) (80,) (80, 7) (320, 80) (320,) (320, 7) (80, 7)
+condition number of H 173555.69036484946
+Done generating train data
+Early stopping after 10 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8397984375
+Precision of the model on the test data: 0.4126583341330007
+Recall of the model on the test data: 0.9373595084669564
+F1-Score of the model on the test data: 0.5730431125306593
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1602015625
+VALIDATION
+Accuracy (node level) of the final model: 0.8333
+Precision of the model on the test data: 0.40524009494248675
+Recall of the model on the test data: 0.9666811846689896
+F1-Score of the model on the test data: 0.5710793773317895
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16670000000000001
+73403.0 640000 0.1146921875
+Using device: cuda
+W_true: [ 1  2  3  5  6  8 11 12 13 19 20 23 24 26 27 32 34 35 36 38 40 47 48 50
+ 52 55 57 58 59 60 61 62 63 64 65 66 67 71 72 78 79 81 84 85 87]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89]
+W_true: [ 0  1  3  4  8  9 10 14 15 16 17 20 27 28 33 34 35 36 37 38 39 41 42 44
+ 45 48 50 51 53 54 58 60 61 63 66 67 68 69 71 72 76 79 86 88]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89]
+W_true: [ 3  4  6 11 12 17 19 20 22 23 24 26 27 32 34 36 38 42 45 47 48 50 52 54
+ 55 58 59 60 61 62 63 64 65 66 70 72 75 78 79 81 83 86 87 88]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89]
+W_true: [ 1  3  4  6  8  9 11 16 17 20 23 24 26 27 30 32 34 35 36 37 38 39 41 44
+ 45 48 50 55 58 60 61 63 65 66 67 68 71 72 74 75 76 81 86]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89]
+W_true: [ 0  1  3  4  5 11 12 13 14 16 17 18 22 23 24 25 26 27 29 34 35 42 45 46
+ 48 49 51 53 54 55 58 60 63 64 65 66 67 68 71 78 79 81 84 85 86 87]
+W_pred: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8557
+Precision of the model on the test data: 0.4417614323735785
+Recall of the model on the test data: 0.9991244390937944
+F1-Score of the model on the test data: 0.6126434467485403
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.144556592039801
+PR AUC: 0.7204929357336866
+
+NAIVE MODEL: acc = 0.8857875, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.11421250000000001
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.55710625
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 57.72
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00044170531, min 0.00034051, max 0.000591191
+Test time after: mean 0.00044688163499999995, min 0.000336134, max 0.000609549
+Test time reduction: mean -5.176324999999998e-06, min -1.881700000000002e-05, max 1.2764000000000015e-05
+Prediction time: mean 0.0010499660111963748, min 0.0010237134993076324, max 0.001224590465426445
+Test iter before: mean 72.725, min 54, max 101
+Test iter after: mean 72.725, min 54.0, max 101.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(80)], constraints [np.int64(320)] ---
+Using device: cuda
+80 320 7
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9139859375
+Precision of the model on the test data: 0.8815797909854459
+Recall of the model on the test data: 0.6523440897625468
+F1-Score of the model on the test data: 0.7498329917427482
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9139859375
+VALIDATION
+Accuracy (node level) of the final model: 0.91365
+Precision of the model on the test data: 0.879703097005375
+Recall of the model on the test data: 0.652223417040926
+F1-Score of the model on the test data: 0.7490737377406466
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.91365
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.915725
+Precision of the model on the test data: 0.8781586189642232
+Recall of the model on the test data: 0.6659920308645879
+F1-Score of the model on the test data: 0.7574994604704698
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9166512437810945
+
+NAIVE MODEL: acc = 0.8023625, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19763750000000002
+PR AUC: 0.59881875
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 33.71
+Test time before: mean 0.006815408455, min 0.004931502, max 0.009964819
+Test time after: mean 0.00286047692, min 0.001295086, max 0.007522344
+Time reduction: mean 0.003954931535, min -0.00012350200000000016, max 0.0064055629999999995
+Prediction time: mean 0.00020419196225702764, min 0.00019646063446998596, max 0.00028464198112487793
+Test iter before: mean 425.085, min 306, max 626
+Test iter after: mean 176.34, min 75.0, max 460.0
+Test iter reduction: mean 248.745, min 0.0, max 402.0
+
+--- Non-learned model ---
+80 320 7
+Average solving time (s): 0.006899609427
+--- GNN, variables [np.int64(90)], constraints [np.int64(360)] ---
+Using device: cuda
+(90, 90) (90,) (90, 7) (360, 90) (360,) (360, 7) (90, 7)
+condition number of H 248526.1469104633
+Done generating train data
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8742513888888889
+Precision of the model on the test data: 0.466929975263161
+Recall of the model on the test data: 0.9968992638902894
+F1-Score of the model on the test data: 0.6359787551413443
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12574861111111113
+VALIDATION
+Accuracy (node level) of the final model: 0.8730444444444444
+Precision of the model on the test data: 0.46328375070608174
+Recall of the model on the test data: 0.9975674032029191
+F1-Score of the model on the test data: 0.6327225972356155
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12695555555555554
+79336.0 720000 0.11018888888888889
+Using device: cuda
+W_true: [ 0  2  3  8  9 12 15 17 20 21 22 24 29 31 32 33 34 36 39 40 41 43 44 45
+ 46 47 49 50 51 52 53 55 56 58 62 64 66 67 68 69 73 74 76 80 81 82 83 85
+ 87 88 89 94 95]
+W_pred: [ 0  1  2  3  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 47 48 49
+ 50 51 52 53 54 55 56 57 58 59 60 62 63 64 65 66 67 68 69 72 73 74 75 76
+ 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 97 98 99]
+W_true: [ 0  2  6  9 10 11 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29 31 34
+ 37 38 43 44 46 47 48 49 50 52 53 54 58 65 67 70 74 75 77 81 82 85 87 88
+ 89 91 92 94]
+W_pred: [ 0  1  2  3  5  6  7  8  9 10 11 13 14 15 16 17 18 19 20 21 22 23 24 25
+ 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 58 59 61 62 63 64 65 66 67 68 69 70 71 73 74 75 76
+ 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+W_true: [ 0  8  9 11 12 15 17 20 22 24 28 29 33 34 36 37 40 41 43 44 45 46 47 49
+ 50 51 52 53 54 56 57 58 62 64 65 66 67 68 76 77 78 80 81 82 85 86 87 88
+ 89 94]
+W_pred: [ 0  1  2  3  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 47 48 49
+ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 71 72 73 74
+ 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 97 98 99]
+W_true: [ 2  6  8  9 13 14 15 16 17 19 21 23 24 25 27 28 29 30 31 34 35 37 39 43
+ 44 46 47 49 50 52 53 54 55 58 65 67 68 70 74 77 81 82 89 90 91 94]
+W_pred: [ 0  1  2  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+ 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 58 59 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+ 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+W_true: [ 0  1  3 10 11 15 16 18 21 22 27 28 29 33 34 36 37 38 40 41 43 44 45 46
+ 47 49 51 52 53 54 55 56 57 59 64 66 67 68 73 76 78 79 80 81 82 85 87 89
+ 91 94]
+W_pred: [ 0  1  2  3  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+ 49 50 51 52 53 54 55 56 57 58 59 60 61 62 64 65 66 67 68 69 70 71 72 73
+ 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97
+ 98 99]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8803666666666666
+Precision of the model on the test data: 0.4779247301371195
+Recall of the model on the test data: 0.9969570950400649
+F1-Score of the model on the test data: 0.646113393590797
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11926766169154229
+PR AUC: 0.7376075792552589
+
+NAIVE MODEL: acc = 0.8904555555555556, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10954444444444444
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5547722222222222
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 53.835
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00059072302, min 0.000428908, max 0.000789878
+Test time after: mean 0.0005946330950000001, min 0.000437828, max 0.000795963
+Test time reduction: mean -3.910074999999999e-06, min -2.3909000000000018e-05, max 1.9995000000000028e-05
+Prediction time: mean 0.0010496197827160358, min 0.0010244902223348618, max 0.0012261290103197098
+Test iter before: mean 78.675, min 59, max 105
+Test iter after: mean 78.675, min 59.0, max 105.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(90)], constraints [np.int64(360)] ---
+Using device: cuda
+90 360 7
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9063902777777778
+Precision of the model on the test data: 0.872278897903446
+Recall of the model on the test data: 0.6137151980558244
+F1-Score of the model on the test data: 0.7205019428306025
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9063902777777778
+VALIDATION
+Accuracy (node level) of the final model: 0.9062333333333333
+Precision of the model on the test data: 0.8621094667606296
+Recall of the model on the test data: 0.6224559023066486
+F1-Score of the model on the test data: 0.7229390327981877
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9062333333333333
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9088222222222222
+Precision of the model on the test data: 0.88156307791268
+Recall of the model on the test data: 0.6195400350341865
+F1-Score of the model on the test data: 0.727683015862481
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9086130458817026
+
+NAIVE MODEL: acc = 0.8033666666666667, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19663333333333333
+PR AUC: 0.5983166666666666
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 41.03
+Test time before: mean 0.01695416084, min 0.010646432, max 0.019764796
+Test time after: mean 0.007204270479999999, min 0.003835734, max 0.011225751
+Time reduction: mean 0.00974989036, min 0.0026656779999999995, max 0.015020470000000001
+Prediction time: mean 0.00020261616446077825, min 0.0001967102289199829, max 0.0002802107483148575
+Test iter before: mean 870.105, min 540, max 1000
+Test iter after: mean 363.835, min 194.0, max 577.0
+Test iter reduction: mean 506.27, min 141.0, max 789.0
+
+--- Non-learned model ---
+90 360 7
+Average solving time (s): 0.016908233151499998
+--- GNN, variables [np.int64(100)], constraints [np.int64(400)] ---
+Using device: cuda
+(100, 100) (100,) (100, 7) (400, 100) (400,) (400, 7) (100, 7)
+condition number of H 309398.20304884145
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.81345625
+Precision of the model on the test data: 0.30597149125436085
+Recall of the model on the test data: 0.6040924529864966
+F1-Score of the model on the test data: 0.4062023770208059
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.18654375
+VALIDATION
+Accuracy (node level) of the final model: 0.83491
+Precision of the model on the test data: 0.3445221445221445
+Recall of the model on the test data: 0.6330668189605939
+F1-Score of the model on the test data: 0.44621113011975444
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16508999999999996
+84497.0 800000 0.10562125
+Using device: cuda
+W_true: [  2   3   4   6   8   9  10  11  12  13  22  24  29  30  35  36  39  40
+  41  43  45  46  47  50  52  54  55  61  62  69  70  72  74  75  76  80
+  81  82  83  84  86  87  88  91  92  93  94 100 106 109]
+W_pred: [  0   2   4   6   7   9  10  12  14  15  16  17  18  19  21  22  23  24
+  25  28  29  33  34  35  37  38  39  40  43  44  46  49  50  51  52  53
+  54  57  58  59  60  62  63  71  72  73  74  75  77  78  79  80  81  83
+  84  85  86  88  92  94  98 102 109]
+W_true: [  0   5   7   9  10  11  12  15  16  17  20  21  22  26  27  28  29  30
+  31  32  33  35  37  38  41  42  43  44  45  47  51  54  56  58  59  60
+  65  66  68  69  71  75  76  78  80  82  83  85  86  89  90  94  95  98
+ 105 106 107]
+W_pred: [  0   1   4   5   7   9  10  11  12  14  15  16  17  18  19  20  21  22
+  24  25  28  31  33  37  38  39  41  43  44  45  46  48  49  50  51  52
+  53  54  55  57  58  59  60  61  62  63  67  70  71  72  73  74  75  77
+  78  79  80  81  82  83  84  85  88  89  90  91  94  97  98  99 102 109]
+W_true: [  0   2   3   6   7   8  10  11  12  13  15  18  22  23  24  25  27  28
+  29  31  33  36  39  41  42  45  46  47  50  51  53  54  55  62  68  69
+  74  75  79  80  81  83  84  86  87  88  91  93  94  96  98  99 106 109]
+W_pred: [  0   1   2   4   5   6   7   9  10  12  14  15  16  17  18  21  23  24
+  25  28  29  33  34  35  37  38  39  40  43  44  46  49  50  51  52  53
+  54  55  57  58  59  60  62  63  71  72  73  74  75  77  78  79  80  81
+  83  84  85  88  89  92  94  98 102 109]
+W_true: [  0   2   3   7   9  11  12  16  17  26  27  29  30  31  32  33  34  35
+  39  41  43  44  45  47  49  51  54  56  59  62  66  68  69  71  72  75
+  77  79  80  81  82  83  84  86  87  88  91  93  94  98  99 100 106]
+W_pred: [  0   4   5   6   7   9  10  11  12  14  15  16  17  18  19  21  24  25
+  28  31  33  37  38  39  41  43  44  45  46  48  49  50  51  52  53  54
+  55  57  58  59  60  62  63  67  71  72  73  74  75  77  78  79  80  81
+  82  83  84  85  88  94  97  98 102 109]
+W_true: [  7   9  10  12  13  14  15  16  18  21  22  24  25  26  29  30  33  34
+  35  39  41  42  43  44  45  47  50  51  54  60  61  62  64  66  68  69
+  73  74  75  80  81  82  83  84  86  87  89  91  92  93  94  96 107 109]
+W_pred: [  0   2   4   5   6   7   9  10  12  14  15  16  17  18  21  24  25  28
+  29  33  34  35  37  38  39  43  44  46  49  50  51  52  53  54  55  57
+  58  59  60  62  63  71  72  73  74  75  77  78  79  80  81  83  84  85
+  86  88  89  92  94  98 102 109]
+TESTING
+Accuracy (node level) of the model on the test data: 0.83433
+Precision of the model on the test data: 0.3437192182072684
+Recall of the model on the test data: 0.6291516416777377
+F1-Score of the model on the test data: 0.4445636503838804
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16625562189054727
+PR AUC: 0.505975429942503
+
+NAIVE MODEL: acc = 0.89462, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10538000000000002
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.55269
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 82.835
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.0007448756800000001, min 0.000524561, max 0.000958889
+Test time after: mean 0.00059088645, min 0.0003279, max 0.000774716
+Test time reduction: mean 0.00015398923, min -1.8472000000000063e-05, max 0.000350175
+Prediction time: mean 0.0010521050170063972, min 0.0010272972285747528, max 0.0012498870491981506
+Test iter before: mean 82.01, min 53, max 107
+Test iter after: mean 89.155, min 52.0, max 124.0
+Test iter reduction: mean -7.145, min -37.0, max 24.0
+
+--- MLP, variables [np.int64(100)], constraints [np.int64(400)] ---
+Using device: cuda
+100 400 7
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9099475
+Precision of the model on the test data: 0.8781116107786552
+Recall of the model on the test data: 0.629937511113369
+F1-Score of the model on the test data: 0.7336040113596024
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9099475
+VALIDATION
+Accuracy (node level) of the final model: 0.90905
+Precision of the model on the test data: 0.869085063255749
+Recall of the model on the test data: 0.6325803825803826
+F1-Score of the model on the test data: 0.7322085799252127
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.90905
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.91223
+Precision of the model on the test data: 0.8767697594501718
+Recall of the model on the test data: 0.6462185299630211
+F1-Score of the model on the test data: 0.7440436266075646
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9129511442786069
+
+NAIVE MODEL: acc = 0.80259, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19741
+PR AUC: 0.598705
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 43.885
+Test time before: mean 0.021766938304999997, min 0.011813957, max 0.024615843
+Test time after: mean 0.009390756965, min 0.003568831, max 0.016045612
+Time reduction: mean 0.012376181339999999, min 0.0011821120000000008, max 0.019456069
+Prediction time: mean 0.0002098285034298897, min 0.00019928812980651855, max 0.0002880468964576721
+Test iter before: mean 895.535, min 485, max 1000
+Test iter after: mean 382.745, min 139.0, max 656.0
+Test iter reduction: mean 512.79, min 43.0, max 805.0
+
+--- Non-learned model ---
+100 400 7
+Average solving time (s): 0.0217799445595
+--- GNN, variables [np.int64(110)], constraints [np.int64(440)] ---
+Using device: cuda
+(110, 110) (110,) (110, 7) (440, 110) (440,) (440, 7) (110, 7)
+condition number of H 495704.51784075564
+Done generating train data
+Early stopping after 42 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8787386363636364
+Precision of the model on the test data: 0.46401870333593104
+Recall of the model on the test data: 0.998852776605301
+F1-Score of the model on the test data: 0.6336665613885722
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12126136363636363
+VALIDATION
+Accuracy (node level) of the final model: 0.8781727272727273
+Precision of the model on the test data: 0.46335309195770585
+Recall of the model on the test data: 0.9998271540921269
+F1-Score of the model on the test data: 0.6332411943402939
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12182727272727273
+92397.0 880000 0.10499659090909091
+Using device: cuda
+W_true: [  3   4   6   7   9  11  14  16  17  18  20  22  24  27  28  29  30  33
+  36  42  43  46  50  51  55  57  58  59  62  67  68  73  76  77  79  80
+  81  82  83  86  91  92  93  94  97 101 104 106 110 111 112 114 115 116
+ 119]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119]
+W_true: [  2   4   5   6  10  11  12  13  14  17  18  20  22  24  25  26  28  31
+  33  35  39  40  41  42  45  46  51  54  55  56  61  64  69  70  72  73
+  74  75  78  79  80  85  88  90  91  92  93  94  95  96  97  98  99 100
+ 106 107 110 111 112 114 116 119]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119]
+W_true: [  3   5   6   7   9  11  14  16  17  18  20  24  27  28  30  31  35  41
+  42  43  46  50  51  55  57  58  59  62  63  65  66  67  68  72  73  77
+  79  80  81  82  85  86  90  91  92  93  94 101 102 104 106 110 111 112
+ 114 116 119]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119]
+W_true: [  2   4   6  10  12  14  17  20  22  24  25  26  28  31  33  35  38  39
+  41  46  51  55  56  57  58  61  67  70  72  76  78  79  80  81  90  91
+  92  93  94  95  96  97  98  99 104 107 112 114 116 117]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119]
+W_true: [  0   1   3   5   6   7  10  11  12  15  17  18  20  23  24  28  30  31
+  33  38  40  41  42  48  50  51  55  56  58  59  62  63  64  66  67  69
+  70  73  75  77  78  80  84  85  88  89  91  93  94  95  97 101 106 110
+ 111 112 114 115 116 119]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8802818181818182
+Precision of the model on the test data: 0.46877773295683745
+Recall of the model on the test data: 1.0
+F1-Score of the model on the test data: 0.638323583532449
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11971524197195837
+PR AUC: 0.7343888664784187
+
+NAIVE MODEL: acc = 0.8943545454545454, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10564545454545454
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5528227272727273
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 65.845
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.0010722593849999999, min 0.000782932, max 0.001340521
+Test time after: mean 0.0010798884749999998, min 0.000780866, max 0.001349065
+Test time reduction: mean -7.6290899999999954e-06, min -3.4247000000000053e-05, max 1.2670999999999906e-05
+Prediction time: mean 0.0010632587503641843, min 0.0010360144078731537, max 0.0012222416698932648
+Test iter before: mean 101.905, min 70, max 131
+Test iter after: mean 101.905, min 70.0, max 131.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(110)], constraints [np.int64(440)] ---
+Using device: cuda
+110 440 7
+Early stopping after 42 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9116011363636364
+Precision of the model on the test data: 0.882027496576779
+Recall of the model on the test data: 0.6392579335031321
+F1-Score of the model on the test data: 0.7412719054635194
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9116011363636364
+VALIDATION
+Accuracy (node level) of the final model: 0.9102545454545454
+Precision of the model on the test data: 0.878477957057553
+Recall of the model on the test data: 0.6347071782632642
+F1-Score of the model on the test data: 0.736957100985878
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9102545454545454
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9110636363636364
+Precision of the model on the test data: 0.8741101536155864
+Recall of the model on the test data: 0.6431426602343212
+F1-Score of the model on the test data: 0.7410466131978083
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9108017186793306
+
+NAIVE MODEL: acc = 0.8021363636363636, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19786363636363638
+PR AUC: 0.5989318181818182
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 48.915
+Test time before: mean 0.013958264625, min 0.010203165, max 0.018175417
+Test time after: mean 0.00645439499, min 0.002660005, max 0.010584719
+Time reduction: mean 0.007503869635, min 0.0031091090000000005, max 0.013297545
+Prediction time: mean 0.00020300574600696565, min 0.00019789300858974457, max 0.0002831537276506424
+Test iter before: mean 437.345, min 314, max 576
+Test iter after: mean 207.025, min 84.0, max 352.0
+Test iter reduction: mean 230.32, min 86.0, max 420.0
+
+--- Non-learned model ---
+110 440 7
+Average solving time (s): 0.0141758673175
+--- GNN, variables [np.int64(120)], constraints [np.int64(480)] ---
+Using device: cuda
+(120, 120) (120,) (120, 7) (480, 120) (480,) (480, 7) (120, 7)
+condition number of H 209648.2850799351
+Done generating train data
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.861703125
+Precision of the model on the test data: 0.4217068337945061
+Recall of the model on the test data: 0.9972854975383695
+F1-Score of the model on the test data: 0.5927616383395754
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.138296875
+VALIDATION
+Accuracy (node level) of the final model: 0.86275
+Precision of the model on the test data: 0.42524963340548844
+Recall of the model on the test data: 0.9993436166721366
+F1-Score of the model on the test data: 0.5966201322556943
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13725
+96887.0 960000 0.10092395833333333
+Using device: cuda
+W_true: [  0   1   6   8   9  10  11  12  14  15  16  19  20  23  25  26  28  32
+  41  42  47  48  50  51  53  54  59  63  64  65  68  73  76  77  78  79
+  81  83  88  92  93  95  97  99 100 102 104 106 109 110 111 114 115 127
+ 128]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129]
+W_true: [  0   2   3   6   8  10  13  14  15  16  21  23  24  25  26  27  29  31
+  32  33  36  37  38  41  43  45  46  47  48  51  54  55  58  59  61  63
+  66  68  71  72  78  82  86  87  93  95  96 103 104 108 112 113 114 121
+ 122 127 129]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129]
+W_true: [  0   1   3   4   6   8   9  10  11  12  14  16  17  18  25  26  28  30
+  34  40  41  42  50  51  53  54  55  58  63  64  65  71  76  77  78  79
+  81  83  86  88  92  93  95  97  99 100 102 104 108 109 114 115 116 119
+ 121 128]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129]
+W_true: [  0   3   8  10  11  15  16  17  21  22  23  24  25  26  27  30  31  32
+  33  34  36  38  41  45  46  47  48  49  53  54  57  58  59  60  61  63
+  69  71  72  76  78  82  86  87  92  93  95  96 103 104 105 111 114 115
+ 119 121 122 127 128]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129]
+W_true: [  0   1   3   6   8  10  11  14  16  17  18  23  24  25  27  29  30  31
+  35  38  44  45  46  47  51  53  54  55  63  64  68  71  77  78  79  80
+  82  84  88  91  92  94  96  97  98 103 105 107 108 109 111 113 114 115
+ 116 117 120 121 127]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8621833333333333
+Precision of the model on the test data: 0.4208421052631579
+Recall of the model on the test data: 0.9973390986196574
+F1-Score of the model on the test data: 0.5919163006464986
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13837678275290216
+PR AUC: 0.709223935274741
+
+NAIVE MODEL: acc = 0.8997833333333334, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10021666666666665
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5501083333333333
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 82.69
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.001196996045, min 0.000902499, max 0.002148147
+Test time after: mean 0.001204860485, min 0.000905493, max 0.00157507
+Test time reduction: mean -7.864439999999991e-06, min -0.00031619099999999995, max 0.0006165820000000001
+Prediction time: mean 0.0010508933756500482, min 0.001026863232254982, max 0.0012676697224378586
+Test iter before: mean 94.95, min 72, max 125
+Test iter after: mean 94.95, min 72.0, max 125.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(120)], constraints [np.int64(480)] ---
+Using device: cuda
+120 480 7
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9073364583333333
+Precision of the model on the test data: 0.877413674297527
+Recall of the model on the test data: 0.6110480151430323
+F1-Score of the model on the test data: 0.7203972906287816
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9073364583333333
+VALIDATION
+Accuracy (node level) of the final model: 0.9057416666666667
+Precision of the model on the test data: 0.8664645239539115
+Recall of the model on the test data: 0.6106765824678377
+F1-Score of the model on the test data: 0.7164238975104671
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9057416666666667
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9072
+Precision of the model on the test data: 0.8732385884620016
+Recall of the model on the test data: 0.6162247152813191
+F1-Score of the model on the test data: 0.722557177736808
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.9064175787728026
+
+NAIVE MODEL: acc = 0.8039, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.1961
+PR AUC: 0.59805
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 55.68
+Test time before: mean 0.03354478979, min 0.021500253, max 0.036354764
+Test time after: mean 0.015103919269999998, min 0.008679578, max 0.024372107
+Time reduction: mean 0.01844087052, min 0.0024806030000000014, max 0.025808183999999998
+Prediction time: mean 0.0002044998575001955, min 0.00019748695194721222, max 0.00033195316791534424
+Test iter before: mean 934.89, min 598, max 1000
+Test iter after: mean 420.1, min 238.0, max 689.0
+Test iter reduction: mean 514.79, min 41.0, max 737.0
+
+--- Non-learned model ---
+120 480 7
+Average solving time (s): 0.033556618881000005
+--- GNN, variables [np.int64(130)], constraints [np.int64(520)] ---
+Using device: cuda
+(130, 130) (130,) (130, 7) (520, 130) (520,) (520, 7) (130, 7)
+condition number of H 263754.0331778616
+Done generating train data
+Early stopping after 8 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7458394230769231
+Precision of the model on the test data: 0.2421038247217625
+Recall of the model on the test data: 0.8438935580159621
+F1-Score of the model on the test data: 0.37626215551030134
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.25416057692307686
+VALIDATION
+Accuracy (node level) of the final model: 0.7599307692307692
+Precision of the model on the test data: 0.2570459420362149
+Recall of the model on the test data: 0.8788266393792104
+F1-Score of the model on the test data: 0.39775380637193414
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2400692307692308
+94474.0 1040000 0.09084038461538461
+Using device: cuda
+W_true: [  2   5   7   9  10  16  17  18  19  22  23  29  30  39  43  44  46  48
+  50  51  52  53  56  57  59  60  62  63  64  65  66  67  69  70  71  72
+  73  77  79  89  90  91  92  93  98  99 101 103 106 107 114 115 116 119
+ 126 129 131 135]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139]
+W_true: [  0   1   3   8  19  20  22  27  29  33  35  37  38  39  41  42  44  45
+  47  48  52  54  56  62  63  65  68  69  71  73  77  79  80  83  84  85
+  88  92  94  97  98 100 101 102 103 105 106 108 110 113 114 115 116 117
+ 119 122 123 125 130 136]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139]
+W_true: [  1   2   7   9  10  16  17  18  19  20  22  23  29  31  39  41  44  46
+  48  50  51  52  53  54  57  62  63  64  65  66  67  69  70  71  72  73
+  74  77  83  86  89  91  92  93  94  98 101 106 107 110 115 116 119 124
+ 125 127 129 133 135]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 132 133 134 135 136 137 138 139]
+W_true: [  0   1   7   9  10  16  17  19  24  27  29  33  35  37  41  42  44  45
+  48  51  52  53  54  56  57  62  65  66  73  77  79  83  84  86  88  90
+  92  95  97  98 101 106 107 108 110 113 114 115 116 117 119 123 125 126
+ 129 130 131 136]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139]
+W_true: [  2   3   5   9  14  16  17  19  23  30  35  36  39  41  42  43  44  45
+  46  47  52  53  54  57  59  60  62  64  65  69  70  72  76  78  79  84
+  85  88  91  92  93  97 100 101 102 103 105 106 108 110 112 113 115 116
+ 117 119 123 126 127 129 130 138]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8282846153846154
+Precision of the model on the test data: 0.34561630160314755
+Recall of the model on the test data: 0.9969509612941475
+F1-Score of the model on the test data: 0.5132890003270467
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.17148427095292768
+PR AUC: 0.6714220929871091
+
+NAIVE MODEL: acc = 0.9091769230769231, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.09082307692307692
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5454115384615384
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 111.615
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00135593946, min 0.000970546, max 0.001725788
+Test time after: mean 0.00136698109, min 0.000967782, max 0.001726553
+Test time reduction: mean -1.104163e-05, min -4.9715999999999996e-05, max 0.00010697799999999998
+Prediction time: mean 0.0010502837784588338, min 0.001024467870593071, max 0.001223541796207428
+Test iter before: mean 95.845, min 67, max 124
+Test iter after: mean 95.845, min 67.0, max 124.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(130)], constraints [np.int64(520)] ---
+Using device: cuda
+130 520 7
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8973759615384616
+Precision of the model on the test data: 0.8584461250177307
+Recall of the model on the test data: 0.5671250172621278
+F1-Score of the model on the test data: 0.6830192601832464
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8973759615384616
+VALIDATION
+Accuracy (node level) of the final model: 0.8972384615384615
+Precision of the model on the test data: 0.8490074657098212
+Recall of the model on the test data: 0.5771046420141621
+F1-Score of the model on the test data: 0.6871355301060915
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8972384615384615
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.8965461538461539
+Precision of the model on the test data: 0.8671604938271605
+Recall of the model on the test data: 0.5542710593805484
+F1-Score of the model on the test data: 0.6762787339029968
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.895828779181018
+
+NAIVE MODEL: acc = 0.8050384615384616, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.19496153846153846
+PR AUC: 0.5974807692307692
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 67.245
+Test time before: mean 0.039547313065, min 0.026759882, max 0.042851497
+Test time after: mean 0.02308675922, min 0.012415995, max 0.03463995
+Time reduction: mean 0.016460553845, min 0.003933956000000002, max 0.026601646
+Prediction time: mean 0.00020562420599162578, min 0.00019896775484085083, max 0.0002846270799636841
+Test iter before: mean 938.955, min 633, max 1000
+Test iter after: mean 547.8, min 290.0, max 838.0
+Test iter reduction: mean 391.155, min 81.0, max 643.0
+
+--- Non-learned model ---
+130 520 7
+Average solving time (s): 0.03957803721249999
+--- GNN, variables [np.int64(140)], constraints [np.int64(560)] ---
+Using device: cuda
+(140, 140) (140,) (140, 7) (560, 140) (560,) (560, 7) (140, 7)
+condition number of H 508378.6172747931
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7105669642857143
+Precision of the model on the test data: 0.24666027305840818
+Recall of the model on the test data: 0.9876758918393661
+F1-Score of the model on the test data: 0.39473915146038213
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.28943303571428575
+VALIDATION
+Accuracy (node level) of the final model: 0.7125
+Precision of the model on the test data: 0.24798005361528222
+Recall of the model on the test data: 0.9898974781112025
+F1-Score of the model on the test data: 0.39660600245854943
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2875
+107026.0 1120000 0.09555892857142857
+Using device: cuda
+W_true: [  1   2   4   6   7  10  19  20  22  26  27  28  29  30  33  34  38  39
+  40  43  49  50  51  52  56  59  64  65  69  71  72  75  76  79  83  84
+  85  88  89  91  92  94  95  97 101 102 104 105 108 109 111 113 115 117
+ 119 120 121 122 125 127 130 132 133 135 141 142 143 148]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 148 149]
+W_true: [  0   3   4   5  11  13  22  27  30  32  37  38  39  40  41  42  44  45
+  50  51  55  56  59  67  68  70  71  74  75  77  78  79  80  82  84  87
+  89  90  92  97  99 100 103 106 111 113 114 115 117 119 125 127 128 131
+ 136 138 139 140 142 143 146 148]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149]
+W_true: [  1   2   6   7   9  10  13  19  23  25  26  27  28  30  32  34  36  39
+  43  49  50  51  52  55  56  59  64  65  69  70  71  72  76  77  78  80
+  83  84  87  88  89  91  92  95 101 103 104 108 111 112 113 114 115 117
+ 119 120 122 124 127 132 133 138 141 142 143 148]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149]
+W_true: [  0   3   4  11  19  22  23  27  28  29  30  32  33  34  37  38  39  40
+  41  44  45  50  51  52  54  55  56  58  59  67  68  71  74  76  77  80
+  84  85  87  88  89  90  92 100 103 105 111 112 113 114 115 117 125 127
+ 128 132 133 134 142 143 146 148]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109
+ 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145
+ 146 147 148 149]
+W_true: [  1   2   3   4   6   7   8  13  14  19  20  22  23  25  27  28  29  30
+  32  34  39  40  42  44  49  50  51  52  53  54  56  57  62  63  64  65
+  67  69  72  75  76  77  78  79  80  82  83  84  88  89  94  95  97  98
+  99 101 105 111 112 115 116 117 119 127 128 131 133 135 137 139 143 148]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149]
+TESTING
+Accuracy (node level) of the model on the test data: 0.7129785714285715
+Precision of the model on the test data: 0.24878131093445327
+Recall of the model on the test data: 0.9913335823683227
+F1-Score of the model on the test data: 0.39774583714272865
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.28713482587064676
+PR AUC: 0.6204717323656737
+
+NAIVE MODEL: acc = 0.9043928571428571, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.09560714285714286
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5478035714285714
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 200.915
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.001826985505, min 0.001514851, max 0.002186838
+Test time after: mean 0.001836552225, min 0.001516226, max 0.002213978
+Test time reduction: mean -9.56672e-06, min -5.340999999999983e-05, max 2.3857999999999865e-05
+Prediction time: mean 0.0010499004367738962, min 0.0010294616222381592, max 0.0012297071516513824
+Test iter before: mean 111.335, min 88, max 140
+Test iter after: mean 111.335, min 88.0, max 140.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(140)], constraints [np.int64(560)] ---
+Using device: cuda
+140 560 7
+Early stopping after 31 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.89350625
+Precision of the model on the test data: 0.8400057658313798
+Recall of the model on the test data: 0.5300087120523106
+F1-Score of the model on the test data: 0.6499352835344289
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.89350625
+VALIDATION
+Accuracy (node level) of the final model: 0.8950642857142858
+Precision of the model on the test data: 0.8425631487370253
+Recall of the model on the test data: 0.537839908081195
+F1-Score of the model on the test data: 0.656567781751876
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8950642857142858
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.8942142857142857
+Precision of the model on the test data: 0.8460269956635925
+Recall of the model on the test data: 0.5298955663517081
+F1-Score of the model on the test data: 0.6516441642752976
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8936589907604833
+
+NAIVE MODEL: acc = 0.8132785714285714, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.18672142857142857
+PR AUC: 0.5933607142857142
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 74.05
+Test time before: mean 0.048137842284999996, min 0.04428302, max 0.049240639
+Test time after: mean 0.043930927504999995, min 0.0273031, max 0.048913263
+Time reduction: mean 0.00420691478, min -0.0006217170000000008, max 0.021079454
+Prediction time: mean 0.00020154060795903205, min 0.00019653327763080597, max 0.00028724782168865204
+Test iter before: mean 998.865, min 928, max 1000
+Test iter after: mean 912.88, min 562.0, max 1000.0
+Test iter reduction: mean 85.985, min 0.0, max 438.0
+
+--- Non-learned model ---
+140 560 7
+Average solving time (s): 0.048111785494999997
+--- GNN, variables [np.int64(150)], constraints [np.int64(600)] ---
+Using device: cuda
+(150, 150) (150,) (150, 7) (600, 150) (600,) (600, 7) (150, 7)
+condition number of H 243051.0715822471
+Done generating train data
+Early stopping after 40 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8858025
+Precision of the model on the test data: 0.48035956863905777
+Recall of the model on the test data: 0.9992737893199668
+F1-Score of the model on the test data: 0.6488238776289456
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11419750000000001
+VALIDATION
+Accuracy (node level) of the final model: 0.8873066666666667
+Precision of the model on the test data: 0.48597249269717624
+Recall of the model on the test data: 0.9993117256914028
+F1-Score of the model on the test data: 0.6539327682921836
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11269333333333333
+126685.0 1200000 0.10557083333333334
+Using device: cuda
+W_true: [  0   3   4   5  10  11  13  14  18  22  25  26  28  30  33  35  36  40
+  43  45  46  47  51  52  54  55  57  59  60  61  62  65  68  69  70  73
+  75  76  77  79  80  83  86  87  88  89  91  92  93  95  96  97  98  99
+ 102 103 105 108 110 111 114 116 120 121 122 125 127 128 129 133 134 135
+ 136 138 140 141 142 147 148 149 153 155 159]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159]
+W_true: [  1   2   3   4   5   6   7   9  11  12  14  15  16  17  23  25  26  27
+  28  36  37  38  40  41  42  43  48  51  52  54  59  62  63  66  67  68
+  69  70  71  72  73  74  76  78  81  83  88  89  90  91  95  98  99 100
+ 101 105 107 108 109 111 112 114 117 122 125 126 129 130 131 133 136 142
+ 144 146 151 152 153 154 157]
+W_pred: [  1   2   3   4   5   6   7   8   9  10  11  12  13  15  16  17  18  19
+  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37
+  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55
+  56  57  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74
+  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109 110 111
+ 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129
+ 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147
+ 148 149 150 151 152 153 154 155 156 157 158 159]
+W_true: [  0   4   5   6   8  10  13  14  15  17  18  22  23  25  28  30  35  36
+  37  39  41  42  43  45  46  52  53  55  56  57  59  60  61  62  63  65
+  68  69  70  72  75  76  79  83  86  87  88  89  91  93  95  97  98 105
+ 106 108 110 111 114 116 118 120 121 122 123 124 125 127 128 129 133 134
+ 135 136 138 140 141 142 147 149 152 153 155 159]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  86  87  88  89  90  91
+  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109
+ 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 136 137 139 140 141 142 143 144 145 146
+ 147 148 149 150 151 152 153 154 155 156 157 158 159]
+W_true: [  1   2   4   5   6   7   8   9  11  12  14  15  16  17  18  23  25  26
+  27  28  30  31  32  35  36  37  40  41  42  43  51  52  54  55  59  60
+  62  63  66  67  68  69  70  71  73  74  76  78  80  83  86  88  89  90
+  91  95  98 100 101 105 108 109 112 114 116 117 120 122 126 128 129 130
+ 133 134 136 138 140 141 142 152 153 154]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73
+  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91
+  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109
+ 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145
+ 146 147 148 149 150 151 152 153 154 155 156 157 158 159]
+W_true: [  0   2   3   4   5   6   8  11  12  14  15  17  19  22  23  24  25  28
+  30  36  43  45  47  52  54  58  59  61  62  63  64  65  67  69  71  72
+  73  74  75  76  78  81  82  83  86  87  89  91  93  95  96  99 102 103
+ 105 106 107 108 109 110 111 116 120 121 123 124 125 127 128 129 132 134
+ 136 137 138 140 141 142 145 148 149 153 155 158 159]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 155 157 158 159]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8867266666666667
+Precision of the model on the test data: 0.484219193120483
+Recall of the model on the test data: 0.9951742291301078
+F1-Score of the model on the test data: 0.6514595171182999
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11339038142620232
+PR AUC: 0.739953377791962
+
+NAIVE MODEL: acc = 0.8936266666666667, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10637333333333335
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5531866666666667
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 84.955
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.002394222395, min 0.001840352, max 0.002969508
+Test time after: mean 0.00240091893, min 0.001772804, max 0.002962895
+Test time reduction: mean -6.696535000000009e-06, min -6.12490000000002e-05, max 0.000349881
+Prediction time: mean 0.0010493834689259528, min 0.0010279510170221329, max 0.0012489724904298782
+Test iter before: mean 118.8, min 89, max 149
+Test iter after: mean 118.8, min 89.0, max 149.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(150)], constraints [np.int64(600)] ---
+Using device: cuda
+150 600 7
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8908925
+Precision of the model on the test data: 0.8373522212384772
+Recall of the model on the test data: 0.5078469771765322
+F1-Score of the model on the test data: 0.6322436036076523
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8908925
+VALIDATION
+Accuracy (node level) of the final model: 0.89058
+Precision of the model on the test data: 0.8259240039208903
+Recall of the model on the test data: 0.5167761021718739
+F1-Score of the model on the test data: 0.6357604136614811
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.89058
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.8908933333333333
+Precision of the model on the test data: 0.8252865578325808
+Recall of the model on the test data: 0.5164468917548182
+F1-Score of the model on the test data: 0.6353224296982931
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8906648756218906
+
+NAIVE MODEL: acc = 0.8159733333333333, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.18402666666666667
+PR AUC: 0.5920133333333333
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 81.83
+Test time before: mean 0.055104689374999995, min 0.053269501, max 0.056171383
+Test time after: mean 0.05458687896, min 0.050207148, max 0.05634998
+Time reduction: mean 0.0005178104150000002, min -0.0010796060000000038, max 0.005610034
+Prediction time: mean 0.00020487380214035512, min 0.00019998475909233093, max 0.00028231181204319
+Test iter before: mean 1000.0, min 1000, max 1000
+Test iter after: mean 994.13, min 889.0, max 1000.0
+Test iter reduction: mean 5.87, min 0.0, max 111.0
+
+--- Non-learned model ---
+150 600 7
+Average solving time (s): 0.055162558586499995
+--- GNN, variables [np.int64(160)], constraints [np.int64(640)] ---
+Using device: cuda
+(160, 160) (160,) (160, 7) (640, 160) (640,) (640, 7) (160, 7)
+condition number of H 343888.8068038136
+Done generating train data
+Early stopping after 36 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8793015625
+Precision of the model on the test data: 0.4509796948899399
+Recall of the model on the test data: 0.9991806120197914
+F1-Score of the model on the test data: 0.6214625588654706
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1206984375
+VALIDATION
+Accuracy (node level) of the final model: 0.8810875
+Precision of the model on the test data: 0.45519928937791915
+Recall of the model on the test data: 0.9991823385118561
+F1-Score of the model on the test data: 0.6254576951848498
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11891249999999999
+126924.0 1280000 0.099159375
+Using device: cuda
+W_true: [  5   6   7  10  11  12  16  17  21  22  23  24  30  31  32  40  45  46
+  48  49  51  56  57  58  60  61  62  66  68  69  70  71  76  78  79  80
+  82  83  84  85  88  91  94  97 100 102 103 105 109 110 111 112 115 116
+ 120 122 124 126 127 128 136 138 139 143 144 147 148 150 151 153 156 157
+ 159 164 165 166 169]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169]
+W_true: [  2   3   5   9  10  11  13  15  16  18  20  21  23  24  26  28  29  30
+  40  43  46  47  48  49  50  52  55  56  59  61  63  64  65  66  67  68
+  69  71  72  74  76  77  79  80  83  91  92  94  97 100 102 104 106 108
+ 109 110 111 113 114 115 116 120 121 123 125 128 129 132 133 134 135 137
+ 138 139 140 141 145 146 147 153 155 156 157 158 159 162 165 166 169]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 169]
+W_true: [  2   5   6   7   9  10  15  16  21  22  23  24  25  31  32  35  37  39
+  40  45  48  49  51  53  56  57  59  60  66  69  75  76  78  79  83  84
+  85  88  91  93  94  97 100 102 103 105 110 111 112 114 115 116 119 120
+ 124 125 127 132 135 136 139 140 141 143 144 147 149 150 151 152 157 159
+ 164 166 169]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169]
+W_true: [  2   3   5   6   9  13  15  16  18  21  23  24  28  30  31  40  41  42
+  43  46  47  48  49  51  53  55  56  58  59  61  62  64  65  66  67  68
+  69  71  72  74  76  77  79  80  82  86  94  95  97 100 102 103 109 110
+ 112 113 115 116 120 121 122 123 124 125 128 131 132 133 134 135 137 138
+ 140 145 148 150 155 156 157 158 159 162 163 166 169]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 169]
+W_true: [  1   2   3   5   6   9  10  11  16  17  18  19  21  22  24  27  28  30
+  31  34  40  43  46  47  48  50  51  55  57  61  65  68  69  71  74  76
+  77  79  82  85  87  88  91  97 100 102 107 109 111 115 120 122 126 127
+ 129 131 133 136 137 138 139 141 143 144 147 151 154 155 157 158 165 166
+ 167 169]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 169]
+TESTING
+Accuracy (node level) of the model on the test data: 0.87971875
+Precision of the model on the test data: 0.4513304623106979
+Recall of the model on the test data: 0.9995578575037898
+F1-Score of the model on the test data: 0.6218685529030357
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12028097014925374
+PR AUC: 0.7254660349072438
+
+NAIVE MODEL: acc = 0.90105, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.09895
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.549475
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 96.225
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00269655227, min 0.002026861, max 0.003397775
+Test time after: mean 0.00271993358, min 0.002030337, max 0.003400397
+Test time reduction: mean -2.3381309999999986e-05, min -7.973400000000014e-05, max 2.2785000000000426e-05
+Prediction time: mean 0.001048559257760644, min 0.001024024561047554, max 0.0011802315711975098
+Test iter before: mean 122.71, min 90, max 156
+Test iter after: mean 122.71, min 90.0, max 156.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(160)], constraints [np.int64(640)] ---
+Using device: cuda
+160 640 7
+Early stopping after 31 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8911609375
+Precision of the model on the test data: 0.8374179624137206
+Recall of the model on the test data: 0.5168108232633144
+F1-Score of the model on the test data: 0.6391632952243801
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8911609375
+VALIDATION
+Accuracy (node level) of the final model: 0.891025
+Precision of the model on the test data: 0.8304795433936096
+Recall of the model on the test data: 0.5219767324906963
+F1-Score of the model on the test data: 0.6410425330423684
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.891025
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.89135
+Precision of the model on the test data: 0.8353510895883777
+Recall of the model on the test data: 0.5201179268987236
+F1-Score of the model on the test data: 0.6410785811619937
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8911314676616915
+
+NAIVE MODEL: acc = 0.81344375, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.18655625
+PR AUC: 0.593278125
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 86.92
+Test time before: mean 0.06386864846, min 0.062093963, max 0.065093799
+Test time after: mean 0.057525973620000004, min 0.037896914, max 0.064586709
+Time reduction: mean 0.00634267484, min -0.0003240929999999975, max 0.02631961900000001
+Prediction time: mean 0.0002041924651712179, min 0.0001988634467124939, max 0.00029822811484336853
+Test iter before: mean 999.825, min 981, max 1000
+Test iter after: mean 907.98, min 597.0, max 1000.0
+Test iter reduction: mean 91.845, min 0.0, max 403.0
+
+--- Non-learned model ---
+160 640 7
+Average solving time (s): 0.0637896143655
+--- GNN, variables [np.int64(170)], constraints [np.int64(680)] ---
+Using device: cuda
+(170, 170) (170,) (170, 7) (680, 170) (680,) (680, 7) (170, 7)
+condition number of H 258077.6297489295
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7158595588235294
+Precision of the model on the test data: 0.2497232620268563
+Recall of the model on the test data: 0.9785119280256876
+F1-Score of the model on the test data: 0.39789967357686523
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2841404411764706
+VALIDATION
+Accuracy (node level) of the final model: 0.7148882352941176
+Precision of the model on the test data: 0.24904280155642022
+Recall of the model on the test data: 0.986437334319709
+F1-Score of the model on the test data: 0.3976836375837258
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.28511176470588234
+130491.0 1360000 0.09594926470588236
+Using device: cuda
+W_true: [  0   1   3   5   6   9  10  12  13  17  21  23  25  28  29  30  31  34
+  35  36  37  41  42  43  46  49  50  53  55  59  60  64  66  67  69  74
+  77  80  81  85  86  92  93  95  99 100 103 108 109 111 112 116 117 119
+ 121 126 129 130 133 134 135 136 140 141 143 145 148 151 152 155 156 158
+ 160 162 165 166 167 169 173 174 179]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 140 141 142 143 144 145
+ 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163
+ 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179]
+W_true: [  1   2   3   4   5   8  10  11  12  14  15  25  26  28  30  31  32  33
+  34  37  42  45  46  47  48  51  53  54  61  63  66  67  70  71  72  75
+  78  80  83  84  87  89  90  91  93  94  95  96  97  98  99 102 106 108
+ 109 111 112 113 114 116 117 119 120 121 123 125 126 127 129 132 135 137
+ 138 139 142 145 146 152 153 154 156 158 159 161 162 165 166 167 171 173
+ 176 177]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  32  33  34  35  36
+  37  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55
+  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  75
+  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93
+  94  95  96  98  99 100 101 102 103 104 105 106 107 108 109 110 111 112
+ 113 114 115 116 117 118 119 120 121 122 123 125 127 128 129 130 131 132
+ 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150
+ 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168
+ 169 170 171 172 173 174 175 176 177 178 179]
+W_true: [  1   3   4   5   6   9  10  12  13  17  21  23  28  29  30  31  33  34
+  35  36  37  38  39  41  42  43  46  49  50  51  55  59  60  64  65  66
+  69  71  77  80  85  89  92  93  95  99 100 103 107 108 109 111 117 119
+ 121 124 126 127 129 130 131 133 137 139 140 141 143 145 147 148 151 152
+ 156 158 160 162 163 165 166 169 172 173 174 175 179]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  41  42  43  44  45  46  48  49  50  51  52  53  54  55
+  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  72  73  74
+  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109 110
+ 111 112 113 114 115 117 118 119 120 121 122 124 126 127 128 129 130 131
+ 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149
+ 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167
+ 168 169 170 171 172 173 174 176 177 178 179]
+W_true: [  1   3   4   5   6   8  10  11  14  15  25  28  30  31  32  33  34  35
+  37  41  42  45  46  48  49  51  53  54  59  61  63  66  67  72  75  77
+  80  84  85  87  90  92  93  94  95  98  99 100 102 108 109 111 112 113
+ 114 116 117 119 121 123 125 126 129 130 132 135 136 137 138 139 142 143
+ 150 153 154 156 159 162 165 166 168 169 170 173 174]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91
+  92  93  94  95  96  98  99 100 102 103 104 105 106 107 108 109 111 112
+ 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130
+ 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148
+ 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166
+ 167 168 169 170 171 172 173 174 175 176 177 178 179]
+W_true: [  0   1   6   7   9  10  11  12  13  17  19  20  21  25  28  29  30  31
+  32  33  34  35  36  38  39  42  43  46  50  55  57  60  64  67  69  70
+  71  75  79  80  81  82  83  85  86  91  94  97  98  99 100 101 103 108
+ 111 112 113 116 119 121 125 126 127 128 131 132 133 134 136 140 142 143
+ 151 152 156 158 159 160 161 162 165 166 173 175 176 179]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  62  63  64  65  66  67  68  69  70  71  72  73
+  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+  93  94  95  96  97  98  99 100 102 103 104 105 106 107 108 109 110 111
+ 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129
+ 130 131 132 133 134 135 137 138 139 140 141 142 143 144 145 146 147 148
+ 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166
+ 167 168 169 170 171 172 173 174 175 176 177 178 179]
+TESTING
+Accuracy (node level) of the model on the test data: 0.7147823529411764
+Precision of the model on the test data: 0.24967750959700355
+Recall of the model on the test data: 0.9871574290278973
+F1-Score of the model on the test data: 0.39855117406998525
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2846413227977758
+PR AUC: 0.6190321751948034
+
+NAIVE MODEL: acc = 0.9042705882352942, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.0957294117647059
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5478647058823529
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 242.435
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.0029423045800000005, min 0.002205162, max 0.00374356
+Test time after: mean 0.00295971859, min 0.00218381, max 0.003793031
+Test time reduction: mean -1.7414009999999997e-05, min -7.5786e-05, max 0.0002109439999999998
+Prediction time: mean 0.0011131382174789906, min 0.001028396189212799, max 0.011653384193778038
+Test iter before: mean 116.88, min 88, max 152
+Test iter after: mean 116.88, min 88.0, max 152.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(170)], constraints [np.int64(680)] ---
+Using device: cuda
+170 680 7
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8920323529411764
+Precision of the model on the test data: 0.8437011566114411
+Recall of the model on the test data: 0.5255348811851114
+F1-Score of the model on the test data: 0.6476522306688167
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8920323529411764
+VALIDATION
+Accuracy (node level) of the final model: 0.8926058823529411
+Precision of the model on the test data: 0.8369002247630216
+Recall of the model on the test data: 0.5344650045246044
+F1-Score of the model on the test data: 0.652333707843772
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8926058823529411
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.889364705882353
+Precision of the model on the test data: 0.8496590368451657
+Recall of the model on the test data: 0.5017011580360209
+F1-Score of the model on the test data: 0.6308827569965066
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8893377231489611
+
+NAIVE MODEL: acc = 0.8115470588235294, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.18845294117647057
+PR AUC: 0.5942264705882353
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 94.04
+Test time before: mean 0.07307490837, min 0.065281717, max 0.074337687
+Test time after: mean 0.05989064014, min 0.035571902, max 0.073452082
+Time reduction: mean 0.013184268230000002, min -0.001026052999999999, max 0.038385401
+Prediction time: mean 0.00025706076063215734, min 0.00019878335297107697, max 0.010343901813030243
+Test iter before: mean 997.035, min 887, max 1000
+Test iter after: mean 824.19, min 486.0, max 1000.0
+Test iter reduction: mean 172.845, min -54.0, max 514.0
+
+--- Non-learned model ---
+170 680 7
+Average solving time (s): 0.073035055874
+--- GNN, variables [np.int64(180)], constraints [np.int64(720)] ---
+Using device: cuda
+(180, 180) (180,) (180, 7) (720, 180) (720,) (720, 7) (180, 7)
+condition number of H 536694.8236806242
+Done generating train data
+Early stopping after 10 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8475402777777777
+Precision of the model on the test data: 0.4141490924955903
+Recall of the model on the test data: 0.9957269632480228
+F1-Score of the model on the test data: 0.5849867674858223
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1524597222222222
+VALIDATION
+Accuracy (node level) of the final model: 0.8484833333333334
+Precision of the model on the test data: 0.4157573158966663
+Recall of the model on the test data: 0.9989183063768414
+F1-Score of the model on the test data: 0.5871417974840673
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.15151666666666666
+155393.0 1440000 0.10791180555555556
+Using device: cuda
+W_true: [  0   2   3   4   5   6   7   8   9  13  15  18  19  20  21  24  26  27
+  28  29  31  32  33  34  39  40  41  42  46  47  48  50  53  55  56  57
+  58  63  66  67  70  73  74  77  79  83  84  85  87  88  91  94  95  96
+  97 100 102 104 106 107 109 110 113 114 116 117 118 122 123 124 127 128
+ 129 131 134 138 139 140 141 144 145 150 151 152 154 158 161 163 165 166
+ 167 172 173 174 175 176 177 178 179 180 182 183]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189]
+W_true: [  0   1   3   4   5  10  11  15  16  17  19  20  22  23  28  30  37  38
+  39  41  43  47  49  50  52  54  57  58  61  67  69  70  71  72  73  75
+  76  78  82  88  89  90  92  96  97  98 104 105 106 108 109 110 112 113
+ 115 116 118 119 120 121 122 126 127 132 134 136 137 138 140 146 147 148
+ 149 150 152 156 159 160 162 163 166 168 170 171 172 175 178 179 180 181
+ 182 183 187 188]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189]
+W_true: [  0   3   4   5   6   7   9  11  13  14  16  17  19  20  23  26  27  28
+  30  32  34  37  38  39  41  46  47  48  50  53  54  55  56  60  61  64
+  67  69  70  71  72  74  76  78  79  80  82  85  87  88  89  92  95  97
+  98 100 102 107 109 110 113 114 115 116 117 118 122 123 124 127 129 131
+ 134 136 138 140 144 145 150 154 155 158 163 165 166 167 170 172 174 175
+ 176 177 178 179 183 184 187 189]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189]
+W_true: [  0   1   3   4   5  10  11  15  17  18  19  20  23  26  28  30  32  37
+  38  39  41  46  47  49  50  52  54  57  58  61  65  67  69  70  71  72
+  73  76  78  82  86  88  89  90  92  95  97 100 104 106 108 109 110 111
+ 112 113 115 116 118 119 121 123 126 127 128 137 138 140 144 149 150 152
+ 154 156 159 160 162 163 165 166 167 170 172 175 178 179 180 181 183 187
+ 189]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189]
+W_true: [  0   2   3   4   5   6   9  11  15  17  18  19  20  21  22  23  25  27
+  28  31  32  34  38  39  42  43  46  47  49  50  52  53  57  66  68  69
+  70  72  78  79  80  84  86  87  88  89  91  95  96  97 103 105 106 107
+ 109 112 116 118 119 121 123 127 128 129 131 134 138 139 140 141 142 143
+ 146 149 150 152 155 158 160 162 163 165 166 167 170 171 172 173 174 176
+ 178 179 181 185 187]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8490333333333333
+Precision of the model on the test data: 0.41477811288237826
+Recall of the model on the test data: 0.9995846744886304
+F1-Score of the model on the test data: 0.5862793459395268
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1510799336650083
+PR AUC: 0.7072036159077265
+
+NAIVE MODEL: acc = 0.8929888888888889, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.10701111111111111
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5535055555555556
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 135.87
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.004273083, min 0.003373929, max 0.005400543
+Test time after: mean 0.004273866225000001, min 0.003369186, max 0.005388542
+Test time reduction: mean -7.832250000000106e-07, min -8.102000000000022e-05, max 8.22819999999995e-05
+Prediction time: mean 0.0011112207639962434, min 0.001031525433063507, max 0.004261715337634087
+Test iter before: mean 150.44, min 114, max 190
+Test iter after: mean 150.44, min 114.0, max 190.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(180)], constraints [np.int64(720)] ---
+Using device: cuda
+180 720 7
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8890166666666667
+Precision of the model on the test data: 0.8299065420560747
+Recall of the model on the test data: 0.4890316659017898
+F1-Score of the model on the test data: 0.6154201559341611
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8890166666666667
+VALIDATION
+Accuracy (node level) of the final model: 0.8889722222222223
+Precision of the model on the test data: 0.8224374904904397
+Recall of the model on the test data: 0.4959021406727829
+F1-Score of the model on the test data: 0.6187305645115134
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8889722222222223
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.8896444444444445
+Precision of the model on the test data: 0.8309218685407193
+Recall of the model on the test data: 0.4921645445641528
+F1-Score of the model on the test data: 0.6181762263570659
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8900991708126036
+
+NAIVE MODEL: acc = 0.8184888888888889, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.1815111111111111
+PR AUC: 0.5907555555555556
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 99.32
+Test time before: mean 0.08034102238000002, min 0.077515047, max 0.08208963
+Test time after: mean 0.07915096451999999, min 0.07626079, max 0.080590114
+Time reduction: mean 0.00119005786, min -0.0008512340000000063, max 0.003153132000000003
+Prediction time: mean 0.0002532497514039278, min 0.00019772537052631378, max 0.009729055687785149
+Test iter before: mean 1000.0, min 1000, max 1000
+Test iter after: mean 1000.0, min 1000.0, max 1000.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- Non-learned model ---
+180 720 7
+Average solving time (s): 0.0803414616545
+--- GNN, variables [np.int64(190)], constraints [np.int64(760)] ---
+Using device: cuda
+(190, 190) (190,) (190, 7) (760, 190) (760,) (760, 7) (190, 7)
+condition number of H 355526.3652386265
+Done generating train data
+Early stopping after 39 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8852611842105264
+Precision of the model on the test data: 0.46511156622584676
+Recall of the model on the test data: 0.9986814172127797
+F1-Score of the model on the test data: 0.6346502317961953
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11473881578947369
+VALIDATION
+Accuracy (node level) of the final model: 0.8852578947368421
+Precision of the model on the test data: 0.4644595192449491
+Recall of the model on the test data: 0.9993653815643344
+F1-Score of the model on the test data: 0.6341807198590486
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11474210526315788
+151678.0 1520000 0.09978815789473684
+Using device: cuda
+W_true: [  1   2   4   6   7   9  10  11  13  14  15  16  17  18  19  21  25  30
+  33  34  36  39  40  42  43  46  49  50  51  53  56  57  59  60  62  63
+  67  68  70  73  74  78  79  80  81  83  86  87  88  89  91  92  95  97
+  98  99 100 104 105 106 107 108 109 110 114 117 121 122 123 124 126 127
+ 128 133 134 136 138 139 140 144 145 150 152 153 156 157 158 160 162 163
+ 164 165 167 169 174 178 179 182 183 184 186 189 190 193 196]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91
+  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109
+ 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145
+ 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163
+ 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181
+ 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199]
+W_true: [  0   3   4   9  10  15  18  19  20  23  24  25  26  31  33  35  36  38
+  40  42  43  44  50  51  53  56  64  65  69  70  71  73  74  76  77  79
+  83  84  85  86  87  88  90  93  95  98  99 100 101 102 103 105 107 109
+ 111 112 120 123 125 127 128 129 131 132 133 134 135 137 138 139 146 147
+ 151 154 157 158 161 168 169 173 174 182 190 193 197 198 199]
+W_pred: [  0   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 145
+ 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163
+ 164 165 166 167 168 169 170 171 172 173 174 176 177 178 179 180 181 182
+ 183 184 185 186 188 189 190 191 192 193 194 195 197 198 199]
+W_true: [  2   3   4   5   9  10  11  14  15  17  18  19  20  25  28  33  34  36
+  37  39  42  44  48  49  50  51  52  53  59  62  63  67  68  69  70  71
+  73  74  77  78  79  80  83  86  87  88  94  95  97  98  99 100 101 103
+ 105 107 108 109 110 113 114 119 120 122 123 125 128 132 133 136 138 139
+ 143 144 145 148 150 153 157 158 159 161 162 163 165 173 174 175 177 179
+ 181 182 183 186 190 191 192]
+W_pred: [  0   1   2   3   4   5   6   7   9  10  11  13  14  15  16  17  18  19
+  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37
+  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55
+  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73
+  74  75  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92
+  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109 110
+ 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128
+ 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146
+ 147 148 150 151 152 153 155 156 157 158 159 160 161 162 163 164 165 166
+ 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184
+ 185 186 188 189 190 191 192 193 194 195 196 197 198 199]
+W_true: [  3   6   7   9  12  17  18  19  20  23  24  25  26  28  31  32  33  35
+  36  38  40  44  50  51  53  56  62  64  69  70  71  73  74  77  79  83
+  84  86  87  88  90  93  95  96  97  99 101 102 103 105 106 109 110 111
+ 114 121 122 123 125 128 129 131 132 133 134 135 137 138 139 146 147 153
+ 157 158 161 162 165 167 169 173 174 180 181 182 184 194 197]
+W_pred: [  0   1   2   3   4   5   6   7   9  10  11  12  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  44  45  46  47  48  49  50  51  52  53  54  55
+  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73
+  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91
+  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109
+ 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 145 146
+ 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164
+ 165 166 167 168 169 170 171 172 173 174 176 177 178 179 180 181 182 183
+ 184 185 186 188 189 190 191 192 193 194 195 197 198 199]
+W_true: [  2   4   6   8  13  14  17  18  19  25  28  30  31  33  34  35  36  38
+  42  43  44  47  50  51  52  53  54  56  57  61  63  65  66  67  68  70
+  71  74  75  79  80  83  86  87  88  90  91  92  95  98  99 100 101 102
+ 103 105 106 107 110 111 113 114 115 117 119 122 123 124 125 126 127 131
+ 134 137 138 141 142 144 150 152 153 154 156 158 165 167 171 173 174 178
+ 183 187 193 196 198]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  13  14  15  16  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199]
+TESTING
+Accuracy (node level) of the model on the test data: 0.8865736842105263
+Precision of the model on the test data: 0.4670806838706485
+Recall of the model on the test data: 0.999364743250397
+F1-Score of the model on the test data: 0.6366196233159661
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11363126472898664
+PR AUC: 0.7332542925078911
+
+NAIVE MODEL: acc = 0.900578947368421, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.09942105263157895
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5497105263157894
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 107.755
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.00455597912, min 0.003445138, max 0.005914277
+Test time after: mean 0.00458775996, min 0.003510061, max 0.005932203
+Test time reduction: mean -3.1780840000000015e-05, min -0.00041236599999999995, max 1.8960000000000157e-05
+Prediction time: mean 0.0010684706550091504, min 0.0010308809578418732, max 0.0016484037041664124
+Test iter before: mean 148.93, min 111, max 200
+Test iter after: mean 148.93, min 111.0, max 200.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(190)], constraints [np.int64(760)] ---
+Using device: cuda
+190 760 7
+Early stopping after 43 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8955447368421052
+Precision of the model on the test data: 0.8557363080424176
+Recall of the model on the test data: 0.5569736259202521
+F1-Score of the model on the test data: 0.6747635064546658
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8955447368421052
+VALIDATION
+Accuracy (node level) of the final model: 0.8962894736842105
+Precision of the model on the test data: 0.8368830556428796
+Recall of the model on the test data: 0.5779219017123008
+F1-Score of the model on the test data: 0.6837027881667442
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8962894736842105
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.8959105263157895
+Precision of the model on the test data: 0.8457463884430176
+Recall of the model on the test data: 0.5694830987057202
+F1-Score of the model on the test data: 0.6806504222577467
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8959975386226761
+
+NAIVE MODEL: acc = 0.8052157894736842, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.1947842105263158
+PR AUC: 0.5973921052631579
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 98.885
+Test time before: mean 0.09056990581999999, min 0.0739459, max 0.094874513
+Test time after: mean 0.053701090459999996, min 0.02869952, max 0.094510755
+Time reduction: mean 0.03686881536, min -0.00023214100000000515, max 0.06493089599999999
+Prediction time: mean 0.0002730629686266184, min 0.00019828416407108307, max 0.013881735503673553
+Test iter before: mean 968.425, min 783, max 1000
+Test iter after: mean 583.065, min 311.0, max 1000.0
+Test iter reduction: mean 385.36, min 0.0, max 680.0
+
+--- Non-learned model ---
+190 760 7
+Average solving time (s): 0.0903976895875
+--- GNN, variables [np.int64(200)], constraints [np.int64(800)] ---
+Using device: cuda
+(200, 200) (200,) (200, 7) (800, 200) (800,) (800, 7) (200, 7)
+condition number of H 2700901.4118942632
+Done generating train data
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.88015
+Precision of the model on the test data: 0.4386570819272591
+Recall of the model on the test data: 0.9991259557773656
+F1-Score of the model on the test data: 0.6096520333676673
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11985
+VALIDATION
+Accuracy (node level) of the final model: 0.88149
+Precision of the model on the test data: 0.44172183870131704
+Recall of the model on the test data: 0.9996267661956811
+F1-Score of the model on the test data: 0.6126997614301121
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11850999999999999
+149878.0 1600000 0.09367375
+Using device: cuda
+W_true: [  1   2   4   8   9  10  11  12  14  17  19  20  22  29  30  31  34  36
+  37  38  40  41  44  47  51  53  54  56  57  60  64  65  66  67  69  70
+  71  72  78  80  82  84  86  91  92  93  94  95  96  99 100 102 106 109
+ 110 112 120 121 122 124 125 126 127 132 138 139 142 144 145 151 152 154
+ 155 159 160 161 163 168 169 174 181 183 184 185 186 187 188 189 190 191
+ 193 202 204 205 207 209]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  17  18
+  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
+  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54
+  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72
+  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90
+  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108
+ 109 110 111 112 113 114 115 117 118 119 120 121 122 123 124 125 126 127
+ 128 129 130 131 132 133 134 135 137 138 139 140 141 142 143 144 145 146
+ 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164
+ 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182
+ 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200
+ 201 202 203 204 205 206 207 208 209]
+W_true: [  3   4   5   6   9  14  17  18  19  20  21  22  24  27  28  29  30  34
+  40  42  43  45  46  47  51  52  53  54  58  59  60  61  64  65  68  73
+  77  79  80  81  85  86  87  88  89  97  98  99 100 103 105 106 109 111
+ 113 114 117 118 119 120 121 124 125 129 132 134 135 139 140 141 147 149
+ 151 155 158 159 164 167 168 172 173 175 176 177 179 182 183 184 185 186
+ 189 191 193 195 197 199 201 204 209]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 117 118 119 120 121 122 123 124 125 126
+ 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209]
+W_true: [  3   4   5   6   9  10  12  14  17  19  21  22  26  29  30  31  34  36
+  37  40  42  43  44  47  49  53  54  57  60  63  64  65  66  69  72  73
+  78  82  84  86  91  93  94  95  96 100 102 106 108 110 112 113 119 120
+ 121 122 124 125 127 131 132 136 138 143 144 145 152 154 156 159 161 162
+ 164 168 169 172 174 181 183 184 188 189 190 191 193 195 196 198 202 204
+ 209]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209]
+W_true: [  1   3   4   5   6   8   9  12  14  17  18  19  20  21  24  28  29  30
+  34  40  42  43  46  47  51  53  54  56  58  60  64  65  78  79  81  85
+  86  87  88  91  92  97  98  99 100 105 107 109 111 113 114 119 120 124
+ 125 128 132 138 139 141 149 151 154 155 157 159 164 168 169 172 173 175
+ 176 177 179 182 183 184 185 186 191 195 197 198 199 201 204 209]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209]
+W_true: [  1   4   5   9  11  12  13  14  17  19  20  21  22  24  26  27  29  30
+  31  34  37  38  42  43  45  47  48  49  51  52  53  55  60  61  63  64
+  66  69  71  72  73  74  77  84  86  88  91  93  94  95  99 100 102 106
+ 107 109 110 112 116 120 122 124 125 127 132 135 138 139 142 144 145 149
+ 151 152 154 155 156 160 164 167 169 172 173 174 181 183 185 188 189 191
+ 193 195 200 201 202 204 205 209]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 137 138 139 140 141 142 143 144
+ 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209]
+TESTING
+Accuracy (node level) of the model on the test data: 0.880485
+Precision of the model on the test data: 0.4389607949073313
+Recall of the model on the test data: 0.9989842831177163
+F1-Score of the model on the test data: 0.6099188928961927
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11957253731343283
+PR AUC: 0.7190200390125238
+
+NAIVE MODEL: acc = 0.90647, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.09353
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.546765
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 119.515
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 0.005110254569999999, min 0.004022421, max 0.006052555
+Test time after: mean 0.005138997279999999, min 0.004093982, max 0.006264223
+Test time reduction: mean -2.8742709999999986e-05, min -0.0003261230000000002, max 0.00012698400000000012
+Prediction time: mean 0.0010904637165367603, min 0.0010311789810657501, max 0.0026880651712417603
+Test iter before: mean 155.17, min 120, max 186
+Test iter after: mean 155.17, min 120.0, max 186.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- MLP, variables [np.int64(200)], constraints [np.int64(800)] ---
+Using device: cuda
+200 800 7
+Early stopping after 47 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8940525
+Precision of the model on the test data: 0.8378727679075333
+Recall of the model on the test data: 0.5132618841832325
+F1-Score of the model on the test data: 0.6365733495126897
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8940525
+VALIDATION
+Accuracy (node level) of the final model: 0.892715
+Precision of the model on the test data: 0.828410251854484
+Recall of the model on the test data: 0.5145679284847147
+F1-Score of the model on the test data: 0.634817979134401
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.892715
+Using device: cuda
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.89637
+Precision of the model on the test data: 0.8286900329524544
+Recall of the model on the test data: 0.5365921245878017
+F1-Score of the model on the test data: 0.6513943552998958
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_CORRECTLY_pred_nodes_per_graph: 0.8960475621890547
+
+NAIVE MODEL: acc = 0.819565, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.180435
+PR AUC: 0.5902175000000001
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 103.63
+Test time before: mean 0.098855361325, min 0.095859616, max 0.10176623
+Test time after: mean 0.09706141346000001, min 0.093311573, max 0.101778248
+Time reduction: mean 0.0017939478649999995, min -0.0009462800000000077, max 0.004247179000000004
+Prediction time: mean 0.0002506478410214186, min 0.00019841082394123077, max 0.009046943858265877
+Test iter before: mean 1000.0, min 1000, max 1000
+Test iter after: mean 1000.0, min 1000.0, max 1000.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+
+--- Non-learned model ---
+200 800 7
+Average solving time (s): 0.09883223578299999
+--- GNN, variables [np.int64(210)], constraints [np.int64(840)] ---
+Using device: cuda
+(210, 210) (210,) (210, 7) (840, 210) (840,) (840, 7) (210, 7)
+condition number of H 1000298.970031651
+Done generating train data
+Early stopping after 35 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.8821791666666666
+Precision of the model on the test data: 0.4469419657213807
+Recall of the model on the test data: 0.9989624481224061
+F1-Score of the model on the test data: 0.6175764261743346
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11782083333333332
+VALIDATION
+Accuracy (node level) of the final model: 0.8787190476190476
+Precision of the model on the test data: 0.4395568086699855
+Recall of the model on the test data: 0.9986987638256344
+F1-Score of the model on the test data: 0.6104406613744474
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12128095238095239
+159992.0 1680000 0.09523333333333334
+Using device: cuda
+W_true: [  0   4   8   9  10  13  14  16  18  20  25  26  28  29  30  31  34  37
+  39  41  43  44  47  49  50  51  52  53  55  57  59  65  67  69  71  72
+  74  75  76  77  78  80  81  85  86  90  93  94  95  96  98 100 102 103
+ 104 107 110 111 113 121 122 125 127 128 130 133 134 135 138 140 143 144
+ 145 146 148 149 150 152 153 159 160 163 165 178 179 180 181 182 183 189
+ 190 192 193 194 195 196 198 206 211 216]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216
+ 217 218 219]
+W_true: [  1   3   5   6   8   9  11  13  14  15  16  18  22  23  24  26  27  31
+  33  35  38  41  42  50  51  56  58  59  60  62  63  64  65  69  70  71
+  72  73  74  77  81  82  83  85  86  87  90  91  92  94  95  97  99 101
+ 102 104 106 107 110 111 118 120 126 128 130 131 145 150 154 157 159 162
+ 163 164 166 167 169 172 173 177 178 182 183 184 185 186 187 188 194 195
+ 197 199 202 204 206 207 208 212 217]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197
+ 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215
+ 216 217 218 219]
+W_true: [  0   4   9  10  12  14  15  16  18  20  25  26  27  28  30  31  32  34
+  35  37  39  41  43  44  46  47  50  52  57  59  61  65  67  69  71  72
+  73  74  75  77  78  80  81  85  88  93  94  95  97 100 101 102 104 110
+ 111 113 119 120 121 125 127 128 129 130 132 133 134 135 139 140 141 143
+ 146 148 150 152 155 160 167 169 173 174 177 178 179 180 181 183 184 187
+ 189 190 192 193 194 195 196 198 203 204 205 206 211 216]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180
+ 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198
+ 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216
+ 217 218 219]
+W_true: [  3   5   6   9  11  14  15  16  18  24  25  26  27  28  31  33  34  35
+  36  38  41  42  50  51  53  55  56  58  59  63  65  69  71  72  74  75
+  77  78  81  83  85  89  91  94  95  96  97  99 100 101 102 103 104 105
+ 106 110 111 120 121 125 129 130 134 135 141 143 145 152 154 159 163 165
+ 166 167 169 172 173 177 179 183 185 186 187 188 190 192 194 195 196 199
+ 203 206 207 208 212]
+W_pred: [  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
+  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35
+  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53
+  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71
+  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89
+  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107
+ 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125
+ 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143
+ 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161
+ 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179
+ 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197
+ 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215
+ 216 217 218 219]
+W_true: [  4   5   6   9  10  12  13  14  15  16  18  20  22  23  25  26  28  31
+  34  37  39  40  41  42  47  48  49  50  51  52  53  55  57  59  60  61
+  63  64  65  66  69  70  72  74  77  80  85  87  88  89  94  95  96  97
+  98 100 106 107 109 110 111 113 116 123 125 126 128 132 133 138 140 142
+ 146 148 150 152 153 165 167 169 172 176 178 182 183 186 187 189 192 194
+ 195 196 197 198 202 206 208 214 216]
