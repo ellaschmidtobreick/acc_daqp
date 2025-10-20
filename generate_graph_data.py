@@ -215,7 +215,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_test[i,:]= list(info.values())[4]
         test_iterations.append(list(info.values())[2])
-        test_time.append(list(info.values())[0])
+        test_time.append(list(info.values())[0]+list(info.values())[1])
         
         # get optimal active set (y)
         test_active_set = (lambda_test != 0).astype(int)
@@ -261,7 +261,7 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
     
     np.random.seed(seed)
     
-    data = np.load(f'data/mpc_mpqp_N{n}_R_01.npz') #test #_more_constraints
+    data = np.load(f'data/mpc_mpqp_N{n}_R_00001.npz') #test #_more_constraints
 
     H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
     
@@ -447,7 +447,7 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
         _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_test[i,:]= list(info.values())[4]
         test_iterations.append(list(info.values())[2])
-        test_time.append(list(info.values())[0])
+        test_time.append(list(info.values())[0]+list(info.values())[1])
         
         # get optimal active set (y)
         test_active_set = (lambda_test != 0).astype(int)
