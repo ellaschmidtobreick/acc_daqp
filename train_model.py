@@ -116,13 +116,19 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             optimizer.zero_grad()
             output = model(batch,number_of_layers,conv_type)
             output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
-            loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
+
+            # Convert output to binary prediction (0 or 1)
+            preds = (output.squeeze() > t).long()
+            if dataset_type == "standard":
+                loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
+            elif dataset_type == "lmpc":
+                sparsity_loss = preds.sum(dim=0) / len(preds)
+                loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
-            # Convert output to binary prediction (0 or 1)
-            preds = (output.squeeze() > t).long()
+
 
             # Store predictions and true labels
             train_preds.extend(preds.cpu().numpy())   
@@ -360,13 +366,17 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             optimizer.zero_grad()
             output = model(batch[0])
             output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
+
+            # Convert output to binary prediction (0 or 1)
+            preds = (output.squeeze() > t).long()
+
             loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())
+
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
-            # Convert output to binary prediction (0 or 1)
-            preds = (output.squeeze() > t).long()
+
 
             # Store predictions and true labels
             train_preds.extend(preds.cpu().numpy().flatten())   
