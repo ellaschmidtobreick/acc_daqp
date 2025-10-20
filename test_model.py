@@ -76,6 +76,14 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     num_wrongly_pred_nodes_per_graph = []
     perc_wrongly_pred_nodes_per_graph = []
     test_all_label_graph = []
+
+    # warm-up model
+    warmup_batch = next(iter(test_loader))[0].to(device)
+    with torch.inference_mode():
+        for _ in range(5):
+            _ = model(warmup_batch)
+            torch.cuda.synchronize()
+
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
@@ -84,9 +92,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             m = int(m_vector[i])
             
             # Prediction on test data
+            torch.cuda.synchronize()
             start_time = time.perf_counter()
             output = model(batch,number_of_layers,conv_type)
             preds = (output.squeeze() > t).long()
+            torch.cuda.synchronize()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
             
