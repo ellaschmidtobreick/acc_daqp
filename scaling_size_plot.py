@@ -18,8 +18,8 @@ import torch
 n = np.arange(0,301,10)[1:]
 m = np.arange(0,301,10)[1:]*4
 
-n = [110,120]
-m = [110,120]*4
+n = [120,130]
+m = [120,130]*4
 
 print(n)
 print(m)
