@@ -70,11 +70,12 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train]).to(device)
     unique_classes = torch.unique(all_labels)
-    class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.numpy()) # torch.unique(all_labels).numpy()
+    class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy()) # torch.unique(all_labels).numpy()
     class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device) # torch.tensor(class_weights, dtype=torch.float32).to(device)
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
+    model = torch.nn.DataParallel(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
@@ -318,6 +319,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)  # Output dimension 1 for binary classification
+    model = torch.nn.DataParallel(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
