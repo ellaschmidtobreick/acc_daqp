@@ -18,15 +18,15 @@ import torch
 n = np.arange(0,301,10)[1:]
 m = np.arange(0,301,10)[1:]*4
 
-#n = [400]
-#m = [1600]
+n = [110,120]
+m = [110,120]*4
 
 print(n)
 print(m)
 
 nth = 7
 seed = 123
-data_points = 2000 #5000
+data_points = 5000 # 2000 #5000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128 # vary
@@ -107,14 +107,14 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_vector,prediction_time_vector))
     labels = label_vector
-    with open("./data/scaling_data_big_test.pkl", "wb") as f:
+    with open("./data/scaling_data_server_test_5000.pkl", "wb") as f:
         pickle.dump((points, label_vector), f)
 
 end_time = time.time()
 print("Total time for experiments(s):", end_time - start_time)
-# Load data
-with open("./data/scaling_data_big_test.pkl", "rb") as f:
-    points_loaded, label_vector_loaded = pickle.load(f)
+# # Load data
+# with open("./data/scaling_data_big_test.pkl", "rb") as f:
+#     points_loaded, label_vector_loaded = pickle.load(f)
 
-plot_scaling2(points_loaded, label_vector_loaded,"plots/scaling_plot_new_test.pdf")
-print("Done")
+# plot_scaling2(points_loaded, label_vector_loaded,"plots/scaling_plot_new_server.pdf")
+# print("Done")
