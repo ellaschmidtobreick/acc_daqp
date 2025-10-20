@@ -124,9 +124,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # solve system until it is solvable
             while exitflag == -6:   # system not solvable
                 _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
+                print(info)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
-                test_time_after[i]= list(info.values())[0]
+                # take test and set-up time
+                test_time_after[i]= list(info.values())[0] + list(info.values())[1]
 
                 # remove one active constraint per iteration until problem is solvable
                 last_one_index = np.where(sense_active == 1)[-1]
@@ -327,7 +329,8 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
                 _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower,sense_active)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
-                test_time_after[i]= list(info.values())[0]
+                # solve and set-up time
+                test_time_after[i]= list(info.values())[0] + list(info.values())[1]
 
                 # remove one active constraint per iteration until problem is solvable
                 last_one_index = np.where(sense_active == 1)[-1]
