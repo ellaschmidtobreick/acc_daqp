@@ -200,7 +200,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     histogram_prediction_time(prediction_time,model_name, save = True)
     barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
-    return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
     return np.mean(prediction_time), np.mean(test_time_after)
 
 # Generate test problems and the corresponding graphs
