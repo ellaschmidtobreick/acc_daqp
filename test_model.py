@@ -32,7 +32,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     n_vector = []
     m_vector = []
 
-    device = torch.device("cuda:0,1,2,3" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate test data
@@ -82,8 +82,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     warmup_batch = next(iter(test_loader))[0].to(device)
     with torch.inference_mode():
         for _ in range(5):
-            _ = model(warmup_batch)
-            torch.cuda.synchronize()
+            _ = model(warmup_batch,number_of_layers,conv_type)
+            if device == "cuda":
+                torch.cuda.synchronize()
 
     # Test on data 
     with torch.no_grad():
@@ -93,11 +94,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             m = int(m_vector[i])
             
             # Prediction on test data
-            torch.cuda.synchronize()
+            if device == "cuda":
+                torch.cuda.synchronize()
             start_time = time.perf_counter()
             output = model(batch,number_of_layers,conv_type)
             preds = (output.squeeze() > t).long()
-            torch.cuda.synchronize()
+            if device == "cuda":
+                torch.cuda.synchronize()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
             
@@ -287,7 +290,8 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     with torch.inference_mode():
         for _ in range(5):
             _ = model(warmup_batch)
-            torch.cuda.synchronize()
+            if device == "cuda":
+                torch.cuda.synchronize()
 
     # Test on data 
     with torch.inference_mode():
@@ -295,11 +299,14 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
             batch = [b.to(device) for b in batch]
             n = int(n_vector[i])
             m = int(m_vector[i])
-                
-            torch.cuda.synchronize()
+            
+            if device == "cuda":
+                torch.cuda.synchronize()
             start_time = time.perf_counter()
             output = model(batch[0])
-            torch.cuda.synchronize()
+            
+            if device == "cuda":
+                torch.cuda.synchronize()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
             preds = (output.squeeze() > t).long()
