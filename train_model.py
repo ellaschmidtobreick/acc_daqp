@@ -41,7 +41,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     train_perc_wrongly_pred_nodes_per_graph_save = []
     train_mean_wrongly_pred_nodes_per_graph_save = []
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
 
@@ -75,7 +75,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
-    model = torch.nn.DataParallel(model)
+    #model = torch.nn.DataParallel(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
@@ -325,7 +325,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     input_dimension = n[0]*n[0]+m[0]*n[0]+n[0]+m[0]
     output_dimension = n[0] + m[0]
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)  # Output dimension 1 for binary classification
-    model = torch.nn.DataParallel(model)
+    #model = torch.nn.DataParallel(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
