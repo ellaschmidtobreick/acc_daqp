@@ -304,7 +304,7 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
         _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_train[i,:]= list(info.values())[4]
         train_iterations[i] = list(info.values())[2]
-        train_time[i]= list(info.values())[0]
+        train_time[i]= list(info.values())[0]+list(info.values())[1]
     
         # get optimal active set (y)
         train_active_set = (lambda_train != 0).astype(int)
@@ -358,7 +358,6 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
         _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
-        val_time[i] = list(info.values())[0]
     
 
         val_active_set = (lambda_val != 0).astype(int)
