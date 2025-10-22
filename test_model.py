@@ -61,7 +61,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
     # Load model
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
-    model = torch.nn.DataParallel(model)
+    #model = torch.nn.DataParallel(model)
     model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
@@ -267,7 +267,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     output_dimension = n[0] + m[0]
 
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)
-    model = torch.nn.DataParallel(model)
+    #model = torch.nn.DataParallel(model)
     model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
