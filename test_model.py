@@ -127,7 +127,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
                print(f"W_true: {W_true}")
                print(f"W_pred: {W_pred}")
-               print(f"% pred: {output.squeeze()[(W_pred+n)]}")
+               # print(f"% pred: {output.squeeze()[(W_pred+n)]}")
 
 
             # Solve QPs with predicted active sets
@@ -138,7 +138,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # solve system until it is solvable
             while exitflag == -6:   # system not solvable
                 _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
-                print(info)
+                # print(info)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 # take test and set-up time

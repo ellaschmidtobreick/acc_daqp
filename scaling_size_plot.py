@@ -18,8 +18,8 @@ import torch
 n = np.arange(0,301,10)[1:]
 m = np.arange(0,301,10)[1:]*4
 
-n = [120,130]
-m = [120,130]*4
+n = [200] #[120,130]
+m = [800] #[120*4,130*4]
 
 print(n)
 print(m)
@@ -29,7 +29,7 @@ seed = 123
 data_points = 5000 # 2000 #5000
 lr = 0.001
 number_of_max_epochs = 100
-layer_width = 128 # vary
+layer_width = 64 #128 # vary
 number_of_layers = 3     # vary
 track_on_wandb = False #True
 t = 0.9 #0.6 # vary
