@@ -278,3 +278,41 @@ def plot_scaling2(points, labels, file_name="plots/scaling_plot_test.pdf"):
     plt.savefig(file_name)
     plt.savefig(file_name.replace(".pdf", ".png"))
     # plt.show()
+
+def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test.pdf"):
+    plt.rcParams.update({'font.size': 14})
+    print(iterations)
+    iterations = np.array(iterations)
+    labels = np.array(labels)[:, 0]
+
+    model_types = np.unique(labels)
+    colors = ["tab:green", "tab:red","tab:orange"]
+
+    fig, ax = plt.subplots(1, 1, figsize=(5 * len(model_types), 5), sharey=True)
+    # if len(model_types) == 1:
+    #     axes = [axes]
+
+    # for ax, model in zip(axes, model_types):
+    ax.set_title("Iterations after prediction")
+    ax.set_xlabel("Total graph size")
+    #ax.set_yscale("log")
+    #ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+
+    # use ax, not plt
+    #ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
+    ax.grid(which="major", linestyle="-", linewidth=0.7)
+    ax.grid(which="minor", visible=False)
+
+    for i, model in enumerate(model_types):
+        model_mask = labels == model
+        model_iterations = iterations[model_mask]
+
+        ax.scatter(np.arange(len(model_iterations)) * 5, model_iterations[:], color=colors[i], label=model)
+
+    ax.set_ylabel("Iterations")
+    ax.legend(loc="upper left")
+
+    plt.tight_layout()
+    plt.savefig(file_name)
+    plt.savefig(file_name.replace(".pdf", ".png"))
+    plt.show()
