@@ -63,7 +63,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
 
     # Load Data
-    train_batch_size = 16 #32 # 64
+    train_batch_size = 2 #16 #32 # 64
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
     val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
