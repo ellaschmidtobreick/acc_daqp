@@ -195,124 +195,100 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
     plt.savefig(file_name.replace(".pdf", ".png"))
     plt.show()
 
-def plot_scaling(points, labels, file_name="plots/scaling_plot_test.pdf"):
-    plt.figure(figsize=(10, 6))  # increase figure size (width x height in inches)
-    plt.tight_layout(rect=[0, 0, 0.85, 1])  # leave space on the right for the legend
-    points = np.array(points)
-    idx = pareto_front(points)
 
-    # Extract model_type and variant from the label tuples
-    model_types = [lbl[0] for lbl in labels]
-    variants = [lbl[1] for lbl in labels]
-
-    # Assign colors per model type
-    unique_types = sorted(set(model_types))
-    cmap = plt.cm.tab10
-    type_to_color = {t: cmap(i % 10) for i, t in enumerate(unique_types)}
-
-    # Plot all points
-    for (x, y), t in zip(points, model_types):
-        plt.scatter(
-            x, y,
-            color=type_to_color[t],
-            alpha=0.8, s=70, edgecolor="k",
-            label=f"{t}"
-        )
-
-    # Plot all points
-    # for (x, y), label in zip(points, labels):
-    #     plt.scatter(x, y, color=label_to_color[label], label=label, alpha=0.7, s=70, edgecolor="k")
-
-    # Create legend handles for model types (colors)
-    type_handles = [mpatches.Patch(color=type_to_color[t], label=t) for t in unique_types]
-    # Combine legends
-    plt.legend(handles=type_handles, loc='upper left', title="Model Type")
-
-    plt.yscale("log")
-    plt.xscale("log")
-    plt.xlim([np.min(points)*0.9, np.max(points)*1.1])
-    plt.ylim([np.min(points)*0.9, np.max(points)*1.1])
-    plt.ylabel("Prediction time")
-    plt.xlabel("Solve time")
-    plt.title("Prediction vs Solve Time with scaling size")
-    plt.grid(True)
-    plt.savefig(file_name)
-    plt.savefig(file_name.replace(".pdf", ".png"))
-    plt.show()
-
-def plot_scaling2(points, labels, file_name="plots/scaling_plot_test.pdf"):
-    plt.rcParams.update({'font.size': 14})
+def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
+    matplotlib.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",  # matches typical LaTeX serif font
+        "font.serif": ["Computer Modern Roman"],
+        "axes.labelsize": 16,
+        "font.size": 16,
+        "legend.fontsize": 16,
+        "xtick.labelsize": 16,
+        "ytick.labelsize": 16
+    })
 
     points = np.array(points)
     labels = np.array(labels)[:, 0]
 
     model_types = np.unique(labels)
-    colors = ["blue", "orange"]
+    # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
+    colors = ['#e31a1c','#fb9a99','#6a3d9a','#cab2d6']
 
-    fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
-    if len(model_types) == 1:
-        axes = [axes]
-
-    for ax, model in zip(axes, model_types):
-        ax.set_title(model)
-        ax.set_xlabel("Total graph size")
-        ax.set_yscale("log")
-        ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-
-        # use ax, not plt
-        ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
-        ax.grid(which="major", linestyle="-", linewidth=0.7)
-        ax.grid(which="minor", visible=False)
+    for i, model in enumerate(model_types):
+        fig, ax = plt.subplots(figsize=(5,5))
 
         model_mask = labels == model
         model_points = points[model_mask]
+        x_points = np.arange(len(model_points)+1)[1:] * 50
 
-        ax.scatter(np.arange(len(model_points)) * 5, model_points[:, 0], color=colors[1], label="Solving Time")
+        # Solving time
+        ax.plot(x_points, model_points[:, 0], color=colors[0], label="Solving Time")
+        ax.fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[1], alpha=0.3)
+
+        # Prediction time 
         if model != "Non-learned":
-            ax.scatter(np.arange(len(model_points)) * 5, model_points[:, 1], color=colors[0], label="Prediction Time")
+            ax.plot(x_points, model_points[:, 1], color=colors[2], label="Prediction Time")
+            ax.fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3], color=colors[3], alpha=0.3)
+        
+        ax.set_xlabel("Total graph size")
+        ax.set_yscale("log")
+        ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
+        ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+        ax.grid(which="major", linestyle="-", linewidth=0.7)
+        ax.grid(which="minor", visible=False)
 
-    axes[0].set_ylabel("Time (seconds)")
-    axes[0].legend(loc="upper left")
+        if i == 0:
+            ax.set_ylabel("Time (seconds)")
+            ax.legend(loc="upper left")
+        else:
+            ax.set_yticklabels([])
 
-    plt.tight_layout()
-    plt.savefig(file_name)
-    plt.savefig(file_name.replace(".pdf", ".png"))
-    # plt.show()
+        plt.tight_layout()
+        plt.savefig(f"{file_name}_{model}.pdf")
+        plt.savefig(f"{file_name}_{model}.png")
+        plt.show()
 
-def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test.pdf"):
-    plt.rcParams.update({'font.size': 14})
-    print(iterations)
+def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test"):
+    matplotlib.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",  # matches typical LaTeX serif font
+        "font.serif": ["Computer Modern Roman"],
+        "axes.labelsize": 16,
+        "font.size": 16,
+        "legend.fontsize": 16,
+        "xtick.labelsize": 16,
+        "ytick.labelsize": 16
+    })
+
     iterations = np.array(iterations)
     labels = np.array(labels)[:, 0]
-
     model_types = np.unique(labels)
-    colors = ["tab:green", "tab:red","tab:orange"]
+    # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
+    colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+    fig, ax = plt.subplots(1, 1,figsize=(6.4, 4.8),  sharey=True)
 
-    fig, ax = plt.subplots(1, 1, figsize=(5 * len(model_types), 5), sharey=True)
-    # if len(model_types) == 1:
-    #     axes = [axes]
-
-    # for ax, model in zip(axes, model_types):
     ax.set_title("Iterations after prediction")
     ax.set_xlabel("Total graph size")
-    #ax.set_yscale("log")
-    #ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    ax.set_yscale("log")
 
-    # use ax, not plt
-    #ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
     ax.grid(which="major", linestyle="-", linewidth=0.7)
     ax.grid(which="minor", visible=False)
-
+    
     for i, model in enumerate(model_types):
         model_mask = labels == model
         model_iterations = iterations[model_mask]
 
-        ax.scatter(np.arange(len(model_iterations)) * 5, model_iterations[:], color=colors[i], label=model)
-
+        x_points = np.arange(len(model_iterations)+1)[1:] * 50
+        print(model_iterations)
+        #ax.scatter(np.arange(len(model_iterations)+1)[1:] * 50, model_iterations[:], color=colors[i], label=model)
+        ax.plot(x_points, model_iterations[:, 0], color=colors[i], label=model)
+        ax.fill_between(x_points, model_iterations[:, 0] - model_iterations[:, 1], model_iterations[:, 0] + model_iterations[:, 1], color=colors[i+3], alpha=0.3)
+        
     ax.set_ylabel("Iterations")
     ax.legend(loc="upper left")
 
     plt.tight_layout()
-    plt.savefig(file_name)
-    plt.savefig(file_name.replace(".pdf", ".png"))
+    plt.savefig(f"{file_name}.pdf")
+    plt.savefig(f"{file_name}.png")
     plt.show()

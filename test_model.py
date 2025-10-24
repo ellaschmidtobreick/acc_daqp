@@ -122,11 +122,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
             perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
-            if i<5:
-               W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0]
-               W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-               print(f"W_true: {W_true}")
-               print(f"W_pred: {W_pred}")
+            # if i<5:
+            #    W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0]
+            #    W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
+            #    print(f"W_true: {W_true}")
+            #    print(f"W_pred: {W_pred}")
                # print(f"% pred: {output.squeeze()[(W_pred+n)]}")
 
 
