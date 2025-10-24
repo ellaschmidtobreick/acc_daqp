@@ -7,11 +7,11 @@ import daqp
 from generate_mpqp_v2 import generate_qp
 
 # Parameters
-n = [250]
-m = [1000]
+n = [200] #[250]
+m = [800] #[1000]
 nth = 7
 seed = 123
-data_points = 2000 #5000
+data_points = 20#00 #5000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128 # vary
@@ -33,7 +33,7 @@ for j in layer_width:
         for i in conv_types:
             print(f"--- GNN, Conv: {i}, Layer width: {j}, Number of layers: {k} ---")
             train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"model_pareto",dataset_type="standard", conv_type=i)
-            prediction_time, test_time_after = test_GNN(n,m,nth, seed, data_points,j,k,t, False,False,"model_pareto",dataset_type="standard",conv_type=i) 
+            prediction_time, test_time_after,_ = test_GNN(n,m,nth, seed, data_points,j,k,t, False,False,"model_pareto",dataset_type="standard",conv_type=i) 
             prediction_time_vector.append(prediction_time)
             solving_time_vector.append(test_time_after)
             label_vector.append((f"GNN - {i}", f"{k} layers"))
@@ -41,7 +41,7 @@ for j in layer_width:
 
         print(f"--- MLP, Layer width: {j}, Number of layers: {k} ---")
         train_MLP(n,m,nth, seed, data_points,lr,number_of_max_epochs,j,k, track_on_wandb,t, False,False,"MLP_model_pareto",dataset_type="standard")
-        prediction_time, test_time_after = test_MLP(n,m,nth, seed, data_points,j,k,t, False,False,"MLP_model_pareto",dataset_type="standard")
+        prediction_time, test_time_after,_ = test_MLP(n,m,nth, seed, data_points,j,k,t, False,False,"MLP_model_pareto",dataset_type="standard")
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         label_vector.append(("MLP",f"{k} layers"))
@@ -96,12 +96,12 @@ label_vector.append(("Non-learned", "-"))
 # Save data 
 points = list(zip(solving_time_vector,prediction_time_vector))
 labels = label_vector
-with open("./data/pareto_data_250_1000.pkl", "wb") as f:
+with open("./data/pareto_data_200_800.pkl", "wb") as f:
     pickle.dump((points, label_vector), f)
 
 
 # Load data
-with open("./data/pareto_data_250_1000.pkl", "rb") as f:
+with open("./data/pareto_data_200_800.pkl", "rb") as f:
     points_loaded, label_vector_loaded = pickle.load(f)
 
-plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_250_1000.pdf")
+plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_200_800.pdf")
