@@ -199,14 +199,13 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
 def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
     matplotlib.rcParams.update({
         "text.usetex": True,
-        "font.family": "serif",  # matches typical LaTeX serif font
+        "font.family": "serif",
         "font.serif": ["Computer Modern Roman"],
-        "axes.labelsize": 16,
-        "font.size": 16,
-        "legend.fontsize": 16,
-        "xtick.labelsize": 16,
-        "ytick.labelsize": 16
-    })
+        "axes.labelsize": 22,
+        "font.size": 22,
+        "legend.fontsize": 18,
+        "xtick.labelsize": 18,
+        "ytick.labelsize": 18    })
 
     points = np.array(points)
     labels = np.array(labels)[:, 0]
@@ -215,8 +214,15 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
     # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
     colors = ['#e31a1c','#fb9a99','#6a3d9a','#cab2d6']
 
+    fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
+    if len(model_types) == 1:
+        axes = [axes]
+
+    enum = ["(a)","(b)","(c)"]
     for i, model in enumerate(model_types):
-        fig, ax = plt.subplots(figsize=(5,5))
+        ax = axes[i]
+        #ax.set_title(model)
+        ax.text(0.5,-0.35, f"{enum[i]} {model}",ha="center", transform=ax.transAxes)
 
         model_mask = labels == model
         model_points = points[model_mask]
@@ -233,33 +239,31 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
         
         ax.set_xlabel("Total graph size")
         ax.set_yscale("log")
-        ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
+        ax.set_yticks([ 1e-5, 1e-4, 1e-3, 1e-2,1e-1])
+
         ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
         ax.grid(which="major", linestyle="-", linewidth=0.7)
         ax.grid(which="minor", visible=False)
 
         if i == 0:
             ax.set_ylabel("Time (seconds)")
-            ax.legend(loc="upper left")
-        else:
-            ax.set_yticklabels([])
+            ax.legend(loc="lower right")
 
-        plt.tight_layout()
-        plt.savefig(f"{file_name}_{model}.pdf")
-        plt.savefig(f"{file_name}_{model}.png")
-        plt.show()
+    plt.tight_layout()
+    plt.savefig(f"{file_name}.pdf")
+    plt.savefig(f"{file_name}.png")
+    plt.show()
 
 def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test"):
     matplotlib.rcParams.update({
         "text.usetex": True,
-        "font.family": "serif",  # matches typical LaTeX serif font
+        "font.family": "serif",
         "font.serif": ["Computer Modern Roman"],
-        "axes.labelsize": 16,
-        "font.size": 16,
+        "axes.labelsize": 20,
+        "font.size": 20,
         "legend.fontsize": 16,
         "xtick.labelsize": 16,
-        "ytick.labelsize": 16
-    })
+        "ytick.labelsize": 16    })
 
     iterations = np.array(iterations)
     labels = np.array(labels)[:, 0]
@@ -268,25 +272,29 @@ def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_it
     colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
     fig, ax = plt.subplots(1, 1,figsize=(6.4, 4.8),  sharey=True)
 
-    ax.set_title("Iterations after prediction")
+    #ax.set_title("Iterations after prediction")
     ax.set_xlabel("Total graph size")
     ax.set_yscale("log")
-
+    
     ax.grid(which="major", linestyle="-", linewidth=0.7)
     ax.grid(which="minor", visible=False)
     
+    legend_labels = ["Warm-start GNN","Warm-start MLP","Cold-start"]
     for i, model in enumerate(model_types):
         model_mask = labels == model
         model_iterations = iterations[model_mask]
 
+        if model == "Non-learned":
+            model = "Cold-start"
         x_points = np.arange(len(model_iterations)+1)[1:] * 50
-        print(model_iterations)
         #ax.scatter(np.arange(len(model_iterations)+1)[1:] * 50, model_iterations[:], color=colors[i], label=model)
-        ax.plot(x_points, model_iterations[:, 0], color=colors[i], label=model)
+        ax.plot(x_points, model_iterations[:, 0], color=colors[i], label=legend_labels[i])
         ax.fill_between(x_points, model_iterations[:, 0] - model_iterations[:, 1], model_iterations[:, 0] + model_iterations[:, 1], color=colors[i+3], alpha=0.3)
         
     ax.set_ylabel("Iterations")
-    ax.legend(loc="upper left")
+    ax.legend(loc="lower right",)
+    ax.set_yticks([1e1,1e2,1e3])
+    ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
 
     plt.tight_layout()
     plt.savefig(f"{file_name}.pdf")
