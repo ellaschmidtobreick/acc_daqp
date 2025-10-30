@@ -216,9 +216,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # histogram_prediction_time(prediction_time,model_name, save = True)
     # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
-    return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    # return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
     #return np.mean(prediction_time), np.mean(test_time_after), np.mean(test_iterations_after)
-
+    return test_acc, test_prec, test_rec, test_f1
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
 
