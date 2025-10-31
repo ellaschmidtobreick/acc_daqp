@@ -32,8 +32,8 @@ t = 0.9 # 0.6
 
 #text_time_before_vector , text_time_after_vector, test_time_reduction_vector, prediction_time_vector = [], [], [], []
 
-layerwidths = [64,128]
-datapoints = [2000,5000]
+layerwidths = [64]#,128]
+datapoints = [5000] #[2000,5000]
 ts = [0.6,0.9]
 for t in ts:
     for data_points in datapoints:
@@ -67,7 +67,7 @@ for t in ts:
 
             # Store results
             results = {
-                "Parameters": (f"layer width: {i}, data points: {data_points}, t: {t}", None),
+                "Parameters": (f"layer width: {layer_width}, data points: {data_points}, t: {t}", None),
                 "Train Accuracy": (np.mean(train_acc_vector), np.std(train_acc_vector)),
                 "Train Precision": (np.mean(train_prec_vector), np.std(train_prec_vector)),
                 "Train Recall": (np.mean(train_recall_vector), np.std(train_recall_vector)),
@@ -78,7 +78,7 @@ for t in ts:
                 "Test F1 Score": (np.mean(test_f1_vector), np.std(test_f1_vector)),
             }
 
-            with open("data/acc_results_param_tuning.txt", "a") as f:  # <-- use "a" to append
+            with open("data/acc_results_param_tuning_final.txt", "a") as f: 
                 for key, (mean, std) in results.items():
                     if std is None:
                         f.write(f"{key}: {mean}\n")
