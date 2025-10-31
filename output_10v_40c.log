@@ -1,0 +1,1852 @@
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'repr' attribute with value False was provided to the `Field()` function, which has no effect in the context it was used. 'repr' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'frozen' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'frozen' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_scatter/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:97: UserWarning: An issue occurred while importing 'torch-cluster'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_cluster/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-cluster'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:113: UserWarning: An issue occurred while importing 'torch-spline-conv'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_spline_conv/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_sparse/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 82 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9753375
+Precision of the model on the test data: 0.8444698435027255
+Recall of the model on the test data: 0.9792027729636048
+F1-Score of the model on the test data: 0.9068592739460889
+Accuracy (graph level) of the model on the test data: 0.29625
+Perc num_wrongly_pred_nodes_per_graph: 0.0246625
+VALIDATION
+Accuracy (node level) of the final model: 0.9705
+Precision of the model on the test data: 0.8158244680851063
+Recall of the model on the test data: 0.9855421686746988
+F1-Score of the model on the test data: 0.8926882502728265
+Accuracy (graph level) of the model on the test data: 0.15
+Perc num_wrongly_pred_nodes_per_graph: 0.029500000000000002
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9733
+Precision of the model on the test data: 0.8272539573296628
+Recall of the model on the test data: 0.986863711001642
+F1-Score of the model on the test data: 0.9000374391613628
+Accuracy (graph level) of the model on the test data: 0.235
+Perc num_wrongly_pred_nodes_per_graph: 0.025616915422885578
+PR AUC: 0.9078588341656525
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 47
+Mean num_wrongly_pred_nodes_per_graph: 1.335
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.151317e-05, min 8.904e-06, max 1.7213e-05
+Test time after: mean 1.1413740000000002e-05, min 8.082e-06, max 1.8055999999999998e-05
+Test time reduction: mean 9.942999999999996e-08, min -6.105e-06, max 7.07e-06
+Prediction time: mean 0.0011020213458687066, min 0.0010725650936365128, max 0.0012886971235275269
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 3.465, min 1.0, max 22.0
+Test iter reduction: mean 7.355, min -2.0, max 22.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 46 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9699125
+Precision of the model on the test data: 0.8160006830601093
+Recall of the model on the test data: 0.9743093077785707
+F1-Score of the model on the test data: 0.8881557548441058
+Accuracy (graph level) of the model on the test data: 0.23875
+Perc num_wrongly_pred_nodes_per_graph: 0.0300875
+VALIDATION
+Accuracy (node level) of the final model: 0.9703
+Precision of the model on the test data: 0.8291666666666667
+Recall of the model on the test data: 0.9590361445783132
+F1-Score of the model on the test data: 0.8893854748603351
+Accuracy (graph level) of the model on the test data: 0.245
+Perc num_wrongly_pred_nodes_per_graph: 0.0297
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9667
+Precision of the model on the test data: 0.7913100724160632
+Recall of the model on the test data: 0.986863711001642
+F1-Score of the model on the test data: 0.8783339422725612
+Accuracy (graph level) of the model on the test data: 0.185
+Perc num_wrongly_pred_nodes_per_graph: 0.03223582089552239
+PR AUC: 0.8898868917088526
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 37
+Mean num_wrongly_pred_nodes_per_graph: 1.665
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1589295e-05, min 8.789999999999999e-06, max 2.0227999999999997e-05
+Test time after: mean 1.1346014999999997e-05, min 8.114e-06, max 1.619e-05
+Test time reduction: mean 2.432800000000001e-07, min -4.750999999999999e-06, max 7.604999999999996e-06
+Prediction time: mean 0.0010961655620485545, min 0.0010694321244955063, max 0.00117509625852108
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 3.635, min 1.0, max 21.0
+Test iter reduction: mean 7.185, min -3.0, max 21.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 21 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9323
+Precision of the model on the test data: 0.6485426388043551
+Recall of the model on the test data: 0.9776735650932816
+F1-Score of the model on the test data: 0.7798015937550822
+Accuracy (graph level) of the model on the test data: 0.011875
+Perc num_wrongly_pred_nodes_per_graph: 0.06770000000000001
+VALIDATION
+Accuracy (node level) of the final model: 0.895
+Precision of the model on the test data: 0.5442578302315025
+Recall of the model on the test data: 0.9630522088353414
+F1-Score of the model on the test data: 0.6954756380510441
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.10500000000000002
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9393
+Precision of the model on the test data: 0.6732841747022121
+Recall of the model on the test data: 0.9745484400656814
+F1-Score of the model on the test data: 0.7963770546796377
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.060490547263681596
+PR AUC: 0.8254663073839468
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 3.035
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1643445e-05, min 8.922e-06, max 1.6744e-05
+Test time after: mean 1.1840380000000001e-05, min 8.581e-06, max 1.9804e-05
+Test time reduction: mean -1.9693500000000004e-07, min -6.9669999999999995e-06, max 6.364999999999999e-06
+Prediction time: mean 0.0010852661821991205, min 0.0010619331151247025, max 0.0011118967086076736
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 6.99, min 2.0, max 22.0
+Test iter reduction: mean 3.83, min -5.0, max 18.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 24 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9339875
+Precision of the model on the test data: 0.6550684931506849
+Recall of the model on the test data: 0.9750229381180548
+F1-Score of the model on the test data: 0.7836453767053136
+Accuracy (graph level) of the model on the test data: 0.004375
+Perc num_wrongly_pred_nodes_per_graph: 0.0660125
+VALIDATION
+Accuracy (node level) of the final model: 0.9468
+Precision of the model on the test data: 0.7100766057748968
+Recall of the model on the test data: 0.9678714859437751
+F1-Score of the model on the test data: 0.8191706322229776
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.053200000000000004
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.947
+Precision of the model on the test data: 0.7035502958579881
+Recall of the model on the test data: 0.9761904761904762
+F1-Score of the model on the test data: 0.8177441540577717
+Accuracy (graph level) of the model on the test data: 0.01
+Perc num_wrongly_pred_nodes_per_graph: 0.05266169154228856
+PR AUC: 0.8413203860242322
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 2
+Mean num_wrongly_pred_nodes_per_graph: 2.65
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.166151e-05, min 8.797e-06, max 1.8809e-05
+Test time after: mean 1.17342e-05, min 8.598e-06, max 2.0063e-05
+Test time reduction: mean -7.269000000000008e-08, min -7.155000000000002e-06, max 6.176999999999999e-06
+Prediction time: mean 0.001087580593302846, min 0.001063663512468338, max 0.001138102263212204
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 6.005, min 1.0, max 22.0
+Test iter reduction: mean 4.815, min -4.0, max 18.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9304875
+Precision of the model on the test data: 0.6418269230769231
+Recall of the model on the test data: 0.979916403303089
+F1-Score of the model on the test data: 0.7756304216259835
+Accuracy (graph level) of the model on the test data: 0.008125
+Perc num_wrongly_pred_nodes_per_graph: 0.0695125
+VALIDATION
+Accuracy (node level) of the final model: 0.9429
+Precision of the model on the test data: 0.6893258426966292
+Recall of the model on the test data: 0.9855421686746988
+F1-Score of the model on the test data: 0.8112396694214876
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.05710000000000001
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9449
+Precision of the model on the test data: 0.6928860613071139
+Recall of the model on the test data: 0.9835796387520526
+F1-Score of the model on the test data: 0.8130302002035968
+Accuracy (graph level) of the model on the test data: 0.005
+Perc num_wrongly_pred_nodes_per_graph: 0.05424278606965175
+PR AUC: 0.8392328500295833
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 1
+Mean num_wrongly_pred_nodes_per_graph: 2.755
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1714314999999998e-05, min 8.622e-06, max 1.7982e-05
+Test time after: mean 1.1785840000000001e-05, min 8.387e-06, max 2.2618999999999998e-05
+Test time reduction: mean -7.15249999999999e-08, min -1.3996999999999998e-05, max 8.515e-06
+Prediction time: mean 0.001089868936687708, min 0.0010615009814500809, max 0.0016941409558057785
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 5.795, min 1.0, max 22.0
+Test iter reduction: mean 5.025, min -6.0, max 18.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 23 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.835975
+Precision of the model on the test data: 0.4258272511530023
+Recall of the model on the test data: 0.9695177897848914
+F1-Score of the model on the test data: 0.5917491133096883
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.164025
+VALIDATION
+Accuracy (node level) of the final model: 0.8364
+Precision of the model on the test data: 0.4296509535804246
+Recall of the model on the test data: 0.9590361445783132
+F1-Score of the model on the test data: 0.5934393638170974
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1636
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.8562
+Precision of the model on the test data: 0.4571984435797665
+Recall of the model on the test data: 0.964696223316913
+F1-Score of the model on the test data: 0.6203801478352693
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.14325870646766173
+PR AUC: 0.7130973334483397
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 7.19
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1778349999999999e-05, min 9.037e-06, max 1.7169e-05
+Test time after: mean 1.1773825e-05, min 8.235e-06, max 2.1042e-05
+Test time reduction: mean 4.524999999999876e-09, min -7.122999999999999e-06, max 2.3329999999999995e-06
+Prediction time: mean 0.0011160955484956503, min 0.0010899826884269714, max 0.001145271584391594
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.73, min 5.0, max 23.0
+Test iter reduction: mean 0.09, min -6.0, max 10.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 31 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.849475
+Precision of the model on the test data: 0.4480673519698591
+Recall of the model on the test data: 0.9820572943215414
+F1-Score of the model on the test data: 0.6153698735147566
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.150525
+VALIDATION
+Accuracy (node level) of the final model: 0.8596
+Precision of the model on the test data: 0.46964490263459335
+Recall of the model on the test data: 0.9879518072289156
+F1-Score of the model on the test data: 0.6366459627329193
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1404
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.8759
+Precision of the model on the test data: 0.4952498967368856
+Recall of the model on the test data: 0.9844006568144499
+F1-Score of the model on the test data: 0.6589722451222864
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.12249353233830848
+PR AUC: 0.7407752767756677
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 6.205
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.174624e-05, min 8.885e-06, max 2.1714000000000003e-05
+Test time after: mean 1.1582285e-05, min 8.249e-06, max 1.6726000000000002e-05
+Test time reduction: mean 1.6395500000000017e-07, min -7.105999999999999e-06, max 7.392000000000003e-06
+Prediction time: mean 0.0011034529842436315, min 0.0010777004063129425, max 0.0011289361864328384
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.325, min 3.0, max 23.0
+Test iter reduction: mean 0.495, min -6.0, max 10.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7187125
+Precision of the model on the test data: 0.2566147710714012
+Recall of the model on the test data: 0.6822306045468447
+F1-Score of the model on the test data: 0.37294842143394547
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2812875
+VALIDATION
+Accuracy (node level) of the final model: 0.7189
+Precision of the model on the test data: 0.2586313193588163
+Recall of the model on the test data: 0.6738955823293172
+F1-Score of the model on the test data: 0.3738026286478057
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2811
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.722
+Precision of the model on the test data: 0.26028238182934316
+Recall of the model on the test data: 0.6962233169129721
+F1-Score of the model on the test data: 0.37890974084003576
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.27691343283582087
+PR AUC: 0.49675284937115766
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 13.9
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1657045e-05, min 8.781e-06, max 1.6368e-05
+Test time after: mean 1.0948819999999999e-05, min 7.967999999999999e-06, max 1.7263e-05
+Test time reduction: mean 7.08225e-07, min -4.900000000000002e-06, max 2.7000000000000013e-06
+Prediction time: mean 0.0011111219413578511, min 0.0010757949203252792, max 0.001136859878897667
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.73035
+Precision of the model on the test data: 0.28801585871328167
+Recall of the model on the test data: 0.8146600061168315
+F1-Score of the model on the test data: 0.42557384033658197
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.26965000000000006
+VALIDATION
+Accuracy (node level) of the final model: 0.7468
+Precision of the model on the test data: 0.3063496840204634
+Recall of the model on the test data: 0.8176706827309237
+F1-Score of the model on the test data: 0.4457092819614711
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2532
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.7425
+Precision of the model on the test data: 0.296795447738844
+Recall of the model on the test data: 0.8136288998357963
+F1-Score of the model on the test data: 0.434935264428352
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2590766169154229
+PR AUC: 0.5665621737873201
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 12.875
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1740149999999998e-05, min 9.311e-06, max 1.6454e-05
+Test time after: mean 1.136272e-05, min 8.511999999999999e-06, max 1.7347e-05
+Test time reduction: mean 3.7743e-07, min -4.551999999999998e-06, max 2.8119999999999995e-06
+Prediction time: mean 0.0011003703065216542, min 0.0010756030678749084, max 0.0011769011616706848
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.79, min 4.0, max 23.0
+Test iter reduction: mean 0.03, min -2.0, max 4.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.66705
+Precision of the model on the test data: 0.2571651225214304
+Recall of the model on the test data: 0.9083494749719645
+F1-Score of the model on the test data: 0.40084578009717475
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.33295
+VALIDATION
+Accuracy (node level) of the final model: 0.6865
+Precision of the model on the test data: 0.2718493481409947
+Recall of the model on the test data: 0.9044176706827309
+F1-Score of the model on the test data: 0.4180434379060702
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.31349999999999995
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.6849
+Precision of the model on the test data: 0.26615049600774254
+Recall of the model on the test data: 0.90311986863711
+F1-Score of the model on the test data: 0.41113810502709774
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.3153751243781094
+PR AUC: 0.5905351823224263
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 15.755
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1727405e-05, min 8.865e-06, max 1.9993e-05
+Test time after: mean 1.1157494999999997e-05, min 8.117e-06, max 1.9691e-05
+Test time reduction: mean 5.6991e-07, min -7.248999999999998e-06, max 9.815999999999999e-06
+Prediction time: mean 0.0011055947933346034, min 0.001080615445971489, max 0.0011334829032421112
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 26 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.972555
+Precision of the model on the test data: 0.8303476257607537
+Recall of the model on the test data: 0.9775340025906736
+F1-Score of the model on the test data: 0.8979493186085857
+Accuracy (graph level) of the model on the test data: 0.241
+Perc num_wrongly_pred_nodes_per_graph: 0.027445
+VALIDATION
+Accuracy (node level) of the final model: 0.97636
+Precision of the model on the test data: 0.8564997186268992
+Recall of the model on the test data: 0.97408
+F1-Score of the model on the test data: 0.9115136996556371
+Accuracy (graph level) of the model on the test data: 0.328
+Perc num_wrongly_pred_nodes_per_graph: 0.02364
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97884
+Precision of the model on the test data: 0.8686110308980652
+Recall of the model on the test data: 0.9759896171317326
+F1-Score of the model on the test data: 0.9191749427043545
+Accuracy (graph level) of the model on the test data: 0.32
+Perc num_wrongly_pred_nodes_per_graph: 0.020635209580838323
+PR AUC: 0.923780324014899
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 160
+Mean num_wrongly_pred_nodes_per_graph: 1.058
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1729148e-05, min 8.896e-06, max 2.6467000000000003e-05
+Test time after: mean 1.0505008e-05, min 8.075e-06, max 1.9119e-05
+Test time reduction: mean 1.22414e-06, min -8.537e-06, max 1.2037999999999999e-05
+Prediction time: mean 0.0011037633344531058, min 0.0010768212378025055, max 0.0017050504684448242
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.86, min 1.0, max 24.0
+Test iter reduction: mean 7.972, min -1.0, max 22.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 24 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.96626
+Precision of the model on the test data: 0.7959520042194093
+Recall of the model on the test data: 0.9774125647668394
+F1-Score of the model on the test data: 0.8773982558139535
+Accuracy (graph level) of the model on the test data: 0.1535
+Perc num_wrongly_pred_nodes_per_graph: 0.03374
+VALIDATION
+Accuracy (node level) of the final model: 0.96836
+Precision of the model on the test data: 0.81421647819063
+Recall of the model on the test data: 0.96768
+F1-Score of the model on the test data: 0.8843398157625384
+Accuracy (graph level) of the model on the test data: 0.126
+Perc num_wrongly_pred_nodes_per_graph: 0.03164
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97392
+Precision of the model on the test data: 0.8303425774877651
+Recall of the model on the test data: 0.990914990266061
+F1-Score of the model on the test data: 0.9035502958579882
+Accuracy (graph level) of the model on the test data: 0.226
+Perc num_wrongly_pred_nodes_per_graph: 0.026267624750499003
+PR AUC: 0.911188783876913
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 113
+Mean num_wrongly_pred_nodes_per_graph: 1.304
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.3249435999999999e-05, min 8.928e-06, max 2.9084e-05
+Test time after: mean 1.2007178e-05, min 8.313e-06, max 2.3253999999999998e-05
+Test time reduction: mean 1.242258e-06, min -1.1336999999999998e-05, max 1.9043e-05
+Prediction time: mean 0.0011848166063427926, min 0.0010720770806074142, max 0.0014528073370456696
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 3.098, min 1.0, max 21.0
+Test iter reduction: mean 7.734, min -6.0, max 23.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9735
+Precision of the model on the test data: 0.8350600911728139
+Recall of the model on the test data: 0.978788860103627
+F1-Score of the model on the test data: 0.9012299664554603
+Accuracy (graph level) of the model on the test data: 0.263
+Perc num_wrongly_pred_nodes_per_graph: 0.0265
+VALIDATION
+Accuracy (node level) of the final model: 0.97132
+Precision of the model on the test data: 0.8236559139784946
+Recall of the model on the test data: 0.98048
+F1-Score of the model on the test data: 0.8952520087655222
+Accuracy (graph level) of the model on the test data: 0.204
+Perc num_wrongly_pred_nodes_per_graph: 0.02868
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97548
+Precision of the model on the test data: 0.8401763571231744
+Recall of the model on the test data: 0.9892926670992862
+F1-Score of the model on the test data: 0.9086574281031143
+Accuracy (graph level) of the model on the test data: 0.282
+Perc num_wrongly_pred_nodes_per_graph: 0.02395305389221557
+PR AUC: 0.9153945121112304
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 141
+Mean num_wrongly_pred_nodes_per_graph: 1.226
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1864668000000003e-05, min 8.835e-06, max 2.1245e-05
+Test time after: mean 1.0603425999999999e-05, min 8.047e-06, max 1.8539e-05
+Test time reduction: mean 1.2612420000000002e-06, min -7.755e-06, max 1.0472e-05
+Prediction time: mean 0.0010969681851565839, min 0.0010637398809194565, max 0.0011810995638370514
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 3.092, min 1.0, max 24.0
+Test iter reduction: mean 7.74, min -2.0, max 21.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.97095
+Precision of the model on the test data: 0.8188968403996759
+Recall of the model on the test data: 0.9819867227979274
+F1-Score of the model on the test data: 0.8930569871889266
+Accuracy (graph level) of the model on the test data: 0.2065
+Perc num_wrongly_pred_nodes_per_graph: 0.02905
+VALIDATION
+Accuracy (node level) of the final model: 0.9644
+Precision of the model on the test data: 0.7822682495579691
+Recall of the model on the test data: 0.99104
+F1-Score of the model on the test data: 0.8743647656691135
+Accuracy (graph level) of the model on the test data: 0.136
+Perc num_wrongly_pred_nodes_per_graph: 0.03560000000000001
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.96992
+Precision of the model on the test data: 0.8096757044125465
+Recall of the model on the test data: 0.9883192731992213
+F1-Score of the model on the test data: 0.8901227352425483
+Accuracy (graph level) of the model on the test data: 0.162
+Perc num_wrongly_pred_nodes_per_graph: 0.029989620758483035
+PR AUC: 0.8997174888058839
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 81
+Mean num_wrongly_pred_nodes_per_graph: 1.504
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1742206e-05, min 8.72e-06, max 2.0144999999999998e-05
+Test time after: mean 1.0662672000000002e-05, min 8.162e-06, max 1.6727e-05
+Test time reduction: mean 1.079534e-06, min -5.914e-06, max 9.308000000000003e-06
+Prediction time: mean 0.001096736427396536, min 0.0010728482156991959, max 0.0011261366307735443
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 3.67, min 1.0, max 24.0
+Test iter reduction: mean 7.162, min -2.0, max 20.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 24 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.97365
+Precision of the model on the test data: 0.8365777623830967
+Recall of the model on the test data: 0.9776554404145078
+F1-Score of the model on the test data: 0.9016313883600254
+Accuracy (graph level) of the model on the test data: 0.25275
+Perc num_wrongly_pred_nodes_per_graph: 0.026350000000000002
+VALIDATION
+Accuracy (node level) of the final model: 0.97168
+Precision of the model on the test data: 0.8239077995175557
+Recall of the model on the test data: 0.98368
+F1-Score of the model on the test data: 0.896732788798133
+Accuracy (graph level) of the model on the test data: 0.25
+Perc num_wrongly_pred_nodes_per_graph: 0.02832
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97504
+Precision of the model on the test data: 0.8374519494783086
+Recall of the model on the test data: 0.9896171317326411
+F1-Score of the model on the test data: 0.9071980963712076
+Accuracy (graph level) of the model on the test data: 0.246
+Perc num_wrongly_pred_nodes_per_graph: 0.02534530938123752
+PR AUC: 0.9141745406054748
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 123
+Mean num_wrongly_pred_nodes_per_graph: 1.248
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1677205999999999e-05, min 9.124e-06, max 2.3772e-05
+Test time after: mean 1.0474838e-05, min 8.015e-06, max 1.9618e-05
+Test time reduction: mean 1.2023679999999999e-06, min -8.357000000000001e-06, max 9.623e-06
+Prediction time: mean 0.0011018694937229157, min 0.0010736435651779175, max 0.0011732708662748337
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 3.112, min 1.0, max 22.0
+Test iter reduction: mean 7.72, min -3.0, max 23.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 15 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.85681
+Precision of the model on the test data: 0.46199768160741883
+Recall of the model on the test data: 0.9679808937823834
+F1-Score of the model on the test data: 0.6254708097928436
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.14319000000000004
+VALIDATION
+Accuracy (node level) of the final model: 0.86984
+Precision of the model on the test data: 0.48955465587044533
+Recall of the model on the test data: 0.96736
+F1-Score of the model on the test data: 0.6501075268817205
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.13016000000000003
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.87152
+Precision of the model on the test data: 0.48930921052631576
+Recall of the model on the test data: 0.9652822842310188
+F1-Score of the model on the test data: 0.649421523684785
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1278257884231537
+PR AUC: 0.7294357473786672
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 6.424
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.2991377999999999e-05, min 8.998e-06, max 2.8348e-05
+Test time after: mean 1.2560664000000001e-05, min 7.706e-06, max 2.6326e-05
+Test time reduction: mean 4.307139999999999e-07, min -1.1145e-05, max 1.1642000000000001e-05
+Prediction time: mean 0.0011843874976038933, min 0.001081954687833786, max 0.0014631878584623337
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.416, min 5.0, max 24.0
+Test iter reduction: mean 0.416, min -8.0, max 13.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 8 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.697085
+Precision of the model on the test data: 0.24280655474473484
+Recall of the model on the test data: 0.6855569948186528
+F1-Score of the model on the test data: 0.35860462654173947
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.302915
+VALIDATION
+Accuracy (node level) of the final model: 0.72828
+Precision of the model on the test data: 0.2687846696923853
+Recall of the model on the test data: 0.68224
+F1-Score of the model on the test data: 0.3856380573392421
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.27172
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.74428
+Precision of the model on the test data: 0.3252770448548813
+Recall of the model on the test data: 1.0
+F1-Score of the model on the test data: 0.4908815799952218
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2559647105788424
+PR AUC: 0.6626385224274407
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 12.786
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1651523999999999e-05, min 8.86e-06, max 1.8255e-05
+Test time after: mean 1.0701956e-05, min 7.833000000000001e-06, max 1.6475e-05
+Test time reduction: mean 9.49568e-07, min -4.121e-06, max 8.451000000000001e-06
+Prediction time: mean 0.0011062926165759563, min 0.0010800808668136597, max 0.0011910013854503632
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.832, min 4.0, max 24.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 13 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.763405
+Precision of the model on the test data: 0.3006048422648962
+Recall of the model on the test data: 0.6900501943005182
+F1-Score of the model on the test data: 0.4187783277854888
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.23659500000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.77544
+Precision of the model on the test data: 0.32162820696574457
+Recall of the model on the test data: 0.71808
+F1-Score of the model on the test data: 0.4442684616907543
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.22456000000000004
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.78792
+Precision of the model on the test data: 0.3292307692307692
+Recall of the model on the test data: 0.6943543153796237
+F1-Score of the model on the test data: 0.4466708411605093
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21194634730538925
+PR AUC: 0.5306325423051964
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 10.604
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1619014e-05, min 8.816e-06, max 2.1811e-05
+Test time after: mean 1.0726422000000001e-05, min 7.499999999999999e-06, max 2.9678e-05
+Test time reduction: mean 8.925920000000001e-07, min -1.5212999999999998e-05, max 1.0449999999999998e-05
+Prediction time: mean 0.00109966728836298, min 0.0010728221386671066, max 0.0012213792651891708
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.832, min 4.0, max 24.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 31 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.901515
+Precision of the model on the test data: 0.5576166256242664
+Recall of the model on the test data: 0.9807723445595855
+F1-Score of the model on the test data: 0.7109969921502458
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.09848500000000002
+VALIDATION
+Accuracy (node level) of the final model: 0.90924
+Precision of the model on the test data: 0.5807242549981139
+Recall of the model on the test data: 0.98528
+F1-Score of the model on the test data: 0.7307464103476919
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.09076000000000002
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.90712
+Precision of the model on the test data: 0.5718880060537268
+Recall of the model on the test data: 0.9808565866320571
+F1-Score of the model on the test data: 0.7225143403441683
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.0919928143712575
+PR AUC: 0.7775522963428919
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 4.644
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1630452e-05, min 8.712e-06, max 1.9075999999999998e-05
+Test time after: mean 1.1697914e-05, min 8.707e-06, max 2.2247e-05
+Test time reduction: mean -6.746199999999996e-08, min -8.846999999999998e-06, max 8.022e-06
+Prediction time: mean 0.0011082466654479504, min 0.001080365851521492, max 0.0011375173926353455
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 9.65, min 2.0, max 24.0
+Test iter reduction: mean 1.182, min -12.0, max 16.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 13 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.81727
+Precision of the model on the test data: 0.375
+Recall of the model on the test data: 0.7190333549222798
+F1-Score of the model on the test data: 0.4929237429237429
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.18273000000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.80788
+Precision of the model on the test data: 0.3768349970640047
+Recall of the model on the test data: 0.82144
+F1-Score of the model on the test data: 0.5166549260340143
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.19212
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.82564
+Precision of the model on the test data: 0.4105617033197927
+Recall of the model on the test data: 0.9510058403634004
+F1-Score of the model on the test data: 0.5735250953918404
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.17401021956087825
+PR AUC: 0.6838037718415965
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 8.718
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1938274000000001e-05, min 8.786e-06, max 2.9316e-05
+Test time after: mean 1.0800638000000002e-05, min 7.78e-06, max 1.6859000000000002e-05
+Test time reduction: mean 1.137636e-06, min -5.137e-06, max 1.9584e-05
+Prediction time: mean 0.0011044650003314018, min 0.0010757297277450562, max 0.0011751838028430939
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.832, min 4.0, max 24.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 20 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93245
+Precision of the model on the test data: 0.6555767464858374
+Recall of the model on the test data: 0.9461718829646243
+F1-Score of the model on the test data: 0.7745138946841359
+Accuracy (graph level) of the model on the test data: 0.005625
+Perc num_wrongly_pred_nodes_per_graph: 0.06755000000000001
+VALIDATION
+Accuracy (node level) of the final model: 0.9166
+Precision of the model on the test data: 0.6043676993397664
+Recall of the model on the test data: 0.9558232931726908
+F1-Score of the model on the test data: 0.7405102675793404
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.0834
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9393
+Precision of the model on the test data: 0.684369342184671
+Recall of the model on the test data: 0.9310344827586207
+F1-Score of the model on the test data: 0.7888695652173913
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.05964378109452737
+PR AUC: 0.8119019124716459
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 3.035
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1702294999999998e-05, min 9.005e-06, max 1.7067e-05
+Test time after: mean 1.2081299999999999e-05, min 8.722e-06, max 1.8417e-05
+Test time reduction: mean -3.7900499999999987e-07, min -6.842999999999999e-06, max 5.49e-06
+Prediction time: mean 0.001087860306724906, min 0.0010614041239023209, max 0.00111297145485878
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 6.38, min 2.0, max 23.0
+Test iter reduction: mean 4.44, min -7.0, max 16.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.936625
+Precision of the model on the test data: 0.6658732936646833
+Recall of the model on the test data: 0.9697216841676012
+F1-Score of the model on the test data: 0.7895741678426165
+Accuracy (graph level) of the model on the test data: 0.00875
+Perc num_wrongly_pred_nodes_per_graph: 0.063375
+VALIDATION
+Accuracy (node level) of the final model: 0.9348
+Precision of the model on the test data: 0.6642659279778393
+Recall of the model on the test data: 0.9630522088353414
+F1-Score of the model on the test data: 0.7862295081967213
+Accuracy (graph level) of the model on the test data: 0.005
+Perc num_wrongly_pred_nodes_per_graph: 0.0652
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9353
+Precision of the model on the test data: 0.6592303402119353
+Recall of the model on the test data: 0.9704433497536946
+F1-Score of the model on the test data: 0.7851212221853205
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.06370547263681593
+PR AUC: 0.8166368449828149
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 3.235
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1784245000000001e-05, min 8.761e-06, max 1.9732e-05
+Test time after: mean 1.2187579999999999e-05, min 8.694e-06, max 1.9673e-05
+Test time reduction: mean -4.0333500000000003e-07, min -8.522e-06, max 7.5260000000000004e-06
+Prediction time: mean 0.0010924646072089672, min 0.001064106822013855, max 0.0011572595685720444
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 7.235, min 2.0, max 22.0
+Test iter reduction: mean 3.585, min -7.0, max 17.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 23 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9223625
+Precision of the model on the test data: 0.6159896840747905
+Recall of the model on the test data: 0.9740034662045061
+F1-Score of the model on the test data: 0.7546901536395593
+Accuracy (graph level) of the model on the test data: 0.004375
+Perc num_wrongly_pred_nodes_per_graph: 0.0776375
+VALIDATION
+Accuracy (node level) of the final model: 0.9317
+Precision of the model on the test data: 0.6480505795574288
+Recall of the model on the test data: 0.9879518072289156
+F1-Score of the model on the test data: 0.7826916958320076
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.0683
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9328
+Precision of the model on the test data: 0.647887323943662
+Recall of the model on the test data: 0.9819376026272578
+F1-Score of the model on the test data: 0.7806788511749347
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.06734726368159205
+PR AUC: 0.81601246328546
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 3.36
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.185362e-05, min 8.828000000000001e-06, max 1.9009e-05
+Test time after: mean 1.2071849999999999e-05, min 8.913000000000001e-06, max 1.6732000000000002e-05
+Test time reduction: mean -2.1823000000000002e-07, min -5.813999999999999e-06, max 8.548e-06
+Prediction time: mean 0.0010908646043390035, min 0.0010642744600772858, max 0.001122795045375824
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 7.145, min 2.0, max 22.0
+Test iter reduction: mean 3.675, min -6.0, max 18.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 52 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9707125
+Precision of the model on the test data: 0.8431066176470589
+Recall of the model on the test data: 0.9351615862982975
+F1-Score of the model on the test data: 0.8867514137947702
+Accuracy (graph level) of the model on the test data: 0.225625
+Perc num_wrongly_pred_nodes_per_graph: 0.0292875
+VALIDATION
+Accuracy (node level) of the final model: 0.9724
+Precision of the model on the test data: 0.8528769118718136
+Recall of the model on the test data: 0.940562248995984
+F1-Score of the model on the test data: 0.894576012223071
+Accuracy (graph level) of the model on the test data: 0.25
+Perc num_wrongly_pred_nodes_per_graph: 0.0276
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97
+Precision of the model on the test data: 0.8370044052863436
+Recall of the model on the test data: 0.9359605911330049
+F1-Score of the model on the test data: 0.8837209302325582
+Accuracy (graph level) of the model on the test data: 0.155
+Perc num_wrongly_pred_nodes_per_graph: 0.02925771144278607
+PR AUC: 0.8903824982096742
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 31
+Mean num_wrongly_pred_nodes_per_graph: 1.5
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1886269999999998e-05, min 9.01e-06, max 2.6457e-05
+Test time after: mean 1.123283e-05, min 8.428e-06, max 1.6404e-05
+Test time reduction: mean 6.534399999999999e-07, min -3.85e-06, max 1.3572000000000002e-05
+Prediction time: mean 0.0010951305367052555, min 0.0010708831250667572, max 0.0011186115443706512
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 3.04, min 1.0, max 16.0
+Test iter reduction: mean 7.78, min 0.0, max 19.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 52 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9715
+Precision of the model on the test data: 0.8449555575918629
+Recall of the model on the test data: 0.9400550514833317
+F1-Score of the model on the test data: 0.8899720104237043
+Accuracy (graph level) of the model on the test data: 0.21125
+Perc num_wrongly_pred_nodes_per_graph: 0.0285
+VALIDATION
+Accuracy (node level) of the final model: 0.9693
+Precision of the model on the test data: 0.8398550724637681
+Recall of the model on the test data: 0.9309236947791165
+F1-Score of the model on the test data: 0.8830476190476191
+Accuracy (graph level) of the model on the test data: 0.225
+Perc num_wrongly_pred_nodes_per_graph: 0.0307
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.9786
+Precision of the model on the test data: 0.8768768768768769
+Recall of the model on the test data: 0.9589490968801314
+F1-Score of the model on the test data: 0.9160784313725491
+Accuracy (graph level) of the model on the test data: 0.27
+Perc num_wrongly_pred_nodes_per_graph: 0.02140597014925373
+PR AUC: 0.9204129868785041
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 54
+Mean num_wrongly_pred_nodes_per_graph: 1.07
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.2862185e-05, min 8.808000000000001e-06, max 2.5623999999999997e-05
+Test time after: mean 1.1079785000000001e-05, min 8.728e-06, max 1.6244000000000002e-05
+Test time reduction: mean 1.7824e-06, min -4.5520000000000015e-06, max 1.5553999999999997e-05
+Prediction time: mean 0.0010978342313319445, min 0.0010734684765338898, max 0.0011467784643173218
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 2.335, min 1.0, max 20.0
+Test iter reduction: mean 8.485, min -6.0, max 21.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 7 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7055875
+Precision of the model on the test data: 0.26259241345954537
+Recall of the model on the test data: 0.774900601488429
+F1-Score of the model on the test data: 0.39225906334666494
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.29441249999999997
+VALIDATION
+Accuracy (node level) of the final model: 0.7224
+Precision of the model on the test data: 0.27087698293923973
+Recall of the model on the test data: 0.7269076305220884
+F1-Score of the model on the test data: 0.3946794592237244
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.27759999999999996
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.7281
+Precision of the model on the test data: 0.2886510842016333
+Recall of the model on the test data: 0.8415435139573071
+F1-Score of the model on the test data: 0.4298595093310967
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.26973631840796025
+PR AUC: 0.5747472990794702
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 13.595
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1593555e-05, min 8.832e-06, max 1.6299e-05
+Test time after: mean 1.0759645e-05, min 7.637e-06, max 1.6213999999999998e-05
+Test time reduction: mean 8.3391e-07, min -5.848000000000001e-06, max 2.9819999999999996e-06
+Prediction time: mean 0.0011096576415002347, min 0.0010757241398096085, max 0.0011412613093852997
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.84, min 4.0, max 23.0
+Test iter reduction: mean -0.02, min -4.0, max 2.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 6 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.720125
+Precision of the model on the test data: 0.25871658164243794
+Recall of the model on the test data: 0.6876338056886533
+F1-Score of the model on the test data: 0.37597547380156077
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.279875
+VALIDATION
+Accuracy (node level) of the final model: 0.7638
+Precision of the model on the test data: 0.2938353636028055
+Recall of the model on the test data: 0.6393574297188755
+F1-Score of the model on the test data: 0.4026302478502782
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.23620000000000002
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.744
+Precision of the model on the test data: 0.3197205803331542
+Recall of the model on the test data: 0.9770114942528736
+F1-Score of the model on the test data: 0.4817813765182186
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.255371144278607
+PR AUC: 0.649766037293014
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 12.8
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.170005e-05, min 8.903e-06, max 1.6791e-05
+Test time after: mean 1.138986e-05, min 8.568e-06, max 1.6578e-05
+Test time reduction: mean 3.1018999999999995e-07, min -4.7009999999999995e-06, max 2.3890000000000003e-06
+Prediction time: mean 0.0011057582125067712, min 0.0010778475552797318, max 0.00113021582365036
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7041375
+Precision of the model on the test data: 0.2781832149030152
+Recall of the model on the test data: 0.8860230400652462
+F1-Score of the model on the test data: 0.4234245207181311
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2958625
+VALIDATION
+Accuracy (node level) of the final model: 0.7252
+Precision of the model on the test data: 0.29782082324455206
+Recall of the model on the test data: 0.8891566265060241
+F1-Score of the model on the test data: 0.44619105199516323
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2748
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.7238
+Precision of the model on the test data: 0.2916891527253103
+Recall of the model on the test data: 0.8875205254515599
+F1-Score of the model on the test data: 0.43907392363931763
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.27628457711442783
+PR AUC: 0.5964548390884351
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 13.81
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1871645e-05, min 9.194e-06, max 2.0453000000000002e-05
+Test time after: mean 1.1260529999999999e-05, min 8.338e-06, max 1.6967e-05
+Test time reduction: mean 6.11115e-07, min -5.7539999999999995e-06, max 7.296000000000001e-06
+Prediction time: mean 0.0011062943283468485, min 0.0010791663080453873, max 0.0011471118777990341
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 5 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.655325
+Precision of the model on the test data: 0.2476204006250888
+Recall of the model on the test data: 0.8884697726577633
+F1-Score of the model on the test data: 0.3872989067638432
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.344675
+VALIDATION
+Accuracy (node level) of the final model: 0.6486
+Precision of the model on the test data: 0.2472711071508131
+Recall of the model on the test data: 0.891566265060241
+F1-Score of the model on the test data: 0.38716428322288104
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.35139999999999993
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.6432
+Precision of the model on the test data: 0.2401592215833702
+Recall of the model on the test data: 0.8916256157635468
+F1-Score of the model on the test data: 0.378397212543554
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.3565054726368159
+PR AUC: 0.5724924186734585
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 17.84
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1768274999999999e-05, min 8.789e-06, max 3.137e-05
+Test time after: mean 1.1389869999999999e-05, min 8.722e-06, max 1.6622e-05
+Test time reduction: mean 3.78405e-07, min -1.286000000000001e-06, max 2.1664e-05
+Prediction time: mean 0.00111721133813262, min 0.0010923556983470917, max 0.0011451281607151031
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 9 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.7301
+Precision of the model on the test data: 0.2782399217073813
+Recall of the model on the test data: 0.7535936384952595
+F1-Score of the model on the test data: 0.406421816582362
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.26990000000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.7451
+Precision of the model on the test data: 0.29586725109580464
+Recall of the model on the test data: 0.7590361445783133
+F1-Score of the model on the test data: 0.4257715701734625
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.2549
+9809.0 80000 0.1226125
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.6883
+Precision of the model on the test data: 0.2611320754716981
+Recall of the model on the test data: 0.8522167487684729
+F1-Score of the model on the test data: 0.3997689196995956
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.3111691542288557
+PR AUC: 0.5656744121200855
+
+NAIVE MODEL: acc = 0.8782, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12179999999999999
+Correctly predicted graphs: 0 out of 200
+Naive PR AUC: 0.5609
+
+Number of graphs: 200, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 15.585
+200
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1813145e-05, min 9.344e-06, max 1.7012e-05
+Test time after: mean 1.1567229999999999e-05, min 8.714e-06, max 1.7077e-05
+Test time reduction: mean 2.45915e-07, min -4.5139999999999995e-06, max 3.1880000000000006e-06
+Prediction time: mean 0.0011034038197249175, min 0.0010766629129648209, max 0.0011315364390611649
+Test iter before: mean 10.82, min 4, max 23
+Test iter after: mean 10.82, min 4.0, max 23.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.97974
+Precision of the model on the test data: 0.9157004830917874
+Recall of the model on the test data: 0.9207415803108808
+F1-Score of the model on the test data: 0.918214112707896
+Accuracy (graph level) of the model on the test data: 0.37825
+Perc num_wrongly_pred_nodes_per_graph: 0.02026
+VALIDATION
+Accuracy (node level) of the final model: 0.97432
+Precision of the model on the test data: 0.8574719262885113
+Recall of the model on the test data: 0.95296
+F1-Score of the model on the test data: 0.9026977872082449
+Accuracy (graph level) of the model on the test data: 0.294
+Perc num_wrongly_pred_nodes_per_graph: 0.02568
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.98232
+Precision of the model on the test data: 0.9350692155570204
+Recall of the model on the test data: 0.9205061648280337
+F1-Score of the model on the test data: 0.9277305428384565
+Accuracy (graph level) of the model on the test data: 0.414
+Perc num_wrongly_pred_nodes_per_graph: 0.017923033932135735
+PR AUC: 0.9326876901925271
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 207
+Mean num_wrongly_pred_nodes_per_graph: 0.884
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.1741201999999999e-05, min 9.009e-06, max 2.4602000000000003e-05
+Test time after: mean 1.0587426e-05, min 8.268e-06, max 1.6679e-05
+Test time reduction: mean 1.153776e-06, min -5.257999999999998e-06, max 9.090000000000003e-06
+Prediction time: mean 0.0011015218831598758, min 0.001069752499461174, max 0.0012977570295333862
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.112, min 1.0, max 9.0
+Test iter reduction: mean 8.72, min 0.0, max 23.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 38 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.982935
+Precision of the model on the test data: 0.9295484808134609
+Recall of the model on the test data: 0.9325210492227979
+F1-Score of the model on the test data: 0.9310323923454644
+Accuracy (graph level) of the model on the test data: 0.43
+Perc num_wrongly_pred_nodes_per_graph: 0.017064999999999997
+VALIDATION
+Accuracy (node level) of the final model: 0.9778
+Precision of the model on the test data: 0.9534227240649259
+Recall of the model on the test data: 0.86464
+F1-Score of the model on the test data: 0.9068635677127035
+Accuracy (graph level) of the model on the test data: 0.332
+Perc num_wrongly_pred_nodes_per_graph: 0.022200000000000004
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.98404
+Precision of the model on the test data: 0.906392002423508
+Recall of the model on the test data: 0.9707981829980532
+F1-Score of the model on the test data: 0.9374902083659721
+Accuracy (graph level) of the model on the test data: 0.464
+Perc num_wrongly_pred_nodes_per_graph: 0.01566994011976048
+PR AUC: 0.9403950927107806
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 232
+Mean num_wrongly_pred_nodes_per_graph: 0.798
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.6696016e-05, min 1.2131e-05, max 2.8859999999999998e-05
+Test time after: mean 1.3644284e-05, min 1.0965e-05, max 2.1825e-05
+Test time reduction: mean 3.0517319999999995e-06, min -6.351999999999996e-06, max 1.3083000000000003e-05
+Prediction time: mean 0.0017329818196594716, min 0.0016832519322633743, max 0.0021014250814914703
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.016, min 1.0, max 17.0
+Test iter reduction: mean 8.816, min -8.0, max 22.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 24 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.97762
+Precision of the model on the test data: 0.9049163263672031
+Recall of the model on the test data: 0.9149530440414507
+F1-Score of the model on the test data: 0.909907008574534
+Accuracy (graph level) of the model on the test data: 0.33475
+Perc num_wrongly_pred_nodes_per_graph: 0.022380000000000004
+VALIDATION
+Accuracy (node level) of the final model: 0.97216
+Precision of the model on the test data: 0.9068676716917923
+Recall of the model on the test data: 0.86624
+F1-Score of the model on the test data: 0.886088379705401
+Accuracy (graph level) of the model on the test data: 0.202
+Perc num_wrongly_pred_nodes_per_graph: 0.02784
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.97836
+Precision of the model on the test data: 0.8762214983713354
+Recall of the model on the test data: 0.9600908500973394
+F1-Score of the model on the test data: 0.9162409041647314
+Accuracy (graph level) of the model on the test data: 0.342
+Perc num_wrongly_pred_nodes_per_graph: 0.020948982035928137
+PR AUC: 0.9206161742343375
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 171
+Mean num_wrongly_pred_nodes_per_graph: 1.082
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.9051182e-05, min 1.4085e-05, max 3.6911e-05
+Test time after: mean 1.5900248000000002e-05, min 1.2853e-05, max 2.89e-05
+Test time reduction: mean 3.150934e-06, min -4.327000000000001e-06, max 2.0569000000000006e-05
+Prediction time: mean 0.0014195348508656024, min 0.0014000516384840012, max 0.001460932195186615
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.508, min 1.0, max 24.0
+Test iter reduction: mean 8.324, min 0.0, max 21.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 23 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.978205
+Precision of the model on the test data: 0.9076664128561696
+Recall of the model on the test data: 0.9168150906735751
+F1-Score of the model on the test data: 0.9122178142054493
+Accuracy (graph level) of the model on the test data: 0.35225
+Perc num_wrongly_pred_nodes_per_graph: 0.021795000000000002
+VALIDATION
+Accuracy (node level) of the final model: 0.9816
+Precision of the model on the test data: 0.9234191293295202
+Recall of the model on the test data: 0.92992
+F1-Score of the model on the test data: 0.9266581632653061
+Accuracy (graph level) of the model on the test data: 0.386
+Perc num_wrongly_pred_nodes_per_graph: 0.0184
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.98128
+Precision of the model on the test data: 0.9079275905118602
+Recall of the model on the test data: 0.9438676184295912
+F1-Score of the model on the test data: 0.9255488386891505
+Accuracy (graph level) of the model on the test data: 0.396
+Perc num_wrongly_pred_nodes_per_graph: 0.018182994011976046
+PR AUC: 0.9293576044707258
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 198
+Mean num_wrongly_pred_nodes_per_graph: 0.936
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.9233333999999997e-05, min 1.4319e-05, max 4.4761e-05
+Test time after: mean 1.558511e-05, min 1.275e-05, max 2.9173e-05
+Test time reduction: mean 3.6482239999999995e-06, min -1.1734e-05, max 2.984e-05
+Prediction time: mean 0.0014194256365299225, min 0.0013996083289384842, max 0.0015237368643283844
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.196, min 1.0, max 23.0
+Test iter reduction: mean 8.636, min -3.0, max 21.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.982015
+Precision of the model on the test data: 0.9248762027456822
+Recall of the model on the test data: 0.9299303756476683
+F1-Score of the model on the test data: 0.9273964031245585
+Accuracy (graph level) of the model on the test data: 0.417
+Perc num_wrongly_pred_nodes_per_graph: 0.017985
+VALIDATION
+Accuracy (node level) of the final model: 0.97368
+Precision of the model on the test data: 0.8582631426081905
+Recall of the model on the test data: 0.9456
+F1-Score of the model on the test data: 0.8998172959805115
+Accuracy (graph level) of the model on the test data: 0.248
+Perc num_wrongly_pred_nodes_per_graph: 0.02632
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.98172
+Precision of the model on the test data: 0.9059696875966594
+Recall of the model on the test data: 0.9503569110966905
+F1-Score of the model on the test data: 0.9276326207442597
+Accuracy (graph level) of the model on the test data: 0.39
+Perc num_wrongly_pred_nodes_per_graph: 0.018002554890219558
+PR AUC: 0.9312232993466749
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 195
+Mean num_wrongly_pred_nodes_per_graph: 0.914
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.8928465999999997e-05, min 1.409e-05, max 3.4153e-05
+Test time after: mean 1.368091e-05, min 1.1004e-05, max 2.3546e-05
+Test time reduction: mean 5.247555999999999e-06, min -2.507999999999997e-06, max 2.1692000000000002e-05
+Prediction time: mean 0.0017325482740998268, min 0.0016834605485200882, max 0.001757197082042694
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 2.372, min 1.0, max 24.0
+Test iter reduction: mean 8.46, min 0.0, max 22.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 13 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.78904
+Precision of the model on the test data: 0.3306017280793522
+Recall of the model on the test data: 0.6907788212435233
+F1-Score of the model on the test data: 0.44718429810539556
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21096000000000004
+VALIDATION
+Accuracy (node level) of the final model: 0.78848
+Precision of the model on the test data: 0.33183019748095166
+Recall of the model on the test data: 0.68288
+F1-Score of the model on the test data: 0.44663038928421933
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21152000000000004
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.7894
+Precision of the model on the test data: 0.3304861003261376
+Recall of the model on the test data: 0.6904607397793641
+F1-Score of the model on the test data: 0.44701186850120783
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.21030003992015975
+PR AUC: 0.5295534200527509
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 10.53
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.8688588e-05, min 1.4065e-05, max 2.9814000000000003e-05
+Test time after: mean 1.7214652e-05, min 1.222e-05, max 2.701e-05
+Test time reduction: mean 1.473936e-06, min -5.112000000000001e-06, max 6.236000000000003e-06
+Prediction time: mean 0.0014158296920359136, min 0.0014011189341545105, max 0.001453392207622528
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.832, min 4.0, max 24.0
+Test iter reduction: mean 0.0, min 0.0, max 0.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 17 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.801875
+Precision of the model on the test data: 0.35958820318822576
+Recall of the model on the test data: 0.7733970207253886
+F1-Score of the model on the test data: 0.4909233397998381
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.19812500000000002
+VALIDATION
+Accuracy (node level) of the final model: 0.81212
+Precision of the model on the test data: 0.37586860391661403
+Recall of the model on the test data: 0.7616
+F1-Score of the model on the test data: 0.5033308660251665
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.18788000000000002
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.84344
+Precision of the model on the test data: 0.439622641509434
+Recall of the model on the test data: 0.9828033744321869
+F1-Score of the model on the test data: 0.607501002807862
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.1559950499001996
+PR AUC: 0.7122730079708105
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 7.828
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.3035602e-05, min 8.91e-06, max 3.9344e-05
+Test time after: mean 1.0974442e-05, min 7.765000000000001e-06, max 1.9177000000000003e-05
+Test time reduction: mean 2.0611600000000004e-06, min -5.406000000000002e-06, max 3.0032e-05
+Prediction time: mean 0.001109728269279003, min 0.0010815449059009552, max 0.0013294275850057602
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.356, min 4.0, max 24.0
+Test iter reduction: mean 0.476, min -2.0, max 12.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 19 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.83659
+Precision of the model on the test data: 0.4283224322576008
+Recall of the model on the test data: 0.9649044689119171
+F1-Score of the model on the test data: 0.5932848822738812
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.16341000000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.81848
+Precision of the model on the test data: 0.40641144522453304
+Recall of the model on the test data: 0.98176
+F1-Score of the model on the test data: 0.5748547873337081
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.18152000000000001
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.849
+Precision of the model on the test data: 0.44738041002277906
+Recall of the model on the test data: 0.9558728098637248
+F1-Score of the model on the test data: 0.6094962242681287
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.14983089820359288
+PR AUC: 0.7043466099432519
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 7.55
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.8643266e-05, min 1.3640999999999999e-05, max 2.7774999999999997e-05
+Test time after: mean 1.783165e-05, min 1.259e-05, max 2.7942e-05
+Test time reduction: mean 8.116159999999999e-07, min -9.15e-06, max 9.115000000000003e-06
+Prediction time: mean 0.001419869262725115, min 0.001402469351887703, max 0.0014636032283306122
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.444, min 5.0, max 24.0
+Test iter reduction: mean 0.388, min -6.0, max 13.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.89956
+Precision of the model on the test data: 0.5534086175776369
+Recall of the model on the test data: 0.9680618523316062
+F1-Score of the model on the test data: 0.7042315733678848
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.10044000000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.888
+Precision of the model on the test data: 0.5280220727711674
+Recall of the model on the test data: 0.97984
+F1-Score of the model on the test data: 0.6862393545495293
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11200000000000002
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.91368
+Precision of the model on the test data: 0.5911962100276352
+Recall of the model on the test data: 0.9717715768981181
+F1-Score of the model on the test data: 0.7351497299950909
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.08547065868263473
+PR AUC: 0.7832238934628768
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 4.316
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.8712426000000002e-05, min 1.4139e-05, max 3.4166e-05
+Test time after: mean 1.8482092e-05, min 1.4208e-05, max 3.7724e-05
+Test time reduction: mean 2.3033399999999987e-07, min -2.051e-05, max 1.2656999999999998e-05
+Prediction time: mean 0.0014259839206933974, min 0.0014107953757047653, max 0.001462908461689949
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 9.594, min 2.0, max 24.0
+Test iter reduction: mean 1.238, min -8.0, max 13.0
+Using device: cuda:0
+(10, 10) (10,) (10, 2) (40, 10) (40,) (40, 2) (10, 2)
+condition number of H 4170.53648086846
+Done generating train data
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.88373
+Precision of the model on the test data: 0.5154524915810563
+Recall of the model on the test data: 0.9789507772020726
+F1-Score of the model on the test data: 0.6753232247074921
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11627000000000003
+VALIDATION
+Accuracy (node level) of the final model: 0.88984
+Precision of the model on the test data: 0.5320103537532356
+Recall of the model on the test data: 0.98656
+F1-Score of the model on the test data: 0.6912556053811659
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11016000000000002
+24704.0 200000 0.12352
+Using device: cuda
+TESTING
+Accuracy (node level) of the model on the test data: 0.88748
+Precision of the model on the test data: 0.5233791065531027
+Recall of the model on the test data: 0.9769630110317975
+F1-Score of the model on the test data: 0.6816072439162422
+Accuracy (graph level) of the model on the test data: 0.0
+Perc num_wrongly_pred_nodes_per_graph: 0.11262131736526948
+PR AUC: 0.7515910587924501
+
+NAIVE MODEL: acc = 0.87672, prec = 0, rec = 0.0, f1 = 0
+Naive model: perc num_wrongly_pred_nodes_per_graph: 0.12328
+Correctly predicted graphs: 0 out of 500
+Naive PR AUC: 0.56164
+
+Number of graphs: 500, Correctly predicted graphs: 0
+Mean num_wrongly_pred_nodes_per_graph: 5.626
+500
+Number of graph without an active constraint: 0 / 0.0%
+Test time before: mean 1.6678288e-05, min 1.221e-05, max 2.5580999999999998e-05
+Test time after: mean 1.6307582e-05, min 1.2194e-05, max 2.5124e-05
+Test time reduction: mean 3.70706e-07, min -8.642999999999998e-06, max 1.0398999999999996e-05
+Prediction time: mean 0.0017463199235498905, min 0.0016966238617897034, max 0.0017791315913200378
+Test iter before: mean 10.832, min 4, max 24
+Test iter after: mean 10.268, min 3.0, max 24.0
+Test iter reduction: mean 0.564, min -9.0, max 17.0
