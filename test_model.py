@@ -92,7 +92,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             batch = batch.to(device)
             n = int(n_vector[i])
             m = int(m_vector[i])
-            
+
             # Prediction on test data
             if device == "cuda":
                 torch.cuda.synchronize()
@@ -104,6 +104,12 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
             
+            # print(f"Output mean prediction: {torch.sigmoid(preds).sum().item()-173:.4f}")
+            # if torch.sigmoid(preds).sum().item() < 3:
+            #     preds = torch.zeros_like(output, dtype=torch.long)
+            # else:
+            #     preds = (torch.sigmoid(output).squeeze() > t).long()
+
             # Store predictions and labels
             test_preds.extend(preds.cpu().numpy())
             test_all_labels.extend(batch.y.cpu().numpy())
@@ -122,12 +128,12 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
             perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
-            # if i<5:
-            #    W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0]
-            #    W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-            #    print(f"W_true: {W_true}")
-            #    print(f"W_pred: {W_pred}")
-               # print(f"% pred: {output.squeeze()[(W_pred+n)]}")
+            #if i%50 ==0:
+            W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0] 
+            W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
+            print(f"W_true: {W_true}")
+            print(f"W_pred: {W_pred}")
+            print(f"% pred: {output.squeeze()[(W_pred+n)]}")
 
 
             # Solve QPs with predicted active sets
@@ -148,7 +154,10 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 last_one_index = np.where(sense_active == 1)[-1]
                 if last_one_index is not None:
                     sense_active[last_one_index] = 0
-                    
+
+            print(f"test iterations before: {test_iterations_before[i]}")
+            print(f"test iterations after: {test_iterations_after[i]}")
+            print() 
             # Solve system one more time without inactive constraints to make sure no active constraints are in there
             #print(sense_active)
             # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
@@ -207,17 +216,36 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print(f'Test time reduction: mean {np.mean(np.array(test_time_before)-np.array(test_time_after))}, min {np.min(np.array(test_time_before)-np.array(test_time_after))}, max {np.max(np.array(test_time_before)-np.array(test_time_after))}')
     print(f'Prediction time: mean {np.mean(prediction_time)}, min {np.min(prediction_time)}, max {np.max(prediction_time)}')
     print(f'Test iter before: mean {np.mean(test_iterations_before)}, min {np.min(test_iterations_before)}, max {np.max(test_iterations_before)}')
+    print(f"Test iter before: quantiles {np.percentile(test_iterations_before, [10,25, 50, 75,90])}")
     print(f'Test iter after: mean {np.mean(test_iterations_after)}, min {np.min(test_iterations_after)}, max {np.max(test_iterations_after)}')
+    print(f"Test iter after: quantiles {np.percentile(test_iterations_after, [10,25, 50, 75,90])}")
     print(f'Test iter reduction: mean {np.mean(test_iterations_difference)}, min {np.min(test_iterations_difference)}, max {np.max(test_iterations_difference)}')
+    print(f"Test iter after: quantiles {np.percentile(test_iterations_difference, [5,10,20,30,40, 50, 60,70,80,90,95])}")
 
 
     #Plots to vizualize iterations and time
-    # histogram_time(test_time_before, test_time_after,model_name, save= True)
-    # histogram_prediction_time(prediction_time,model_name, save = True)
-    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    #histogram_time(test_time_before, test_time_after,model_name, save= True)
+    #histogram_prediction_time(prediction_time,model_name, save = True)
+    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
-    return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return np.mean(prediction_time), np.mean(test_time_after), np.mean(test_iterations_after)
+    plt.rcParams.update({'font.size': 12})
+    cmap = plt.get_cmap("viridis")
+    colors = [cmap(i) for i in np.linspace(0, 1, 4)]
+
+
+    max_val = np.max(np.concatenate([test_iterations_before, test_iterations_after]))# 10v40c: 0.00005 #25v100c: 0.0003
+
+    plt.hist(test_iterations_before, bins=40,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
+    plt.hist(test_iterations_after, bins=40,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
+
+    plt.xlabel('Iterations')
+    plt.ylabel('Frequency')
+    #plt.title('Histogram of Time without GNN vs with GNN')
+    plt.legend()
+    plt.show()
+
+    #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
+    return np.mean(prediction_time), np.mean(test_time_after), np.mean(test_iterations_after)
 
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
