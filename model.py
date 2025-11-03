@@ -52,6 +52,7 @@ class GNN(torch.nn.Module):
         # print("x after inner layers",x)
         x = self.output_layer(x,edge_index,edge_weight)
         # print("x before sigmoid",x)
+        x = x / 2
         x = torch.sigmoid(x)
         # print("x after sigmoid",x)
         return x  

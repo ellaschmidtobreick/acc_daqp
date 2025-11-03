@@ -11,7 +11,7 @@ import time
 
 from generate_graph_data import generate_qp_graphs_test_data_only, generate_qp_graphs_test_data_only_lmpc
 from generate_MLP_data import generate_MLP_test_data_only
-from utils import barplot_iterations, histogram_time, histogram_prediction_time
+from utils import barplot_iterations, histogram_time, histogram_prediction_time, barplot_iter_reduction
 from model import GNN, MLP
 from naive_model import naive_model
 
@@ -129,11 +129,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
             #if i%50 ==0:
-            W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0] 
-            W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-            print(f"W_true: {W_true}")
-            print(f"W_pred: {W_pred}")
-            print(f"% pred: {output.squeeze()[(W_pred+n)]}")
+            # W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0] 
+            # W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
+            # print(f"W_true: {W_true}")
+            # print(f"W_pred: {W_pred}")
+            # print(f"% pred: {output.squeeze()[(W_pred+n)]}")
 
 
             # Solve QPs with predicted active sets
@@ -155,9 +155,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 if last_one_index is not None:
                     sense_active[last_one_index] = 0
 
-            print(f"test iterations before: {test_iterations_before[i]}")
-            print(f"test iterations after: {test_iterations_after[i]}")
-            print() 
+            # print(f"test iterations before: {test_iterations_before[i]}")
+            # print(f"test iterations after: {test_iterations_after[i]}")
+            # print() 
             # Solve system one more time without inactive constraints to make sure no active constraints are in there
             #print(sense_active)
             # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
@@ -224,35 +224,31 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
 
     #Plots to vizualize iterations and time
-    #histogram_time(test_time_before, test_time_after,model_name, save= True)
-    #histogram_prediction_time(prediction_time,model_name, save = True)
-    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    # histogram_time(test_time_before, test_time_after,model_name, save= True)
+    # #histogram_prediction_time(prediction_time,model_name, save = True)
+    # barplot_iter_reduction(test_iterations_difference,model_name, save = True)
+    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
-<<<<<<< HEAD
-    plt.rcParams.update({'font.size': 12})
-    cmap = plt.get_cmap("viridis")
-    colors = [cmap(i) for i in np.linspace(0, 1, 4)]
+    # plt.rcParams.update({'font.size': 12})
+    # cmap = plt.get_cmap("viridis")
+    # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
 
-    max_val = np.max(np.concatenate([test_iterations_before, test_iterations_after]))# 10v40c: 0.00005 #25v100c: 0.0003
+    # max_val = np.max(np.concatenate([test_iterations_before, test_iterations_after]))# 10v40c: 0.00005 #25v100c: 0.0003
 
-    plt.hist(test_iterations_before, bins=40,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
-    plt.hist(test_iterations_after, bins=40,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
+    # plt.hist(test_iterations_before, bins=20,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
+    # plt.hist(test_iterations_after, bins=20,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
 
-    plt.xlabel('Iterations')
-    plt.ylabel('Frequency')
-    #plt.title('Histogram of Time without GNN vs with GNN')
-    plt.legend()
-    plt.show()
+    # plt.xlabel('Iterations')
+    # plt.ylabel('Frequency')
+    # #plt.title('Histogram of Time without GNN vs with GNN')
+    # plt.legend()
+    # plt.show()
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    return np.mean(prediction_time), np.mean(test_time_after), np.mean(test_iterations_after)
+    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    #return test_acc, test_prec, test_rec, test_f1
 
-=======
-    # return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return np.mean(prediction_time), np.mean(test_time_after), np.mean(test_iterations_after)
-    return test_acc, test_prec, test_rec, test_f1
->>>>>>> 6682eb33787d4d3a599705dc832acb288155c02a
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
 
