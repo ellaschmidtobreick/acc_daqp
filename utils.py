@@ -6,21 +6,36 @@ import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 import matplotlib
 
+colors = [
+    "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C",
+    "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00",
+    "#CAB2D6", "#6A3D9A"
+]
+
+
 def boxplot_time(time_before,time_after, label, save):
     plt.rcParams.update({'font.size': 12})
     plt.boxplot([time_before,time_after],showfliers=False)
     plt.ylabel(label)
-    plt.xticks([1, 2], ['without GNN', 'with GNN'])
+    plt.xticks([1, 2], ['cold-starting', 'warm-starting with GNN'])
     if save == True:
         plt.savefig(f"plots/boxplot_{label}.png")
     plt.show()
 
         
 def barplot_iterations(iterations_before, iterations_after, model_name, save):
-    plt.rcParams.update({'font.size': 12})
+    matplotlib.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 22,
+    "font.size": 22,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18})
     
-    cmap = plt.get_cmap("viridis")
-    colors = [cmap(i) for i in np.linspace(0, 1, 4)]
+    # cmap = plt.get_cmap("viridis")
+    # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
     
     # Count occurrences of each iteration count
     before_counts = Counter(iterations_before)
@@ -41,34 +56,117 @@ def barplot_iterations(iterations_before, iterations_after, model_name, save):
     width = 0.4 
 
     # Plot bars
-    plt.bar(x - width/2, before_values, width=width, label="Without GNN",alpha = 0.7, color=colors[0])
-    plt.bar(x + width/2, after_values, width=width, label="With GNN",alpha = 0.7, color=colors[2])
+    plt.bar(x - width/2, before_values, width=width, label="cold-starting",alpha = 0.9, color="#6A3D9A")
+    plt.bar(x + width/2, after_values, width=width, label="warm-starting with GNN",alpha = 0.7, color="#33A02C")
+
+    
+    # Calculate quartiles
+    q1_bef = np.percentile(iterations_before, 25)
+    q2_bef = np.percentile(iterations_before, 50)
+    q3_bef = np.percentile(iterations_before, 75)
+    # Calculate some percentiles
+    p10_bef = np.percentile(iterations_before, 10)
+    p90_bef = np.percentile(iterations_before, 90)
+
+    # Calculate quartiles
+    q1_aft = np.percentile(iterations_after, 25)
+    q2_aft = np.percentile(iterations_after, 50)
+    q3_aft = np.percentile(iterations_after, 75)
+    # Calculate some percentiles
+    p10_aft = np.percentile(iterations_after, 10)
+    p90_aft = np.percentile(iterations_after, 90)
+
+    # Quartiles and percentiles
+    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
 
     # Labels and legend
     plt.xlabel("Number of Iterations")
     plt.ylabel("Frequency")
     
-    plt.xticks(ticks=x[::5], labels=all_iterations[::5])
+    #plt.xticks(ticks=x[::5], labels=all_iterations[::5])
     plt.xlim(x[0] - width, x[-1] + width)
     plt.legend()
     #plt.title("Iterations")
-
+    plt.tight_layout()
     # Save and show
     if save == True:
         plt.savefig(f"plots/bar_it_{model_name}.pdf")
     plt.show()
 
 
+def barplot_iter_reduction(iterations_reduction, model_name, save):
+    matplotlib.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 22,
+    "font.size": 22,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18    })
+
+    # Count occurrences of each iteration count
+    red_counts = Counter(iterations_reduction)
+
+    # Get all unique iteration numbers
+    all_iterations = sorted(set(int(i) for i in red_counts.keys()))
+    
+    # fill up the ticks that do not have values
+    all_iterations = range(np.min(all_iterations)-1,np.max(all_iterations)+1,1)
+    print(all_iterations)
+    # Prepare values
+    red_values = [red_counts.get(it, 0) for it in all_iterations]
+
+    # Bar width and positions
+    #x = np.arange(len(all_iterations))-all_iterations[0]
+    width = 0.9
+    #print(x)
+    # Plot bars
+    plt.bar(all_iterations , red_values, width=width,alpha = 0.9, color="#1F78B4")
+
+    # Labels and legend
+    plt.xlabel("Iterations")
+    plt.ylabel("Frequency")
+    
+    #plt.xticks(ticks=x[::5], labels=all_iterations[::5])
+    plt.xlim(all_iterations[0] - width, all_iterations[-1] + width)
+    #plt.legend()
+    #plt.title("Iterations")
+
+    # Save and show
+    if save == True:
+        plt.savefig(f"plots/bar_it_red_{model_name}.pdf")
+    plt.show()
+
 def histogram_time(time_before, time_after, model_name,save):
-    plt.rcParams.update({'font.size': 12})
-    cmap = plt.get_cmap("viridis")
-    colors = [cmap(i) for i in np.linspace(0, 1, 4)]
+    matplotlib.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 22,
+    "font.size": 22,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18    })
+    # cmap = plt.get_cmap("viridis")
+    # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
-    max_val = 0.00002 # 10v40c: 0.00005 #25v100c: 0.0003
+    max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
+    min_val = np.min([np.max(time_before), np.max(time_after)]) - 0.000001
+    print(f"max val: {max_val}, min val: {min_val}")
+    plt.hist(time_before, bins=50,range=(0.000007,0.00004),  alpha=0.9, label='cold-starting', color="#6A3D9A")
+    plt.hist(time_after, bins=50,range=(0.000007,0.00004),  alpha=0.7, label='warm-starting with GNN', color="#33A02C")
 
-    plt.hist(time_before, bins=50,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
-    plt.hist(time_after, bins=50,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
+    # Calculate quartiles
+    q2_bef = np.percentile(time_before, 50)
+    q2_aft = np.percentile(time_after, 50)
+   
 
+    # Quartiles and percentiles
+    plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+    plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+  
     plt.xlabel('Time in seconds')
     plt.ylabel('Frequency')
     #plt.title('Histogram of Time without GNN vs with GNN')
@@ -78,6 +176,7 @@ def histogram_time(time_before, time_after, model_name,save):
     formatter.set_scientific(True)
     formatter.set_powerlimits((-3, 3))
     plt.gca().xaxis.set_major_formatter(formatter)
+    plt.tight_layout()
 
     if save == True:
         plt.savefig(f"plots/histo_time_{model_name}.pdf")
@@ -108,7 +207,7 @@ def histogram_prediction_time(prediction_time,model_name, save = False):
     cmap = plt.get_cmap("viridis")
     colors = [cmap(i) for i in np.linspace(0, 1, 4)]
     
-    max = 0.01 # 10v40c:0.007 # 25v50c: 0.01
+    max = 18 # 10v40c:0.007 # 25v50c: 0.01
     
     plt.hist(prediction_time, bins=70,range=(np.min(prediction_time),max), alpha=0.7, label='prediction time', color=colors[1])
 
@@ -116,7 +215,8 @@ def histogram_prediction_time(prediction_time,model_name, save = False):
     plt.ylabel('Frequency')
     #plt.title('Time of active-set prediction')
     plt.legend()
-    
+    plt.tight_layout()
+
     if save == True:
         plt.savefig(f"plots/histo_pred_time_{model_name}.pdf")
     plt.show()
@@ -283,9 +383,7 @@ def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_it
     for i, model in enumerate(model_types):
         model_mask = labels == model
         model_iterations = iterations[model_mask]
-
-        if model == "Non-learned":
-            model = "Cold-start"
+        
         x_points = np.arange(len(model_iterations)+1)[1:] * 50
         #ax.scatter(np.arange(len(model_iterations)+1)[1:] * 50, model_iterations[:], color=colors[i], label=model)
         ax.plot(x_points, model_iterations[:, 0], color=colors[i], label=legend_labels[i])
