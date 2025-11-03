@@ -12,7 +12,7 @@ from generate_graph_data import generate_qp_graphs_train_val,generate_qp_graphs_
 from generate_MLP_data import generate_qp_MLP_train_val
 from model import GNN,MLP
 from model import EarlyStopping
-
+import matplotlib.pyplot as plt
 
 def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv"):
     
@@ -63,15 +63,18 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
 
     # Load Data
-    train_batch_size = 2 #16 #32 # 64
+    train_batch_size = 64 #16 #32 # 64
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
     val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
 
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train]).to(device)
+
     unique_classes = torch.unique(all_labels)
     class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy()) # torch.unique(all_labels).numpy()
+    #class_weights_np[1] = class_weights_np[1]*0.3
     class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device) # torch.tensor(class_weights, dtype=torch.float32).to(device)
+    print("class weights: ", class_weights_np)
 
     # Instantiate model and optimizer
     model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
@@ -122,8 +125,12 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             if dataset_type == "standard":
                 loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
             elif dataset_type == "lmpc":
-                sparsity_loss = preds.sum(dim=0) / len(preds)
-                loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
+                sparsity_loss = output.squeeze().sum()/batch.num_graphs
+                BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
+                loss = BCE_loss + 0.2 * sparsity_loss
+                if epoch % 10 == 0:  # Log occasionally
+                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
@@ -179,10 +186,20 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                 batch = batch.to(device)
                 output = model(batch,number_of_layers,conv_type)
                 output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
+                preds = (output.squeeze() > t).long()
+
                 loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+                if dataset_type == "lmpc":
+                    sparsity_loss = preds.sum(dim=0) / len(preds)
+                    sparsity_loss = output.squeeze().sum()/batch.num_graphs
+                    #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
+                    #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * preds.sum()
+                    BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
+                    loss = BCE_loss #+ 0.1 * sparsity_loss
+                    if epoch % 10 == 0:  # Log occasionally
+                        print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
                 val_loss += loss.item()
-                preds = (output.squeeze() > t).long()
 
                 # Store predictions and labels
                 val_preds.extend(preds.cpu().numpy())
