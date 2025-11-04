@@ -114,12 +114,10 @@ def barplot_iter_reduction(iterations_reduction, model_name, save):
     
     # fill up the ticks that do not have values
     all_iterations = range(np.min(all_iterations)-1,np.max(all_iterations)+1,1)
-    print(all_iterations)
     # Prepare values
     red_values = [red_counts.get(it, 0) for it in all_iterations]
 
     # Bar width and positions
-    #x = np.arange(len(all_iterations))-all_iterations[0]
     width = 0.9
     #print(x)
     # Plot bars
@@ -131,8 +129,6 @@ def barplot_iter_reduction(iterations_reduction, model_name, save):
     
     #plt.xticks(ticks=x[::5], labels=all_iterations[::5])
     plt.xlim(all_iterations[0] - width, all_iterations[-1] + width)
-    #plt.legend()
-    #plt.title("Iterations")
 
     # Save and show
     if save == True:

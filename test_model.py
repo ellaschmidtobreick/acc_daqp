@@ -17,8 +17,6 @@ from naive_model import naive_model
 
 # Generate test problems and the corresponding graphs
 def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv"):
-
-    
     # Initialization for data generation
     graph_test = []
     H_test = []
@@ -31,6 +29,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     blower = []
     n_vector = []
     m_vector = []
+    m_half= int(m[0]/2)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
@@ -60,7 +59,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
     # Load model
-    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type=conv_type) 
+    if dataset_type == "standard":
+        input_size = 4
+    elif dataset_type == "lmpc":
+        input_size = 6
+    model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type=conv_type)
     #model = torch.nn.DataParallel(model)
     model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
@@ -119,9 +122,10 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print()
 
             # Compute graph metrics
-            preds = preds.reshape(-1,n+m)
-            preds_numpy = preds.cpu().numpy().reshape(-1,n+m)
-            all_labels = batch.y.cpu().numpy().reshape(-1,n+m)
+            print("preds.shape",preds.shape)
+            preds = preds.reshape(-1,n+m_half)
+            preds_numpy = preds.cpu().numpy().reshape(-1,n+m_half)
+            all_labels = batch.y.cpu().numpy().reshape(-1,n+m_half)
             graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
             test_all_label_graph.append(np.array(all_labels))
 
