@@ -171,6 +171,13 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
             if device == "cuda" and i % 50 == 0:
                 torch.cuda.empty_cache()
+            
+            # Node-level metrics for constraints only
+            # print(batch.y.shape, preds.shape)
+
+            # labels = batch.y[n:]           # take only the constraint nodes
+            # preds_constraints = preds[n:]  # same slice for predictions
+            # print(labels.shape, preds_constraints.shape)
 
             # Node-level metrics
             labels = batch.y
@@ -274,6 +281,11 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
                 # Node-level metrics
                 labels = batch.y
+                # print(batch.y.shape, preds.shape)
+                # labels = batch.y[n:]           # take only the constraint nodes
+                # preds_constraints = preds[n:]  # same slice for predictions
+                # print(labels.shape, preds_constraints.shape)
+
                 val_correct += (preds == labels).sum().item()
                 val_total += labels.numel()
                 val_TP += ((preds == 1) & (labels == 1)).sum().item()
@@ -386,18 +398,18 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     
     # Print metrics
     print("TRAINING")
-    print(f"Accuracy (node level) of the final model: {best_metrics["train_acc"]}")
-    print(f"Precision of the model on the test data: {best_metrics["train_prec"]}")
-    print(f"Recall of the model on the test data: {best_metrics["train_rec"]}")
-    print(f"F1-Score of the model on the test data: {best_metrics["train_f1"]}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics["train_perc_wrong_nodes"]}")
+    print(f"Accuracy (node level) of the final model: {best_metrics['train_acc']}")
+    print(f"Precision of the model on the test data: {best_metrics['train_prec']}")
+    print(f"Recall of the model on the test data: {best_metrics['train_rec']}")
+    print(f"F1-Score of the model on the test data: {best_metrics['train_f1']}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics['train_perc_wrong_nodes']}")
 
     print("VALIDATION")
-    print(f"Accuracy (node level) of the final model: {best_metrics["val_acc"]}")
-    print(f"Precision of the model on the test data: {best_metrics["val_prec"]}")
-    print(f"Recall of the model on the test data: {best_metrics["val_rec"]}")
-    print(f"F1-Score of the model on the test data: {best_metrics["val_f1"]}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics["val_perc_wrong_nodes"]}")
+    print(f"Accuracy (node level) of the final model: {best_metrics['val_acc']}")
+    print(f"Precision of the model on the test data: {best_metrics['val_prec']}")
+    print(f"Recall of the model on the test data: {best_metrics['val_rec']}")
+    print(f"F1-Score of the model on the test data: {best_metrics['val_f1']}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics['val_perc_wrong_nodes']}")
 
     # return val_acc_save[best_epoch-1]
     return best_metrics["train_acc"], best_metrics["train_prec"], best_metrics["train_rec"], best_metrics["train_f1"]
