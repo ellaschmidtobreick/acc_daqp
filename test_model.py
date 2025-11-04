@@ -15,6 +15,16 @@ from utils import barplot_iterations, histogram_time, histogram_prediction_time,
 from model import GNN, MLP
 from naive_model import naive_model
 
+import signal
+
+class TimeoutException(Exception): pass
+
+import sys
+
+def handler(signum, frame):
+  print('Signal received, exiting gracefully...')
+  sys.exit(0)
+
 # Generate test problems and the corresponding graphs
 def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv"):
     # Initialization for data generation
@@ -101,7 +111,6 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
-            print()
             batch = batch.to(device)
             n = int(n_vector[i])
             m = int(m_vector[i])
@@ -143,13 +152,16 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
             # Node-level metrics
-            labels = batch.y
-            test_correct += (preds == labels).sum().item()
+            # labels = batch.y
+            labels = batch.y[n:]           # take only the constraint nodes
+            preds_constraints = preds[n:]  # same slice for predictions
+            # print(labels.shape, preds_constraints.shape)
+            test_correct += (preds_constraints == labels).sum().item()
             test_total += labels.numel()
-            test_TP += ((preds == 1) & (labels == 1)).sum().item()
-            test_FP += ((preds == 1) & (labels == 0)).sum().item()
-            test_FN += ((preds == 0) & (labels == 1)).sum().item()
-            test_num_wrong_nodes += (preds != labels).sum().item()
+            test_TP += ((preds_constraints == 1) & (labels == 1)).sum().item()
+            test_FP += ((preds_constraints == 1) & (labels == 0)).sum().item()
+            test_FN += ((preds_constraints == 0) & (labels == 1)).sum().item()
+            test_num_wrong_nodes += (preds_constraints != labels).sum().item()
             test_total_nodes += labels.numel()
 
             if i % 20 == 0:
@@ -159,7 +171,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
                 W_true = (y != 0).nonzero(as_tuple=True)[0]
                 W_pred = (preds_print != 0).nonzero(as_tuple=True)[0]
-
+                print()
                 print(f"W_true: {W_true.tolist()}")
                 print(f"W_pred: {W_pred.tolist()}")
                 # print("len W_true, W_pred",y.shape,preds_print.shape)
@@ -182,12 +194,16 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # solve system until it is solvable
             # print(H_test[i].shape, f_test[i].shape, A_real_constraints.shape, bupper_i.shape, blower_i.shape, sense_active.shape)
             counter = 0
-            while exitflag == -6: #and counter<10:   # system not solvable
-                _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],sense_active)
+            while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
+                if counter <10:
+                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],sense_active)
+                else:
+                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],np.zeros_like(sense_active))
+            
                 counter += 1
-                print("exitflag",exitflag)
+                # print("exitflag",exitflag)
                 # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
-                # print(info)
+
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 # take test and set-up time
@@ -196,14 +212,18 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 # print("W_pred",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
                 # print("sense_active",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
 
-                # if counter == 10:
-                #     print(f"Warning: sample {i} did not converge after {10} iterations")
-                #     break
                 # remove one active constraint per iteration until problem is solvable
-                last_one_index = np.where(sense_active != 0)[-1][-1]
-                # print("last_one_index",last_one_index)
-                if last_one_index is not None:
-                    sense_active[last_one_index] = 0
+                if exitflag <0:
+                    if np.all(sense_active == 0):
+                        # print("All constraints are removed from active set.")
+                        break
+                    else:
+                        last_one_index = np.where(sense_active != 0)[-1][-1]
+                    # print("remove active constraint",last_one_index)
+                    if last_one_index is not None:
+                        # print("sense_active before removal:", np.where(sense_active!= 0)[0])
+                        sense_active[last_one_index] = 0
+                        # print("sense_active after removal:", np.where(sense_active!= 0)[0])
 
                 # remove one active constraint per iteration until problem is solvable
                 # last_one_index = np.where(sense_active == 1)[0]   # extract array of indices
@@ -213,7 +233,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 # else:
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
-            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+            # print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
             # print(f"test iterations before: {test_iterations_before[i]}")
