@@ -15,12 +15,6 @@ from utils import barplot_iterations, histogram_time, histogram_prediction_time,
 from model import GNN, MLP
 from naive_model import naive_model
 
-import signal
-
-class TimeoutException(Exception): pass
-
-import sys
-
 def handler(signum, frame):
   print('Signal received, exiting gracefully...')
   sys.exit(0)
@@ -59,8 +53,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         H_test = H_test + H_test_i
         f_test = f_test + f_test_i
         A_real_constraints = A_real_constraints + A_real_constraints_i
-        bupper = bupper + bupper_i
-        blower = blower + blower_i
+        bupper += [bupper_i]
+        blower += [blower_i]
 
         n_vector = n_vector + [n_i for i in range(len(test_iterations_before_i))]
         m_vector= m_vector + [m_i for i in range(len(test_iterations_before_i))]
@@ -182,7 +176,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             # Solve QPs with predicted active sets
             # sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
-            sense_active = (preds_print != 0).int().cpu().numpy()*1
+            sense_active = (preds_print != 0).int().cpu().numpy()*8
             # print("sense_active shape",sense_active.shape)
 
             exitflag = -6
