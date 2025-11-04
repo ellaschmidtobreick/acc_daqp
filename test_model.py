@@ -24,8 +24,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_time_before = []
     H_test = []
     f_test = []
-    A_test = []
-    b_test = []
+    A_real_constraints = []
+    bupper = []
     blower = []
     n_vector = []
     m_vector = []
@@ -39,17 +39,17 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         n_i = n[i]
         m_i = m[i]
         if dataset_type == "standard":
-            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_real_constraints_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
         elif dataset_type == "lmpc":
-            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_real_constraints_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
 
         graph_test = graph_test + graph_test_i
         test_iterations_before = test_iterations_before + test_iterations_before_i
         test_time_before = test_time_before + test_time_before_i
         H_test = H_test + H_test_i
         f_test = f_test + f_test_i
-        A_test = A_test + A_test_i
-        b_test = b_test + b_test_i
+        A_real_constraints = A_real_constraints + A_real_constraints_i
+        bupper = bupper + bupper_i
         blower = blower + blower_i
 
         n_vector = n_vector + [n_i for i in range(len(test_iterations_before_i))]
@@ -70,16 +70,25 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     model.eval()
     
     # Initialization for testing 
-    test_all_labels = []
-    test_preds = []
+    # test_all_labels = []
+    # test_preds = []
     test_time_after = np.zeros(len(test_loader))
     test_iterations_after = np.zeros(len(test_loader))
     test_iterations_difference = np.zeros(len(test_loader))
     prediction_time = np.zeros(len(test_loader))
-    graph_pred = []
-    num_wrongly_pred_nodes_per_graph = []
-    perc_wrongly_pred_nodes_per_graph = []
-    test_all_label_graph = []
+    # graph_pred = []
+    # num_wrongly_pred_nodes_per_graph = []
+    # perc_wrongly_pred_nodes_per_graph = []
+    # test_all_label_graph = []
+
+    test_loss = 0
+    test_correct = 0
+    test_total = 0
+    test_TP = 0
+    test_FP = 0
+    test_FN = 0
+    test_num_wrong_nodes = 0
+    test_total_nodes = 0
 
     # warm-up model
     warmup_batch = next(iter(test_loader))[0].to(device)
@@ -92,10 +101,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # Test on data 
     with torch.no_grad():
         for i,batch in enumerate(test_loader):
+            print()
             batch = batch.to(device)
             n = int(n_vector[i])
             m = int(m_vector[i])
-
+            # print(f"Batch {i}: batch.y shape: {batch.y.shape}, n: {n}")
             # Prediction on test data
             if device == "cuda":
                 torch.cuda.synchronize()
@@ -114,50 +124,97 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             #     preds = (torch.sigmoid(output).squeeze() > t).long()
 
             # Store predictions and labels
-            test_preds.extend(preds.cpu().numpy())
-            test_all_labels.extend(batch.y.cpu().numpy())
+            # test_preds.extend(preds.cpu().numpy())
+            # test_all_labels.extend(batch.y.cpu().numpy())
 
             # print(np.where(preds.numpy() == 1)[0])
             # print(np.where(batch.y.numpy() == 1)[0])
             # print()
 
             # Compute graph metrics
-            print("preds.shape",preds.shape)
-            preds = preds.reshape(-1,n+m_half)
-            preds_numpy = preds.cpu().numpy().reshape(-1,n+m_half)
-            all_labels = batch.y.cpu().numpy().reshape(-1,n+m_half)
-            graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
-            test_all_label_graph.append(np.array(all_labels))
+            # print("preds.shape",preds.shape)
+            # preds = preds.reshape(-1,n+m_half)
+            # preds_numpy = preds.cpu().numpy().reshape(-1,n+m_half)
+            # all_labels = batch.y.cpu().numpy().reshape(-1,n+m_half)
+            # graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
+            # test_all_label_graph.append(np.array(all_labels))
 
-            num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
-            perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
+            # num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
+            # perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
-            #if i%50 ==0:
-            # W_true = (batch.y.cpu().numpy()[n:] != 0).astype(int).nonzero()[0] 
-            # W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-            # print(f"W_true: {W_true}")
-            # print(f"W_pred: {W_pred}")
-            # print(f"% pred: {output.squeeze()[(W_pred+n)]}")
+            # Node-level metrics
+            labels = batch.y
+            test_correct += (preds == labels).sum().item()
+            test_total += labels.numel()
+            test_TP += ((preds == 1) & (labels == 1)).sum().item()
+            test_FP += ((preds == 1) & (labels == 0)).sum().item()
+            test_FN += ((preds == 0) & (labels == 1)).sum().item()
+            test_num_wrong_nodes += (preds != labels).sum().item()
+            test_total_nodes += labels.numel()
+
+            if i % 20 == 0:
+                # Move only the needed parts to CPU, avoid full .numpy() conversions
+                y = batch.y[n:].detach().cpu()
+                preds_print = (output.squeeze() > t).long()[n:].detach().cpu()
+
+                W_true = (y != 0).nonzero(as_tuple=True)[0]
+                W_pred = (preds_print != 0).nonzero(as_tuple=True)[0]
+
+                print(f"W_true: {W_true.tolist()}")
+                print(f"W_pred: {W_pred.tolist()}")
+                # print("len W_true, W_pred",y.shape,preds_print.shape)
+                # Print prediction values for the predicted indices
+                pred_vals = output.detach().cpu().squeeze()[W_pred + n]
+                print(f"% pred: {pred_vals.tolist()}")
 
 
             # Solve QPs with predicted active sets
-            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]
-            exitflag = -6
-            blower_i = np.array(blower[i], copy=True)
+            # sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
+            sense_active = (preds_print != 0).int().cpu().numpy()*1
+            # print("sense_active shape",sense_active.shape)
 
+            exitflag = -6
+            # blower_i = np.array(blower[i], copy=True)
+            # A_real_constraints = A_real_constraints[i][n:m_half,:]
+            # bupper_i = bupper[i]
+            # blower_i = blower[i]
+            # print(A_real_constraints[i].shape,bupper[i].shape,blower[i].shape)
             # solve system until it is solvable
-            while exitflag == -6:   # system not solvable
-                _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
+            # print(H_test[i].shape, f_test[i].shape, A_real_constraints.shape, bupper_i.shape, blower_i.shape, sense_active.shape)
+            counter = 0
+            while exitflag == -6: #and counter<10:   # system not solvable
+                _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],sense_active)
+                counter += 1
+                print("exitflag",exitflag)
+                # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
                 # print(info)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 # take test and set-up time
                 test_time_after[i]= list(info.values())[0] + list(info.values())[1]
+                
+                # print("W_pred",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
+                # print("sense_active",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
 
+                # if counter == 10:
+                #     print(f"Warning: sample {i} did not converge after {10} iterations")
+                #     break
                 # remove one active constraint per iteration until problem is solvable
-                last_one_index = np.where(sense_active == 1)[-1]
+                last_one_index = np.where(sense_active != 0)[-1][-1]
+                # print("last_one_index",last_one_index)
                 if last_one_index is not None:
                     sense_active[last_one_index] = 0
+
+                # remove one active constraint per iteration until problem is solvable
+                # last_one_index = np.where(sense_active == 1)[0]   # extract array of indices
+                # print(last_one_index)
+                # if len(last_one_index) > 0:
+                #     sense_active[last_one_index[-1]] = 0
+                # else:
+                #     print("No active constraints to remove, but system still not solvable.")
+                #     break
+            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+
 
             # print(f"test iterations before: {test_iterations_before[i]}")
             # print(f"test iterations after: {test_iterations_after[i]}")
@@ -173,48 +230,56 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print(f"Info after: {info}")
             # test_iterations_after[i] += list(info.values())[2]
             # test_time_after[i] += list(info.values())[0]   # only consider solve time, since the daqp solver could be optimized such that the set-up only needs to be done once
+            
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
+            if device == "cuda" and i % 50 == 0:
+                torch.cuda.empty_cache()
+            # print(f"Finished sample {i+1} / {len(test_loader)}")
 
 
 
-    count_all_zero = 0
-    for labels_graph in test_all_label_graph:
-        if np.all(labels_graph == 0):
-            count_all_zero += 1
+    # count_all_zero = 0
+    # for labels_graph in test_all_label_graph:
+    #     if np.all(labels_graph == 0):
+    #         count_all_zero += 1
 
 
     # Compute metrics
-    test_acc = accuracy_score(test_all_labels, test_preds)
-    test_acc_graph = np.mean(graph_pred)
-    test_prec = precision_score(test_all_labels, test_preds)
-    test_rec = recall_score(test_all_labels, test_preds)
-    test_f1 = f1_score(test_all_labels, test_preds)
+    # test_acc = accuracy_score(test_all_labels, test_preds)
+    # test_acc_graph = np.mean(graph_pred)
+    # test_prec = precision_score(test_all_labels, test_preds)
+    # test_rec = recall_score(test_all_labels, test_preds)
+    # test_f1 = f1_score(test_all_labels, test_preds)
 
-    precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
-    pr_auc = auc(recall, precision)
+    # precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
+    # pr_auc = auc(recall, precision)
+
+    # print("evalution now")
+    test_loss /= len(test_loader)
+    test_acc = test_correct / test_total
+    test_prec = test_TP / (test_TP + test_FP + 1e-8)
+    test_rec = test_TP / (test_TP + test_FN + 1e-8)
+    test_f1 = 2 * test_prec * test_rec / (test_prec + test_rec + 1e-8)
 
     # Compute naive metrics
-    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs,pr_auc_naive = naive_model(n_vector,m_vector,test_all_labels) 
+    # naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, correctly_predicted_graphs,pr_auc_naive = naive_model(n_vector,m_vector,test_all_labels) 
     # Compute average over graphs
     print("TESTING")
     print(f"Accuracy (node level) of the model on the test data: {test_acc}")
     print(f"Precision of the model on the test data: {test_prec}")
     print(f"Recall of the model on the test data: {test_rec}")
     print(f"F1-Score of the model on the test data: {test_f1}")
-    print(f"Accuracy (graph level) of the model on the test data: {test_acc_graph}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
-    # Print the PR AUC
-    print(f'PR AUC: {pr_auc}')
+    # print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
+    # print()
+    # print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
+    # print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
+    # # print(f"Correctly predicted graphs: {correctly_predicted_graphs} out of {len(graph_pred)}")
+    # print(f'Naive PR AUC: {pr_auc_naive}')
     print()
-    print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
-    print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
-    print(f"Correctly predicted graphs: {correctly_predicted_graphs} out of {len(graph_pred)}")
-    print(f'Naive PR AUC: {pr_auc_naive}')
-    print()
-    print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
-    print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
-    print(len(test_all_label_graph))
-    print(f"Number of graph without an active constraint: {count_all_zero} / {count_all_zero / len(test_all_label_graph)*100}%")
+    # print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
+    # print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
+    # print(len(test_all_label_graph))
+    # print(f"Number of graph without an active constraint: {count_all_zero} / {count_all_zero / len(test_all_label_graph)*100}%")
     print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
     print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
     print(f'Test time reduction: mean {np.mean(np.array(test_time_before)-np.array(test_time_after))}, min {np.min(np.array(test_time_before)-np.array(test_time_after))}, max {np.max(np.array(test_time_before)-np.array(test_time_after))}')

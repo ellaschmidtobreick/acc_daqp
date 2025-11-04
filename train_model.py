@@ -13,6 +13,7 @@ from generate_MLP_data import generate_qp_MLP_train_val
 from model import GNN,MLP
 from model import EarlyStopping
 import matplotlib.pyplot as plt
+import copy
 
 def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv"):
     
@@ -24,22 +25,24 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     n_vector_val = []
     m_vector_val = []
 
-    train_acc_save = []
+    # train_acc_save = []
     val_acc_save = []
-    train_loss_save = []
-    val_loss_save = []
-    train_prec_save = []
+    # train_loss_save = []
+    # val_loss_save = []
+    # train_prec_save = []
     val_prec_save = []
-    train_rec_save = []
+    # train_rec_save = []
     val_rec_save = []
-    train_f1_save = []
+    # train_f1_save = []
     val_f1_save = []
-    acc_graph_train_save = []
-    acc_graph_val_save = []
     val_perc_wrongly_pred_nodes_per_graph_save = []
-    val_mean_wrongly_pred_nodes_per_graph_save = []
-    train_perc_wrongly_pred_nodes_per_graph_save = []
-    train_mean_wrongly_pred_nodes_per_graph_save = []
+    # val_mean_wrongly_pred_nodes_per_graph_save = []
+    # train_perc_wrongly_pred_nodes_per_graph_save = []
+    # train_mean_wrongly_pred_nodes_per_graph_save = []
+
+    best_val_loss = float('inf')
+    best_metrics = {}
+    best_model_state = None
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
@@ -110,13 +113,30 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Training
     for epoch in range(number_of_max_epochs):
         print(f"Epoch {epoch}")
-        train_loss = 0
-        train_all_labels = []
-        train_preds = []
+
+        ################
+        # Training
+        ################
+
+        # train_loss = 0
+        # train_all_labels = []
+        # train_preds = []
+
+        # output_train = []
+        # train_all_label_graph = []
+        # train_preds_graph = []
+
         model.train()
-        output_train = []
-        train_all_label_graph = []
-        train_preds_graph = []
+        train_loss = 0
+        train_correct = 0
+        train_total = 0
+        train_TP = 0
+        train_FP = 0
+        train_FN = 0
+        acc_graph_sum = 0
+        num_graphs = 0
+        train_num_wrong_nodes = 0
+        train_total_nodes = 0
         
         # for param in model.parameters():
         #     print(param)
@@ -128,34 +148,43 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         #         print(name,param)
 
 
-        for batch in train_loader:
+        for i,batch in enumerate(train_loader):
             batch = batch.to(device)
             optimizer.zero_grad()
             output = model(batch,number_of_layers,conv_type)
-            output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
-
+            # output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
             # Convert output to binary prediction (0 or 1)
             preds = (output.squeeze() > t).long()
+
             if dataset_type == "standard":
                 loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
             elif dataset_type == "lmpc":
                 sparsity_loss = output.squeeze().sum()/batch.num_graphs
                 BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
                 loss = BCE_loss + 0.1 * sparsity_loss
-                #if epoch % 10 == 0:  # Log occasionally
-                    #print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                if epoch % 10 == 0:  # Log occasionally
+                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
-            # for param in model.parameters():
-            #     print(param.data)
+            if device == "cuda" and i % 50 == 0:
+                torch.cuda.empty_cache()
 
+            # Node-level metrics
+            labels = batch.y
+            train_correct += (preds == labels).sum().item()
+            train_total += labels.numel()
+            train_TP += ((preds == 1) & (labels == 1)).sum().item()
+            train_FP += ((preds == 1) & (labels == 0)).sum().item()
+            train_FN += ((preds == 0) & (labels == 1)).sum().item()
+            train_num_wrong_nodes += (preds != labels).sum().item()
+            train_total_nodes += labels.numel()
 
             # Store predictions and true labels
-            train_preds.extend(preds.cpu().numpy())   
-            train_all_labels.extend(batch.y.cpu().numpy())
+            # train_preds.extend(preds.cpu().numpy())   
+            # train_all_labels.extend(batch.y.cpu().numpy())
             
 
             # print("true labels",batch.y.shape, torch.nonzero(batch.y).squeeze().detach().numpy())
@@ -164,48 +193,75 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             # print("loss",loss.item())
 
             # Save per graph predictions and labels
-            for i in range(batch.num_graphs):
-                mask = batch.batch == i
-                preds_graph = preds[mask].cpu().numpy()
-                labels_graph = batch.y[mask].cpu().numpy()
-                
-                #print(np.sum(preds_graph),np.sum(labels_graph))
+            # for i in range(batch.num_graphs):
+            #     mask = batch.batch == i
+            #     preds_graph = preds[mask].cpu().numpy()
+            #     labels_graph = batch.y[mask].cpu().numpy()
+            #     #print(np.sum(preds_graph),np.sum(labels_graph))
+            #     train_preds_graph.append(preds_graph)
+            #     train_all_label_graph.append(labels_graph)
 
-                train_preds_graph.append(preds_graph)
-                train_all_label_graph.append(labels_graph)
-
+            # Graph-level accuracy
+            for j in range(batch.num_graphs):
+                mask = batch.batch == j
+                preds_graph = preds[mask]
+                labels_graph = labels[mask]
+                acc_graph_sum += int(torch.all(preds_graph == labels_graph))
+                num_graphs += 1
         # Compute metrics
-        train_loss /= len(train_loader)
-        train_acc = accuracy_score(train_all_labels, train_preds)
-        train_prec = precision_score(train_all_labels,train_preds)
-        train_rec = recall_score(train_all_labels, train_preds)
-        train_f1 = f1_score(train_all_labels,train_preds)
-        acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_preds_graph, train_all_label_graph)]) # average on graph level
+        # train_loss /= len(train_loader)
+        # train_acc = accuracy_score(train_all_labels, train_preds)
+        # train_prec = precision_score(train_all_labels,train_preds)
+        # train_rec = recall_score(train_all_labels, train_preds)
+        # train_f1 = f1_score(train_all_labels,train_preds)
 
-        train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(train_preds_graph, train_all_label_graph, n_vector_train, m_vector_train)]
-        train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(train_num_wrongly_pred_nodes_per_graph, n_vector_train, m_vector_train)])
-        train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
+        train_loss /= len(train_loader)
+        train_acc = train_correct / train_total
+        train_prec = train_TP / (train_TP + train_FP + 1e-8)
+        train_rec = train_TP / (train_TP + train_FN + 1e-8)
+        train_f1 = 2 * train_prec * train_rec / (train_prec + train_rec + 1e-8)
+        acc_graph_train = acc_graph_sum / num_graphs
+        # train_mean_wrong_nodes_per_graph = train_num_wrong_nodes / num_graphs
+        train_perc_wrong_nodes_per_graph = train_num_wrong_nodes / train_total_nodes
+
+        # train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(train_preds_graph, train_all_label_graph, n_vector_train, m_vector_train)]
+        # train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(train_num_wrongly_pred_nodes_per_graph, n_vector_train, m_vector_train)])
+        # train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
         
-        # Validation step
+
+        ####################
+        # VALIDATION
+        ####################
         model.eval()
         val_loss = 0
-        val_mean_wrongly_pred_nodes_per_graph = 0
-        val_num_wrongly_pred_nodes_per_graph = 0
-        val_all_labels = []
-        val_preds = []
-        output_val = []
-        val_preds_graph = []
-        val_all_label_graph = []
+        val_correct = 0
+        val_total = 0
+        val_TP = 0
+        val_FP = 0
+        val_FN = 0
+        val_graph_sum = 0
+        val_num_graphs = 0
+        val_num_wrong_nodes = 0
+        val_total_nodes = 0
+        # val_loss = 0
+        # val_mean_wrongly_pred_nodes_per_graph = 0
+        # val_num_wrongly_pred_nodes_per_graph = 0
+        # val_all_labels = []
+        # val_preds = []
+        # output_val = []
+        # val_preds_graph = []
+        # val_all_label_graph = []
         
         with torch.no_grad():
-            for batch in val_loader:
+            for i,batch in enumerate(val_loader):
                 batch = batch.to(device)
                 output = model(batch,number_of_layers,conv_type)
-                output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
+                # output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
                 preds = (output.squeeze() > t).long()
 
-                loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
-                if dataset_type == "lmpc":
+                if dataset_type == "standard":
+                    loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+                elif dataset_type == "lmpc":
                     #sparsity_loss = preds.sum(dim=0) / len(preds)
                     sparsity_loss = output.squeeze().sum()/batch.num_graphs
                     #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
@@ -216,61 +272,112 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
                 val_loss += loss.item()
 
-                # Store predictions and labels
-                val_preds.extend(preds.cpu().numpy())
-                val_all_labels.extend(batch.y.cpu().numpy())
-                
-                # Store per graph predictions and labels
-                for i in range(batch.num_graphs):
-                    mask = batch.batch == i
-                    preds_graph = preds[mask].cpu().numpy()
-                    labels_graph = batch.y[mask].cpu().numpy()
+                # Node-level metrics
+                labels = batch.y
+                val_correct += (preds == labels).sum().item()
+                val_total += labels.numel()
+                val_TP += ((preds == 1) & (labels == 1)).sum().item()
+                val_FP += ((preds == 1) & (labels == 0)).sum().item()
+                val_FN += ((preds == 0) & (labels == 1)).sum().item()
+                val_num_wrong_nodes += (preds != labels).sum().item()
+                val_total_nodes += labels.numel()
 
-                    val_preds_graph.append(preds_graph)
-                    val_all_label_graph.append(labels_graph)                
+                # Store predictions and labels
+                # val_preds.extend(preds.cpu().numpy())
+                # val_all_labels.extend(batch.y.cpu().numpy())
+                
+                # # Store per graph predictions and labels
+                # for i in range(batch.num_graphs):
+                #     mask = batch.batch == i
+                #     preds_graph = preds[mask].cpu().numpy()
+                #     labels_graph = batch.y[mask].cpu().numpy()
+
+                #     val_preds_graph.append(preds_graph)
+                #     val_all_label_graph.append(labels_graph) 
+                # 
+                # Graph-level accuracy
+                for j in range(batch.num_graphs):
+                    mask = batch.batch == j
+                    preds_graph = preds[mask]
+                    labels_graph = labels[mask]
+                    val_graph_sum += int(torch.all(preds_graph == labels_graph))
+                    val_num_graphs += 1  
+
+                if device == "cuda" and i % 50 == 0:
+                    torch.cuda.empty_cache()             
         
         # Compute metrics      
-        val_loss /= len(val_loader)
-        val_acc = accuracy_score(val_all_labels, val_preds)
-        val_prec = precision_score(val_all_labels,val_preds)
-        val_rec = recall_score(val_all_labels, val_preds)
-        val_f1 = f1_score(val_all_labels,val_preds)
-        acc_graph_val = np.mean([np.all(pred == true) for pred, true in zip(val_preds_graph, val_all_label_graph)]) # accuracy on graph level
+        # val_loss /= len(val_loader)
+        # val_acc = accuracy_score(val_all_labels, val_preds)
+        # val_prec = precision_score(val_all_labels,val_preds)
+        # val_rec = recall_score(val_all_labels, val_preds)
+        # val_f1 = f1_score(val_all_labels,val_preds)
 
-        val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
-        val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
-        val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
+        val_loss /= len(val_loader)
+        val_acc = val_correct / val_total
+        val_prec = val_TP / (val_TP + val_FP + 1e-8)
+        val_rec = val_TP / (val_TP + val_FN + 1e-8)
+        val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
+        # acc_graph_val = val_graph_sum / val_num_graphs
+        # val_mean_wrong_nodes_per_graph = val_num_wrong_nodes / val_num_graphs
+        val_perc_wrong_nodes_per_graph = val_num_wrong_nodes / val_total_nodes
+
+        # val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
+        # val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
+        # val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
         
         # Log metrics to wandb.
         if track_on_wandb == True:
-            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train, "acc_graph_val": acc_graph_val,"perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
+            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train})
 
         # Save metrics
-        train_acc_save.append(train_acc)
-        val_acc_save.append(val_acc)
-        train_loss_save.append(train_loss)
-        val_loss_save.append(val_loss)
-        train_prec_save.append(train_prec)
-        val_prec_save.append(val_prec)
-        train_rec_save.append(train_rec)
-        val_rec_save.append(val_rec)
-        train_f1_save.append(train_f1)
-        val_f1_save.append(val_f1)
-        acc_graph_train_save.append(acc_graph_train)
-        acc_graph_val_save.append(acc_graph_val)
-        val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
-        val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
-        train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
-        train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
+        # train_acc_save.append(train_acc)
+        # val_acc_save.append(val_acc)
+        # train_loss_save.append(train_loss)
+        # val_loss_save.append(val_loss)
+        # train_prec_save.append(train_prec)
+        # val_prec_save.append(val_prec)
+        # train_rec_save.append(train_rec)
+        # val_rec_save.append(val_rec)
+        # train_f1_save.append(train_f1)
+        # val_f1_save.append(val_f1)
+        # val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
+        # val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
+        # train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
+        # train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
 
         # Early stopping
-        early_stopping(val_loss, model,epoch)
-        if early_stopping.early_stop:
-            print(f"Early stopping after {epoch} epochs.")
-            break
+        # early_stopping(val_loss, model,epoch)
+        # if early_stopping.early_stop:
+        #     print(f"Early stopping after {epoch} epochs.")
+        #     break
+            # Early stopping logic
+        if val_loss+0.001 < best_val_loss:
+            best_val_loss = val_loss
+            best_metrics = {
+                "train_acc": train_acc,
+                "train_prec": train_prec,
+                "train_rec": train_rec,
+                "train_f1": train_f1,
+                "train_perc_wrong_nodes": train_perc_wrong_nodes_per_graph,
+                "val_acc": val_acc,
+                "val_prec": val_prec,
+                "val_rec": val_rec,
+                "val_f1": val_f1,
+                "val_perc_wrong_nodes": val_perc_wrong_nodes_per_graph,
+            }
+            # Save a copy of the model weights
+            best_model_state = copy.deepcopy(model.state_dict())
+            early_stopping_counter = 0
+        else:
+            early_stopping_counter += 1
+            if early_stopping_counter >= 5:  # e.g., 10 epochs
+                print(f"Early stopping after {epoch+1} epochs.")
+                break
 
     # Save best model
-    best_epoch = early_stopping.load_best_model(model)
+    # best_epoch = early_stopping.load_best_model(model)
+    model.load_state_dict(best_model_state)
     torch.save(model.state_dict(), f"saved_models/{modelname}.pth")
 
     # Finish the run and upload any remaining data.
@@ -279,24 +386,21 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     
     # Print metrics
     print("TRAINING")
-    print(f"Accuracy (node level) of the final model: {train_acc_save[best_epoch-1]}")
-    print(f"Precision of the model on the test data: {train_prec_save[best_epoch-1]}")
-    print(f"Recall of the model on the test data: {train_rec_save[best_epoch-1]}")
-    print(f"F1-Score of the model on the test data: {train_f1_save[best_epoch-1]}")
-    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_train_save[best_epoch-1]}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {train_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+    print(f"Accuracy (node level) of the final model: {best_metrics["train_acc"]}")
+    print(f"Precision of the model on the test data: {best_metrics["train_prec"]}")
+    print(f"Recall of the model on the test data: {best_metrics["train_rec"]}")
+    print(f"F1-Score of the model on the test data: {best_metrics["train_f1"]}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics["train_perc_wrong_nodes"]}")
 
     print("VALIDATION")
-    print(f"Accuracy (node level) of the final model: {val_acc_save[best_epoch-1]}")
-    print(f"Precision of the model on the test data: {val_prec_save[best_epoch-1]}")
-    print(f"Recall of the model on the test data: {val_rec_save[best_epoch-1]}")
-    print(f"F1-Score of the model on the test data: {val_f1_save[best_epoch-1]}")
-    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+    print(f"Accuracy (node level) of the final model: {best_metrics["val_acc"]}")
+    print(f"Precision of the model on the test data: {best_metrics["val_prec"]}")
+    print(f"Recall of the model on the test data: {best_metrics["val_rec"]}")
+    print(f"F1-Score of the model on the test data: {best_metrics["val_f1"]}")
+    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics["val_perc_wrong_nodes"]}")
 
-    print(np.sum(train_all_labels), len(train_all_labels),np.sum(train_all_labels)/len(train_all_labels))
     # return val_acc_save[best_epoch-1]
-    return train_acc_save[best_epoch-1], train_prec_save[best_epoch-1], train_rec_save[best_epoch-1], train_f1_save[best_epoch-1]
+    return best_metrics["train_acc"], best_metrics["train_prec"], best_metrics["train_rec"], best_metrics["train_f1"]
 
 def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
     
@@ -318,8 +422,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     val_rec_save = []
     train_f1_save = []
     val_f1_save = []
-    acc_graph_train_save = []
-    acc_graph_val_save = []
     val_perc_wrongly_pred_nodes_per_graph_save = []
     val_mean_wrongly_pred_nodes_per_graph_save = []
     train_perc_wrongly_pred_nodes_per_graph_save = []
@@ -409,8 +511,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             optimizer.step()
             train_loss += loss.item()
 
-
-
             # Store predictions and true labels
             train_preds.extend(preds.cpu().numpy().flatten())   
             train_all_labels.extend(batch[1].cpu().numpy().flatten())
@@ -430,7 +530,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         train_prec = precision_score(train_all_labels,train_preds)
         train_rec = recall_score(train_all_labels, train_preds)
         train_f1 = f1_score(train_all_labels,train_preds)
-        acc_graph_train = np.mean([np.all(pred == true) for pred, true in zip(train_preds_graph, train_all_label_graph)]) # average on graph level
 
         # train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n + m) - np.sum(pred == label)) for pred, label in zip(train_preds_graph, train_all_label_graph)]
         # train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n + m) for wrong  in train_num_wrongly_pred_nodes_per_graph])
@@ -480,7 +579,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         val_prec = precision_score(val_all_labels,val_preds)
         val_rec = recall_score(val_all_labels, val_preds)
         val_f1 = f1_score(val_all_labels,val_preds)
-        acc_graph_val = np.mean([np.all(pred == true) for pred, true in zip(val_preds_graph, val_all_label_graph)]) # accuracy on graph level
 
         val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
         val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
@@ -492,7 +590,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         
         # Log metrics to wandb.
         if track_on_wandb == True:
-            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train, "acc_graph_val": acc_graph_val,"perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
+            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "perc_wrong_pred_nodes_per_graph_val": val_perc_wrongly_pred_nodes_per_graph,"num_wrong_pred_nodes_per_graph_val":val_mean_wrongly_pred_nodes_per_graph, "threshold": t})
 
         # Save metrics
         train_acc_save.append(train_acc)
@@ -505,8 +603,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         val_rec_save.append(val_rec)
         train_f1_save.append(train_f1)
         val_f1_save.append(val_f1)
-        acc_graph_train_save.append(acc_graph_train)
-        acc_graph_val_save.append(acc_graph_val)
         val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
         val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
         train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
@@ -532,15 +628,13 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     print(f"Precision of the model on the test data: {train_prec_save[best_epoch-1]}")
     print(f"Recall of the model on the test data: {train_rec_save[best_epoch-1]}")
     print(f"F1-Score of the model on the test data: {train_f1_save[best_epoch-1]}")
-    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_train_save[best_epoch-1]}")
-    print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-train_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+    #print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-train_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
 
     print("VALIDATION")
     print(f"Accuracy (node level) of the final model: {val_acc_save[best_epoch-1]}")
     print(f"Precision of the model on the test data: {val_prec_save[best_epoch-1]}")
     print(f"Recall of the model on the test data: {val_rec_save[best_epoch-1]}")
     print(f"F1-Score of the model on the test data: {val_f1_save[best_epoch-1]}")
-    print(f"Accuracy (graph level) of the model on the test data: {acc_graph_val_save[best_epoch-1]}")
-    print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
+    #print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-val_perc_wrongly_pred_nodes_per_graph_save[best_epoch-1]}")
 
     return val_acc_save[best_epoch-1]

@@ -321,7 +321,7 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
         train_iterations[i] = list(info.values())[2]
         train_time[i]= list(info.values())[0]+list(info.values())[1]
         #print("lambda shape",lambda_train[i,:].shape)
-        print(np.where(lambda_train[i,:]!=0)[0])
+        # print(np.where(lambda_train[i,:]!=0)[0])
 
         # get optimal active set (y)
         train_active_set = (lambda_train != 0).astype(int)
@@ -359,7 +359,7 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
 
         features = np.array([f_var,blower_const,eq1_train,bupper_const, eq2_train,node_type_train]).T
         #print("features shape",features.shape)
-        #print("y_train.shape",y_train[i,:].shape)
+        # print("y_train.shape",y_train[i,:].shape)
         x_train = torch.tensor(features, dtype=torch.float32)
         #print("x_train shape",x_train.shape)
         data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train[i,:])
