@@ -72,12 +72,16 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     unique_classes = torch.unique(all_labels)
     class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy()) # torch.unique(all_labels).numpy()
-    #class_weights_np[1] = class_weights_np[1]*0.3
+    #class_weights_np[1] = class_weights_np[1]*0.5
     class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device) # torch.tensor(class_weights, dtype=torch.float32).to(device)
     print("class weights: ", class_weights_np)
 
     # Instantiate model and optimizer
-    model = GNN(input_dim=4, output_dim=1,layer_width = layer_width,conv_type = conv_type)  # Output dimension 1 for binary classification
+    if dataset_type == "standard":
+        input_size = 4
+    elif dataset_type == "lmpc":
+        input_size = 6
+    model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type = conv_type) #Input dimensions: # features 4 # Output dimension 1 for binary classification
     #model = torch.nn.DataParallel(model)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
@@ -89,7 +93,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     if track_on_wandb ==True:
         run = wandb.init(
             entity="ella-schmidtobreick-4283-me",
-            project="Thesis",
+            project="L4DC",
             config={
                 "variables": f"{n}",
                 "constraints": f"{m}",
@@ -105,7 +109,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
-        # print(f"Epoch {epoch}")
+        print(f"Epoch {epoch}")
         train_loss = 0
         train_all_labels = []
         train_preds = []
@@ -114,6 +118,16 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         train_all_label_graph = []
         train_preds_graph = []
         
+        # for param in model.parameters():
+        #     print(param)
+        #     print(param.data)
+        # for name, param in model.named_parameters():
+        #     if name == "output_layer.lin3.weight":
+        #         print(name,param)
+        #     if name == "output_layer.lin3.bias":
+        #         print(name,param)
+
+
         for batch in train_loader:
             batch = batch.to(device)
             optimizer.zero_grad()
@@ -127,14 +141,16 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             elif dataset_type == "lmpc":
                 sparsity_loss = output.squeeze().sum()/batch.num_graphs
                 BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
-                loss = BCE_loss + 0.2 * sparsity_loss
-                if epoch % 10 == 0:  # Log occasionally
-                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                loss = BCE_loss + 0.1 * sparsity_loss
+                #if epoch % 10 == 0:  # Log occasionally
+                    #print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
+            # for param in model.parameters():
+            #     print(param.data)
 
 
             # Store predictions and true labels
@@ -196,8 +212,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                     #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * preds.sum()
                     BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
                     loss = BCE_loss + 0.1 * sparsity_loss
-                    if epoch % 10 == 0:
-                        print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
                 val_loss += loss.item()
 
