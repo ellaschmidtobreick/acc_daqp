@@ -1,5 +1,5 @@
-from train_model import train_GNN, train_MLP
-from test_model import test_GNN, test_MLP
+from train_model import train_GNN
+from test_model import test_GNN
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -7,7 +7,7 @@ import numpy as np
 n = [10]
 m = [40]
 nth = 2
-seed = [123,124,125,126,127]
+seed_vector = [123,124,125,126,127]
 data_points = 2000
 lr = 0.001
 number_of_max_epochs = 100
@@ -28,7 +28,7 @@ for t in ts:
             test_acc_vector , test_prec_vector, test_recall_vector, test_f1_vector= [], [], [], []
 
             for i in range(runs):
-                seed = seed[i]
+                seed = seed_vector[i]
                 train_acc,train_prec, train_recall, train_f1 = train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c",dataset_type="standard")
                 test_acc,test_prec, test_recall, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_10v_40c",dataset_type="standard") 
 
