@@ -40,22 +40,37 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         m_i = m[i]
         if dataset_type == "standard":
             graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            print("graph_test:", type(graph_test_i))
+            print("test_iterations:", type(test_iterations_before_i))
+            print("test_time:", type(test_time_before_i))
+            print("H_test:", type(i))
+            print("f_test:", type(f_test_i))
+            print("A_test:", type(A_current_i))
+            print("bupper_test:", type(bupper_i))
+            print("blower_test:", type(blower_i))
+ 
+            bupper = bupper + bupper_i
+            blower = blower + blower_i
         elif dataset_type == "lmpc":
             graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,two_sided=two_sided)
-
+            bupper.extend([np.array(b, dtype=np.float64) for b in bupper_i])
+            blower.extend([np.array(b, dtype=np.float64) for b in blower_i])
         graph_test = graph_test + graph_test_i
         test_iterations_before = test_iterations_before + test_iterations_before_i
         test_time_before = test_time_before + test_time_before_i
         H_test = H_test + H_test_i
         f_test = f_test + f_test_i
         A_current = A_current + A_current_i
-        bupper.extend([np.array(b, dtype=np.float64) for b in bupper_i])
-        blower.extend([np.array(b, dtype=np.float64) for b in blower_i])
 
 
-        n_vector = n_vector + [n_i for i in range(len(test_iterations_before_i))]
-        m_vector= m_vector + [m_i for i in range(len(test_iterations_before_i))]
 
+        n_vector = n_vector + [n_i for j in range(len(test_iterations_before_i))]
+        m_vector= m_vector + [m_i for j in range(len(test_iterations_before_i))]
+        print(len(n_vector))
+        print(len(m_vector))
+        print(blower)
+        print(bupper)
+        print(len(graph_test),len(test_iterations_before),len(test_time_before),len(H_test),len(f_test),len(A_current),len(bupper),len(blower))
     # Load Data
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
@@ -64,6 +79,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         input_size = 4
     else: #dataset_type == "lmpc":
         input_size = 6
+
     model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type=conv_type)
     #model = torch.nn.DataParallel(model)
     model = model.to(device)
@@ -228,6 +244,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             H_i = np.ascontiguousarray(H_test[i], dtype=np.float64)
             f_i = np.ascontiguousarray(f_test[i], dtype=np.float64)
             A_i = np.ascontiguousarray(A_current[i], dtype=np.float64)
+            print(len(bupper))
             bupper_i = np.ascontiguousarray(bupper[i].flatten(), dtype=np.float64)
             blower_i = np.ascontiguousarray(blower[i].flatten(), dtype=np.float64)
             sense_i = np.ascontiguousarray(sense_active, dtype=np.int32)
@@ -245,13 +262,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                     # print("sense_i",sense_i)
 
                 # Solve QP
-                print("Before DAQP:")
-                print("H_i:", H_i.shape, H_i.dtype, H_i.flags['C_CONTIGUOUS'])
-                print("f_i:", f_i.shape, f_i.dtype, f_i.flags['C_CONTIGUOUS'])
-                print("A_i:", A_i.shape, A_i.dtype, A_i.flags['C_CONTIGUOUS'])
-                print("bupper_i:", bupper_i.shape, bupper_i.dtype, bupper_i.flags['C_CONTIGUOUS'])
-                print("blower_i:", blower_i.shape, blower_i.dtype, blower_i.flags['C_CONTIGUOUS'])
-                print("sense_i:", sense_i.shape, sense_i.dtype, sense_i.flags['C_CONTIGUOUS'])
+                # print("Before DAQP:")
+                # print("H_i:", H_i.shape, H_i.dtype, H_i.flags['C_CONTIGUOUS'])
+                # print("f_i:", f_i.shape, f_i.dtype, f_i.flags['C_CONTIGUOUS'])
+                # print("A_i:", A_i.shape, A_i.dtype, A_i.flags['C_CONTIGUOUS'])
+                # print("bupper_i:", bupper_i.shape, bupper_i.dtype, bupper_i.flags['C_CONTIGUOUS'])
+                # print("blower_i:", blower_i.shape, blower_i.dtype, blower_i.flags['C_CONTIGUOUS'])
+                # print("sense_i:", sense_i.shape, sense_i.dtype, sense_i.flags['C_CONTIGUOUS'])
 
                 _, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
                 counter += 1
@@ -387,8 +404,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # plt.show()
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
     #return test_acc, test_prec, test_rec, test_f1
+    return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):

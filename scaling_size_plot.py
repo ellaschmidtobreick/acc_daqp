@@ -18,8 +18,8 @@ import torch
 n = np.arange(0,201,10)[1:]
 m = np.arange(0,201,10)[1:]*4
 
-n = [25]
-m = [100]
+n = [250]
+m = [1000]
 # n = [200] #[120,130]
 # m = [800] #[120*4,130*4]
 
@@ -59,7 +59,7 @@ for n_i,m_i in zip(n,m):
     print(f"--- GNN, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type)
+        #train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type)
         prediction_time, test_time_after, iterations_after = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type) 
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)

@@ -164,8 +164,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                 sparsity_loss = output.squeeze().sum()/batch.num_graphs
                 BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
                 loss = BCE_loss + 0.1 * sparsity_loss
-                if epoch % 10 == 0:  # Log occasionally
-                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                # if epoch % 10 == 0:  # Log occasionally
+                #     print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
             loss.backward()
             optimizer.step()
