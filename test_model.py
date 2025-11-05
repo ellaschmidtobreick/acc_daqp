@@ -189,39 +189,84 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print(bupper[i])
             counter = 0
             
-            while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
-                print(f"Evaluate {i} test sample")
-                if counter <10:
-                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)
-                else:
-                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),np.zeros_like(sense_active))
+            # while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
+            #     print(f"Evaluate {i} test sample")
+            #     if counter <10:
+            #         _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)
+            #     else:
+            #         _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),np.zeros_like(sense_active))
             
-                counter += 1
-                print("exitflag",exitflag)
-                # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
+            #     counter += 1
+            #     print("exitflag",exitflag)
+            #     # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
 
-                lambda_after= list(info.values())[4]
-                test_iterations_after[i] = list(info.values())[2]
-                # take test and set-up time
-                test_time_after[i]= list(info.values())[0] + list(info.values())[1]
+            #     lambda_after= list(info.values())[4]
+            #     test_iterations_after[i] = list(info.values())[2]
+            #     # take test and set-up time
+            #     test_time_after[i]= list(info.values())[0] + list(info.values())[1]
                 
-                # print("W_pred",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
-                # print("sense_active",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
+            #     # print("W_pred",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
+            #     # print("sense_active",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
 
-                # remove one active constraint per iteration until problem is solvable
-                if exitflag <0:
-                    if np.all(sense_active == 0):
-                        # print("All constraints are removed from active set.")
-                        break
-                    else:
-                        print("else loop for last index")
-                        last_one_index = np.where(sense_active != 0)[-1][-1]
-                        print("last index",last_one_index)
-                    # print("remove active constraint",last_one_index)
-                    if last_one_index is not None:
-                        # print("sense_active before removal:", np.where(sense_active!= 0)[0])
-                        sense_active[last_one_index] = 0
-                        # print("sense_active after removal:", np.where(sense_active!= 0)[0])
+            #     # remove one active constraint per iteration until problem is solvable
+            #     if exitflag <0:
+            #         if np.all(sense_active == 0):
+            #             # print("All constraints are removed from active set.")
+            #             break
+            #         else:
+            #             print("else loop for last index")
+            #             last_one_index = np.where(sense_active != 0)[-1][-1]
+            #             print("last index",last_one_index)
+            #         # print("remove active constraint",last_one_index)
+            #         if last_one_index is not None:
+            #             # print("sense_active before removal:", np.where(sense_active!= 0)[0])
+            #             sense_active[last_one_index] = 0
+            #             # print("sense_active after removal:", np.where(sense_active!= 0)[0])
+
+
+            # Prepare arrays safely for DAQP
+            H_i = np.ascontiguousarray(H_test[i], dtype=np.float64)
+            f_i = np.ascontiguousarray(f_test[i], dtype=np.float64)
+            A_i = np.ascontiguousarray(A_current[i], dtype=np.float64)
+            bupper_i = np.ascontiguousarray(bupper[i].flatten(), dtype=np.float64)
+            blower_i = np.ascontiguousarray(blower[i].flatten(), dtype=np.float64)
+            sense_i = np.ascontiguousarray(sense_active, dtype=np.int32)
+
+            counter = 0
+            max_removals = 10
+
+            while exitflag < 0 and counter <= max_removals:
+                print(f"Evaluate test sample {i}, attempt {counter+1}")
+
+                # If exceeded max removals, solve with empty active set
+                if counter >= max_removals:
+                    print("Max removals reached, trying with empty active set")
+                    sense_i = np.zeros_like(sense_i, dtype=np.int32)
+                    print("sense_i",sense_i)
+
+                # Solve QP
+                _, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
+                counter += 1
+
+                print("exitflag:", exitflag)
+
+                lambda_after = list(info.values())[4]
+                test_iterations_after[i] = list(info.values())[2]
+                test_time_after[i] = list(info.values())[0] + list(info.values())[1]
+
+                # Stop if feasible
+                if exitflag >= 0:
+                    print("Problem solved successfully")
+                    break
+
+                # Remove last nonzero constraint safely
+                nonzero_idx = np.flatnonzero(sense_i)
+                if nonzero_idx.size == 0:
+                    print("All constraints removed, but problem still infeasible")
+                    break
+                last_index = nonzero_idx[-1]
+                sense_i[last_index] = 0
+                print(f"Removed constraint at index {last_index}, remaining active constraints: {nonzero_idx[:-1]}")
 
                 # remove one active constraint per iteration until problem is solvable
                 # last_one_index = np.where(sense_active == 1)[0]   # extract array of indices
@@ -231,7 +276,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 # else:
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
-            # print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
             # print(f"test iterations before: {test_iterations_before[i]}")
@@ -253,6 +298,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             if device == "cuda" and i % 50 == 0:
                 torch.cuda.empty_cache()
             print(f"Finished sample {i+1} / {len(test_loader)}")
+            print()
 
 
 
