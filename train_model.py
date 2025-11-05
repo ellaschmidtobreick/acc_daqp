@@ -41,6 +41,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # train_mean_wrongly_pred_nodes_per_graph_save = []
 
     best_val_loss = float('inf')
+    best_val_f1 = float('inf')
+
     best_metrics = {}
     best_model_state = None
 
@@ -68,7 +70,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Load Data
     train_batch_size = 64 #16 #32 # 64
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
-    val_loader = GraphDataLoader(graph_val,batch_size = len(graph_val), shuffle = False)
+    val_loader = GraphDataLoader(graph_val,batch_size = train_batch_size , shuffle = False) #len(graph_val)
 
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train]).to(device)
@@ -333,7 +335,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         # acc_graph_val = val_graph_sum / val_num_graphs
         # val_mean_wrong_nodes_per_graph = val_num_wrong_nodes / val_num_graphs
         val_perc_wrong_nodes_per_graph = val_num_wrong_nodes / val_total_nodes
-
+        early_stopping_counter = 0
         # val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
         # val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
         # val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
@@ -364,8 +366,10 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         #     print(f"Early stopping after {epoch} epochs.")
         #     break
             # Early stopping logic
-        if val_loss+0.001 < best_val_loss:
+            print()
+        if val_f1 > best_val_f1: #:+0.001: #val_loss+0.001 < best_val_loss
             best_val_loss = val_loss
+            best_val_f1 = val_f1
             best_metrics = {
                 "train_acc": train_acc,
                 "train_prec": train_prec,

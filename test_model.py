@@ -144,8 +144,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             # Node-level metrics
             # labels = batch.y
-            labels = batch.y #[n:]           # take only the constraint nodes
-            preds_constraints = preds#[n:]  # same slice for predictions
+            labels = batch.y[n:]           # take only the constraint nodes
+            preds_constraints = preds[n:]  # same slice for predictions
             # print(labels.shape, preds_constraints.shape)
             test_correct += (preds_constraints == labels).sum().item()
             test_total += labels.numel()
