@@ -174,9 +174,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
 
             # Solve QPs with predicted active sets
-            # sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
-            sense_active = (preds_print != 0).int().cpu().numpy()
-            # print("sense_active shape",sense_active.shape)
+            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
+            #sense_active = (preds_print != 0).int().cpu().numpy()
+            print("sense_active shape",sense_active.shape)
 
             exitflag = -6
             # blower_i = np.array(blower[i], copy=True)
@@ -242,9 +242,17 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 if counter >= max_removals:
                     print("Max removals reached, trying with empty active set")
                     sense_i = np.zeros_like(sense_i, dtype=np.int32)
-                    print("sense_i",sense_i)
+                    # print("sense_i",sense_i)
 
                 # Solve QP
+                print("Before DAQP:")
+                print("H_i:", H_i.shape, H_i.dtype, H_i.flags['C_CONTIGUOUS'])
+                print("f_i:", f_i.shape, f_i.dtype, f_i.flags['C_CONTIGUOUS'])
+                print("A_i:", A_i.shape, A_i.dtype, A_i.flags['C_CONTIGUOUS'])
+                print("bupper_i:", bupper_i.shape, bupper_i.dtype, bupper_i.flags['C_CONTIGUOUS'])
+                print("blower_i:", blower_i.shape, blower_i.dtype, blower_i.flags['C_CONTIGUOUS'])
+                print("sense_i:", sense_i.shape, sense_i.dtype, sense_i.flags['C_CONTIGUOUS'])
+
                 _, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
                 counter += 1
 
