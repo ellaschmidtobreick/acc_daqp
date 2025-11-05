@@ -11,11 +11,11 @@ seed = 123
 data_points = 2000 #5000
 lr = 0.001
 number_of_max_epochs = 100
-layer_width = 64 #128
+layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t = 0.9 # 0.6
-
+# t = 0.9 # 0.6
+runs = 1
 # Train 4 different models to compare the metrics depending on H being fixed or flexible
 # Test the 4 different models on the according test data
 # train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c_fixedHA",dataset_type="standard")
@@ -32,18 +32,18 @@ t = 0.9 # 0.6
 
 #text_time_before_vector , text_time_after_vector, test_time_reduction_vector, prediction_time_vector = [], [], [], []
 
-layerwidths = [64]#,128]
-datapoints = [5000] #[2000,5000]
-ts = [0.6,0.9]
+layerwidths = [128]
+datapoints = [2000] #[2000,5000]
+ts = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
 for t in ts:
     for data_points in datapoints:
         for layer_width in layerwidths:
 
             train_acc_vector , train_prec_vector, train_recall_vector, train_f1_vector = [], [], [], []
             test_acc_vector , test_prec_vector, test_recall_vector, test_f1_vector= [], [], [], []
-            for i in range(5):
-                train_acc,train_prec, train_recall, train_f1 = train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c_fixedHA",dataset_type="standard")
-                test_acc,test_prec, test_recall, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_10v_40c_fixedHA",dataset_type="standard") 
+            for i in range(runs):
+                train_acc,train_prec, train_recall, train_f1 = train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c",dataset_type="standard")
+                test_acc,test_prec, test_recall, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_10v_40c",dataset_type="standard") 
 
                 # test MLP on given lmpc data 
                 # train_MLP(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"MLP_model_10v_40c_fixedH",dataset_type="standard")
@@ -78,7 +78,7 @@ for t in ts:
                 "Test F1 Score": (np.mean(test_f1_vector), np.std(test_f1_vector)),
             }
 
-            with open("data/acc_results_param_tuning_final.txt", "a") as f: 
+            with open("data/acc_results_param_tuning_changed_model.txt", "a") as f: 
                 for key, (mean, std) in results.items():
                     if std is None:
                         f.write(f"{key}: {mean}\n")
