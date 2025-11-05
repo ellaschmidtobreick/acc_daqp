@@ -98,6 +98,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             _ = model(warmup_batch,number_of_layers,conv_type)
             if device == "cuda":
                 torch.cuda.synchronize()
+    print("warm-up done")
 
     # Test on data 
     with torch.no_grad():
@@ -109,6 +110,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # Prediction on test data
             if device == "cuda":
                 torch.cuda.synchronize()
+            # print(batch.x.dtype)
             start_time = time.perf_counter()
             output = model(batch,number_of_layers,conv_type)
             preds = (output.squeeze() > t).long()
@@ -186,6 +188,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print(H_test[i].shape, f_test[i].shape, A_current.shape, bupper_i.shape, blower_i.shape, sense_active.shape)¨
             # print(bupper[i])
             counter = 0
+            
             while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
                 if counter <10:
                     _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)

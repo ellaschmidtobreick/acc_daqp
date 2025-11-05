@@ -361,39 +361,39 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         # train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
 
         # Early stopping
-        # early_stopping(val_loss, model,epoch)
-        # if early_stopping.early_stop:
-        #     print(f"Early stopping after {epoch} epochs.")
-        #     break
+        early_stopping(val_loss, model,epoch)
+        if early_stopping.early_stop:
+            print(f"Early stopping after {epoch} epochs.")
+            break
             # Early stopping logic
             print()
-        if val_f1-0.001 > best_val_f1: #val_loss+0.001 < best_val_loss:
-            best_val_loss = val_loss
-            best_val_f1 = val_f1
-            best_metrics = {
-                "train_acc": train_acc,
-                "train_prec": train_prec,
-                "train_rec": train_rec,
-                "train_f1": train_f1,
-                "train_perc_wrong_nodes": train_perc_wrong_nodes_per_graph,
-                "val_acc": val_acc,
-                "val_prec": val_prec,
-                "val_rec": val_rec,
-                "val_f1": val_f1,
-                "val_perc_wrong_nodes": val_perc_wrong_nodes_per_graph,
-            }
-            # Save a copy of the model weights
-            best_model_state = copy.deepcopy(model.state_dict())
-            early_stopping_counter = 0
-        else:
-            early_stopping_counter += 1
-            if early_stopping_counter >= 5:  # e.g., 10 epochs
-                print(f"Early stopping after {epoch+1} epochs.")
-                break
+        # if val_f1-0.001 > best_val_f1: #val_loss+0.001 < best_val_loss:
+        #     best_val_loss = val_loss
+        #     best_val_f1 = val_f1
+        #     best_metrics = {
+        #         "train_acc": train_acc,
+        #         "train_prec": train_prec,
+        #         "train_rec": train_rec,
+        #         "train_f1": train_f1,
+        #         "train_perc_wrong_nodes": train_perc_wrong_nodes_per_graph,
+        #         "val_acc": val_acc,
+        #         "val_prec": val_prec,
+        #         "val_rec": val_rec,
+        #         "val_f1": val_f1,
+        #         "val_perc_wrong_nodes": val_perc_wrong_nodes_per_graph,
+        #     }
+        #     # Save a copy of the model weights
+        #     best_model_state = copy.deepcopy(model.state_dict())
+        #     early_stopping_counter = 0
+        # else:
+        #     early_stopping_counter += 1
+        #     if early_stopping_counter >= 5:  # e.g., 10 epochs
+        #         print(f"Early stopping after {epoch+1} epochs.")
+        #         break
 
     # Save best model
-    # best_epoch = early_stopping.load_best_model(model)
-    model.load_state_dict(best_model_state)
+    best_epoch = early_stopping.load_best_model(model)
+    # model.load_state_dict(best_model_state)
     torch.save(model.state_dict(), f"saved_models/{modelname}.pth")
 
     # Finish the run and upload any remaining data.
@@ -402,21 +402,19 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     
     # Print metrics
     print("TRAINING")
-    print(f"Accuracy (node level) of the final model: {best_metrics['train_acc']}")
-    print(f"Precision of the model on the test data: {best_metrics['train_prec']}")
-    print(f"Recall of the model on the test data: {best_metrics['train_rec']}")
-    print(f"F1-Score of the model on the test data: {best_metrics['train_f1']}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics['train_perc_wrong_nodes']}")
+    print(f"Accuracy (node level) of the final model: {train_acc}")
+    print(f"Precision of the model on the test data: {train_prec}")
+    print(f"Recall of the model on the test data: {train_rec}")
+    print(f"F1-Score of the model on the test data: {train_f1}")
 
     print("VALIDATION")
-    print(f"Accuracy (node level) of the final model: {best_metrics['val_acc']}")
-    print(f"Precision of the model on the test data: {best_metrics['val_prec']}")
-    print(f"Recall of the model on the test data: {best_metrics['val_rec']}")
-    print(f"F1-Score of the model on the test data: {best_metrics['val_f1']}")
-    print(f"Perc num_wrongly_pred_nodes_per_graph: {best_metrics['val_perc_wrong_nodes']}")
+    print(f"Accuracy (node level) of the final model: {val_acc}")
+    print(f"Precision of the model on the test data: {val_prec}")
+    print(f"Recall of the model on the test data: {val_rec}")
+    print(f"F1-Score of the model on the test data: {val_f1}")
 
     # return val_acc_save[best_epoch-1]
-    return best_metrics["train_acc"], best_metrics["train_prec"], best_metrics["train_rec"], best_metrics["train_f1"]
+    return train_acc, train_prec, train_rec, train_f1
 
 def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
     
