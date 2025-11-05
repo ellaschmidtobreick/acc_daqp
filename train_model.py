@@ -41,7 +41,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # train_mean_wrongly_pred_nodes_per_graph_save = []
 
     best_val_loss = float('inf')
-    best_val_f1 = float('inf')
+    best_val_f1 = float('inf')*(-1)
 
     best_metrics = {}
     best_model_state = None
@@ -367,7 +367,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         #     break
             # Early stopping logic
             print()
-        if val_f1 > best_val_f1: #:+0.001: #val_loss+0.001 < best_val_loss
+        if val_f1-0.001 > best_val_f1: #val_loss+0.001 < best_val_loss:
             best_val_loss = val_loss
             best_val_f1 = val_f1
             best_metrics = {
