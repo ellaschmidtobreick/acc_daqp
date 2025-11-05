@@ -15,12 +15,8 @@ from utils import barplot_iterations, histogram_time, histogram_prediction_time,
 from model import GNN, MLP
 from naive_model import naive_model
 
-def handler(signum, frame):
-  print('Signal received, exiting gracefully...')
-  sys.exit(0)
-
 # Generate test problems and the corresponding graphs
-def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv"):
+def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False):
     # Initialization for data generation
     graph_test = []
     H_test = []
@@ -28,7 +24,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_time_before = []
     H_test = []
     f_test = []
-    A_real_constraints = []
+    A_current = []
     bupper = []
     blower = []
     n_vector = []
@@ -43,18 +39,19 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         n_i = n[i]
         m_i = m[i]
         if dataset_type == "standard":
-            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_real_constraints_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
         elif dataset_type == "lmpc":
-            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_real_constraints_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,two_sided=two_sided)
 
         graph_test = graph_test + graph_test_i
         test_iterations_before = test_iterations_before + test_iterations_before_i
         test_time_before = test_time_before + test_time_before_i
         H_test = H_test + H_test_i
         f_test = f_test + f_test_i
-        A_real_constraints = A_real_constraints + A_real_constraints_i
-        bupper += [bupper_i]
-        blower += [blower_i]
+        A_current = A_current + A_current_i
+        bupper.extend([np.array(b, dtype=np.float64) for b in bupper_i])
+        blower.extend([np.array(b, dtype=np.float64) for b in blower_i])
+
 
         n_vector = n_vector + [n_i for i in range(len(test_iterations_before_i))]
         m_vector= m_vector + [m_i for i in range(len(test_iterations_before_i))]
@@ -63,9 +60,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
     # Load model
-    if dataset_type == "standard":
+    if dataset_type == "standard" or two_sided == False:
         input_size = 4
-    elif dataset_type == "lmpc":
+    else: #dataset_type == "lmpc":
         input_size = 6
     model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type=conv_type)
     #model = torch.nn.DataParallel(model)
@@ -147,8 +144,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             # Node-level metrics
             # labels = batch.y
-            labels = batch.y[n:]           # take only the constraint nodes
-            preds_constraints = preds[n:]  # same slice for predictions
+            labels = batch.y #[n:]           # take only the constraint nodes
+            preds_constraints = preds#[n:]  # same slice for predictions
             # print(labels.shape, preds_constraints.shape)
             test_correct += (preds_constraints == labels).sum().item()
             test_total += labels.numel()
@@ -176,23 +173,24 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             # Solve QPs with predicted active sets
             # sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
-            sense_active = (preds_print != 0).int().cpu().numpy()*8
+            sense_active = (preds_print != 0).int().cpu().numpy()
             # print("sense_active shape",sense_active.shape)
 
             exitflag = -6
             # blower_i = np.array(blower[i], copy=True)
-            # A_real_constraints = A_real_constraints[i][n:m_half,:]
+            # A_current = A_current[i][n:m_half,:]
             # bupper_i = bupper[i]
             # blower_i = blower[i]
-            # print(A_real_constraints[i].shape,bupper[i].shape,blower[i].shape)
+            # print(A_current[i].shape,bupper[i].shape,blower[i].shape)
             # solve system until it is solvable
-            # print(H_test[i].shape, f_test[i].shape, A_real_constraints.shape, bupper_i.shape, blower_i.shape, sense_active.shape)
+            # print(H_test[i].shape, f_test[i].shape, A_current.shape, bupper_i.shape, blower_i.shape, sense_active.shape)¨
+            # print(bupper[i])
             counter = 0
             while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
                 if counter <10:
-                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],sense_active)
+                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)
                 else:
-                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_real_constraints[i],bupper[i],blower[i],np.zeros_like(sense_active))
+                    _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),np.zeros_like(sense_active))
             
                 counter += 1
                 # print("exitflag",exitflag)
