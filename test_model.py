@@ -382,12 +382,12 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     #Plots to vizualize iterations and time
     # histogram_time(test_time_before, test_time_after,model_name, save= True)
     # #histogram_prediction_time(prediction_time,model_name, save = True)
-    barplot_iter_reduction(test_iterations_difference,model_name, save = True)
-    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
+    # barplot_iter_reduction(test_iterations_difference,model_name, save = True)
+    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
-    #return test_acc, test_prec, test_rec, test_f1
+    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    return test_acc, test_prec, test_rec, test_f1
     #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs

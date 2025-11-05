@@ -7,47 +7,30 @@ import numpy as np
 n = [10]
 m = [40]
 nth = 2
-seed = 123
-data_points = 2000 #5000
+seed = [123,124,125,126,127]
+data_points = 2000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-# t = 0.9 # 0.6
-runs = 1
-# Train 4 different models to compare the metrics depending on H being fixed or flexible
-# Test the 4 different models on the according test data
-# train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c_fixedHA",dataset_type="standard")
-# test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_10v_40c_fixedHA",dataset_type="standard") 
-
-# train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,True,"model_10v_40c_fixedH",dataset_type="standard")
-# test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,True,"model_10v_40c_fixedH",dataset_type="standard")
-
-# train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, True,False,"model_10v_40c_fixedA",dataset_type="standard")
-# test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, True,False,"model_10v_40c_fixedA",dataset_type="standard")
-
-# train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, True,True,"model_10v_40c_flex",dataset_type="standard")
-# test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, True,True,"model_10v_40c_flex",dataset_type="standard")
-
-#text_time_before_vector , text_time_after_vector, test_time_reduction_vector, prediction_time_vector = [], [], [], []
+runs = 5
 
 layerwidths = [128]
-datapoints = [2000] #[2000,5000]
-ts = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+datapoints = [5000]
+ts = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] # for tuning
+# to get the final results on an average of 5 runs - 5 different seeds?
 for t in ts:
     for data_points in datapoints:
         for layer_width in layerwidths:
 
             train_acc_vector , train_prec_vector, train_recall_vector, train_f1_vector = [], [], [], []
             test_acc_vector , test_prec_vector, test_recall_vector, test_f1_vector= [], [], [], []
+
             for i in range(runs):
+                seed = seed[i]
                 train_acc,train_prec, train_recall, train_f1 = train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_10v_40c",dataset_type="standard")
                 test_acc,test_prec, test_recall, test_f1 = test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_10v_40c",dataset_type="standard") 
-
-                # test MLP on given lmpc data 
-                # train_MLP(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"MLP_model_10v_40c_fixedH",dataset_type="standard")
-                # text_time_before, text_time_after, test_time_reduction, prediction_time = test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"MLP_model_10v_40c_fixedH",dataset_type="standard")
 
                 train_acc_vector.append(train_acc)
                 train_prec_vector.append(train_prec)
@@ -57,13 +40,6 @@ for t in ts:
                 test_prec_vector.append(test_prec)
                 test_recall_vector.append(test_recall)
                 test_f1_vector.append(test_f1)
-
-                # text_time_before_vector.append(text_time_before)
-                # text_time_after_vector.append(text_time_after)
-                # test_time_reduction_vector.append(test_time_reduction)
-                # prediction_time_vector.append(prediction_time)
-                # recall_scores.append(recall)
-                # precision_scores.append(precision)
 
             # Store results
             results = {
@@ -78,17 +54,10 @@ for t in ts:
                 "Test F1 Score": (np.mean(test_f1_vector), np.std(test_f1_vector)),
             }
 
-            with open("data/acc_results_param_tuning_changed_model.txt", "a") as f: 
+            with open("data/acc_results_threshold_tuning_dense.txt", "a") as f: 
                 for key, (mean, std) in results.items():
                     if std is None:
                         f.write(f"{key}: {mean}\n")
                     else:
                         f.write(f"{key}: mean = {mean:.6f}, std = {std:.6f}\n")
                 f.write("\n" + "-"*60 + "\n\n")
-
-
-# print(f"Average test time before: {np.mean(text_time_before_vector), np.std(text_time_before_vector)}")
-# print(f"Average test time after: {np.mean(text_time_after_vector), np.std(text_time_after_vector)}")   
-# print(f"Average test time reduction: {np.mean(test_time_reduction_vector), np.std(test_time_reduction_vector)}")
-# print(f"Average prediction time: {np.mean(prediction_time_vector), np.std(prediction_time_vector)}")
-
