@@ -190,13 +190,14 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             counter = 0
             
             while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
+                print(f"Evaluate {i} test sample")
                 if counter <10:
                     _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)
                 else:
                     _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),np.zeros_like(sense_active))
             
                 counter += 1
-                # print("exitflag",exitflag)
+                print("exitflag",exitflag)
                 # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
 
                 lambda_after= list(info.values())[4]
@@ -213,7 +214,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                         # print("All constraints are removed from active set.")
                         break
                     else:
+                        print("else loop for last index")
                         last_one_index = np.where(sense_active != 0)[-1][-1]
+                        print("last index",last_one_index)
                     # print("remove active constraint",last_one_index)
                     if last_one_index is not None:
                         # print("sense_active before removal:", np.where(sense_active!= 0)[0])
@@ -249,7 +252,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
             if device == "cuda" and i % 50 == 0:
                 torch.cuda.empty_cache()
-            # print(f"Finished sample {i+1} / {len(test_loader)}")
+            print(f"Finished sample {i+1} / {len(test_loader)}")
 
 
 
@@ -269,7 +272,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
     # pr_auc = auc(recall, precision)
 
-    # print("evalution now")
+    print("evalution now")
     test_loss /= len(test_loader)
     test_acc = test_correct / test_total
     test_prec = test_TP / (test_TP + test_FP + 1e-8)
