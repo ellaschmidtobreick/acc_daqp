@@ -1,7 +1,7 @@
 import numpy as np
 import daqp
 from ctypes import * 
-from generate_mpqp_v2 import generate_qp, generate_banded_qp, generate_sparse_qp,generate_qp_block_sparse
+from generate_mpqp_v2 import generate_qp, generate_banded_qp, generate_sparse_qp
 import torch
 from torch.utils.data import TensorDataset
 import os
