@@ -14,14 +14,20 @@ class GNN(torch.nn.Module):
             self.input_layer = LEConv(input_dim, layer_width)
             self.inner_layer = LEConv(layer_width,layer_width)
             self.output_layer = LEConv(layer_width, output_dim)
+            self.norm1 = torch.nn.LayerNorm(layer_width)
+            self.norm2 = torch.nn.LayerNorm(layer_width)
         if conv_type == "GCN":
             self.input_layer = GCNConv(input_dim, layer_width)
             self.inner_layer = GCNConv(layer_width,layer_width)
             self.output_layer = GCNConv(layer_width, output_dim)
+            self.norm1 = torch.nn.LayerNorm(layer_width)
+            self.norm2 = torch.nn.LayerNorm(layer_width)
         if conv_type == "GAT":
             self.input_layer = GATConv(input_dim, layer_width, heads=4, concat=False)
             self.inner_layer = GATConv(layer_width, layer_width, heads=4, concat=False)
             self.output_layer = GATConv(layer_width, output_dim, heads=4, concat=False)
+            self.norm1 = torch.nn.LayerNorm(layer_width)
+            self.norm2 = torch.nn.LayerNorm(layer_width)
 
         # --- initialize weights ---
         # for layer in [self.input_layer, self.inner_layer, self.output_layer]:
@@ -43,16 +49,15 @@ class GNN(torch.nn.Module):
         # only positive edge weights
         if conv_type == "GCN" or conv_type == "GAT":
             edge_weight = edge_weight - edge_weight.min() + 1e-6  
-            x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
 
-        x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
+        x = func.leaky_relu(self.norm1(self.input_layer(x, edge_index,edge_weight)),negative_slope = 0.0001)
         # print("x after first layer",x)
         for i in range(number_of_layers-2):
-            x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
+            x = func.leaky_relu(self.norm2(self.inner_layer(x,edge_index,edge_weight)),negative_slope = 0.0001)
         # print("x after inner layers",x)
         x = self.output_layer(x,edge_index,edge_weight)
         # print("x before sigmoid",x)
-        x = x / 2
+        # x = x / 2
         x = torch.sigmoid(x)
         # print("x after sigmoid",x)
         return x  
@@ -112,8 +117,10 @@ class MLP(torch.nn.Module):
         self.input_layer = torch.nn.Linear(input_dim, layer_width)
         self.hidden_layer = torch.nn.Linear(layer_width, layer_width)
         self.output_layer = torch.nn.Linear(layer_width, output_dim)
+        self.norm1 = torch.nn.LayerNorm(layer_width)
+        self.norm2 = torch.nn.LayerNorm(layer_width)
 
     def forward(self, x):
-        x = func.leaky_relu(self.input_layer(x),negative_slope = 0.1)
-        x = func.leaky_relu(self.hidden_layer(x),negative_slope = 0.1)
+        x = func.leaky_relu(self.norm1(self.input_layer(x)),negative_slope = 0.0001) #0.1
+        x = func.leaky_relu(self.norm2(self.hidden_layer(x)),negative_slope = 0.0001)
         return torch.sigmoid(self.output_layer(x)) 

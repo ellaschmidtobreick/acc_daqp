@@ -173,26 +173,26 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             test_num_wrong_nodes += (preds_constraints != labels).sum().item()
             test_total_nodes += labels.numel()
 
-            if i % 20 == 0:
-                # Move only the needed parts to CPU, avoid full .numpy() conversions
-                y = batch.y[n:].detach().cpu()
-                preds_print = (output.squeeze() > t).long()[n:].detach().cpu()
+            # if i % 20 == 0:
+            #     # Move only the needed parts to CPU, avoid full .numpy() conversions
+            y = batch.y[n:].detach().cpu()
+            preds_print = (output.squeeze() > t).long()[n:].detach().cpu()
 
-                W_true = (y != 0).nonzero(as_tuple=True)[0]
-                W_pred = (preds_print != 0).nonzero(as_tuple=True)[0]
-                print()
-                print(f"W_true: {W_true.tolist()}")
-                print(f"W_pred: {W_pred.tolist()}")
-                # print("len W_true, W_pred",y.shape,preds_print.shape)
-                # Print prediction values for the predicted indices
-                pred_vals = output.detach().cpu().squeeze()[W_pred + n]
-                print(f"% pred: {pred_vals.tolist()}")
+            W_true = (y != 0).nonzero(as_tuple=True)[0]
+            W_pred = (preds_print != 0).nonzero(as_tuple=True)[0]
+            print()
+            print(f"W_true: {W_true.tolist()}")
+            print(f"W_pred: {W_pred.tolist()}")
+            #     # print("len W_true, W_pred",y.shape,preds_print.shape)
+            #     # Print prediction values for the predicted indices
+            pred_vals = output.detach().cpu().squeeze()[W_pred + n]
+            print(f"% pred: {pred_vals.tolist()}")
 
 
             # Solve QPs with predicted active sets
             sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
             #sense_active = (preds_print != 0).int().cpu().numpy()
-            print("sense_active shape",sense_active.shape)
+            # print("sense_active shape",sense_active.shape)
 
             exitflag = -6
             # blower_i = np.array(blower[i], copy=True)
@@ -244,7 +244,6 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             H_i = np.ascontiguousarray(H_test[i], dtype=np.float64)
             f_i = np.ascontiguousarray(f_test[i], dtype=np.float64)
             A_i = np.ascontiguousarray(A_current[i], dtype=np.float64)
-            print(len(bupper))
             bupper_i = np.ascontiguousarray(bupper[i].flatten(), dtype=np.float64)
             blower_i = np.ascontiguousarray(blower[i].flatten(), dtype=np.float64)
             sense_i = np.ascontiguousarray(sense_active, dtype=np.int32)
@@ -260,29 +259,27 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                     print("Max removals reached, trying with empty active set")
                     sense_i = np.zeros_like(sense_i, dtype=np.int32)
                     # print("sense_i",sense_i)
-
-                # Solve QP
-                # print("Before DAQP:")
-                # print("H_i:", H_i.shape, H_i.dtype, H_i.flags['C_CONTIGUOUS'])
-                # print("f_i:", f_i.shape, f_i.dtype, f_i.flags['C_CONTIGUOUS'])
-                # print("A_i:", A_i.shape, A_i.dtype, A_i.flags['C_CONTIGUOUS'])
-                # print("bupper_i:", bupper_i.shape, bupper_i.dtype, bupper_i.flags['C_CONTIGUOUS'])
-                # print("blower_i:", blower_i.shape, blower_i.dtype, blower_i.flags['C_CONTIGUOUS'])
-                # print("sense_i:", sense_i.shape, sense_i.dtype, sense_i.flags['C_CONTIGUOUS'])
-
-                _, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
+                x, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
                 counter += 1
 
                 print("exitflag:", exitflag)
 
-                lambda_after = list(info.values())[4]
+                # lambda_after = list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 test_time_after[i] = list(info.values())[0] + list(info.values())[1]
 
                 # Stop if feasible
                 if exitflag >= 0:
                     print("Problem solved successfully")
-                    break
+                    # sense_compare = np.zeros_like(sense_i, dtype=np.int32)
+                    # x_compare, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_compare)
+
+                    # diff_mask =  ~np.isclose(x, x_compare, rtol=1e-9, atol=1e-12)
+                    # if (np.where(diff_mask)[0]).size>0 :
+                    #     print("Incorrectly solved")
+                    # else:
+                    #     print("Correctly solved")
+                    # break
 
                 # Remove last nonzero constraint safely
                 nonzero_idx = np.flatnonzero(sense_i)
@@ -301,6 +298,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 # else:
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
+
             print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
@@ -343,7 +341,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
     # pr_auc = auc(recall, precision)
 
-    print("evalution now")
+    # print("evalution now")
     test_loss /= len(test_loader)
     test_acc = test_correct / test_total
     test_prec = test_TP / (test_TP + test_FP + 1e-8)
@@ -384,29 +382,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     #Plots to vizualize iterations and time
     # histogram_time(test_time_before, test_time_after,model_name, save= True)
     # #histogram_prediction_time(prediction_time,model_name, save = True)
-    # barplot_iter_reduction(test_iterations_difference,model_name, save = True)
-    # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
-
-    # plt.rcParams.update({'font.size': 12})
-    # cmap = plt.get_cmap("viridis")
-    # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
-
-
-    # max_val = np.max(np.concatenate([test_iterations_before, test_iterations_after]))# 10v40c: 0.00005 #25v100c: 0.0003
-
-    # plt.hist(test_iterations_before, bins=20,range=(0,max_val),  alpha=0.7, label='without GNN', color=colors[0])
-    # plt.hist(test_iterations_after, bins=20,range=(0,max_val),  alpha=0.7, label='with GNN', color=colors[2])
-
-    # plt.xlabel('Iterations')
-    # plt.ylabel('Frequency')
-    # #plt.title('Histogram of Time without GNN vs with GNN')
-    # plt.legend()
-    # plt.show()
+    barplot_iter_reduction(test_iterations_difference,model_name, save = True)
+    barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
     #return test_acc, test_prec, test_rec, test_f1
-    return prediction_time, test_time_after, test_iterations_after
+    #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
