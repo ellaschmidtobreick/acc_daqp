@@ -15,7 +15,7 @@ from model import EarlyStopping
 import matplotlib.pyplot as plt
 import copy
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv"):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False):
     
     # Initialization      
     graph_train = []
@@ -55,7 +55,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         if dataset_type == "standard":
             graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
         elif dataset_type == "lmpc":
-            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H)
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H,two_sided=two_sided)
 
         graph_train = graph_train + graph_train_i
         graph_val = graph_val + graph_val_i
@@ -80,9 +80,9 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     print("class weights: ", class_weights_np)
 
     # Instantiate model and optimizer
-    if dataset_type == "standard":
+    if dataset_type == "standard" or two_sided == False:
         input_size = 4
-    elif dataset_type == "lmpc":
+    else : #if dataset_type == "lmpc":
         input_size = 6
     model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type = conv_type) #Input dimensions: # features 4 # Output dimension 1 for binary classification
     #model = torch.nn.DataParallel(model)
