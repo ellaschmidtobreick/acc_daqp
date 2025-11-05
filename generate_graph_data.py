@@ -249,7 +249,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         # list of graph elements
         graph_test.append(data_point)
 
-    return graph_test, test_iterations,test_time, H_test,f_test,A_test,btot,blower_test,sense_test,n,m
+    return graph_test, test_iterations,test_time, H_test,f_test,A_test,b_test,blower_test,sense_test,n,m
 
 
 
@@ -596,5 +596,5 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
         data_point = Data(x=x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
         # list of graph elements
         graph_test.append(data_point)
-        
+
     return graph_test, test_iterations,test_time, H_test,f_test,A_test,bupper_test,blower_test,sense_test,n,m
