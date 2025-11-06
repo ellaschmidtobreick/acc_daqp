@@ -162,53 +162,53 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_num_wrong_nodes = 0
         val_total_nodes = 0
 
-        best_f1 = 0.0
-        best_threshold = 0.0
-        thresholds = np.linspace(0, 1, 11)        
-        for t in thresholds:
-            val_correct = val_total = val_TP = val_FP = val_FN = 0
+        # best_f1 = 0.0
+        # best_threshold = 0.0
+        # thresholds = np.linspace(0, 1, 11)        
+        # for t in thresholds:
+        #     val_correct = val_total = val_TP = val_FP = val_FN = 0
 
-            with torch.no_grad():
-                for i,batch in enumerate(val_loader):
-                    batch = batch.to(device)
-                    output = model(batch,number_of_layers,conv_type)
-                    preds = (output.squeeze() > t).long()
+        with torch.no_grad():
+            for i,batch in enumerate(val_loader):
+                batch = batch.to(device)
+                output = model(batch,number_of_layers,conv_type)
+                preds = (output.squeeze() > t).long()
 
-                    if dataset_type == "standard":
-                        loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
-                    elif dataset_type == "lmpc":
-                        sparsity_loss = output.squeeze().sum()/batch.num_graphs
-                        BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
-                        loss = BCE_loss + 0.1 * sparsity_loss
-                        # print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                if dataset_type == "standard":
+                    loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
+                elif dataset_type == "lmpc":
+                    sparsity_loss = output.squeeze().sum()/batch.num_graphs
+                    BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
+                    loss = BCE_loss + 0.1 * sparsity_loss
+                    # print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
-                    val_loss += loss.item()
+                val_loss += loss.item()
 
-                    # Node-level metrics
-                    labels = batch.y
-                    val_correct += (preds == labels).sum().item()
-                    val_total += labels.numel()
-                    val_TP += ((preds == 1) & (labels == 1)).sum().item()
-                    val_FP += ((preds == 1) & (labels == 0)).sum().item()
-                    val_FN += ((preds == 0) & (labels == 1)).sum().item()
-                    val_num_wrong_nodes += (preds != labels).sum().item()
-                    val_total_nodes += labels.numel()
+                # Node-level metrics
+                labels = batch.y
+                val_correct += (preds == labels).sum().item()
+                val_total += labels.numel()
+                val_TP += ((preds == 1) & (labels == 1)).sum().item()
+                val_FP += ((preds == 1) & (labels == 0)).sum().item()
+                val_FN += ((preds == 0) & (labels == 1)).sum().item()
+                val_num_wrong_nodes += (preds != labels).sum().item()
+                val_total_nodes += labels.numel()
 
-                    if device == "cuda" and i % 50 == 0:
-                        torch.cuda.empty_cache()             
-            
-            # Compute metrics
-            val_loss /= len(val_loader)
-            val_acc = val_correct / val_total
-            val_prec = val_TP / (val_TP + val_FP + 1e-8)
-            val_rec = val_TP / (val_TP + val_FN + 1e-8)
-            val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
+                if device == "cuda" and i % 50 == 0:
+                    torch.cuda.empty_cache()             
+        
+        # Compute metrics
+        val_loss /= len(val_loader)
+        val_acc = val_correct / val_total
+        val_prec = val_TP / (val_TP + val_FP + 1e-8)
+        val_rec = val_TP / (val_TP + val_FN + 1e-8)
+        val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
 
-            if val_f1 > best_f1:
-                best_f1 = val_f1
-                best_threshold = t
+        #     if val_f1 > best_f1:
+        #         best_f1 = val_f1
+        #         best_threshold = t
 
-        print(f"Best threshold: {best_threshold:.2f}, F1: {best_f1:.4f}")
+        # print(f"Best threshold: {best_threshold:.2f}, F1: {best_f1:.4f}")
 
         # Log metrics to wandb.
         if track_on_wandb == True:
@@ -323,18 +323,18 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         
         for batch in train_loader:
             batch = [b.to(device) for b in batch]
+            inputs, labels = batch
             optimizer.zero_grad()
-            output = model(batch[0])
+            output = model(inputs)
             preds = (output.squeeze() > t).long()
             sparsity_loss = output.squeeze().sum()/len(batch)
-            loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())#+0.1*sparsity_loss
+            loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), labels.float())#+0.1*sparsity_loss
 
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
             # Node-level metrics
-            labels = batch.y
             train_correct += (preds == labels).sum().item()
             train_total += labels.numel()
             train_TP += ((preds == 1) & (labels == 1)).sum().item()
@@ -364,14 +364,14 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         with torch.no_grad():
             for batch in val_loader:
                 batch = [b.to(device) for b in batch]
-                output = model(batch[0])
+                inputs, labels = batch
+                output = model(inputs)
                 sparsity_loss = output.squeeze().sum()/len(batch)
-                loss = torch.nn.BCELoss()(output.squeeze(), batch[1].float())# + 0.1*sparsity_loss
+                loss = torch.nn.BCELoss()(output.squeeze(), labels.float())# + 0.1*sparsity_loss
                 val_loss += loss.item()
                 preds = (output.squeeze() > t).long()
 
                 # Node-level metrics
-                labels = batch.y
                 val_correct += (preds == labels).sum().item()
                 val_total += labels.numel()
                 val_TP += ((preds == 1) & (labels == 1)).sum().item()

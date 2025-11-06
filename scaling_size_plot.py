@@ -15,19 +15,22 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
+n = [5,10]
+m = [20,40]
+
 nth = 7
 seed = 123
-data_points = 2000
+data_points = 20#00
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t = 0.9 #0.6 # vary
+t = 0.6 #0.6
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 5
+num_runs = 2 #5
 
 torch.cuda.empty_cache()
 start_time = time.time()
@@ -150,7 +153,7 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_mean,prediction_time_mean, solving_time_std,prediction_time_std))
     iterations = list(zip(iterations_after_mean,iterations_after_std))
-    with open("./data/scaling_data_std_new.pkl", "wb") as f:
+    with open("./data/scaling_data_std_server.pkl", "wb") as f:
         pickle.dump((points, label_vector,iterations), f)
 
 end_time = time.time()

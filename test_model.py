@@ -136,9 +136,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             prediction_time[i] = end_time - start_time
 
             # Node-level metrics
-            labels = batch.y[n:]           # take only the constraint nodes
-            preds_constraints = preds[n:]  # same slice for predictions
-            # print(labels.shape, preds_constraints.shape)
+            labels = batch.y[n:]         
+            preds_constraints = preds[n:]
             test_correct += (preds_constraints == labels).sum().item()
             test_total += labels.numel()
             test_TP += ((preds_constraints == 1) & (labels == 1)).sum().item()
@@ -182,44 +181,62 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             counter = 0
             max_removals = 10
 
-            while exitflag < 0 and counter <= max_removals:
-                # print(f"Evaluate test sample {i}, attempt {counter+1}")
 
-                # If exceeded max removals, solve with empty active set
-                if counter >= max_removals:
-                    # print("Max removals reached, trying with empty active set")
-                    sense_i = np.zeros_like(sense_i, dtype=np.int32)
-                    # print("sense_i",sense_i)
-                x, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
-                counter += 1
-
-                # print("exitflag:", exitflag)
-
-                # lambda_after = list(info.values())[4]
+            while exitflag == -6:   # system not solvable
+                _,_,exitflag,info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
+                lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
-                test_time_after[i] = list(info.values())[0] + list(info.values())[1]
+                # solve and set-up time
+                test_time_after[i]= list(info.values())[0] + list(info.values())[1]
 
-                # Stop if feasible
-                if exitflag >= 0:
-                    # print("Problem solved successfully")
+                # remove one active constraint per iteration until problem is solvable
+                last_one_index = np.where(sense_active == 1)[-1]
+                if last_one_index is not None:
+                    sense_active[last_one_index] = 0
+                   
 
-                    sense_compare = np.zeros_like(sense_i, dtype=np.int32)
-                    # x_compare, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_compare)
+            # while exitflag < 0 and counter <= max_removals:
+            #     # print(f"Evaluate test sample {i}, attempt {counter+1}")
 
-                    # diff_mask =  ~np.isclose(x, x_compare, rtol=1e-9, atol=1e-12)
-                    # if (np.where(diff_mask)[0]).size>0 :
-                    #     print("Incorrectly solved")
-                    # else:
-                    #     print("Correctly solved")
-                    # break
+            #     # If exceeded max removals, solve with empty active set
+            #     if counter >= max_removals:
+            #         # print("Max removals reached, trying with empty active set")
+            #         sense_i = np.zeros_like(sense_i, dtype=np.int32)
+            #         # print("sense_i",sense_i)
+            #     x, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
+            #     counter += 1
 
-                # Remove last nonzero constraint safely
-                nonzero_idx = np.flatnonzero(sense_i)
-                if nonzero_idx.size == 0:
-                    # print("All constraints removed, but problem still infeasible")
-                    break
-                last_index = nonzero_idx[-1]
-                sense_i[last_index] = 0
+            #     # print("exitflag:", exitflag)
+
+            #     # lambda_after = list(info.values())[4]
+            #     test_iterations_after[i] = list(info.values())[2]
+            #     test_time_after[i] = list(info.values())[0] + list(info.values())[1]
+
+            #     # Stop if feasible
+            #     if exitflag >= 0:
+            #         # print("Problem solved successfully")
+
+            #         sense_compare = np.zeros_like(sense_i, dtype=np.int32)
+            #         # x_compare, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_compare)
+
+            #         # diff_mask =  ~np.isclose(x, x_compare, rtol=1e-9, atol=1e-12)
+            #         # if (np.where(diff_mask)[0]).size>0 :
+            #         #     print("Incorrectly solved")
+            #         # else:
+            #         #     print("Correctly solved")
+            #         # break
+
+            #     # Remove last nonzero constraint safely
+            #     nonzero_idx = np.flatnonzero(sense_i)
+            #     if nonzero_idx.size == 0:
+            #         # print("All constraints removed, but problem still infeasible")
+            #         break
+            #     last_index = nonzero_idx[-1]
+            #     sense_i[last_index] = 0
+
+
+
+
                 # print(f"Removed constraint at index {last_index}, remaining active constraints: {nonzero_idx[:-1]}")
 
                 # remove one active constraint per iteration until problem is solvable
@@ -300,8 +317,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
     #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
-    return test_acc, test_prec, test_rec, test_f1
-    #return prediction_time, test_time_after, test_iterations_after
+    #return test_acc, test_prec, test_rec, test_f1
+    return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0):
@@ -353,17 +370,21 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     model.eval()
     
     # Initialization for testing 
-    test_all_labels = []
-    test_preds = []
+
     test_time_after = np.zeros(len(test_loader))
     test_iterations_after = np.zeros(len(test_loader))
     test_iterations_difference = np.zeros(len(test_loader))
     prediction_time = np.zeros(len(test_loader))
-    graph_pred = []
-    num_wrongly_pred_nodes_per_graph = []
-    perc_wrongly_pred_nodes_per_graph = []
-    
+ 
     counter = 0
+    test_loss = 0
+    test_correct = 0
+    test_total = 0
+    test_TP = 0
+    test_FP = 0
+    test_FN = 0
+    test_num_wrong_nodes = 0
+    test_total_nodes = 0
 
     # Warm-up once
     warmup_batch = next(iter(test_loader))[0].to(device)
@@ -377,13 +398,14 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     with torch.inference_mode():
         for i, batch in enumerate(test_loader):
             batch = [b.to(device) for b in batch]
+            inputs, labels = batch
             n = int(n_vector[i])
             m = int(m_vector[i])
             
             if device == "cuda":
                 torch.cuda.synchronize()
             start_time = time.perf_counter()
-            output = model(batch[0])
+            output = model(inputs)
             
             if device == "cuda":
                 torch.cuda.synchronize()
@@ -392,31 +414,18 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
             preds = (output.squeeze() > t).long()
 
             
-            # Store predictions and labels
-            test_preds.extend(preds.cpu().numpy().flatten())
-            test_all_labels.extend(batch[1].cpu().numpy().flatten())
-
-            # print(np.where(preds.numpy().flatten() == 1)[0])
-            # print(np.where(batch[1].numpy().flatten()== 1)[0])
-            # print()
-            # if len(np.where(preds.numpy().flatten() == 1)[0]) == 0:
-            #     counter += 1
-
-            # Compute graph metrics
-            preds = preds.reshape(-1,n+m)
-            preds_numpy = preds.cpu().numpy().reshape(-1,n+m)
-            all_labels = batch[1].cpu().numpy().reshape(-1,n+m)
-            graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
-            
-            num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
-            perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
-
-            # if i<5:
-            #    W_true = (batch[1].numpy().flatten()[n:]!=0).astype(int).nonzero()[0]
-            #    W_pred = (preds_numpy[0][n:] != 0).astype(int).nonzero()[0]
-            #    print(f"W_true: {W_true}")
-            #    print(f"W_pred: {W_pred}")
-
+            # Node-level metrics
+            print(labels.shape, preds.shape)
+            labels_constraints = labels.squeeze()[n:]
+            preds_constraints = preds[n:]
+            print(labels_constraints.shape,preds_constraints.shape)
+            test_correct += (preds_constraints == labels_constraints).sum().item()
+            test_total += labels_constraints.numel()
+            test_TP += ((preds_constraints == 1) & (labels_constraints == 1)).sum().item()
+            test_FP += ((preds_constraints == 1) & (labels_constraints == 0)).sum().item()
+            test_FN += ((preds_constraints == 0) & (labels_constraints == 1)).sum().item()
+            test_num_wrong_nodes += (preds_constraints != labels_constraints).sum().item()
+            test_total_nodes += labels_constraints.numel()
 
             # Solve QPs with predicted active sets
             sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]
@@ -436,24 +445,25 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
                 if last_one_index is not None:
                     sense_active[last_one_index] = 0
                     
-            # Solve system one more time without inactive constraints to make sure no active constraints are in there
-            # sense_new = (lambda_after != 0).astype(np.int32)
-            # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower,sense_new)
-            # test_iterations_after[i] += list(info.values())[2]
-            # test_time_after[i] += list(info.values())[0]   # only consider solve time, since the daqp solver could be optimized such that the set-up only needs to be done once
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
             
     # Compute metrics
-    test_acc = accuracy_score(test_all_labels, test_preds)
-    test_acc_graph = np.mean(graph_pred)
-    test_prec = precision_score(test_all_labels, test_preds)
-    test_rec = recall_score(test_all_labels, test_preds)
-    test_f1 = f1_score(test_all_labels, test_preds)
 
-    # Compute naive metrics
-    n_vector = [n for i in range(len(test_loader))]
-    m_vector = [m for i in range(len(test_loader))]
-    naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, _, pr_auc= naive_model(n_vector,m_vector,test_all_labels) 
+    test_loss /= len(test_loader)
+    test_acc = test_correct / test_total
+    test_prec = test_TP / (test_TP + test_FP + 1e-8)
+    test_rec = test_TP / (test_TP + test_FN + 1e-8)
+    test_f1 = 2 * test_prec * test_rec / (test_prec + test_rec + 1e-8)
+
+    # test_acc = accuracy_score(test_all_labels, test_preds)
+    # test_prec = precision_score(test_all_labels, test_preds)
+    # test_rec = recall_score(test_all_labels, test_preds)
+    # test_f1 = f1_score(test_all_labels, test_preds)
+
+    # # Compute naive metrics
+    # n_vector = [n for i in range(len(test_loader))]
+    # m_vector = [m for i in range(len(test_loader))]
+    # naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, _, pr_auc= naive_model(n_vector,m_vector,test_all_labels) 
     
     # Compute average over graphs
     print(counter)
@@ -462,15 +472,13 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     print(f"Precision of the model on the test data: {test_prec}")
     print(f"Recall of the model on the test data: {test_rec}")
     print(f"F1-Score of the model on the test data: {test_f1}")
-    print(f"Accuracy (graph level) of the model on the test data: {test_acc_graph}")
-    print(f"Perc num_CORRECTLY_pred_nodes_per_graph: {1-np.mean(perc_wrongly_pred_nodes_per_graph)}")
     print()
-    print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
-    print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
-    print(f"PR AUC: {pr_auc}")
+    # print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
+    # print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
+    # print(f"PR AUC: {pr_auc}")
     print()
-    print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
-    print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
+    # print(f'Number of graphs: {len(graph_pred)}, Correctly predicted graphs: {np.sum(graph_pred)}')
+    # print(f'Mean num_wrongly_pred_nodes_per_graph: {np.mean(num_wrongly_pred_nodes_per_graph)}')
     print(f'Test time before: mean {np.mean(test_time_before)}, min {np.min(test_time_before)}, max {np.max(test_time_before)}')
     print(f'Test time after: mean {np.mean(test_time_after)}, min {np.min(test_time_after)}, max {np.max(test_time_after)}')
     print(f"Time reduction: mean {np.mean(np.array(test_time_before)-np.array(test_time_after))}, min {np.min(np.array(test_time_before)-np.array(test_time_after))}, max {np.max(np.array(test_time_before)-np.array(test_time_after))}")
