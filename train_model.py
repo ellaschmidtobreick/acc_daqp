@@ -94,7 +94,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
-        print(f"Epoch {epoch}")
+        # if epoch % 10:
+        #     print(f"Epoch {epoch}")
 
         ################
         # Training
@@ -337,7 +338,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
 
             # Convert output to binary prediction (0 or 1)
             preds = (output.squeeze() > t).long()
-            sparsity_loss = output.squeeze().sum()/batch.num_graphs  ### here
+            sparsity_loss = output.squeeze().sum()/len(batch)
             loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())+0.1*sparsity_loss
 
             loss.backward()
