@@ -19,22 +19,26 @@ lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
 number_of_layers = 3
-track_on_wandb = True #True
+track_on_wandb = False #True
 t = 0.5 # 0.6 # 0.9
 scale = 0.01
 runs = 5
 model_name = f"model_{n[0]}v_{m[0]}c_lmpc_R_00001_avg"
 ts = [0.1,0.2,0.3,0.,0.5,0.6,0.7,0.8,0.9]
+cuda = 0
+
 
 total_start_time = time.time()
 for t in ts:
+    print()
+    print(f"------threshold {t} ------")
     test_time_before_vector,test_time_after_vector,test_iterations_before_vector, test_iterations_after_vector, test_iterations_difference_vector = [], [], [],[], []
     for i in range(runs):
         train_time_start = time.time()
-        train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,scale_H=scale,dataset_type="lmpc",cuda = 1)
+        train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,scale_H=scale,dataset_type="lmpc",cuda = cuda)
         train_time_end = time.time()
         print(f"Training time: {train_time_end - train_time_start} seconds")
-        test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,model_name,dataset_type="lmpc",cuda = 1)
+        test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference = test_GNN(n,m,nth,seed, data_points,layer_width,number_of_layers,t, False,False,model_name,dataset_type="lmpc",cuda = cuda)
         test_time_before_vector.append(test_time_before)
         test_time_after_vector.append(test_time_after)
         test_iterations_before_vector.append(test_iterations_before)

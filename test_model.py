@@ -134,34 +134,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 torch.cuda.synchronize()
             end_time = time.perf_counter()
             prediction_time[i] = end_time - start_time
-            
-            # print(f"Output mean prediction: {torch.sigmoid(preds).sum().item()-173:.4f}")
-            # if torch.sigmoid(preds).sum().item() < 3:
-            #     preds = torch.zeros_like(output, dtype=torch.long)
-            # else:
-            #     preds = (torch.sigmoid(output).squeeze() > t).long()
-
-            # Store predictions and labels
-            # test_preds.extend(preds.cpu().numpy())
-            # test_all_labels.extend(batch.y.cpu().numpy())
-
-            # print(np.where(preds.numpy() == 1)[0])
-            # print(np.where(batch.y.numpy() == 1)[0])
-            # print()
-
-            # Compute graph metrics
-            # print("preds.shape",preds.shape)
-            # preds = preds.reshape(-1,n+m_half)
-            # preds_numpy = preds.cpu().numpy().reshape(-1,n+m_half)
-            # all_labels = batch.y.cpu().numpy().reshape(-1,n+m_half)
-            # graph_pred.extend(np.all(preds_numpy == all_labels, axis=1))
-            # test_all_label_graph.append(np.array(all_labels))
-
-            # num_wrongly_pred_nodes_per_graph.extend(np.abs((n+m) - np.sum(all_labels == preds_numpy, axis=1)))
-            # perc_wrongly_pred_nodes_per_graph.extend([(x / (n + m)) for x in num_wrongly_pred_nodes_per_graph])
 
             # Node-level metrics
-            # labels = batch.y
             labels = batch.y[n:]           # take only the constraint nodes
             preds_constraints = preds[n:]  # same slice for predictions
             # print(labels.shape, preds_constraints.shape)
@@ -195,51 +169,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print("sense_active shape",sense_active.shape)
 
             exitflag = -6
-            # blower_i = np.array(blower[i], copy=True)
-            # A_current = A_current[i][n:m_half,:]
-            # bupper_i = bupper[i]
-            # blower_i = blower[i]
-            # print(A_current[i].shape,bupper[i].shape,blower[i].shape)
-            # solve system until it is solvable
-            # print(H_test[i].shape, f_test[i].shape, A_current.shape, bupper_i.shape, blower_i.shape, sense_active.shape)¨
-            # print(bupper[i])
             counter = 0
             
-            # while exitflag <0 and counter<=10: #and counter<10:   # system not solvable
-            #     print(f"Evaluate {i} test sample")
-            #     if counter <10:
-            #         _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),sense_active)
-            #     else:
-            #         _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_current[i],bupper[i].flatten(),blower[i].flatten(),np.zeros_like(sense_active))
-            
-            #     counter += 1
-            #     print("exitflag",exitflag)
-            #     # _,_,exitflag,info = daqp.solve(H_test[i],f_test[i],A_test[i],b_test[i],blower_i,sense_active)
-
-            #     lambda_after= list(info.values())[4]
-            #     test_iterations_after[i] = list(info.values())[2]
-            #     # take test and set-up time
-            #     test_time_after[i]= list(info.values())[0] + list(info.values())[1]
-                
-            #     # print("W_pred",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
-            #     # print("sense_active",(preds_print != 0).nonzero(as_tuple=True)[0].tolist())
-
-            #     # remove one active constraint per iteration until problem is solvable
-            #     if exitflag <0:
-            #         if np.all(sense_active == 0):
-            #             # print("All constraints are removed from active set.")
-            #             break
-            #         else:
-            #             print("else loop for last index")
-            #             last_one_index = np.where(sense_active != 0)[-1][-1]
-            #             print("last index",last_one_index)
-            #         # print("remove active constraint",last_one_index)
-            #         if last_one_index is not None:
-            #             # print("sense_active before removal:", np.where(sense_active!= 0)[0])
-            #             sense_active[last_one_index] = 0
-            #             # print("sense_active after removal:", np.where(sense_active!= 0)[0])
-
-
             # Prepare arrays safely for DAQP
             H_i = np.ascontiguousarray(H_test[i], dtype=np.float64)
             f_i = np.ascontiguousarray(f_test[i], dtype=np.float64)
@@ -324,24 +255,6 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print(f"Finished sample {i+1} / {len(test_loader)}")
             # print()
 
-
-
-    # count_all_zero = 0
-    # for labels_graph in test_all_label_graph:
-    #     if np.all(labels_graph == 0):
-    #         count_all_zero += 1
-
-
-    # Compute metrics
-    # test_acc = accuracy_score(test_all_labels, test_preds)
-    # test_acc_graph = np.mean(graph_pred)
-    # test_prec = precision_score(test_all_labels, test_preds)
-    # test_rec = recall_score(test_all_labels, test_preds)
-    # test_f1 = f1_score(test_all_labels, test_preds)
-
-    # precision, recall, thresholds = precision_recall_curve(test_all_labels,test_preds)
-    # pr_auc = auc(recall, precision)
-
     # print("evalution now")
     test_loss /= len(test_loader)
     test_acc = test_correct / test_total
@@ -357,7 +270,6 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     print(f"Precision of the model on the test data: {test_prec}")
     print(f"Recall of the model on the test data: {test_rec}")
     print(f"F1-Score of the model on the test data: {test_f1}")
-    # print(f"Perc num_wrongly_pred_nodes_per_graph: {np.mean(perc_wrongly_pred_nodes_per_graph)}")
     # print()
     # print(f"NAIVE MODEL: acc = {naive_acc}, prec = {naive_prec}, rec = {naive_rec}, f1 = {naive_f1}")
     # print(f"Naive model: perc num_wrongly_pred_nodes_per_graph: {np.mean(naive_perc_wrongly_pred_nodes_per_graph)}")
@@ -387,9 +299,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
     #return test_acc, test_prec, test_rec, test_f1
-    return prediction_time, test_time_after, test_iterations_after
+    #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
 def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0):
@@ -409,9 +321,6 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
 
     device = torch.device(f"cuda{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
-
-    # Generate test data
-    #data_test, test_iterations_before,test_time_before, H_test,f_test,A_test,b_test,blower,_,n,m = generate_MLP_test_data_only(n,m,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
 
     # Generate test data
     for i in range(len(n)):
@@ -439,7 +348,6 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     output_dimension = n[0] + m[0]
 
     model = MLP(input_dim=input_dimension, output_dim=output_dimension,layer_width = layer_width)
-    #model = torch.nn.DataParallel(model)
     model = model.to(device)
     model.load_state_dict(torch.load(f"saved_models/{model_name}.pth",weights_only=True))
     model.eval()
