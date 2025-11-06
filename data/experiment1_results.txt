@@ -11,18 +11,6 @@ Test F1 Score: mean = 0.887819, std = 0.010852
 ------------------------------------------------------------
 
 Parameters: layer width: 128, data points: 5000, t: 0.8, dense
-Train Accuracy: mean = 0.829350, std = 0.000000
-Train Precision: mean = 0.000000, std = 0.000000
-Train Recall: mean = 0.000000, std = 0.000000
-Train F1 Score: mean = 0.000000, std = 0.000000
-Test Accuracy: mean = 0.959900, std = 0.000000
-Test Precision: mean = 0.916225, std = 0.000000
-Test Recall: mean = 0.893427, std = 0.000000
-Test F1 Score: mean = 0.904683, std = 0.000000
-
-------------------------------------------------------------
-
-Parameters: layer width: 128, data points: 5000, t: 0.8, dense
 Train Accuracy: mean = 0.985124, std = 0.001429
 Train Precision: mean = 0.958667, std = 0.005040
 Train Recall: mean = 0.956683, std = 0.004478
@@ -34,3 +22,14 @@ Test F1 Score: mean = 0.895733, std = 0.010054
 
 ------------------------------------------------------------
 
+Parameters: layer width: 128, data points: 5000, t: 0.8, dense, server
+Train Accuracy: mean = 0.985277, std = 0.001390
+Train Precision: mean = 0.959266, std = 0.004415
+Train Recall: mean = 0.956955, std = 0.004349
+Train F1 Score: mean = 0.958101, std = 0.003482
+Test Accuracy: mean = 0.954320, std = 0.004301
+Test Precision: mean = 0.895307, std = 0.013776
+Test Recall: mean = 0.897379, std = 0.016699
+Test F1 Score: mean = 0.896174, std = 0.009228
+
+------------------------------------------------------------
