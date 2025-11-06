@@ -16,7 +16,7 @@ from model import GNN, MLP
 from naive_model import naive_model
 
 # Generate test problems and the corresponding graphs
-def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False):
+def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda =0):
     # Initialization for data generation
     graph_test = []
     H_test = []
@@ -31,7 +31,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     m_vector = []
     m_half= int(m[0]/2)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate test data
@@ -392,7 +392,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
-def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard"):
+def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0):
 
     # Initialization for data generation
     data_test = []
@@ -407,7 +407,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     n_vector = []
     m_vector = []
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate test data

@@ -15,7 +15,7 @@ from model import EarlyStopping
 import matplotlib.pyplot as plt
 import copy
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda = 0):
     
     # Initialization      
     graph_train = []
@@ -26,7 +26,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     m_vector_val = []
 
     # Select device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate QP problems and the corresponding graphs
@@ -240,7 +240,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # return val_acc_save[best_epoch-1]
     return train_acc, train_prec, train_rec, train_f1
 
-def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard"):
+def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard",cuda = 0):
     
     # Initialization      
     data_train = []
@@ -263,7 +263,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     val_perc_wrongly_pred_nodes_per_graph_save = []
     val_mean_wrongly_pred_nodes_per_graph_save = []
     
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate QP problems and the corresponding graphs
