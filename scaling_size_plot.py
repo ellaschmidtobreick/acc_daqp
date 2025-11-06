@@ -15,9 +15,6 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
-print(n)
-print(m)
-
 nth = 7
 seed = 123
 data_points = 2000
