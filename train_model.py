@@ -162,6 +162,12 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_num_wrong_nodes = 0
         val_total_nodes = 0
 
+        # best_f1 = 0.0
+        # best_threshold = 0.0
+        # thresholds = np.linspace(0, 1, 11)        
+        # for t in thresholds:
+        #     val_correct = val_total = val_TP = val_FP = val_FN = 0
+
         with torch.no_grad():
             for i,batch in enumerate(val_loader):
                 batch = batch.to(device)
@@ -172,8 +178,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                     loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
                 elif dataset_type == "lmpc":
                     sparsity_loss = output.squeeze().sum()/batch.num_graphs
-                    #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
-                    #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * preds.sum()
                     BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
                     loss = BCE_loss + 0.1 * sparsity_loss
                     # print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
@@ -182,10 +186,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
                 # Node-level metrics
                 labels = batch.y
-                # print(batch.y.shape, preds.shape)
-                # labels = batch.y[n:]           # take only the constraint nodes
-                # preds_constraints = preds[n:]  # same slice for predictions
-                # print(labels.shape, preds_constraints.shape)
 
                 val_correct += (preds == labels).sum().item()
                 val_total += labels.numel()
@@ -204,6 +204,12 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_prec = val_TP / (val_TP + val_FP + 1e-8)
         val_rec = val_TP / (val_TP + val_FN + 1e-8)
         val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
+
+        #     if val_f1 > best_f1:
+        #         best_f1 = val_f1
+        #         best_threshold = t
+
+        # print(f"Best threshold: {best_threshold:.2f}, F1: {best_f1:.4f}")
 
         # Log metrics to wandb.
         if track_on_wandb == True:

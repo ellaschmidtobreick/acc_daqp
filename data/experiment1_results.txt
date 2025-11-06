@@ -1,0 +1,36 @@
+Parameters: layer width: 128, data points: 2000, t: 0.8, dense
+Train Accuracy: mean = 0.982480, std = 0.002645
+Train Precision: mean = 0.952686, std = 0.008570
+Train Recall: mean = 0.946903, std = 0.009119
+Train F1 Score: mean = 0.949780, std = 0.008556
+Test Accuracy: mean = 0.951300, std = 0.003755
+Test Precision: mean = 0.892423, std = 0.016668
+Test Recall: mean = 0.883508, std = 0.013406
+Test F1 Score: mean = 0.887819, std = 0.010852
+
+------------------------------------------------------------
+
+Parameters: layer width: 128, data points: 5000, t: 0.8, dense
+Train Accuracy: mean = 0.829350, std = 0.000000
+Train Precision: mean = 0.000000, std = 0.000000
+Train Recall: mean = 0.000000, std = 0.000000
+Train F1 Score: mean = 0.000000, std = 0.000000
+Test Accuracy: mean = 0.959900, std = 0.000000
+Test Precision: mean = 0.916225, std = 0.000000
+Test Recall: mean = 0.893427, std = 0.000000
+Test F1 Score: mean = 0.904683, std = 0.000000
+
+------------------------------------------------------------
+
+Parameters: layer width: 128, data points: 5000, t: 0.8, dense
+Train Accuracy: mean = 0.985124, std = 0.001429
+Train Precision: mean = 0.958667, std = 0.005040
+Train Recall: mean = 0.956683, std = 0.004478
+Train F1 Score: mean = 0.957664, std = 0.003713
+Test Accuracy: mean = 0.954230, std = 0.004482
+Test Precision: mean = 0.896613, std = 0.012345
+Test Recall: mean = 0.895214, std = 0.019143
+Test F1 Score: mean = 0.895733, std = 0.010054
+
+------------------------------------------------------------
+
