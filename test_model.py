@@ -40,14 +40,14 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         m_i = m[i]
         if dataset_type == "standard":
             graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
-            print("graph_test:", type(graph_test_i))
-            print("test_iterations:", type(test_iterations_before_i))
-            print("test_time:", type(test_time_before_i))
-            print("H_test:", type(i))
-            print("f_test:", type(f_test_i))
-            print("A_test:", type(A_current_i))
-            print("bupper_test:", type(bupper_i))
-            print("blower_test:", type(blower_i))
+            # print("graph_test:", type(graph_test_i))
+            # print("test_iterations:", type(test_iterations_before_i))
+            # print("test_time:", type(test_time_before_i))
+            # print("H_test:", type(i))
+            # print("f_test:", type(f_test_i))
+            # print("A_test:", type(A_current_i))
+            # print("bupper_test:", type(bupper_i))
+            # print("blower_test:", type(blower_i))
  
             bupper = bupper + bupper_i
             blower = blower + blower_i
@@ -66,11 +66,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
         n_vector = n_vector + [n_i for j in range(len(test_iterations_before_i))]
         m_vector= m_vector + [m_i for j in range(len(test_iterations_before_i))]
-        print(len(n_vector))
-        print(len(m_vector))
-        print(blower)
-        print(bupper)
-        print(len(graph_test),len(test_iterations_before),len(test_time_before),len(H_test),len(f_test),len(A_current),len(bupper),len(blower))
+        # print(len(n_vector))
+        # print(len(m_vector))
+        # print(blower)
+        # print(bupper)
+        # print(len(graph_test),len(test_iterations_before),len(test_time_before),len(H_test),len(f_test),len(A_current),len(bupper),len(blower))
     # Load Data
     test_loader = GraphDataLoader(graph_test, batch_size = 1, shuffle = False)
 
@@ -180,13 +180,13 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
             W_true = (y != 0).nonzero(as_tuple=True)[0]
             W_pred = (preds_print != 0).nonzero(as_tuple=True)[0]
-            print()
-            print(f"W_true: {W_true.tolist()}")
-            print(f"W_pred: {W_pred.tolist()}")
+            # print()
+            # print(f"W_true: {W_true.tolist()}")
+            # print(f"W_pred: {W_pred.tolist()}")
             #     # print("len W_true, W_pred",y.shape,preds_print.shape)
             #     # Print prediction values for the predicted indices
             pred_vals = output.detach().cpu().squeeze()[W_pred + n]
-            print(f"% pred: {pred_vals.tolist()}")
+            # print(f"% pred: {pred_vals.tolist()}")
 
 
             # Solve QPs with predicted active sets
@@ -252,17 +252,17 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             max_removals = 10
 
             while exitflag < 0 and counter <= max_removals:
-                print(f"Evaluate test sample {i}, attempt {counter+1}")
+                # print(f"Evaluate test sample {i}, attempt {counter+1}")
 
                 # If exceeded max removals, solve with empty active set
                 if counter >= max_removals:
-                    print("Max removals reached, trying with empty active set")
+                    # print("Max removals reached, trying with empty active set")
                     sense_i = np.zeros_like(sense_i, dtype=np.int32)
                     # print("sense_i",sense_i)
                 x, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
                 counter += 1
 
-                print("exitflag:", exitflag)
+                # print("exitflag:", exitflag)
 
                 # lambda_after = list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
@@ -270,8 +270,9 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
 
                 # Stop if feasible
                 if exitflag >= 0:
-                    print("Problem solved successfully")
-                    # sense_compare = np.zeros_like(sense_i, dtype=np.int32)
+                    # print("Problem solved successfully")
+
+                    sense_compare = np.zeros_like(sense_i, dtype=np.int32)
                     # x_compare, _, exitflag, info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_compare)
 
                     # diff_mask =  ~np.isclose(x, x_compare, rtol=1e-9, atol=1e-12)
@@ -284,11 +285,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 # Remove last nonzero constraint safely
                 nonzero_idx = np.flatnonzero(sense_i)
                 if nonzero_idx.size == 0:
-                    print("All constraints removed, but problem still infeasible")
+                    # print("All constraints removed, but problem still infeasible")
                     break
                 last_index = nonzero_idx[-1]
                 sense_i[last_index] = 0
-                print(f"Removed constraint at index {last_index}, remaining active constraints: {nonzero_idx[:-1]}")
+                # print(f"Removed constraint at index {last_index}, remaining active constraints: {nonzero_idx[:-1]}")
 
                 # remove one active constraint per iteration until problem is solvable
                 # last_one_index = np.where(sense_active == 1)[0]   # extract array of indices
@@ -299,7 +300,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
 
-            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+            # print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
             # print(f"test iterations before: {test_iterations_before[i]}")
@@ -320,8 +321,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             test_iterations_difference[i] = test_iterations_before[i]-test_iterations_after[i]
             if device == "cuda" and i % 50 == 0:
                 torch.cuda.empty_cache()
-            print(f"Finished sample {i+1} / {len(test_loader)}")
-            print()
+            # print(f"Finished sample {i+1} / {len(test_loader)}")
+            # print()
 
 
 
@@ -386,8 +387,8 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
-    return test_acc, test_prec, test_rec, test_f1
+    return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    #eturn test_acc, test_prec, test_rec, test_f1
     #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
