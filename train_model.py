@@ -253,7 +253,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     n_vector_val = []
     m_vector_val = []
     
-    device = torch.device("cuda{cuda}" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate QP problems and the corresponding graphs
