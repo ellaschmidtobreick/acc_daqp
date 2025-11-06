@@ -17,7 +17,7 @@ def boxplot_time(time_before,time_after, label, save):
     plt.rcParams.update({'font.size': 12})
     plt.boxplot([time_before,time_after],showfliers=False)
     plt.ylabel(label)
-    plt.xticks([1, 2], ['cold-starting', 'warm-starting with GNN'])
+    plt.xticks([1, 2], ['Cold-starting', 'Warm-starting with GNN'])
     if save == True:
         plt.savefig(f"plots/boxplot_{label}.png")
     plt.show()
@@ -56,34 +56,35 @@ def barplot_iterations(iterations_before, iterations_after, model_name, save):
     width = 0.4 
 
     # Plot bars
-    plt.bar(x - width/2, before_values, width=width, label="cold-starting",alpha = 0.9, color="#6A3D9A")
-    plt.bar(x + width/2, after_values, width=width, label="warm-starting with GNN",alpha = 0.7, color="#33A02C")
+    plt.bar(x - width/2, before_values, width=width, label="Cold-starting",alpha = 0.9, color="#6A3D9A")
+    plt.bar(x + width/2, after_values, width=width, label="Warm-starting with GNN",alpha = 0.7, color="#33A02C")
 
     
     # Calculate quartiles
-    q1_bef = np.percentile(iterations_before, 25)
-    q2_bef = np.percentile(iterations_before, 50)
-    q3_bef = np.percentile(iterations_before, 75)
-    # Calculate some percentiles
-    p10_bef = np.percentile(iterations_before, 10)
-    p90_bef = np.percentile(iterations_before, 90)
+    # q2_bef = np.percentile(iterations_before, 50)
+    # q2_aft = np.percentile(iterations_after, 50)
+    q2_bef = np.mean(iterations_before)
+    q2_aft = np.mean(iterations_after)
+    q3_bef = np.percentile(iterations_before, 90)
+    q3_aft = np.percentile(iterations_after, 90)
+    q1_bef = np.percentile(iterations_before, 10)
+    q1_aft = np.percentile(iterations_after, 10)
 
-    # Calculate quartiles
-    q1_aft = np.percentile(iterations_after, 25)
-    q2_aft = np.percentile(iterations_after, 50)
-    q3_aft = np.percentile(iterations_after, 75)
-    # Calculate some percentiles
-    p10_aft = np.percentile(iterations_after, 10)
-    p90_aft = np.percentile(iterations_after, 90)
 
     # Quartiles and percentiles
-    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
-    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+    plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+    plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+    # Quartiles and percentiles
+    plt.axvline(x=q1_bef, color="#CAB2D6", linestyle='-.')
+    plt.axvline(x=q1_aft, color="#B2DF8A", linestyle='-.')
+    plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
+    plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
 
     # Labels and legend
     plt.xlabel("Number of Iterations")
     plt.ylabel("Frequency")
-    
+    plt.ylim(0, 40)
+
     #plt.xticks(ticks=x[::5], labels=all_iterations[::5])
     plt.xlim(x[0] - width, x[-1] + width)
     plt.legend()
@@ -119,7 +120,6 @@ def barplot_iter_reduction(iterations_reduction, model_name, save):
 
     # Bar width and positions
     width = 0.9
-    #print(x)
     # Plot bars
     plt.bar(all_iterations , red_values, width=width,alpha = 0.9, color="#1F78B4")
 
@@ -149,22 +149,24 @@ def histogram_time(time_before, time_after, model_name,save):
     # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
     max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
-    min_val = np.min([np.max(time_before), np.max(time_after)]) - 0.000001
+    min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
     print(f"max val: {max_val}, min val: {min_val}")
-    plt.hist(time_before, bins=50,range=(0.000007,0.00004),  alpha=0.9, label='cold-starting', color="#6A3D9A")
-    plt.hist(time_after, bins=50,range=(0.000007,0.00004),  alpha=0.7, label='warm-starting with GNN', color="#33A02C")
+    plt.hist(time_before, bins=30,range=(0,0.001),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+    plt.hist(time_after, bins=30,range=(0,0.001),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
 
     # Calculate quartiles
     q2_bef = np.percentile(time_before, 50)
     q2_aft = np.percentile(time_after, 50)
-   
+    q3_bef = np.percentile(time_before, 90)
+    q3_aft = np.percentile(time_after, 90)
 
     # Quartiles and percentiles
-    plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
-    plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+    # plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='--')
+    # plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='--')
   
     plt.xlabel('Time in seconds')
     plt.ylabel('Frequency')
+    plt.ylim(0, 40)
     #plt.title('Histogram of Time without GNN vs with GNN')
     plt.legend()
     
@@ -177,7 +179,51 @@ def histogram_time(time_before, time_after, model_name,save):
     if save == True:
         plt.savefig(f"plots/histo_time_{model_name}.pdf")
     plt.show()
-        
+
+def histogram_iterations(iterations_before, iterations_after, model_name, save):
+    matplotlib.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 22,
+    "font.size": 22,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18    })
+
+    max_val = np.max([np.max(iterations_before), np.max(iterations_after)]) + 2
+    min_val = np.min([np.min(iterations_before), np.min(iterations_after)])
+    print(f"max val: {max_val}, min val: {min_val}")
+    plt.hist(iterations_before, bins=20,range=(min_val,max_val),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+    plt.hist(iterations_after, bins=20,range=(min_val,max_val),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
+
+    # Calculate quartiles
+    q2_bef = np.mean(iterations_before)
+    q2_aft = np.mean(iterations_after)
+    q3_bef = np.percentile(iterations_before, 90)
+    q3_aft = np.percentile(iterations_after, 90)
+
+    # Quartiles and percentiles
+    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+    plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
+    plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
+
+    plt.xlabel('Number of iterations')
+    plt.ylabel('Frequency')
+    plt.ylim(0, 40)
+    #plt.title('Histogram of Time without GNN vs with GNN')
+    plt.legend()
+    
+    formatter = ScalarFormatter(useMathText=True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((-3, 3))
+    plt.gca().xaxis.set_major_formatter(formatter)
+    plt.tight_layout()
+
+    if save == True:
+        plt.savefig(f"plots/histo_iter_{model_name}.pdf")
+    plt.show()
         
 def map_train_acc(train_acc_fixedHA,train_acc_fixedH,train_acc_fixedA,train_acc_flex,figure_name,save = False):
     plt.rcParams.update({'font.size': 12})
@@ -317,6 +363,9 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
     enum = ["(a)","(b)","(c)"]
     for i, model in enumerate(model_types):
         ax = axes[i]
+        model_description = model
+        model_description = model_description.replace("Non-learned","Cold-started")
+
         #ax.set_title(model)
         ax.text(0.5,-0.35, f"{enum[i]} {model}",ha="center", transform=ax.transAxes)
 
