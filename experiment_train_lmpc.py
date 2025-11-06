@@ -14,13 +14,13 @@ n = [10,25]
 m = [20,50]
 nth = 7
 seed = 123
-data_points = 2000# 00 #00 #5000
+data_points = 2000
 lr = 0.001
-number_of_max_epochs = 100 # 20 #100
+number_of_max_epochs = 100 #100# 20 #100
 layer_width = 128
 number_of_layers = 3#3
-track_on_wandb = False #True
-t = 0.9 #9
+track_on_wandb = True #True
+t = 0.9
 scale = 0.01
 n_number = n[0]
 
@@ -56,12 +56,13 @@ n_number = n[0]
 
 # n = [5,10,20] #5,10, 20,50
 # m = [206,216,236] # 206,216, 236, 296
-n = [5]
-m = [206]
-t = 0.9
+n = [50]
+m = [296]
+t = 0.5 # 0.6
+runs = 1
 
 test_time_before_vector,test_time_after_vector,test_iterations_before_vector, test_iterations_after_vector, test_iterations_difference_vector = [], [], [],[], []
-for i in range(5):
+for i in range(runs):
     train_time_start = time.time()
     train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,f"model_{n[0]}v_{m[0]}c_lmpc_R_00001",scale_H=scale,dataset_type="lmpc")
     train_time_end = time.time()
@@ -87,11 +88,11 @@ test_iterations_after_avg = test_iterations_after_vector.mean(axis=0)
 test_iterations_diff_avg = test_iterations_difference.mean(axis=0)
 
 # Save data 
-with open("data/lmpc_experiment_server.pkl", "wb") as f:
-    pickle.dump((f"layer width: {layer_width}, data points: {data_points}, t: {t}", test_time_before_avg,test_time_after_avg,test_iterations_before_avg,test_iterations_after_avg,test_iterations_diff_avg), f)
+# with open("data/lmpc_experiment_50v_296c.pkl", "wb") as f:
+#     pickle.dump((f"layer width: {layer_width}, data points: {data_points}, t: {t}", test_time_before_avg,test_time_after_avg,test_iterations_before_avg,test_iterations_after_avg,test_iterations_diff_avg), f)
 
 # Load data
-# with open("./data/lmpc_experiment.pkl", "rb") as f:
+# with open("./data/lmpc_experiment_server.pkl", "rb") as f:
 #     parameters, test_time_before_avg,test_time_after_avg,test_iterations_before_avg,test_iterations_after_avg,test_iterations_diff_avg = pickle.load(f)
 
 
@@ -101,8 +102,8 @@ with open("data/lmpc_experiment_server.pkl", "wb") as f:
 # print(f'Test iter reduction: mean {np.mean(test_iterations_diff_avg)}, min {np.min(test_iterations_diff_avg)}, max {np.max(test_iterations_diff_avg)}')
 # print(f"Test iter after: quantiles {np.percentile(test_iterations_diff_avg, [5,10,20,30,40, 50, 60,70,80,90,95])}")
 
-# # Plot average results
-# model_name = f"model_{n[0]}v_{m[0]}c_lmpc_R_00001_avg"
+# Plot average results
+model_name = f"model_{n[0]}v_{m[0]}c_lmpc_R_00001_avg"
 # histogram_time(test_time_before_avg, test_time_after_avg, model_name, save=True)
 # barplot_iter_reduction(test_iterations_diff_avg, model_name, save=True)
 # barplot_iterations(test_iterations_before_avg, test_iterations_after_avg, model_name, save=True)

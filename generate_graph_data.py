@@ -253,7 +253,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
 
 
 
-def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False, scale=0.01,two_sided = True):
+def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, scale=0.01,two_sided = True):
 
     #spit generated problems into train, test, val
     iter_train = int(np.rint(0.8*number_of_graphs))
@@ -270,35 +270,33 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
     # b = b[indices]
     # B = B[indices]
 
+    # Scale objective function
     H = H*scale
     f = f*scale
     F = F*scale
-    # print("H",H)
-    # print("f",f)
-    # print("F",F)
+
     print("scale",scale)
 
     print(H.shape,f.shape,F.shape,A.shape,b.shape,B.shape)
 
-    print("condition number of H",np.linalg.cond(H))
+    # print("condition number of H",np.linalg.cond(H))
 
     # dimension reduction for daqp solver
     f = f.squeeze()
     b = b.squeeze()
     
     np.savez(f"data/generated_qp_data_{n}v_{m}c_lmpc.npz", H=H, f=f, F=F, A=A, b=b, B=B)
-    #print("sense shape",sense.shape)
-    #blower = np.array([-np.inf for i in range(m)])
     
-    # Generate training set - only change theta and A
+    #############
+    # TRAINING
+    #############
+
+    # Initialization
     x_train = np.zeros((iter_train,n))
     train_iterations = np.zeros((iter_train))
     train_time= np.zeros((iter_train))
-    
-    # Generate the graph from the training data
     graph_train = []
     
-
     if two_sided == True:
         sense = np.zeros(m_half, dtype=np.int32)
         A_real_constraints= A[n:m_half,:]
@@ -309,14 +307,15 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
         blower = np.array([-np.inf for i in range(m)])
         lambda_train = np.zeros((iter_train,m))
 
-
+    # Create training data
     for i in range(iter_train):
         #print()
         theta = np.random.randn(nth)
-            
+        # print("training", theta)
         btot = b + B @ theta
         ftot = f + F @ theta
-        
+        # print("btot train",btot)
+        # print("ftof train",ftot)        
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -329,29 +328,20 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
             A_current = A
             bupper = btot
 
-
-        #print(bupper.shape,blower.shape)
+        # Solve daqp to get optimal active set
         _,_,_,info = daqp.solve(H,ftot,A_current,bupper,blower,sense)
         lambda_train[i,:]= list(info.values())[4]
         train_iterations[i] = list(info.values())[2]
         train_time[i]= list(info.values())[0]+list(info.values())[1]
-        #print("lambda shape",lambda_train[i,:].shape)
-        # print(np.where(lambda_train[i,:]!=0)[0])
-
-        # get optimal active set (y)
         train_active_set = (lambda_train != 0).astype(int)
-        #print("train active set shape",train_active_set.shape)
         y_train = torch.tensor((np.hstack((np.zeros((iter_train,n)),train_active_set)))) 
 
-        #print("y_train shape",y_train.shape)
-        # graph structure does not change, only vertex features
-        #combine H and A
+        # edge adjacency matrix
         if two_sided == True:
             edge_matrix = np.block([[H,A[:m_half,:].T],[A[:m_half,:],np.zeros((np.shape(A[:m_half,:])[0],np.shape(A[:m_half,:])[0]))]])
         else:
             edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
 
-        #print("edge matrix shape",edge_matrix.shape)
         # create edge_index and edge_attributes
         edge_index = torch.tensor([])
         edge_attr = torch.tensor([])
@@ -363,10 +353,9 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
                     edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
         edge_index = edge_index.long().T
         
+        # vertex features
         if two_sided == True:   
             f_var = np.hstack((ftot,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))))
-            # blower_var = np.hstack([blower_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))]) # add constraints for box constraints - also for other graph
-            # bupper_var = np.hstack([bupper_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))])
             blower_const = np.hstack((np.zeros(np.shape(ftot)),blower_box,blower_real_constraints))
             eq1_train = np.hstack((np.zeros(np.shape(ftot)),np.ones(np.shape(blower_box)),(np.ones(np.shape(blower_real_constraints)))))
             bupper_const = np.hstack((np.zeros(np.shape(ftot)),bupper_box,bupper_real_constraints))
@@ -379,34 +368,41 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
             eq1_test = np.hstack((np.zeros(np.shape(ftot)),(np.zeros(np.shape(btot)))))
             node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
             features = np.array([f1_test, b1_test, eq1_test,node_type]).T
-        #print(f_var.shape,blower_var.shape, bupper_var.shape,blower_const.shape,eq1_train.shape,bupper_const.shape, eq2_train.shape,node_type_train.shape)
 
-        #print("features shape",features.shape)
-        # print("y_train.shape",y_train[i,:].shape)
         x_train = torch.tensor(features, dtype=torch.float32)
-        #print("x_train shape",x_train.shape)
         data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train[i,:])
-        #print(data_point)
-        # list of graph elements
         graph_train.append(data_point)
 
-    # Generate val set
+        #print("x_train shape",x_train.shape)
+        #print("features shape",features.shape)
+        # print("y_train.shape",y_train[i,:].shape)
+        #print(data_point)
+        # list of graph elements
+
+    ###############
+    # VALIDATION
+    ###############
+
+    # Initialization
     np.random.seed(seed+1)
     x_val = np.zeros((iter_val,n))
     val_iterations = np.zeros((iter_val))
-    
     graph_val = []
+
     if two_sided == True:
         lambda_val = np.zeros((iter_val,m_half))
     else:
         lambda_val = np.zeros((iter_val,m))
 
+    # Create training data
     for i in range(iter_val):
         theta = np.random.randn(nth)
-           
+        # print("validation", theta)
         btot = b + B @ theta
         ftot = f + F @ theta
         
+        # print("btot val",btot)
+        # print("ftof val",ftot)
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -419,22 +415,20 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
             A_current = A
             bupper = btot
 
+        # Solve daqp to get optimal active set
         _,_,_,info = daqp.solve(H,ftot,A_current,bupper,blower,sense)
         lambda_val[i,:]= list(info.values())[4]
         val_iterations[i] = list(info.values())[2]
-    
-
         val_active_set = (lambda_val != 0).astype(int)
         y_val = torch.tensor((np.hstack((np.zeros((iter_val,n)),val_active_set))))
 
-        # graph structure does not change, only vertex features
-        #combine H and A
+        #edge adjacency matrix
         if two_sided == True:
             edge_matrix = np.block([[H,A[:m_half,:].T],[A[:m_half,:],np.zeros((np.shape(A[:m_half,:])[0],np.shape(A[:m_half,:])[0]))]])
         else:
             edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
 
-        # create edge_index and edge_attributes
+        # edge_index and edge_attributes
         edge_index = torch.tensor([])
         edge_attr = torch.tensor([])
         for j in range(np.shape(edge_matrix)[0]):
@@ -445,10 +439,9 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
                     edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
         edge_index = edge_index.long().T
 
+        # vertex features
         if two_sided == True:   
             f_var = np.hstack((ftot,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))))
-            # blower_var = np.hstack([blower_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))]) # add constraints for box constraints - also for other graph
-            # bupper_var = np.hstack([bupper_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))])
             blower_const = np.hstack((np.zeros(np.shape(ftot)),blower_box,blower_real_constraints))
             eq1_train = np.hstack((np.zeros(np.shape(ftot)),np.ones(np.shape(blower_box)),(np.ones(np.shape(blower_real_constraints)))))
             bupper_const = np.hstack((np.zeros(np.shape(ftot)),bupper_box,bupper_real_constraints))
@@ -464,19 +457,13 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, H_flexible=
 
         x_val = torch.tensor(features, dtype=torch.float32)
         data_point = Data(x= x_val, edge_index=edge_index, edge_attr=edge_attr,y=y_val[i,:],index = i)
-        # list of graph elements
         graph_val.append(data_point)
-        
-        
+    
     return graph_train, graph_val
 
 def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexible = False,A_flexible = False,two_sided=False):
-    np.random.seed(seed)
-    m_half = int(m/2)
 
-    #spit generated problems into train, test, val
-    iter_test = int(np.rint(0.1*number_of_graphs))
-
+    # Load data
     file_path = f"data/generated_qp_data_{n}v_{m}c_lmpc.npz"
     if os.path.exists(file_path):
         data = np.load(file_path, allow_pickle=True)
@@ -487,24 +474,10 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
         b = data["b"]
         B = data["B"]
 
-    # else:
-    #     H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
-    #     print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
-    if two_sided == True:
-        sense = np.zeros(m_half, dtype=np.int32)
-        A_real_constraints= A[n:m_half,:]
-        lambda_test = np.zeros((iter_test,int(m/2)))
-
-    else:
-        sense = np.zeros(m, dtype=np.int32)
-        blower = np.array([-np.inf for i in range(m)])
-        lambda_test = np.zeros((iter_test,m))
-
-
-
-
-    # Generate test set
+    # Initalization
     np.random.seed(seed+2)
+    m_half = int(m/2)
+    iter_test = int(np.rint(0.1*number_of_graphs))
     x_test = np.zeros((iter_test,n))
     test_iterations = []
     test_time = []
@@ -514,15 +487,25 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
     A_test = []
     blower_test = []
     sense_test = []
-    # Generate the graph from the training data
     graph_test = []
-    
+
+    if two_sided == True:
+        sense = np.zeros(m_half, dtype=np.int32)
+        A_real_constraints= A[n:m_half,:]
+        lambda_test = np.zeros((iter_test,int(m/2)))
+    else:
+        sense = np.zeros(m, dtype=np.int32)
+        blower = np.array([-np.inf for i in range(m)])
+        lambda_test = np.zeros((iter_test,m))
+
+    # Create test data    
     for i in range(iter_test):
         theta = np.random.randn(nth)
-            
+        # print("test",theta)
         btot = b + B @ theta
         ftot = f + F @ theta
-        
+        # print("btot test",btot)
+        # print("ftof test",ftot)
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -531,7 +514,6 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
             bupper_real_constraints = bupper[n:]
             blower_real_constraints = blower[n:]
             A_current  = A_real_constraints
-
         else:
             A_current = A
             bupper = btot
@@ -543,25 +525,27 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
         bupper_test.append(bupper)
         blower_test.append(blower)
         
+        # Solve daqp to get optimal active set
         _,_,_,info = daqp.solve(H,ftot,A_current,bupper,blower,sense)
         lambda_test[i,:]= list(info.values())[4]
         test_iterations.append(list(info.values())[2])
         test_time.append(list(info.values())[0]+list(info.values())[1])
-        
-        # get optimal active set (y)
         test_active_set = (lambda_test != 0).astype(int)
-        y_test = torch.tensor((np.hstack((np.zeros((iter_test,n)),test_active_set)))) 
-        
-        # graph structure does not change, only vertex features
-        #combine H and A
+        y_test = torch.tensor((np.hstack((np.zeros((iter_test,n)),test_active_set))))
+
+        # print("lambda_test",lambda_test[i,:])
+        # print("y_test",y_test[i,:])
+        # print(np.where(lambda_test[i,:] !=0)[0])
+        # print(np.where(lambda_test[i,:] !=0)[0] +50)
+        # print(np.where(y_test[i,:] != 0)[0])
+
+        # edge adjacency matrix
         if two_sided == True:
             edge_matrix = np.block([[H,A[:m_half,:].T],[A[:m_half,:],np.zeros((np.shape(A[:m_half,:])[0],np.shape(A[:m_half,:])[0]))]])
         else:
             edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
 
-        #print("edge matrix shape",edge_matrix.shape)
-
-        # create edge_index and edge_attributes
+        # edge_index and edge_attributes
         edge_index = torch.tensor([])
         edge_attr = torch.tensor([])
         for j in range(np.shape(edge_matrix)[0]):
@@ -572,10 +556,9 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
                     edge_attr = torch.cat((edge_attr,torch.tensor([edge_matrix[j,k]])),0)
         edge_index = edge_index.long().T
 
+        # vertex features
         if two_sided == True:   
             f_var = np.hstack((ftot,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))))
-            # blower_var = np.hstack([blower_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))]) # add constraints for box constraints - also for other graph
-            # bupper_var = np.hstack([bupper_box,np.zeros(np.shape(blower_box)),np.zeros(np.shape(blower_real_constraints))])
             blower_const = np.hstack((np.zeros(np.shape(ftot)),blower_box,blower_real_constraints))
             eq1_train = np.hstack((np.zeros(np.shape(ftot)),np.ones(np.shape(blower_box)),(np.ones(np.shape(blower_real_constraints)))))
             bupper_const = np.hstack((np.zeros(np.shape(ftot)),bupper_box,bupper_real_constraints))
@@ -589,12 +572,8 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
             node_type = np.hstack((np.zeros(np.shape(ftot)),(np.ones(np.shape(btot)))))
             features = np.array([f1_test, b1_test, eq1_test,node_type]).T
 
-
-
-        # test graph
         x_test = torch.tensor(features, dtype=torch.float32)
         data_point = Data(x=x_test, edge_index=edge_index, edge_attr=edge_attr,y=y_test[i,:])
-        # list of graph elements
         graph_test.append(data_point)
 
     return graph_test, test_iterations,test_time, H_test,f_test,A_test,bupper_test,blower_test,sense_test,n,m

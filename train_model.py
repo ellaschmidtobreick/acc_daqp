@@ -25,30 +25,9 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     n_vector_val = []
     m_vector_val = []
 
-    # train_acc_save = []
-    val_acc_save = []
-    # train_loss_save = []
-    # val_loss_save = []
-    # train_prec_save = []
-    val_prec_save = []
-    # train_rec_save = []
-    val_rec_save = []
-    # train_f1_save = []
-    val_f1_save = []
-    val_perc_wrongly_pred_nodes_per_graph_save = []
-    # val_mean_wrongly_pred_nodes_per_graph_save = []
-    # train_perc_wrongly_pred_nodes_per_graph_save = []
-    # train_mean_wrongly_pred_nodes_per_graph_save = []
-
-    best_val_loss = float('inf')
-    best_val_f1 = float('inf')*(-1)
-
-    best_metrics = {}
-    best_model_state = None
-
+    # Select device
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
-
 
     # Generate QP problems and the corresponding graphs
     for i in range(len(n)):
@@ -57,24 +36,23 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         if dataset_type == "standard":
             graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
         elif dataset_type == "lmpc":
-            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,scale=scale_H,two_sided=two_sided)
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,scale=scale_H,two_sided=two_sided)
+
 
         graph_train = graph_train + graph_train_i
         graph_val = graph_val + graph_val_i
-        n_vector_train = n_vector_train + [n_i for i in range(len(graph_train_i))]
-        m_vector_train= m_vector_train + [m_i for i in range(len(graph_train_i))]
-        n_vector_val = n_vector_val + [n_i for i in range(len(graph_val_i))]
-        m_vector_val = m_vector_val + [m_i for i in range(len(graph_val_i))]
+        n_vector_train = n_vector_train + [n_i for j in range(len(graph_train_i))]
+        m_vector_train= m_vector_train + [m_i for j in range(len(graph_train_i))]
+        n_vector_val = n_vector_val + [n_i for j in range(len(graph_val_i))]
+        m_vector_val = m_vector_val + [m_i for j in range(len(graph_val_i))]
 
-
-    # Load Data
-    train_batch_size = 64 #16 #32 # 64
+    # Load Data into DataLoader
+    train_batch_size = 64
     train_loader = GraphDataLoader(graph_train, batch_size=train_batch_size, shuffle=True)
     val_loader = GraphDataLoader(graph_val,batch_size = train_batch_size , shuffle = False) #len(graph_val)
 
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train]).to(device)
-
     unique_classes = torch.unique(all_labels)
     class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy()) # torch.unique(all_labels).numpy()
     #class_weights_np[1] = class_weights_np[1]*0.5
@@ -84,10 +62,12 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Instantiate model and optimizer
     if dataset_type == "standard" or two_sided == False:
         input_size = 4
-    else : #if dataset_type == "lmpc":
+    else : 
         input_size = 6
     model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type = conv_type) #Input dimensions: # features 4 # Output dimension 1 for binary classification
-    #model = torch.nn.DataParallel(model)
+    p_pos = (all_labels.sum() / len(all_labels)).item()
+    print("positive weight", p_pos)
+    model.init_weights(p_pos)
     model = model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr = lr)
 
@@ -120,14 +100,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         # Training
         ################
 
-        # train_loss = 0
-        # train_all_labels = []
-        # train_preds = []
-
-        # output_train = []
-        # train_all_label_graph = []
-        # train_preds_graph = []
-
         model.train()
         train_loss = 0
         train_correct = 0
@@ -135,27 +107,13 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         train_TP = 0
         train_FP = 0
         train_FN = 0
-        acc_graph_sum = 0
-        num_graphs = 0
         train_num_wrong_nodes = 0
         train_total_nodes = 0
         
-        # for param in model.parameters():
-        #     print(param)
-        #     print(param.data)
-        # for name, param in model.named_parameters():
-        #     if name == "output_layer.lin3.weight":
-        #         print(name,param)
-        #     if name == "output_layer.lin3.bias":
-        #         print(name,param)
-
-
         for i,batch in enumerate(train_loader):
             batch = batch.to(device)
             optimizer.zero_grad()
             output = model(batch,number_of_layers,conv_type)
-            # output_train.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
-            # Convert output to binary prediction (0 or 1)
             preds = (output.squeeze() > t).long()
 
             if dataset_type == "standard":
@@ -174,13 +132,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             if device == "cuda" and i % 50 == 0:
                 torch.cuda.empty_cache()
             
-            # Node-level metrics for constraints only
-            # print(batch.y.shape, preds.shape)
-
-            # labels = batch.y[n:]           # take only the constraint nodes
-            # preds_constraints = preds[n:]  # same slice for predictions
-            # print(labels.shape, preds_constraints.shape)
-
             # Node-level metrics
             labels = batch.y
             train_correct += (preds == labels).sum().item()
@@ -191,52 +142,13 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
             train_num_wrong_nodes += (preds != labels).sum().item()
             train_total_nodes += labels.numel()
 
-            # Store predictions and true labels
-            # train_preds.extend(preds.cpu().numpy())   
-            # train_all_labels.extend(batch.y.cpu().numpy())
-            
 
-            # print("true labels",batch.y.shape, torch.nonzero(batch.y).squeeze().detach().numpy())
-            # print("preds",preds.shape, torch.nonzero(preds).squeeze().detach().numpy())
-            # print("output",output.squeeze()[torch.nonzero(batch.y).squeeze().detach().numpy()].detach().numpy())
-            # print("loss",loss.item())
-
-            # Save per graph predictions and labels
-            # for i in range(batch.num_graphs):
-            #     mask = batch.batch == i
-            #     preds_graph = preds[mask].cpu().numpy()
-            #     labels_graph = batch.y[mask].cpu().numpy()
-            #     #print(np.sum(preds_graph),np.sum(labels_graph))
-            #     train_preds_graph.append(preds_graph)
-            #     train_all_label_graph.append(labels_graph)
-
-            # Graph-level accuracy
-            for j in range(batch.num_graphs):
-                mask = batch.batch == j
-                preds_graph = preds[mask]
-                labels_graph = labels[mask]
-                acc_graph_sum += int(torch.all(preds_graph == labels_graph))
-                num_graphs += 1
         # Compute metrics
-        # train_loss /= len(train_loader)
-        # train_acc = accuracy_score(train_all_labels, train_preds)
-        # train_prec = precision_score(train_all_labels,train_preds)
-        # train_rec = recall_score(train_all_labels, train_preds)
-        # train_f1 = f1_score(train_all_labels,train_preds)
-
         train_loss /= len(train_loader)
         train_acc = train_correct / train_total
         train_prec = train_TP / (train_TP + train_FP + 1e-8)
         train_rec = train_TP / (train_TP + train_FN + 1e-8)
         train_f1 = 2 * train_prec * train_rec / (train_prec + train_rec + 1e-8)
-        acc_graph_train = acc_graph_sum / num_graphs
-        # train_mean_wrong_nodes_per_graph = train_num_wrong_nodes / num_graphs
-        train_perc_wrong_nodes_per_graph = train_num_wrong_nodes / train_total_nodes
-
-        # train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(train_preds_graph, train_all_label_graph, n_vector_train, m_vector_train)]
-        # train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(train_num_wrongly_pred_nodes_per_graph, n_vector_train, m_vector_train)])
-        # train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
-        
 
         ####################
         # VALIDATION
@@ -248,36 +160,24 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_TP = 0
         val_FP = 0
         val_FN = 0
-        val_graph_sum = 0
-        val_num_graphs = 0
         val_num_wrong_nodes = 0
         val_total_nodes = 0
-        # val_loss = 0
-        # val_mean_wrongly_pred_nodes_per_graph = 0
-        # val_num_wrongly_pred_nodes_per_graph = 0
-        # val_all_labels = []
-        # val_preds = []
-        # output_val = []
-        # val_preds_graph = []
-        # val_all_label_graph = []
-        
+
         with torch.no_grad():
             for i,batch in enumerate(val_loader):
                 batch = batch.to(device)
                 output = model(batch,number_of_layers,conv_type)
-                # output_val.extend(output.squeeze().detach().cpu().numpy().reshape(-1))
                 preds = (output.squeeze() > t).long()
 
                 if dataset_type == "standard":
                     loss = torch.nn.BCELoss()(output.squeeze(), batch.y.float())
                 elif dataset_type == "lmpc":
-                    #sparsity_loss = preds.sum(dim=0) / len(preds)
                     sparsity_loss = output.squeeze().sum()/batch.num_graphs
                     #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * sparsity_loss
                     #loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float()) + 0.5 * preds.sum()
                     BCE_loss = torch.nn.BCELoss(weight=class_weights[batch.y.long()].to(device))(output.squeeze(), batch.y.float())
                     loss = BCE_loss + 0.1 * sparsity_loss
-                    print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
+                    # print(f"BCE: {BCE_loss.item():.4f}, Sparsity: {sparsity_loss.item():.4f}, Total: {loss.item():.4f}")
 
                 val_loss += loss.item()
 
@@ -296,104 +196,27 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
                 val_num_wrong_nodes += (preds != labels).sum().item()
                 val_total_nodes += labels.numel()
 
-                # Store predictions and labels
-                # val_preds.extend(preds.cpu().numpy())
-                # val_all_labels.extend(batch.y.cpu().numpy())
-                
-                # # Store per graph predictions and labels
-                # for i in range(batch.num_graphs):
-                #     mask = batch.batch == i
-                #     preds_graph = preds[mask].cpu().numpy()
-                #     labels_graph = batch.y[mask].cpu().numpy()
-
-                #     val_preds_graph.append(preds_graph)
-                #     val_all_label_graph.append(labels_graph) 
-                # 
-                # Graph-level accuracy
-                for j in range(batch.num_graphs):
-                    mask = batch.batch == j
-                    preds_graph = preds[mask]
-                    labels_graph = labels[mask]
-                    val_graph_sum += int(torch.all(preds_graph == labels_graph))
-                    val_num_graphs += 1  
-
                 if device == "cuda" and i % 50 == 0:
                     torch.cuda.empty_cache()             
         
-        # Compute metrics      
-        # val_loss /= len(val_loader)
-        # val_acc = accuracy_score(val_all_labels, val_preds)
-        # val_prec = precision_score(val_all_labels,val_preds)
-        # val_rec = recall_score(val_all_labels, val_preds)
-        # val_f1 = f1_score(val_all_labels,val_preds)
-
+        # Compute metrics
         val_loss /= len(val_loader)
         val_acc = val_correct / val_total
         val_prec = val_TP / (val_TP + val_FP + 1e-8)
         val_rec = val_TP / (val_TP + val_FN + 1e-8)
         val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
-        # acc_graph_val = val_graph_sum / val_num_graphs
-        # val_mean_wrong_nodes_per_graph = val_num_wrong_nodes / val_num_graphs
-        val_perc_wrong_nodes_per_graph = val_num_wrong_nodes / val_total_nodes
-        early_stopping_counter = 0
-        # val_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(val_preds_graph, val_all_label_graph, n_vector_val, m_vector_val)]
-        # val_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(val_num_wrongly_pred_nodes_per_graph, n_vector_val, m_vector_val)])
-        # val_mean_wrongly_pred_nodes_per_graph = np.mean(val_num_wrongly_pred_nodes_per_graph)
-        
+
         # Log metrics to wandb.
         if track_on_wandb == True:
-            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1, "acc_graph_train": acc_graph_train})
-
-        # Save metrics
-        # train_acc_save.append(train_acc)
-        # val_acc_save.append(val_acc)
-        # train_loss_save.append(train_loss)
-        # val_loss_save.append(val_loss)
-        # train_prec_save.append(train_prec)
-        # val_prec_save.append(val_prec)
-        # train_rec_save.append(train_rec)
-        # val_rec_save.append(val_rec)
-        # train_f1_save.append(train_f1)
-        # val_f1_save.append(val_f1)
-        # val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
-        # val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
-        # train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
-        # train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
+            run.log({"acc_train": train_acc,"acc_val": val_acc,"loss_train": train_loss, "loss_val": val_loss, "prec_train": train_prec, "prec_val":val_prec, "rec_train": train_rec, "rec_val": val_rec, "f1_train": train_f1,"f1_val":val_f1})
 
         # Early stopping
         early_stopping(val_loss, model,epoch)
         if early_stopping.early_stop:
             print(f"Early stopping after {epoch} epochs.")
             break
-            # Early stopping logic
-            print()
-        # if val_f1-0.001 > best_val_f1: #val_loss+0.001 < best_val_loss:
-        #     best_val_loss = val_loss
-        #     best_val_f1 = val_f1
-        #     best_metrics = {
-        #         "train_acc": train_acc,
-        #         "train_prec": train_prec,
-        #         "train_rec": train_rec,
-        #         "train_f1": train_f1,
-        #         "train_perc_wrong_nodes": train_perc_wrong_nodes_per_graph,
-        #         "val_acc": val_acc,
-        #         "val_prec": val_prec,
-        #         "val_rec": val_rec,
-        #         "val_f1": val_f1,
-        #         "val_perc_wrong_nodes": val_perc_wrong_nodes_per_graph,
-        #     }
-        #     # Save a copy of the model weights
-        #     best_model_state = copy.deepcopy(model.state_dict())
-        #     early_stopping_counter = 0
-        # else:
-        #     early_stopping_counter += 1
-        #     if early_stopping_counter >= 5:  # e.g., 10 epochs
-        #         print(f"Early stopping after {epoch+1} epochs.")
-        #         break
 
     # Save best model
-    best_epoch = early_stopping.load_best_model(model)
-    # model.load_state_dict(best_model_state)
     torch.save(model.state_dict(), f"saved_models/{modelname}.pth")
 
     # Finish the run and upload any remaining data.
@@ -438,8 +261,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     val_f1_save = []
     val_perc_wrongly_pred_nodes_per_graph_save = []
     val_mean_wrongly_pred_nodes_per_graph_save = []
-    train_perc_wrongly_pred_nodes_per_graph_save = []
-    train_mean_wrongly_pred_nodes_per_graph_save = []
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
@@ -485,7 +306,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     if track_on_wandb ==True:
         run = wandb.init(
             entity="ella-schmidtobreick-4283-me",
-            project="Thesis",
+            project="L4DC",
             config={
                 "variables": f"{n}",
                 "constraints": f"{m}",
@@ -507,8 +328,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         train_preds = []
         model.train()
         output_train = []
-        train_all_label_graph = []
-        train_preds_graph = []
         
         for batch in train_loader:
             batch = [b.to(device) for b in batch]
@@ -518,8 +337,8 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
 
             # Convert output to binary prediction (0 or 1)
             preds = (output.squeeze() > t).long()
-
-            loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())
+            sparsity_loss = output.squeeze().sum()/batch.num_graphs  ### here
+            loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), batch[1].float())+0.1*sparsity_loss
 
             loss.backward()
             optimizer.step()
@@ -529,14 +348,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             train_preds.extend(preds.cpu().numpy().flatten())   
             train_all_labels.extend(batch[1].cpu().numpy().flatten())
             
-            # # Save per graph predictions and labels
-            for i in range(batch[1].shape[0]):
-                #mask = batch.batch == i
-                preds_graph = preds[i].cpu().numpy()
-                labels_graph = batch[1][i].cpu().numpy()
-
-                train_preds_graph.append(preds_graph)
-                train_all_label_graph.append(labels_graph)
 
         # Compute metrics
         train_loss /= len(train_loader)
@@ -548,10 +359,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         # train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n + m) - np.sum(pred == label)) for pred, label in zip(train_preds_graph, train_all_label_graph)]
         # train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n + m) for wrong  in train_num_wrongly_pred_nodes_per_graph])
         # train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
-        
-        train_num_wrongly_pred_nodes_per_graph = [np.abs(int(n_i + m_i) - np.sum(pred == label)) for pred, label, n_i, m_i in zip(train_preds_graph, train_all_label_graph, n_vector_train, m_vector_train)]
-        train_perc_wrongly_pred_nodes_per_graph = np.mean([wrong / (n_i + m_i) for wrong, n_i, m_i in zip(train_num_wrongly_pred_nodes_per_graph, n_vector_train, m_vector_train)])
-        train_mean_wrongly_pred_nodes_per_graph = np.mean(train_num_wrongly_pred_nodes_per_graph)
         
         
         # Validation step
@@ -619,8 +426,6 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
         val_f1_save.append(val_f1)
         val_perc_wrongly_pred_nodes_per_graph_save.append(val_perc_wrongly_pred_nodes_per_graph)
         val_mean_wrongly_pred_nodes_per_graph_save.append(val_mean_wrongly_pred_nodes_per_graph)
-        train_perc_wrongly_pred_nodes_per_graph_save.append(train_perc_wrongly_pred_nodes_per_graph)
-        train_mean_wrongly_pred_nodes_per_graph_save.append(train_mean_wrongly_pred_nodes_per_graph)
 
         # Early stopping
         early_stopping(val_loss, model,epoch)
