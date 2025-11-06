@@ -37,10 +37,10 @@ class GNN(torch.nn.Module):
         if conv_type == "GCN" or conv_type == "GAT":
             edge_weight = edge_weight - edge_weight.min() + 1e-6  
 
-        x = func.leaky_relu(self.norm1(self.input_layer(x, edge_index,edge_weight)),negative_slope = 0.0001)
+        x = func.leaky_relu(self.norm1(self.input_layer(x, edge_index,edge_weight)),negative_slope = 0.1) #0001)
         # print("x after first layer",x)
         for i in range(number_of_layers-2):
-            x = func.leaky_relu(self.norm2(self.inner_layer(x,edge_index,edge_weight)),negative_slope = 0.0001)
+            x = func.leaky_relu(self.norm2(self.inner_layer(x,edge_index,edge_weight)),negative_slope = 0.1) #0001)
         # print("x after inner layers",x)
         x = self.output_layer(x,edge_index,edge_weight)
         # print("x before sigmoid",x)

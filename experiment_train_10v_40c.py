@@ -38,7 +38,7 @@ for i in range(runs):
 
 # Store results
 results = {
-    "Parameters": (f"layer width: {layer_width}, data points: {data_points}, t: {t}, dense", None),
+    "Parameters": (f"layer width: {layer_width}, data points: {data_points}, t: {t}, dense, server, relu 0.1", None),
     "Train Accuracy": (np.mean(train_acc_vector), np.std(train_acc_vector)),
     "Train Precision": (np.mean(train_prec_vector), np.std(train_prec_vector)),
     "Train Recall": (np.mean(train_recall_vector), np.std(train_recall_vector)),
