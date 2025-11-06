@@ -7,8 +7,6 @@ class GNN(torch.nn.Module):
     def __init__(self, input_dim, output_dim,layer_width,conv_type="LEConv"):
         torch.manual_seed(123)
         super(GNN, self).__init__()
-
-        # gain = init.calculate_gain('leaky_relu', 0.1)  # for LeakyReLU slope 0.1
         
         if conv_type == "LEConv":
             self.input_layer = LEConv(input_dim, layer_width)
@@ -28,17 +26,6 @@ class GNN(torch.nn.Module):
             self.output_layer = GATConv(layer_width, output_dim, heads=4, concat=False)
             self.norm1 = torch.nn.LayerNorm(layer_width)
             self.norm2 = torch.nn.LayerNorm(layer_width)
-
-        # --- initialize weights ---
-        # for layer in [self.input_layer, self.inner_layer, self.output_layer]:
-        #     if hasattr(layer, 'lin'):  # for PyG GNN layers, linear weight is usually `lin`
-        #         init.xavier_uniform_(layer.lin.weight, gain=gain)
-        #         if layer.lin.bias is not None:
-        #             init.zeros_(layer.lin.bias)
-        #     elif hasattr(layer, 'weight'):  # some layers have direct weight
-        #         init.xavier_uniform_(layer.weight, gain=gain)
-        #         if layer.bias is not None:
-        #             init.zeros_(layer.bias)
 
     def forward(self, data,number_of_layers,conv_type):
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
@@ -61,25 +48,26 @@ class GNN(torch.nn.Module):
         x = torch.sigmoid(x)
         # print("x after sigmoid",x)
         return x  
-
-# Define a simple GNN
-# class GNN(torch.nn.Module):
-#     def __init__(self,input_dim, output_dim,layer_width):
-#         super().__init__()
-#         self.input_layer = GCNConv(input_dim, layer_width)
-#         self.inner_layer = GCNConv(layer_width, layer_width)
-#         self.output_layer = GCNConv(layer_width, output_dim)
-#         self.fc = torch.nn.Linear(1, 1)
-
-#     def forward(self, data, number_of_layers):
-#         x, edge_index, edge_weight= data.x, data.edge_index, data.edge_attr.float()
-#         edge_weight = (edge_weight - edge_weight.min()) / (edge_weight.max() - edge_weight.min() + 1e-6)
-#         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
-#         for i in range(number_of_layers-2):
-#             x = func.leaky_relu(self.inner_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-#         x = func.leaky_relu(self.output_layer(x,edge_index,edge_weight),negative_slope = 0.1)
-#         return torch.sigmoid(x)  # Match y's shape
     
+    def init_weights(self, p_pos=0.05): 
+        gain = init.calculate_gain('leaky_relu', param=0.0001)
+
+        for layer in [self.input_layer, self.inner_layer]:
+            if hasattr(layer, 'lin'):
+                init.xavier_uniform_(layer.lin.weight, gain=gain)
+                if layer.lin.bias is not None:
+                    init.zeros_(layer.lin.bias)
+
+        # Output layer initialization
+        if hasattr(self.output_layer, 'lin'):
+            init.xavier_uniform_(self.output_layer.lin.weight, gain=1.0)
+
+            # bias to reflect class imbalance
+            bias_value = torch.log(torch.tensor(p_pos / (1 - p_pos)))
+            self.output_layer.lin.bias.data.fill_(bias_value)
+
+
+
 class EarlyStopping: # cite: https://www.geeksforgeeks.org/how-to-handle-overfitting-in-pytorch-models-using-early-stopping/
     def __init__(self, patience=50, delta=0):
         self.patience = patience
