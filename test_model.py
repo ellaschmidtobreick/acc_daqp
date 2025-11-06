@@ -31,7 +31,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     m_vector = []
     m_half= int(m[0]/2)
 
-    device = torch.device(f"cuda{cuda}" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate test data

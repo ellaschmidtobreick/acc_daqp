@@ -15,7 +15,7 @@ number_of_layers = 3
 track_on_wandb = False #True
 runs = 5
 layer_width = 128
-data_points = 5000
+data_points = 2000
 t = 0.8 # threshold 
 # to get the final results on an average of 5 runs
 
