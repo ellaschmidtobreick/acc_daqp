@@ -151,8 +151,8 @@ def histogram_time(time_before, time_after, model_name,save):
     max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
     min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
     print(f"max val: {max_val}, min val: {min_val}")
-    plt.hist(time_before, bins=30,range=(0,0.001),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
-    plt.hist(time_after, bins=30,range=(0,0.001),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
+    plt.hist(time_before, bins=30,range=(0,0.003),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+    plt.hist(time_after, bins=30,range=(0,0.003),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
 
     # Calculate quartiles
     q2_bef = np.percentile(time_before, 50)
@@ -161,8 +161,11 @@ def histogram_time(time_before, time_after, model_name,save):
     q3_aft = np.percentile(time_after, 90)
 
     # Quartiles and percentiles
-    # plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='--')
-    # plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='--')
+    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+  
+    plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
+    plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
   
     plt.xlabel('Time in seconds')
     plt.ylabel('Frequency')
@@ -353,6 +356,7 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
     labels = np.array(labels)[:, 0]
 
     model_types = np.unique(labels)
+    model_types = [model_types[i] for i in [1, 2, 0]]
     # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
     colors = ['#e31a1c','#fb9a99','#6a3d9a','#cab2d6']
 
@@ -378,7 +382,7 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
         ax.fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[1], alpha=0.3)
 
         # Prediction time 
-        if model != "Non-learned":
+        if model != "Cold-started":
             ax.plot(x_points, model_points[:, 1], color=colors[2], label="Prediction Time")
             ax.fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3], color=colors[3], alpha=0.3)
         

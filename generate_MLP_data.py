@@ -7,7 +7,7 @@ from torch.utils.data import TensorDataset
 import os
       
                
-def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False,dataset_type="standard"):
+def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False,dataset_type="standard",sparsity = "dense"):
 
     #spit generated problems into train, test, val
     iter_train = int(np.rint(0.8*number_of_graphs))
@@ -20,7 +20,10 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
 
     if dataset_type == "standard":
         # Generate general matrices
-        H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)# generate_qp_block_sparse(n, m, num_blocks=4, inter_block_prob=0.05, given_seed=seed, nth=nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
+        if sparsity == "dense":
+            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)# generate_qp_block_sparse(n, m, num_blocks=4, inter_block_prob=0.05, given_seed=seed, nth=nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
+        elif sparsity =="banded":
+            H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
         np.savez(f"data/generated_MLP_data_{n}v_{m}c.npz", H=H, f=f, F=F, A=A, b=b, B=B,T=T)
     elif dataset_type == "lmpc":
         # Load given lmpc data
@@ -96,7 +99,7 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
     QP_val = TensorDataset(x_val, y_val)
     return QP_train, QP_val
 
-def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False,A_flexible = False,dataset_type="standard"):
+def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False,A_flexible = False,dataset_type="standard",sparsity = "dense"):
     np.random.seed(seed)
     #spit generated problems into train, test, val
     iter_test = int(np.rint(0.1*number_of_graphs))
@@ -113,7 +116,10 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
             B = data["B"]
             T = data["T"]
         else:
-            H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) # generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#generate_qp(n,m,seed,nth)
+            if sparsity == "dense":
+                H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) # generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#generate_qp(n,m,seed,nth)
+            elif sparsity == "banded":
+                H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
             print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
     elif dataset_type == "lmpc":
         # Load given lmpc data
