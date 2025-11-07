@@ -15,23 +15,23 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
-n = [5,10]
-m = [20,40]
+# n = [10,20,30]
+# m = [40,80,120]
 
 nth = 7
 seed = 123
-data_points = 20#00
+data_points = 2000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t = 0.6 #0.6
+t = 0.6 
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 2 #5
-
+num_runs = 3 #5
+sparsity = "dense"
 torch.cuda.empty_cache()
 start_time = time.time()
 
@@ -48,8 +48,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- GNN, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type)
-        prediction_time, test_time_after, iterations_after = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type) 
+        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,sparsity ="dense")
+        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,sparsity ="dense") 
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -69,8 +69,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- MLP, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard")
-        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard")
+        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",sparsity ="dense")
+        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",sparsity ="dense")
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -153,16 +153,16 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_mean,prediction_time_mean, solving_time_std,prediction_time_std))
     iterations = list(zip(iterations_after_mean,iterations_after_std))
-    with open("./data/scaling_data_std_server.pkl", "wb") as f:
+    with open("./data/scaling_data_std_server1.pkl", "wb") as f:
         pickle.dump((points, label_vector,iterations), f)
 
 end_time = time.time()
 print("Total time for experiments(s):", end_time - start_time)
 
 # # Load data
-# with open("./data/scaling_data_std.pkl", "rb") as f:
+# with open("./data/scaling_data_std_test.pkl", "rb") as f:
 #     points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f) # ,iterations_after_loaded
 
-# plot_scaling(points_loaded, labels_loaded,"plots/scaling_plot_std")
-# plot_scaling_iterations(iterations_after_loaded, labels_loaded,"plots/scaling_plot_iterations_std")
+# plot_scaling(points_loaded, labels_loaded,"plots/scaling_plot_std_test")
+# plot_scaling_iterations(iterations_after_loaded, labels_loaded,"plots/scaling_plot_iterations_std_test")
 # print("Done")

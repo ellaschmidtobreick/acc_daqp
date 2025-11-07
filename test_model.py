@@ -16,7 +16,7 @@ from model import GNN, MLP
 from naive_model import naive_model
 
 # Generate test problems and the corresponding graphs
-def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda =0):
+def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda =0,sparsity ="dense"):
     # Initialization for data generation
     graph_test = []
     H_test = []
@@ -39,7 +39,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
         n_i = n[i]
         m_i = m[i]
         if dataset_type == "standard":
-            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_current_i,bupper_i,blower_i,_,n_i,m_i = generate_qp_graphs_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,sparsity =sparsity)
             # print("graph_test:", type(graph_test_i))
             # print("test_iterations:", type(test_iterations_before_i))
             # print("test_time:", type(test_time_before_i))
@@ -158,18 +158,11 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             # print(f"W_pred: {W_pred.tolist()}")
             #     # print("len W_true, W_pred",y.shape,preds_print.shape)
             #     # Print prediction values for the predicted indices
-            pred_vals = output.detach().cpu().squeeze()[W_pred + n]
-            # print(f"% pred: {pred_vals.tolist()}")
-
+            pred_vals = output.detach().cpu().squeeze()[n:]
 
             # Solve QPs with predicted active sets
-            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]   # maybe two instead of one since only one side of constraints in active
-            #sense_active = (preds_print != 0).int().cpu().numpy()
-            # print("sense_active shape",sense_active.shape)
+            sense_active = preds.flatten().cpu().numpy().astype(np.int32)[n:]
 
-            exitflag = -6
-            counter = 0
-            
             # Prepare arrays safely for DAQP
             H_i = np.ascontiguousarray(H_test[i], dtype=np.float64)
             f_i = np.ascontiguousarray(f_test[i], dtype=np.float64)
@@ -178,23 +171,40 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             blower_i = np.ascontiguousarray(blower[i].flatten(), dtype=np.float64)
             sense_i = np.ascontiguousarray(sense_active, dtype=np.int32)
 
+            print(H_i.shape,f_i.shape,A_i.shape,bupper_i.shape,blower_i.shape,sense_i.shape)
+            exitflag = -6           
             counter = 0
-            max_removals = 10
 
-
-            while exitflag == -6:   # system not solvable
+            # system overdetermined
+            while exitflag == -6:
                 _,_,exitflag,info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
+                print(exitflag)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 # solve and set-up time
                 test_time_after[i]= list(info.values())[0] + list(info.values())[1]
 
                 # remove one active constraint per iteration until problem is solvable
-                last_one_index = np.where(sense_active == 1)[-1]
-                if last_one_index is not None:
-                    sense_active[last_one_index] = 0
+                # last_one_index = np.where(sense_active == 1)[-1]
+                # if last_one_index is not None:
+                #     sense_active[last_one_index] = 0
                    
+                if exitflag == -6:
+                    active_indices = np.where(sense_i == 1)[0]
+                    if len(active_indices) == 0:
+                        print("All constraints removed; still infeasible.")
+                        break
 
+                    # Get model probabilities for these active constraints
+                    probs = pred_vals[active_indices]  # use the predicted probabilities for these indices
+                    lowest_prob_index = active_indices[np.argmin(probs)]
+                    # print("lowest prob index", lowest_prob_index, "with prob", np.argmin(probs))
+                    # Remove the one with lowest confidence
+                    sense_i[lowest_prob_index] = 0
+                # print("sense after",sense_i)
+
+
+                
             # while exitflag < 0 and counter <= max_removals:
             #     # print(f"Evaluate test sample {i}, attempt {counter+1}")
 
@@ -248,7 +258,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
 
-            # print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
             # print(f"test iterations before: {test_iterations_before[i]}")
@@ -316,12 +326,12 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     # barplot_iterations(test_iterations_before,test_iterations_after,model_name,save = True)
 
     #return np.mean(test_time_before), np.mean(test_time_after),np.mean(np.array(test_time_before)-np.array(test_time_after)), np.mean(prediction_time)
-    #return test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
+    return prediction_time, test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference
     #return test_acc, test_prec, test_rec, test_f1
-    return prediction_time, test_time_after, test_iterations_after
+    #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
-def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0):
+def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0,sparsity ="dense"):
 
     # Initialization for data generation
     data_test = []
@@ -336,14 +346,14 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     n_vector = []
     m_vector = []
 
-    device = torch.device(f"cuda{cuda}" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate test data
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        data_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_MLP_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,dataset_type=dataset_type)
+        data_test_i, test_iterations_before_i,test_time_before_i, H_test_i,f_test_i,A_test_i,b_test_i,blower_i,_,n_i,m_i = generate_MLP_test_data_only(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,dataset_type=dataset_type,sparsity=sparsity)
 
         data_test.extend(data_test_i)
         test_iterations_before = test_iterations_before + test_iterations_before_i
@@ -415,10 +425,10 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
 
             
             # Node-level metrics
-            print(labels.shape, preds.shape)
+            # print(labels.shape, preds.shape)
             labels_constraints = labels.squeeze()[n:]
             preds_constraints = preds[n:]
-            print(labels_constraints.shape,preds_constraints.shape)
+            # print(labels_constraints.shape,preds_constraints.shape)
             test_correct += (preds_constraints == labels_constraints).sum().item()
             test_total += labels_constraints.numel()
             test_TP += ((preds_constraints == 1) & (labels_constraints == 1)).sum().item()

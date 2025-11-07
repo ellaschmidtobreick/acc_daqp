@@ -13,7 +13,7 @@ from model import GNN,MLP
 from model import EarlyStopping
 import matplotlib.pyplot as plt
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda = 0):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda = 0,sparsity ="dense"):
     
     # Initialization      
     graph_train = []
@@ -32,9 +32,9 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         n_i = n[i]
         m_i = m[i]
         if dataset_type == "standard":
-            graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible)
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,sparsity=sparsity)
         elif dataset_type == "lmpc":
-            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,scale=scale_H,two_sided=two_sided)
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,scale=scale_H,two_sided=two_sided,sparsity=sparsity)
 
 
         graph_train = graph_train + graph_train_i
@@ -243,7 +243,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # return val_acc_save[best_epoch-1]
     return train_acc, train_prec, train_rec, train_f1
 
-def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard",cuda = 0):
+def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard",cuda = 0,sparsity ="dense"):
     
     # Initialization      
     data_train = []
@@ -253,14 +253,14 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
     n_vector_val = []
     m_vector_val = []
     
-    device = torch.device("cuda:{cuda}" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda:{cuda}" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
     # Generate QP problems and the corresponding graphs
     for i in range(len(n)):
         n_i = n[i]
         m_i = m[i]
-        data_train_i, data_val_i = generate_qp_MLP_train_val(n_i,m_i,nth,seed,number_of_graphs,H_flexible=H_flexible,A_flexible=A_flexible,dataset_type=dataset_type)
+        data_train_i, data_val_i = generate_qp_MLP_train_val(n_i,m_i,nth,seed,number_of_graphs,H_flexible=H_flexible,A_flexible=A_flexible,dataset_type=dataset_type,sparsity=sparsity)
         data_train.extend(data_train_i)
         data_val.extend(data_val_i)
         n_vector_train = n_vector_train + [n_i for i in range(len(data_train_i))]
