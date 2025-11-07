@@ -7,7 +7,7 @@ from utils import plot_scaling,plot_scaling_iterations
 import matplotlib.pyplot as plt
 import pickle
 import daqp
-from generate_mpqp_v2 import generate_qp
+from generate_mpqp_v2 import generate_qp,generate_banded_qp
 import time
 import torch
 
@@ -15,8 +15,8 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
-# n = [10,20,30]
-# m = [40,80,120]
+n = [10,20,30]
+m = [40,80,120]
 
 nth = 7
 seed = 123
@@ -30,8 +30,8 @@ t = 0.6
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 3 #5
-sparsity = "dense"
+num_runs = 1 #3 #5
+sparsity = "banded"
 torch.cuda.empty_cache()
 start_time = time.time()
 
@@ -48,8 +48,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- GNN, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,sparsity ="dense")
-        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,sparsity ="dense") 
+        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,sparsity =sparsity)
+        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,sparsity =sparsity) 
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -69,8 +69,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- MLP, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",sparsity ="dense")
-        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",sparsity ="dense")
+        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",sparsity =sparsity)
+        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",sparsity =sparsity)
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -96,7 +96,10 @@ for n_i,m_i in zip(n,m):
     n_i = n_i[0]
     m_i = m_i[0]
 
-    H,f,F,A,b,B,T = generate_qp(n_i,m_i,seed,nth)
+    if sparsity == "dense":
+        H,f,F,A,b,B,T = generate_qp(n_i,m_i,seed,nth)
+    elif sparsity =="banded":
+        H,f,F,A,b,B,T = generate_banded_qp(n_i, m_i, seed, bandwidth=10, nth = nth)
     sense = np.zeros(m_i, dtype=np.int32)
     blower = np.array([-np.inf for i in range(m_i)])
 
@@ -153,14 +156,14 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_mean,prediction_time_mean, solving_time_std,prediction_time_std))
     iterations = list(zip(iterations_after_mean,iterations_after_std))
-    with open("./data/scaling_data_std_server1.pkl", "wb") as f:
+    with open("./data/scaling_data_std_server_sparse.pkl", "wb") as f:
         pickle.dump((points, label_vector,iterations), f)
 
 end_time = time.time()
 print("Total time for experiments(s):", end_time - start_time)
 
-# # Load data
-# with open("./data/scaling_data_std_test.pkl", "rb") as f:
+# Load data
+# with open("./data/scaling_data_std_server_sparse.pkl", "rb") as f:
 #     points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f) # ,iterations_after_loaded
 
 # plot_scaling(points_loaded, labels_loaded,"plots/scaling_plot_std_test")
