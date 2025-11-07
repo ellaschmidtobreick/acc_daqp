@@ -34,6 +34,7 @@ num_runs = 1 #3 #5
 sparsity = "banded"
 torch.cuda.empty_cache()
 start_time = time.time()
+cuda = 1
 
 # Run experiments
 prediction_time_mean, solving_time_mean, label_vector, iterations_after_mean = [], [], [], []
@@ -48,8 +49,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- GNN, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,sparsity =sparsity)
-        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,sparsity =sparsity) 
+        train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,cuda = cuda, sparsity =sparsity)
+        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,cuda = cuda,sparsity =sparsity) 
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -69,8 +70,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- MLP, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",sparsity =sparsity)
-        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",sparsity =sparsity)
+        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity)
+        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity)
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
