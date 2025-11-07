@@ -171,14 +171,14 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
             blower_i = np.ascontiguousarray(blower[i].flatten(), dtype=np.float64)
             sense_i = np.ascontiguousarray(sense_active, dtype=np.int32)
 
-            print(H_i.shape,f_i.shape,A_i.shape,bupper_i.shape,blower_i.shape,sense_i.shape)
+            # print(H_i.shape,f_i.shape,A_i.shape,bupper_i.shape,blower_i.shape,sense_i.shape)
             exitflag = -6           
             counter = 0
 
             # system overdetermined
             while exitflag == -6:
                 _,_,exitflag,info = daqp.solve(H_i, f_i, A_i, bupper_i, blower_i, sense_i)
-                print(exitflag)
+                # print(exitflag)
                 lambda_after= list(info.values())[4]
                 test_iterations_after[i] = list(info.values())[2]
                 # solve and set-up time
@@ -258,7 +258,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 #     print("No active constraints to remove, but system still not solvable.")
                 #     break
 
-            print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
+            # print("iter before / after:", test_iterations_before[i],"/", test_iterations_after[i])
 
 
             # print(f"test iterations before: {test_iterations_before[i]}")
