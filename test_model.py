@@ -16,7 +16,7 @@ from model import GNN, MLP
 from naive_model import naive_model
 
 # Generate test problems and the corresponding graphs
-def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda =0,sparsity ="dense"):
+def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexible,A_flexible,model_name,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda =0,sparsity ="dense",relu_slope = 0.1):
     # Initialization for data generation
     graph_test = []
     H_test = []
@@ -111,7 +111,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     warmup_batch = next(iter(test_loader))[0].to(device)
     with torch.inference_mode():
         for _ in range(5):
-            _ = model(warmup_batch,number_of_layers,conv_type)
+            _ = model(warmup_batch,number_of_layers,conv_type,relu_slope)
             if device == "cuda":
                 torch.cuda.synchronize()
     print("warm-up done")
@@ -128,7 +128,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
                 torch.cuda.synchronize()
             # print(batch.x.dtype)
             start_time = time.perf_counter()
-            output = model(batch,number_of_layers,conv_type)
+            output = model(batch,number_of_layers,conv_type,relu_slope)
             preds = (output.squeeze() > t).long()
             if device == "cuda":
                 torch.cuda.synchronize()
@@ -331,7 +331,7 @@ def test_GNN(n,m,nth, seed, data_points,layer_width,number_of_layers,t, H_flexib
     #return prediction_time, test_time_after, test_iterations_after
 
 # Generate test problems and the corresponding graphs
-def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0,sparsity ="dense"):
+def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexible,A_flexible,model_name,dataset_type="standard",cuda = 0,sparsity ="dense",relu_slope = 0.1):
 
     # Initialization for data generation
     data_test = []
@@ -386,7 +386,6 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     test_iterations_difference = np.zeros(len(test_loader))
     prediction_time = np.zeros(len(test_loader))
  
-    counter = 0
     test_loss = 0
     test_correct = 0
     test_total = 0
@@ -400,7 +399,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     warmup_batch = next(iter(test_loader))[0].to(device)
     with torch.inference_mode():
         for _ in range(5):
-            _ = model(warmup_batch)
+            _ = model(warmup_batch,relu_slope)
             if device == "cuda":
                 torch.cuda.synchronize()
 
@@ -415,7 +414,7 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
             if device == "cuda":
                 torch.cuda.synchronize()
             start_time = time.perf_counter()
-            output = model(inputs)
+            output = model(inputs,relu_slope)
             
             if device == "cuda":
                 torch.cuda.synchronize()
@@ -476,7 +475,6 @@ def test_MLP(n,m,nth, seed, data_points,layer_width,number_of_layers,t,  H_flexi
     # naive_acc, naive_prec, naive_rec, naive_f1, naive_perc_wrongly_pred_nodes_per_graph, _, pr_auc= naive_model(n_vector,m_vector,test_all_labels) 
     
     # Compute average over graphs
-    print(counter)
     print("TESTING")
     print(f"Accuracy (node level) of the model on the test data: {test_acc}")
     print(f"Precision of the model on the test data: {test_prec}")

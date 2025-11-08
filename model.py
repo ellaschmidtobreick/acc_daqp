@@ -27,7 +27,7 @@ class GNN(torch.nn.Module):
             self.norm1 = torch.nn.LayerNorm(layer_width)
             self.norm2 = torch.nn.LayerNorm(layer_width)
 
-    def forward(self, data,number_of_layers,conv_type):
+    def forward(self, data,number_of_layers,conv_type,slope = 0.1):
         x, edge_index,edge_weight = data.x.float(), data.edge_index, data.edge_attr.float()
         # print("x before standardized",x)
         # standardize input
@@ -37,10 +37,10 @@ class GNN(torch.nn.Module):
         if conv_type == "GCN" or conv_type == "GAT":
             edge_weight = edge_weight - edge_weight.min() + 1e-6  
 
-        x = func.leaky_relu(self.norm1(self.input_layer(x, edge_index,edge_weight)),negative_slope = 0.1) #0001)
+        x = func.leaky_relu(self.norm1(self.input_layer(x, edge_index,edge_weight)),negative_slope = slope) #0001)
         # print("x after first layer",x)
         for i in range(number_of_layers-2):
-            x = func.leaky_relu(self.norm2(self.inner_layer(x,edge_index,edge_weight)),negative_slope = 0.1) #0001)
+            x = func.leaky_relu(self.norm2(self.inner_layer(x,edge_index,edge_weight)),negative_slope = slope) #0001)
         # print("x after inner layers",x)
         x = self.output_layer(x,edge_index,edge_weight)
         # print("x before sigmoid",x)
@@ -108,7 +108,9 @@ class MLP(torch.nn.Module):
         self.norm1 = torch.nn.LayerNorm(layer_width)
         self.norm2 = torch.nn.LayerNorm(layer_width)
 
-    def forward(self, x):
-        x = func.leaky_relu(self.norm1(self.input_layer(x)),negative_slope = 0.0001) #0.1
-        x = func.leaky_relu(self.norm2(self.hidden_layer(x)),negative_slope = 0.0001)
+    def forward(self, x,slope):
+        # x = func.leaky_relu(self.norm1(self.input_layer(x)),negative_slope = slope) #0.0001
+        # x = func.leaky_relu(self.norm2(self.hidden_layer(x)),negative_slope = slope) #0.0001
+        x = func.leaky_relu((self.input_layer(x)),negative_slope = slope) #0.0001
+        x = func.leaky_relu((self.hidden_layer(x)),negative_slope = slope) #0.0001
         return torch.sigmoid(self.output_layer(x)) 
