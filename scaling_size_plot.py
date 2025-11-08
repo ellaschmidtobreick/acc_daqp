@@ -31,7 +31,7 @@ A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
 num_runs = 1 #3 #5
-sparsity = "banded"
+sparsity = "dense" #"banded"
 cuda = 1
 relu_slope = 0.1
 
