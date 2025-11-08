@@ -150,9 +150,9 @@ def histogram_time(time_before, time_after, model_name,save):
 
     max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
     min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
-    print(f"max val: {max_val}, min val: {min_val}")
-    plt.hist(time_before, bins=30,range=(0,0.003),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
-    plt.hist(time_after, bins=30,range=(0,0.003),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
+    print(f"max val: {max_val}, min val: {min_val}") # max = 0.003 for 50v
+    plt.hist(time_before, bins=30,range=(0.000007,0.00003),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+    plt.hist(time_after, bins=30,range=(0.000007,0.00003),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
 
     # Calculate quartiles
     q2_bef = np.percentile(time_before, 50)
@@ -427,8 +427,13 @@ def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_it
     
     ax.grid(which="major", linestyle="-", linewidth=0.7)
     ax.grid(which="minor", visible=False)
-    
-    legend_labels = ["Warm-start GNN","Warm-start MLP","Cold-start"]
+    mapping = {
+        'Cold-started': 'Cold-start',
+        'GNN': 'Warm-start GNN',
+        'MLP': 'Warm-start MLP'
+    }
+
+    legend_labels = [mapping[m] for m in model_types]
     for i, model in enumerate(model_types):
         model_mask = labels == model
         model_iterations = iterations[model_mask]

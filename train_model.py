@@ -13,7 +13,7 @@ from model import GNN,MLP
 from model import EarlyStopping
 import matplotlib.pyplot as plt
 
-def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda = 0,sparsity ="dense"):
+def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,scale_H=1,dataset_type="standard",conv_type="LEConv",two_sided = False,cuda = 0,sparsity ="dense",relu_slope = 0.1):
     
     # Initialization      
     graph_train = []
@@ -34,7 +34,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         if dataset_type == "standard":
             graph_train_i, graph_val_i = generate_qp_graphs_train_val(n_i,m_i,nth,seed,data_points,H_flexible=H_flexible,A_flexible=A_flexible,sparsity=sparsity)
         elif dataset_type == "lmpc":
-            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,scale=scale_H,two_sided=two_sided,sparsity=sparsity)
+            graph_train_i, graph_val_i = generate_qp_graphs_train_val_lmpc(n_i,m_i,nth,seed,data_points,scale=scale_H,two_sided=two_sided)
 
 
         graph_train = graph_train + graph_train_i
@@ -92,8 +92,8 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
 
     # Training
     for epoch in range(number_of_max_epochs):
-        if epoch % 10:
-            print(f"Epoch {epoch}")
+        # if epoch % 10:
+        #     print(f"Epoch {epoch}")
 
         ################
         # Training
@@ -112,7 +112,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         for i,batch in enumerate(train_loader):
             batch = batch.to(device)
             optimizer.zero_grad()
-            output = model(batch,number_of_layers,conv_type)
+            output = model(batch,number_of_layers,conv_type,relu_slope)
             preds = (output.squeeze() > t).long()
 
             if dataset_type == "standard":
@@ -171,7 +171,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         with torch.no_grad():
             for i,batch in enumerate(val_loader):
                 batch = batch.to(device)
-                output = model(batch,number_of_layers,conv_type)
+                output = model(batch,number_of_layers,conv_type,relu_slope)
                 preds = (output.squeeze() > t).long()
 
                 if dataset_type == "standard":
@@ -243,7 +243,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # return val_acc_save[best_epoch-1]
     return train_acc, train_prec, train_rec, train_f1
 
-def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard",cuda = 0,sparsity ="dense"):
+def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, H_flexible,A_flexible,modelname,dataset_type="standard",cuda = 0,sparsity ="dense",relu_slope=0.1):
     
     # Initialization      
     data_train = []
@@ -325,7 +325,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             batch = [b.to(device) for b in batch]
             inputs, labels = batch
             optimizer.zero_grad()
-            output = model(inputs)
+            output = model(inputs,relu_slope)
             preds = (output.squeeze() > t).long()
             sparsity_loss = output.squeeze().sum()/len(batch)
             loss = torch.nn.BCELoss(weight=class_weights[batch[1]].to(device))(output.squeeze(), labels.float())#+0.1*sparsity_loss
@@ -365,7 +365,7 @@ def train_MLP(n,m,nth, seed, number_of_graphs,lr,number_of_max_epochs,layer_widt
             for batch in val_loader:
                 batch = [b.to(device) for b in batch]
                 inputs, labels = batch
-                output = model(inputs)
+                output = model(inputs,relu_slope)
                 sparsity_loss = output.squeeze().sum()/len(batch)
                 loss = torch.nn.BCELoss()(output.squeeze(), labels.float())# + 0.1*sparsity_loss
                 val_loss += loss.item()
