@@ -15,23 +15,26 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
-n = [30,40]
-m = [120,160]
+n = np.arange(150,501,10)[1:]
+m = np.arange(150,501,10)[1:]*4
+
+# n = [30,40,50]
+# m = [120,160,200]
 
 nth = 7
 seed = 123
 data_points = 2000
 lr = 0.001
 number_of_max_epochs = 100
-layer_width = 64 #128
+layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t = 0.9 # 0.6 
+t =  0.6 #0.9 
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 1 #3 #5
-sparsity = "dense" #"banded"
+num_runs = 3 #5
+sparsity = "banded"
 cuda = 1
 relu_slope = 0.1
 
@@ -158,9 +161,10 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_mean,prediction_time_mean, solving_time_std,prediction_time_std))
     iterations = list(zip(iterations_after_mean,iterations_after_std))
-    print("final list of iterations",iterations)
-    # with open("./data/scaling_data_std_server_sparse.pkl", "wb") as f:
-    #     pickle.dump((points, label_vector,iterations), f)
+    # print("final list of iterations",iterations)
+    # print("final solving time",solving_time_mean)
+    with open("./data/scaling_data_std_server_sparse1.pkl", "wb") as f:
+        pickle.dump((points, label_vector,iterations), f)
 
 end_time = time.time()
 print("Total time for experiments(s):", end_time - start_time)
