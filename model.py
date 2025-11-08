@@ -43,7 +43,7 @@ class GNN(torch.nn.Module):
         # only positive edge weights
         if conv_type == "GCN" or conv_type == "GAT":
             edge_weight = edge_weight - edge_weight.min() + 1e-6  
-            x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
+            #x = (x - x.mean(dim=0, keepdim=True)) / (x.std(dim=0, keepdim=True) + 1e-6)
 
         x = func.leaky_relu(self.input_layer(x, edge_index,edge_weight),negative_slope = 0.1)
         # print("x after first layer",x)

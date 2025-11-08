@@ -141,7 +141,7 @@ for n_i,m_i in zip(n,m):
             daqp_iterations[j] = list(info.values())[2]
 
         print("Average solving time (s):", np.mean(daqp_time))
-        print("Average solving time (s):", np.mean(daqp_iterations))
+        print("Average iterations (s):", np.mean(daqp_iterations))
 
         solving_time_vector.append(np.mean(daqp_time))
         prediction_time_vector.append(np.mean(daqp_time))
