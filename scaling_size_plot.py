@@ -32,11 +32,11 @@ H_flexible = False
 conv_type = "LEConv"
 num_runs = 1 #3 #5
 sparsity = "banded"
-torch.cuda.empty_cache()
-start_time = time.time()
 cuda = 1
 relu_slope = 0.1
 
+torch.cuda.empty_cache()
+start_time = time.time()
 # Run experiments
 prediction_time_mean, solving_time_mean, label_vector, iterations_after_mean = [], [], [], []
 prediction_time_std, solving_time_std, iterations_after_std = [], [], []
@@ -73,9 +73,9 @@ for n_i,m_i in zip(n,m):
     for i in range(num_runs):
         train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope =relu_slope)
         prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope = relu_slope)
-        prediction_time_vector.append(prediction_time)
-        solving_time_vector.append(test_time_after)
-        iterations_after_vector.append(iterations_after)
+        prediction_time_vector.append(np.mean(prediction_time))
+        solving_time_vector.append(np.mean(test_time_after))
+        iterations_after_vector.append(np.mean(iterations_after))
         print()
     
     # Compute mean and std
