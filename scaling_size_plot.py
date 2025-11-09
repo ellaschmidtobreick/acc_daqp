@@ -15,8 +15,8 @@ import torch
 n = np.arange(0,501,10)[1:]
 m = np.arange(0,501,10)[1:]*4
 
-n = [10,20,30]
-m = [40,80,120]
+#n = [10,20,30]
+#m = [40,80,120]
 
 nth = 7
 seed = 123
@@ -30,7 +30,7 @@ t = 0.6
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 1 #3 #5
+num_runs = 3 #5
 sparsity = "banded"
 torch.cuda.empty_cache()
 start_time = time.time()
