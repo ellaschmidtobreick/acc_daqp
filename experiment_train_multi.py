@@ -12,7 +12,7 @@ m_train = [40,80,120] #[40]
 
 nth = 7
 seed = 123
-data_points = 2000
+data_points = 1000
 lr = 0.001
 number_of_max_epochs = 100
 layer_width = 128
@@ -20,7 +20,7 @@ number_of_layers = 3
 track_on_wandb = False #True
 t = 0.5
 scale = 0.01
-runs = 1 #5
+runs = 5
 model_name = f"model_{n_train}v_{m_train}c_multi"
 cuda = 0
 
@@ -101,10 +101,10 @@ print(f'Test iter reduction: mean {np.mean(test_iterations_diff_avg)}, min {np.m
 print(f"Test iter after: quantiles {np.percentile(test_iterations_diff_avg, [5,10,20,30,40, 50, 60,70,80,90,95])}")
 
 # Plot average results
-histogram_time(test_time_before_avg, test_time_after_avg, f"{model_name}_test", save=True)
+#histogram_time(test_time_before_avg, test_time_after_avg, f"{model_name}_test", save=True)
 # barplot_iter_reduction(test_iterations_diff_avg, model_name, save=True)
-barplot_iterations(test_iterations_before_avg, test_iterations_after_avg, model_name, save=True)
-histogram_iterations(test_iterations_before_avg, test_iterations_after_avg, f"{model_name}_test", save=True)
+#barplot_iterations(test_iterations_before_avg, test_iterations_after_avg, model_name, save=True)
+#histogram_iterations(test_iterations_before_avg, test_iterations_after_avg, f"{model_name}_test", save=True)
 total_end_time = time.time()
 # print(f"Training time: {total_end_time-total_start_time} seconds")
 
