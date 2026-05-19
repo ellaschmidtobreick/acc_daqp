@@ -1,0 +1,88 @@
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_scatter/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:97: UserWarning: An issue occurred while importing 'torch-cluster'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_cluster/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-cluster'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:113: UserWarning: An issue occurred while importing 'torch-spline-conv'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_spline_conv/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_sparse/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'repr' attribute with value False was provided to the `Field()` function, which has no effect in the context it was used. 'repr' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'frozen' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'frozen' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+
+------threshold 0.4 ------
+Using device: cuda
+scale 0.01
+(50, 50) (50, 1) (50, 7) (296, 50) (296,) (296, 7)
+class weights:  [0.52640587 9.96759093]
+positive weight 0.05016257225433526
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9511289739884393
+Precision of the model on the test data: 0.8967813540411012
+Recall of the model on the test data: 0.02909614692112744
+F1-Score of the model on the test data: 0.056363572339477516
+VALIDATION
+Accuracy (node level) of the final model: 0.9546820809248555
+Precision of the model on the test data: 0.8868894601314424
+Recall of the model on the test data: 0.1003782368341566
+F1-Score of the model on the test data: 0.1803450060134363
+Training time: 1080.6971745491028 seconds
+Using device: cuda
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9361824324324325
+Precision of the model on the test data: 0.4328422876930986
+Recall of the model on the test data: 0.2880622837361936
+F1-Score of the model on the test data: 0.3459141226242905
+
+Test time before: mean 0.0007694010100000001, min 0.00047112499999999997, max 0.002066405
+Test time after: mean 0.00068380783, min 0.00046698400000000004, max 0.0015478100000000002
+Test time reduction: mean 8.559318e-05, min -8.469900000000004e-05, max 0.0009069689999999999
+Prediction time: mean 0.0011140254233032464, min 0.0010947063565254211, max 0.0014451202005147934
+Test iter before: mean 31.69, min 1, max 121
+Test iter before: quantiles [ 3.   4.  13.  55.5 94. ]
+Test iter after: mean 30.645, min 2.0, max 119.0
+Test iter after: quantiles [ 3.    4.   23.   49.25 72.  ]
+Test iter reduction: mean 1.045, min -37.0, max 88.0
+Test iter after: quantiles [-27.05 -19.1   -9.     0.     0.     0.     0.     0.     2.    29.1
+  42.05]
+Training time: -1181.2546153068542 seconds

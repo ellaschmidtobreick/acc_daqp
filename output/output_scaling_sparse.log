@@ -1,0 +1,5597 @@
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_scatter/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:97: UserWarning: An issue occurred while importing 'torch-cluster'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_cluster/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-cluster'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:113: UserWarning: An issue occurred while importing 'torch-spline-conv'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_spline_conv/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/torch_sparse/_version_cuda.so: undefined symbol: _ZN5torch3jit17parseSchemaOrNameERKSs
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'repr' attribute with value False was provided to the `Field()` function, which has no effect in the context it was used. 'repr' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+/home/ellsc479/miniconda3/envs/pytorch/lib/python3.11/site-packages/pydantic/_internal/_generate_schema.py:2249: UnsupportedFieldAttributeWarning: The 'frozen' attribute with value True was provided to the `Field()` function, which has no effect in the context it was used. 'frozen' is field-specific metadata, and can only be attached to a model field using `Annotated` metadata or by assignment. This may have happened because an `Annotated` type alias using the `type` statement was used, or if the `Field()` function was attached to a single member of a union type.
+  warnings.warn(
+
+--- GNN, variables [np.int64(10)], constraints [np.int64(40)] ---
+Using device: cuda:1
+banded
+(10, 10) (10,) (10, 7) (40, 10) (40,) (40, 7) (10, 7)
+condition number of H 4170.53648086846
+Done generating train data
+class weights:  [0.59005753 3.27600328]
+positive weight 0.152625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Early stopping after 20 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9307125
+Precision of the model on the test data: 0.6996466431091216
+Recall of the model on the test data: 0.9567567567559732
+F1-Score of the model on the test data: 0.808247132491481
+VALIDATION
+Accuracy (node level) of the final model: 0.9277
+Precision of the model on the test data: 0.6893834028711665
+Recall of the model on the test data: 0.9655844155781457
+F1-Score of the model on the test data: 0.8044360243477883
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.909625
+Precision of the model on the test data: 0.6911286576837384
+Recall of the model on the test data: 0.9624838292305145
+F1-Score of the model on the test data: 0.8045417631757092
+
+Test time before: mean 2.152901e-05, min 1.4065e-05, max 3.4125e-05
+Test time after: mean 1.9667595e-05, min 1.3877e-05, max 2.9531e-05
+Test time reduction: mean 1.8614150000000003e-06, min -9.838999999999998e-06, max 1.7549999999999996e-05
+Prediction time: mean 0.0015270614344626665, min 0.0014939680695533752, max 0.0016447044909000397
+Test iter before: mean 13.35, min 4, max 24
+Test iter before: quantiles [ 9. 11. 13. 16. 18.]
+Test iter after: mean 6.22, min 1.0, max 19.0
+Test iter after: quantiles [ 2.9  4.   6.   8.  11. ]
+Test iter reduction: mean 7.13, min -9.0, max 22.0
+Test iter after: quantiles [-2.   0.9  3.   4.   6.   8.   8.  10.  12.  13.  14. ]
+
+Using device: cuda:1
+banded
+(10, 10) (10,) (10, 7) (40, 10) (40,) (40, 7) (10, 7)
+condition number of H 4170.53648086846
+Done generating train data
+class weights:  [0.59005753 3.27600328]
+positive weight 0.152625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Early stopping after 31 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.939825
+Precision of the model on the test data: 0.7294329321251213
+Recall of the model on the test data: 0.9628992628984743
+F1-Score of the model on the test data: 0.8300621244365662
+VALIDATION
+Accuracy (node level) of the final model: 0.9335
+Precision of the model on the test data: 0.7141458639221041
+Recall of the model on the test data: 0.9474025973964455
+F1-Score of the model on the test data: 0.8144013347534973
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.91975
+Precision of the model on the test data: 0.7220039292695384
+Recall of the model on the test data: 0.950840879683371
+F1-Score of the model on the test data: 0.8207705143519634
+
+Test time before: mean 1.7977595000000002e-05, min 1.057e-05, max 3.7279999999999995e-05
+Test time after: mean 1.4274119999999999e-05, min 8.346e-06, max 2.4812e-05
+Test time reduction: mean 3.7034749999999997e-06, min -9.282999999999999e-06, max 2.4320999999999996e-05
+Prediction time: mean 0.001188388979062438, min 0.0011380482465028763, max 0.0016062166541814804
+Test iter before: mean 13.35, min 4, max 24
+Test iter before: quantiles [ 9. 11. 13. 16. 18.]
+Test iter after: mean 5.45, min 1.0, max 17.0
+Test iter after: quantiles [ 2.  3.  5.  7. 10.]
+Test iter reduction: mean 7.9, min -9.0, max 22.0
+Test iter after: quantiles [ 0.   2.   4.   6.   6.6  8.   9.  10.  12.  14.  16. ]
+
+Using device: cuda:1
+banded
+(10, 10) (10,) (10, 7) (40, 10) (40,) (40, 7) (10, 7)
+condition number of H 4170.53648086846
+Done generating train data
+class weights:  [0.59005753 3.27600328]
+positive weight 0.152625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Early stopping after 20 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9303
+Precision of the model on the test data: 0.698385167463697
+Recall of the model on the test data: 0.956347256346473
+F1-Score of the model on the test data: 0.8072588959159783
+VALIDATION
+Accuracy (node level) of the final model: 0.9276
+Precision of the model on the test data: 0.6890639480968996
+Recall of the model on the test data: 0.9655844155781457
+F1-Score of the model on the test data: 0.8042184916198779
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9105
+Precision of the model on the test data: 0.693563432832586
+Recall of the model on the test data: 0.9618369987001175
+F1-Score of the model on the test data: 0.8059620547475446
+
+Test time before: mean 2.1335575e-05, min 1.5225e-05, max 3.6266e-05
+Test time after: mean 2.0092549999999998e-05, min 1.3521e-05, max 2.8821e-05
+Test time reduction: mean 1.2430250000000003e-06, min -1.1076999999999999e-05, max 1.5215000000000003e-05
+Prediction time: mean 0.001533800819888711, min 0.0015010330826044083, max 0.0016603097319602966
+Test iter before: mean 13.35, min 4, max 24
+Test iter before: quantiles [ 9. 11. 13. 16. 18.]
+Test iter after: mean 6.255, min 1.0, max 19.0
+Test iter after: quantiles [ 3.  4.  6.  8. 11.]
+Test iter reduction: mean 7.095, min -9.0, max 22.0
+Test iter after: quantiles [-2.   1.   3.8  4.   6.   8.   8.  10.  12.  12.1 14. ]
+
+--- MLP, variables [np.int64(10)], constraints [np.int64(40)] ---
+Using device: cuda:1
+Early stopping after 27 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.977125
+Precision of the model on the test data: 0.8783902012242064
+Recall of the model on the test data: 0.9867321867313785
+F1-Score of the model on the test data: 0.9294144824033332
+VALIDATION
+Accuracy (node level) of the final model: 0.9728
+Precision of the model on the test data: 0.873380447580251
+Recall of the model on the test data: 0.9629870129807598
+F1-Score of the model on the test data: 0.9159975243453455
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.97
+Precision of the model on the test data: 0.8792102206685296
+Recall of the model on the test data: 0.9793014230208326
+F1-Score of the model on the test data: 0.9265605825241315
+
+
+Test time before: mean 9.155615e-06, min 2.815e-06, max 1.9381e-05
+Test time after: mean 1.714568e-05, min 1.4293999999999999e-05, max 3.0688e-05
+Time reduction: mean -7.990065000000001e-06, min -1.3633000000000003e-05, max 1.3679999999999977e-06
+Prediction time: mean 0.00027880914509296415, min 0.00026889704167842865, max 0.00030387192964553833
+Test iter before: mean 13.35, min 4, max 24
+Test iter after: mean 3.705, min 1.0, max 24.0
+Test iter reduction: mean 9.645, min 0.0, max 23.0
+
+Using device: cuda:1
+Early stopping after 27 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.977125
+Precision of the model on the test data: 0.8783902012242064
+Recall of the model on the test data: 0.9867321867313785
+F1-Score of the model on the test data: 0.9294144824033332
+VALIDATION
+Accuracy (node level) of the final model: 0.9728
+Precision of the model on the test data: 0.873380447580251
+Recall of the model on the test data: 0.9629870129807598
+F1-Score of the model on the test data: 0.9159975243453455
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.97
+Precision of the model on the test data: 0.8792102206685296
+Recall of the model on the test data: 0.9793014230208326
+F1-Score of the model on the test data: 0.9265605825241315
+
+
+Test time before: mean 6.649795e-06, min 2.005e-06, max 1.8993e-05
+Test time after: mean 1.1128375e-05, min 9.119e-06, max 2.0237e-05
+Time reduction: mean -4.47858e-06, min -1.2988999999999997e-05, max 6.792e-06
+Prediction time: mean 0.00020412450656294822, min 0.00019724667072296143, max 0.0002366919070482254
+Test iter before: mean 13.35, min 4, max 24
+Test iter after: mean 3.705, min 1.0, max 24.0
+Test iter reduction: mean 9.645, min 0.0, max 23.0
+
+Using device: cuda:1
+Early stopping after 27 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.977125
+Precision of the model on the test data: 0.8783902012242064
+Recall of the model on the test data: 0.9867321867313785
+F1-Score of the model on the test data: 0.9294144824033332
+VALIDATION
+Accuracy (node level) of the final model: 0.9728
+Precision of the model on the test data: 0.873380447580251
+Recall of the model on the test data: 0.9629870129807598
+F1-Score of the model on the test data: 0.9159975243453455
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.97
+Precision of the model on the test data: 0.8792102206685296
+Recall of the model on the test data: 0.9793014230208326
+F1-Score of the model on the test data: 0.9265605825241315
+
+
+Test time before: mean 8.632465e-06, min 3.009e-06, max 1.7228e-05
+Test time after: mean 1.6474345e-05, min 1.3207e-05, max 2.9168000000000003e-05
+Time reduction: mean -7.84188e-06, min -1.6323e-05, max 7.769999999999995e-07
+Prediction time: mean 0.0003590079303830862, min 0.000338556244969368, max 0.0003715958446264267
+Test iter before: mean 13.35, min 4, max 24
+Test iter after: mean 3.705, min 1.0, max 24.0
+Test iter reduction: mean 9.645, min 0.0, max 23.0
+
+--- Non-learned model ---
+Average solving time (s): 1.5798777e-05
+Average solving time (s): 12.7505
+Average solving time (s): 1.5168553e-05
+Average solving time (s): 12.842
+Average solving time (s): 1.52073805e-05
+Average solving time (s): 12.8455
+
+--- GNN, variables [np.int64(20)], constraints [np.int64(80)] ---
+Using device: cuda:1
+banded
+(20, 20) (20,) (20, 7) (80, 20) (80,) (80, 7) (20, 7)
+condition number of H 3615.598048478377
+Done generating train data
+class weights:  [0.56139169 4.57221238]
+positive weight 0.10935625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.94284375
+Precision of the model on the test data: 0.6644612476367894
+Recall of the model on the test data: 0.9642795907864409
+F1-Score of the model on the test data: 0.7867751589639725
+VALIDATION
+Accuracy (node level) of the final model: 0.931
+Precision of the model on the test data: 0.6174847516682618
+Recall of the model on the test data: 0.9712197350343937
+F1-Score of the model on the test data: 0.754971586154289
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.863
+Precision of the model on the test data: 0.5064874884140258
+Recall of the model on the test data: 0.9724199288212971
+F1-Score of the model on the test data: 0.6660572776392923
+
+Test time before: mean 7.3312125e-05, min 3.651e-05, max 9.445499999999999e-05
+Test time after: mean 4.3795269999999995e-05, min 3.56e-05, max 7.2295e-05
+Test time reduction: mean 2.9516855000000002e-05, min -1.9099e-05, max 5.3470000000000015e-05
+Prediction time: mean 0.0011706595867872237, min 0.0011338591575622559, max 0.0015409700572490692
+Test iter before: mean 15.23, min 6, max 32
+Test iter before: quantiles [11. 13. 15. 18. 20.]
+Test iter after: mean 9.625, min 2.0, max 27.0
+Test iter after: quantiles [ 5.  6.  9. 12. 15.]
+Test iter reduction: mean 5.605, min -12.0, max 22.0
+Test iter after: quantiles [-4.   -1.    1.8   3.    4.6   6.    7.    8.   10.   12.   13.05]
+
+Using device: cuda:1
+banded
+(20, 20) (20,) (20, 7) (80, 20) (80,) (80, 7) (20, 7)
+condition number of H 3615.598048478377
+Done generating train data
+class weights:  [0.56139169 4.57221238]
+positive weight 0.10935625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Early stopping after 36 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9492375
+Precision of the model on the test data: 0.6920240875012527
+Recall of the model on the test data: 0.9654797965359972
+F1-Score of the model on the test data: 0.8061945164681505
+VALIDATION
+Accuracy (node level) of the final model: 0.94695
+Precision of the model on the test data: 0.6881254169423345
+Recall of the model on the test data: 0.9424394700733557
+F1-Score of the model on the test data: 0.7954501589897778
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.914
+Precision of the model on the test data: 0.6293001186220958
+Recall of the model on the test data: 0.9439501779317441
+F1-Score of the model on the test data: 0.755160137546067
+
+Test time before: mean 4.246433e-05, min 3.4163000000000005e-05, max 7.1331e-05
+Test time after: mean 4.291441e-05, min 3.4629e-05, max 7.2962e-05
+Test time reduction: mean -4.5007999999999986e-07, min -2.9809000000000005e-05, max 3.182300000000001e-05
+Prediction time: mean 0.0011715722549706696, min 0.0011342093348503113, max 0.0016540195792913437
+Test iter before: mean 15.23, min 6, max 32
+Test iter before: quantiles [11. 13. 15. 18. 20.]
+Test iter after: mean 7.34, min 1.0, max 18.0
+Test iter after: quantiles [ 3.9  5.   7.  10.  12. ]
+Test iter reduction: mean 7.89, min -6.0, max 22.0
+Test iter after: quantiles [-1.  3.  4.  6.  7.  8.  9. 10. 11. 13. 15.]
+
+Using device: cuda:1
+banded
+(20, 20) (20,) (20, 7) (80, 20) (80,) (80, 7) (20, 7)
+condition number of H 3615.598048478377
+Done generating train data
+class weights:  [0.56139169 4.57221238]
+positive weight 0.10935625
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.942925
+Precision of the model on the test data: 0.6646329462701576
+Recall of the model on the test data: 0.965022575298071
+F1-Score of the model on the test data: 0.7871427857154107
+VALIDATION
+Accuracy (node level) of the final model: 0.93175
+Precision of the model on the test data: 0.6203974284026289
+Recall of the model on the test data: 0.9698492462267253
+F1-Score of the model on the test data: 0.7567278512358948
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.8619375
+Precision of the model on the test data: 0.5045003461793112
+Recall of the model on the test data: 0.9724199288212971
+F1-Score of the model on the test data: 0.6643367224410538
+
+Test time before: mean 6.703494e-05, min 5.454e-05, max 8.9683e-05
+Test time after: mean 6.714415e-05, min 5.4481e-05, max 9.0591e-05
+Test time reduction: mean -1.0920999999999908e-07, min -2.0937000000000006e-05, max 2.9242000000000002e-05
+Prediction time: mean 0.001944265766069293, min 0.0018797852098941803, max 0.0020927470177412033
+Test iter before: mean 15.23, min 6, max 32
+Test iter before: quantiles [11. 13. 15. 18. 20.]
+Test iter after: mean 9.61, min 2.0, max 27.0
+Test iter after: quantiles [ 5.   6.   9.  12.  15.1]
+Test iter reduction: mean 5.62, min -13.0, max 22.0
+Test iter after: quantiles [-3.05 -1.    1.8   3.    4.    6.    7.    8.3  10.   12.   13.05]
+
+--- MLP, variables [np.int64(20)], constraints [np.int64(80)] ---
+Using device: cuda:1
+Early stopping after 35 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784625
+Precision of the model on the test data: 0.8416905792515725
+Recall of the model on the test data: 0.9890838429439395
+F1-Score of the model on the test data: 0.9094539863084031
+VALIDATION
+Accuracy (node level) of the final model: 0.97365
+Precision of the model on the test data: 0.8201078582402924
+Recall of the model on the test data: 0.9725902238420622
+F1-Score of the model on the test data: 0.8898641538621307
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9705
+Precision of the model on the test data: 0.8389312977067217
+Recall of the model on the test data: 0.9777580071130884
+F1-Score of the model on the test data: 0.903040257967148
+
+
+Test time before: mean 1.810443e-05, min 7.519e-06, max 3.6529e-05
+Test time after: mean 6.1164375e-05, min 5.2007999999999994e-05, max 7.5525e-05
+Time reduction: mean -4.3059945e-05, min -5.8228e-05, max -2.7689000000000005e-05
+Prediction time: mean 0.00027637274004518983, min 0.0002691522240638733, max 0.0002923551946878433
+Test iter before: mean 15.23, min 6, max 32
+Test iter after: mean 3.69, min 1.0, max 12.0
+Test iter reduction: mean 11.54, min 1.0, max 24.0
+
+Using device: cuda:1
+Early stopping after 35 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784625
+Precision of the model on the test data: 0.8416905792515725
+Recall of the model on the test data: 0.9890838429439395
+F1-Score of the model on the test data: 0.9094539863084031
+VALIDATION
+Accuracy (node level) of the final model: 0.97365
+Precision of the model on the test data: 0.8201078582402924
+Recall of the model on the test data: 0.9725902238420622
+F1-Score of the model on the test data: 0.8898641538621307
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9705
+Precision of the model on the test data: 0.8389312977067217
+Recall of the model on the test data: 0.9777580071130884
+F1-Score of the model on the test data: 0.903040257967148
+
+
+Test time before: mean 1.983243e-05, min 7.688e-06, max 4.0049e-05
+Test time after: mean 6.2493945e-05, min 5.3378e-05, max 7.842e-05
+Time reduction: mean -4.2661515e-05, min -5.9473e-05, max -2.6018999999999996e-05
+Prediction time: mean 0.0002803342323750258, min 0.00027019716799259186, max 0.00029384903609752655
+Test iter before: mean 15.23, min 6, max 32
+Test iter after: mean 3.69, min 1.0, max 12.0
+Test iter reduction: mean 11.54, min 1.0, max 24.0
+
+Using device: cuda:1
+Early stopping after 35 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784625
+Precision of the model on the test data: 0.8416905792515725
+Recall of the model on the test data: 0.9890838429439395
+F1-Score of the model on the test data: 0.9094539863084031
+VALIDATION
+Accuracy (node level) of the final model: 0.97365
+Precision of the model on the test data: 0.8201078582402924
+Recall of the model on the test data: 0.9725902238420622
+F1-Score of the model on the test data: 0.8898641538621307
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9705
+Precision of the model on the test data: 0.8389312977067217
+Recall of the model on the test data: 0.9777580071130884
+F1-Score of the model on the test data: 0.903040257967148
+
+
+Test time before: mean 2.0075975e-05, min 7.848e-06, max 3.9734e-05
+Test time after: mean 6.072797e-05, min 5.2237e-05, max 7.3309e-05
+Time reduction: mean -4.0651995e-05, min -5.6374e-05, max -2.3770000000000005e-05
+Prediction time: mean 0.0002785507403314114, min 0.0002700183540582657, max 0.0002983119338750839
+Test iter before: mean 15.23, min 6, max 32
+Test iter after: mean 3.69, min 1.0, max 12.0
+Test iter reduction: mean 11.54, min 1.0, max 24.0
+
+--- Non-learned model ---
+Average solving time (s): 6.27352505e-05
+Average solving time (s): 14.7615
+Average solving time (s): 6.273428049999999e-05
+Average solving time (s): 14.7745
+Average solving time (s): 6.3024652e-05
+Average solving time (s): 14.926
+
+--- GNN, variables [np.int64(30)], constraints [np.int64(120)] ---
+Using device: cuda:1
+banded
+(30, 30) (30,) (30, 7) (120, 30) (120,) (120, 7) (30, 7)
+condition number of H 1333.0378031055013
+Done generating train data
+class weights:  [0.56700057 4.23131171]
+positive weight 0.11816666666666667
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Epoch 48
+Epoch 49
+Early stopping after 50 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.948825
+Precision of the model on the test data: 0.7057694276644042
+Recall of the model on the test data: 0.9722496473903482
+F1-Score of the model on the test data: 0.8178501463983233
+VALIDATION
+Accuracy (node level) of the final model: 0.9475666666666667
+Precision of the model on the test data: 0.7027972027957573
+Recall of the model on the test data: 0.9638928067673798
+F1-Score of the model on the test data: 0.8128940120114568
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9341666666666667
+Precision of the model on the test data: 0.7005614472848813
+Recall of the model on the test data: 0.9601025933286974
+F1-Score of the model on the test data: 0.8100504880271301
+
+Test time before: mean 0.000181876235, min 0.00014850399999999999, max 0.000259885
+Test time after: mean 0.00016250637, min 0.00013357299999999998, max 0.00021884600000000003
+Test time reduction: mean 1.9369865e-05, min -3.1915000000000036e-05, max 0.000115952
+Prediction time: mean 0.001916473349556327, min 0.0018645469099283218, max 0.002116987481713295
+Test iter before: mean 24.405, min 13, max 38
+Test iter before: quantiles [18. 21. 24. 28. 31.]
+Test iter after: mean 13.28, min 3.0, max 33.0
+Test iter after: quantiles [ 7.  9. 13. 17. 21.]
+Test iter reduction: mean 11.125, min -8.0, max 28.0
+Test iter after: quantiles [-3.  -0.1  4.   8.  10.  11.  13.4 15.  18.  21.1 24. ]
+
+Using device: cuda:1
+banded
+(30, 30) (30,) (30, 7) (120, 30) (120,) (120, 7) (30, 7)
+condition number of H 1333.0378031055013
+Done generating train data
+class weights:  [0.56700057 4.23131171]
+positive weight 0.11816666666666667
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Epoch 48
+Epoch 49
+Early stopping after 50 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9490416666666667
+Precision of the model on the test data: 0.7066782840447167
+Recall of the model on the test data: 0.972355430183014
+F1-Score of the model on the test data: 0.818497516718248
+VALIDATION
+Accuracy (node level) of the final model: 0.9473
+Precision of the model on the test data: 0.7013120131186935
+Recall of the model on the test data: 0.965021156555811
+F1-Score of the model on the test data: 0.8122996508279162
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.933625
+Precision of the model on the test data: 0.698755186720542
+Recall of the model on the test data: 0.9598176118524941
+F1-Score of the model on the test data: 0.8087405402053783
+
+Test time before: mean 0.00019488646000000002, min 0.000169155, max 0.000226819
+Test time after: mean 0.00017993641999999998, min 0.000147307, max 0.000226099
+Test time reduction: mean 1.4950039999999999e-05, min -3.4349000000000006e-05, max 5.894900000000001e-05
+Prediction time: mean 0.0015119061898440122, min 0.0014793742448091507, max 0.001659410074353218
+Test iter before: mean 24.405, min 13, max 38
+Test iter before: quantiles [18. 21. 24. 28. 31.]
+Test iter after: mean 13.315, min 3.0, max 33.0
+Test iter after: quantiles [ 7.  9. 13. 17. 21.]
+Test iter reduction: mean 11.09, min -8.0, max 28.0
+Test iter after: quantiles [-3.   0.9  4.   8.  10.  11.  14.  15.  18.  21.  24. ]
+
+Using device: cuda:1
+banded
+(30, 30) (30,) (30, 7) (120, 30) (120,) (120, 7) (30, 7)
+condition number of H 1333.0378031055013
+Done generating train data
+class weights:  [0.56700057 4.23131171]
+positive weight 0.11816666666666667
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Epoch 48
+Epoch 49
+Early stopping after 50 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9489916666666667
+Precision of the model on the test data: 0.7064821931845487
+Recall of the model on the test data: 0.9722849083212368
+F1-Score of the model on the test data: 0.8183409952734924
+VALIDATION
+Accuracy (node level) of the final model: 0.9470666666666666
+Precision of the model on the test data: 0.7007179487165114
+Recall of the model on the test data: 0.963610719320272
+F1-Score of the model on the test data: 0.8114014203009724
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.934125
+Precision of the model on the test data: 0.7004991680517877
+Recall of the model on the test data: 0.9598176118524941
+F1-Score of the model on the test data: 0.809907413660362
+
+Test time before: mean 0.00016413302500000002, min 0.000100173, max 0.00022466800000000002
+Test time after: mean 0.00011276177499999998, min 8.596999999999999e-05, max 0.000203515
+Test time reduction: mean 5.137124999999999e-05, min -8.957999999999999e-05, max 0.000108817
+Prediction time: mean 0.0012924669310450554, min 0.0011432170867919922, max 0.0019943546503782272
+Test iter before: mean 24.405, min 13, max 38
+Test iter before: quantiles [18. 21. 24. 28. 31.]
+Test iter after: mean 13.225, min 3.0, max 33.0
+Test iter after: quantiles [ 7.  9. 13. 17. 21.]
+Test iter reduction: mean 11.18, min -8.0, max 28.0
+Test iter after: quantiles [-3.  -1.   5.   8.   9.6 11.  14.  15.  18.  21.1 24. ]
+
+--- MLP, variables [np.int64(30)], constraints [np.int64(120)] ---
+Using device: cuda:1
+Early stopping after 45 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9808166666666667
+Precision of the model on the test data: 0.8660851876962133
+Recall of the model on the test data: 0.9908674188995096
+F1-Score of the model on the test data: 0.9242837828063737
+VALIDATION
+Accuracy (node level) of the final model: 0.9771
+Precision of the model on the test data: 0.8509332023554742
+Recall of the model on the test data: 0.9774330042285545
+F1-Score of the model on the test data: 0.9098070056556536
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972625
+Precision of the model on the test data: 0.8547263681570778
+Recall of the model on the test data: 0.9791963522343141
+F1-Score of the model on the test data: 0.9127374103480085
+
+
+Test time before: mean 5.590044000000001e-05, min 2.6528e-05, max 9.4265e-05
+Test time after: mean 0.00016858038, min 0.00014955, max 0.000209538
+Time reduction: mean -0.00011267994, min -0.00014616199999999997, max -7.1821e-05
+Prediction time: mean 0.00027967969886958597, min 0.000270158052444458, max 0.00030765123665332794
+Test iter before: mean 24.405, min 13, max 38
+Test iter after: mean 5.005, min 1.0, max 24.0
+Test iter reduction: mean 19.4, min 0.0, max 36.0
+
+Using device: cuda:1
+Early stopping after 45 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9808166666666667
+Precision of the model on the test data: 0.8660851876962133
+Recall of the model on the test data: 0.9908674188995096
+F1-Score of the model on the test data: 0.9242837828063737
+VALIDATION
+Accuracy (node level) of the final model: 0.9771
+Precision of the model on the test data: 0.8509332023554742
+Recall of the model on the test data: 0.9774330042285545
+F1-Score of the model on the test data: 0.9098070056556536
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972625
+Precision of the model on the test data: 0.8547263681570778
+Recall of the model on the test data: 0.9791963522343141
+F1-Score of the model on the test data: 0.9127374103480085
+
+
+Test time before: mean 5.3887004999999994e-05, min 2.5292e-05, max 9.3636e-05
+Test time after: mean 0.00016251176500000004, min 0.000141851, max 0.000197963
+Time reduction: mean -0.00010862476, min -0.000140867, max -6.902700000000002e-05
+Prediction time: mean 0.00027065446600317957, min 0.000259915366768837, max 0.0002925042062997818
+Test iter before: mean 24.405, min 13, max 38
+Test iter after: mean 5.005, min 1.0, max 24.0
+Test iter reduction: mean 19.4, min 0.0, max 36.0
+
+Using device: cuda:1
+Early stopping after 45 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9808166666666667
+Precision of the model on the test data: 0.8660851876962133
+Recall of the model on the test data: 0.9908674188995096
+F1-Score of the model on the test data: 0.9242837828063737
+VALIDATION
+Accuracy (node level) of the final model: 0.9771
+Precision of the model on the test data: 0.8509332023554742
+Recall of the model on the test data: 0.9774330042285545
+F1-Score of the model on the test data: 0.9098070056556536
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972625
+Precision of the model on the test data: 0.8547263681570778
+Recall of the model on the test data: 0.9791963522343141
+F1-Score of the model on the test data: 0.9127374103480085
+
+
+Test time before: mean 5.3590345000000004e-05, min 2.6114e-05, max 8.5575e-05
+Test time after: mean 0.00016734407, min 0.000150237, max 0.000197006
+Time reduction: mean -0.00011375372500000001, min -0.000144986, max -7.8948e-05
+Prediction time: mean 0.00027696934528648854, min 0.0002687256783246994, max 0.0002954714000225067
+Test iter before: mean 24.405, min 13, max 38
+Test iter after: mean 5.005, min 1.0, max 24.0
+Test iter reduction: mean 19.4, min 0.0, max 36.0
+
+--- Non-learned model ---
+Average solving time (s): 0.000191943504
+Average solving time (s): 25.0
+Average solving time (s): 0.000191245363
+Average solving time (s): 24.842
+Average solving time (s): 0.00019077470150000002
+Average solving time (s): 24.7995
+
+--- GNN, variables [np.int64(40)], constraints [np.int64(160)] ---
+Using device: cuda:1
+banded
+(40, 40) (40,) (40, 7) (160, 40) (160,) (160, 7) (40, 7)
+condition number of H 10783.831193257649
+Done generating train data
+class weights:  [0.56583489 4.2973786 ]
+positive weight 0.11635000000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Early stopping after 36 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9468625
+Precision of the model on the test data: 0.694462603345377
+Recall of the model on the test data: 0.9701063601200661
+F1-Score of the model on the test data: 0.8094619076893124
+VALIDATION
+Accuracy (node level) of the final model: 0.9471
+Precision of the model on the test data: 0.6981740064436118
+Recall of the model on the test data: 0.9682911257693801
+F1-Score of the model on the test data: 0.8113409366420445
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.93384375
+Precision of the model on the test data: 0.6953488372082243
+Recall of the model on the test data: 0.9672201854626543
+F1-Score of the model on the test data: 0.8090556458943964
+
+Test time before: mean 0.00039803419, min 0.000227409, max 0.000598441
+Test time after: mean 0.00041881438000000005, min 0.000371372, max 0.00049562
+Test time reduction: mean -2.0780190000000007e-05, min -0.000226605, max 0.00014168099999999995
+Prediction time: mean 0.0015499769151210785, min 0.0015177801251411438, max 0.0017130523920059204
+Test iter before: mean 37.735, min 21, max 56
+Test iter before: quantiles [27. 32. 38. 43. 48.]
+Test iter after: mean 18.575, min 7.0, max 43.0
+Test iter after: quantiles [10. 12. 17. 23. 31.]
+Test iter reduction: mean 19.16, min -11.0, max 45.0
+Test iter after: quantiles [ 0.95  4.9   9.   13.7  17.6  20.   22.   26.   28.   34.   37.05]
+
+Using device: cuda:1
+banded
+(40, 40) (40,) (40, 7) (160, 40) (160,) (160, 7) (40, 7)
+condition number of H 10783.831193257649
+Done generating train data
+class weights:  [0.56583489 4.2973786 ]
+positive weight 0.11635000000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Early stopping after 36 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9468375
+Precision of the model on the test data: 0.6944904005231245
+Recall of the model on the test data: 0.9696229050276726
+F1-Score of the model on the test data: 0.8093124348881019
+VALIDATION
+Accuracy (node level) of the final model: 0.946275
+Precision of the model on the test data: 0.6943597560965025
+Recall of the model on the test data: 0.9693551819515442
+F1-Score of the model on the test data: 0.8091304685342252
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.933125
+Precision of the model on the test data: 0.6925805954022943
+Recall of the model on the test data: 0.9682984688355224
+F1-Score of the model on the test data: 0.807553951970872
+
+Test time before: mean 0.00037612535500000004, min 0.00022442, max 0.000541709
+Test time after: mean 0.000238487355, min 0.000198289, max 0.000420882
+Test time reduction: mean 0.00013763799999999999, min -2.9624999999999975e-05, max 0.00033588600000000003
+Prediction time: mean 0.0011726795230060816, min 0.001141900196671486, max 0.0016181189566850662
+Test iter before: mean 37.735, min 21, max 56
+Test iter before: quantiles [27. 32. 38. 43. 48.]
+Test iter after: mean 19.51, min 7.0, max 53.0
+Test iter after: quantiles [10. 12. 18. 24. 32.]
+Test iter reduction: mean 18.225, min -11.0, max 45.0
+Test iter after: quantiles [-1.05  2.9   8.   12.7  16.6  19.   22.   24.   28.   33.   36.05]
+
+Using device: cuda:1
+banded
+(40, 40) (40,) (40, 7) (160, 40) (160,) (160, 7) (40, 7)
+condition number of H 10783.831193257649
+Done generating train data
+class weights:  [0.56583489 4.2973786 ]
+positive weight 0.11635000000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Early stopping after 36 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.946809375
+Precision of the model on the test data: 0.6943926132536897
+Recall of the model on the test data: 0.9695423291789403
+F1-Score of the model on the test data: 0.8092179692894479
+VALIDATION
+Accuracy (node level) of the final model: 0.945875
+Precision of the model on the test data: 0.6927289321559283
+Recall of the model on the test data: 0.9691423707151114
+F1-Score of the model on the test data: 0.807948189938628
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.93265625
+Precision of the model on the test data: 0.6908643494298818
+Recall of the model on the test data: 0.9687297821846695
+F1-Score of the model on the test data: 0.8065355907936217
+
+Test time before: mean 0.00032951478500000005, min 0.000225886, max 0.000547725
+Test time after: mean 0.00022723828500000002, min 0.000199327, max 0.000320168
+Test time reduction: mean 0.0001022765, min -6.556500000000001e-05, max 0.000314797
+Prediction time: mean 0.0011649969592690467, min 0.0011364221572875977, max 0.0018621068447828293
+Test iter before: mean 37.735, min 21, max 56
+Test iter before: quantiles [27. 32. 38. 43. 48.]
+Test iter after: mean 19.325, min 6.0, max 49.0
+Test iter after: quantiles [10. 12. 18. 24. 32.]
+Test iter reduction: mean 18.41, min -12.0, max 45.0
+Test iter after: quantiles [-1.    3.    8.   12.   16.   19.   22.   25.   28.   34.   37.05]
+
+--- MLP, variables [np.int64(40)], constraints [np.int64(160)] ---
+Using device: cuda:1
+Early stopping after 67 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9846125
+Precision of the model on the test data: 0.8877952755903381
+Recall of the model on the test data: 0.9932853459387105
+F1-Score of the model on the test data: 0.937582390310082
+VALIDATION
+Accuracy (node level) of the final model: 0.981425
+Precision of the model on the test data: 0.8793632527792877
+Recall of the model on the test data: 0.9757395190445292
+F1-Score of the model on the test data: 0.9250479118884571
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8688493203123323
+Recall of the model on the test data: 0.9786499892150557
+F1-Score of the model on the test data: 0.9204868104316153
+
+
+Test time before: mean 0.00012622614000000002, min 6.75e-05, max 0.000183607
+Test time after: mean 0.00037441441499999996, min 0.00034449299999999997, max 0.000423118
+Time reduction: mean -0.00024818827500000003, min -0.00032365000000000003, max -0.000171068
+Prediction time: mean 0.00029196422547101976, min 0.00028117746114730835, max 0.0003112237900495529
+Test iter before: mean 37.735, min 21, max 56
+Test iter after: mean 5.85, min 1.0, max 25.0
+Test iter reduction: mean 31.885, min 3.0, max 54.0
+
+Using device: cuda:1
+Early stopping after 67 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9846125
+Precision of the model on the test data: 0.8877952755903381
+Recall of the model on the test data: 0.9932853459387105
+F1-Score of the model on the test data: 0.937582390310082
+VALIDATION
+Accuracy (node level) of the final model: 0.981425
+Precision of the model on the test data: 0.8793632527792877
+Recall of the model on the test data: 0.9757395190445292
+F1-Score of the model on the test data: 0.9250479118884571
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8688493203123323
+Recall of the model on the test data: 0.9786499892150557
+F1-Score of the model on the test data: 0.9204868104316153
+
+
+Test time before: mean 0.00012604551, min 6.8006e-05, max 0.000184938
+Test time after: mean 0.0003749028, min 0.00035037, max 0.00044153300000000003
+Time reduction: mean -0.00024885729000000004, min -0.000332836, max -0.00018314999999999998
+Prediction time: mean 0.0002860070578753948, min 0.00027869269251823425, max 0.0003018956631422043
+Test iter before: mean 37.735, min 21, max 56
+Test iter after: mean 5.85, min 1.0, max 25.0
+Test iter reduction: mean 31.885, min 3.0, max 54.0
+
+Using device: cuda:1
+Early stopping after 67 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9846125
+Precision of the model on the test data: 0.8877952755903381
+Recall of the model on the test data: 0.9932853459387105
+F1-Score of the model on the test data: 0.937582390310082
+VALIDATION
+Accuracy (node level) of the final model: 0.981425
+Precision of the model on the test data: 0.8793632527792877
+Recall of the model on the test data: 0.9757395190445292
+F1-Score of the model on the test data: 0.9250479118884571
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8688493203123323
+Recall of the model on the test data: 0.9786499892150557
+F1-Score of the model on the test data: 0.9204868104316153
+
+
+Test time before: mean 0.000127070225, min 6.8229e-05, max 0.000189379
+Test time after: mean 0.000374060695, min 0.00034761600000000003, max 0.000437497
+Time reduction: mean -0.00024699046999999996, min -0.000311912, max -0.000173274
+Prediction time: mean 0.0002902684081345797, min 0.0002792775630950928, max 0.0003084782510995865
+Test iter before: mean 37.735, min 21, max 56
+Test iter after: mean 5.85, min 1.0, max 25.0
+Test iter reduction: mean 31.885, min 3.0, max 54.0
+
+--- Non-learned model ---
+Average solving time (s): 0.00044786472099999996
+Average solving time (s): 37.022
+Average solving time (s): 0.00044812377400000003
+Average solving time (s): 37.1625
+Average solving time (s): 0.000448293633
+Average solving time (s): 37.3165
+
+--- GNN, variables [np.int64(50)], constraints [np.int64(200)] ---
+Using device: cuda:1
+banded
+(50, 50) (50,) (50, 7) (200, 50) (200,) (200, 7) (50, 7)
+condition number of H 12875.982864100943
+Done generating train data
+class weights:  [0.5680269 4.1750167]
+positive weight 0.11976
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.94333
+Precision of the model on the test data: 0.6843335475952954
+Recall of the model on the test data: 0.9778724114894419
+F1-Score of the model on the test data: 0.8051840853617122
+VALIDATION
+Accuracy (node level) of the final model: 0.94282
+Precision of the model on the test data: 0.6844768741900853
+Recall of the model on the test data: 0.9703036369686848
+F1-Score of the model on the test data: 0.8027051224684725
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.932325
+Precision of the model on the test data: 0.6955947665337947
+Recall of the model on the test data: 0.9713375796162063
+F1-Score of the model on the test data: 0.810659574068327
+
+Test time before: mean 0.0006728249650000001, min 0.000423378, max 0.001043448
+Test time after: mean 0.00069191253, min 0.000613997, max 0.0008131
+Test time reduction: mean -1.9087564999999998e-05, min -0.00033084, max 0.000391348
+Prediction time: mean 0.001964557571336627, min 0.0019359812140464783, max 0.0021330509334802628
+Test iter before: mean 42.85, min 28, max 61
+Test iter before: quantiles [35. 38. 43. 47. 51.]
+Test iter after: mean 23.355, min 6.0, max 44.0
+Test iter after: quantiles [15.  18.  22.  28.  33.1]
+Test iter reduction: mean 19.495, min -6.0, max 45.0
+Test iter after: quantiles [ 3.   6.  10.8 15.  17.  19.5 23.  25.  27.  31.  36.1]
+
+Using device: cuda:1
+banded
+(50, 50) (50,) (50, 7) (200, 50) (200,) (200, 7) (50, 7)
+condition number of H 12875.982864100943
+Done generating train data
+class weights:  [0.5680269 4.1750167]
+positive weight 0.11976
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9433125
+Precision of the model on the test data: 0.6842043778565319
+Recall of the model on the test data: 0.9781020374079455
+F1-Score of the model on the test data: 0.8051724830197112
+VALIDATION
+Accuracy (node level) of the final model: 0.94138
+Precision of the model on the test data: 0.6783094655947394
+Recall of the model on the test data: 0.9719719719703505
+F1-Score of the model on the test data: 0.7990125440154895
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.930375
+Precision of the model on the test data: 0.6886042926589723
+Recall of the model on the test data: 0.9733489775377584
+F1-Score of the model on the test data: 0.8065837856866616
+
+Test time before: mean 0.000541107545, min 0.000422893, max 0.000883871
+Test time after: mean 0.000441328045, min 0.000377071, max 0.000735516
+Test time reduction: mean 9.977949999999999e-05, min -0.00027920599999999994, max 0.00047620899999999995
+Prediction time: mean 0.0011994663625955581, min 0.0011514388024806976, max 0.0016205664724111557
+Test iter before: mean 42.85, min 28, max 61
+Test iter before: quantiles [35. 38. 43. 47. 51.]
+Test iter after: mean 24.79, min 7.0, max 44.0
+Test iter after: quantiles [15.9  19.   24.   29.25 34.1 ]
+Test iter reduction: mean 18.06, min -10.0, max 44.0
+Test iter after: quantiles [ 2.  5.  9. 12. 16. 19. 20. 23. 27. 31. 36.]
+
+Using device: cuda:1
+banded
+(50, 50) (50,) (50, 7) (200, 50) (200,) (200, 7) (50, 7)
+condition number of H 12875.982864100943
+Done generating train data
+class weights:  [0.5680269 4.1750167]
+positive weight 0.11976
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.943345
+Precision of the model on the test data: 0.6844204804487866
+Recall of the model on the test data: 0.9777680360719402
+F1-Score of the model on the test data: 0.8052088657074233
+VALIDATION
+Accuracy (node level) of the final model: 0.94174
+Precision of the model on the test data: 0.6799019035376854
+Recall of the model on the test data: 0.9713046379696842
+F1-Score of the model on the test data: 0.7998900823978753
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9317
+Precision of the model on the test data: 0.6928673664113872
+Recall of the model on the test data: 0.9736842105246838
+F1-Score of the model on the test data: 0.8096167198795118
+
+Test time before: mean 0.000828952105, min 0.00065633, max 0.000939647
+Test time after: mean 0.00078490313, min 0.00069445, max 0.000872647
+Test time reduction: mean 4.4048974999999996e-05, min -0.00018215599999999994, max 0.00019454
+Prediction time: mean 0.0015591471642255783, min 0.0015292074531316757, max 0.0016358979046344757
+Test iter before: mean 42.85, min 28, max 61
+Test iter before: quantiles [35. 38. 43. 47. 51.]
+Test iter after: mean 24.04, min 6.0, max 44.0
+Test iter after: quantiles [15. 19. 23. 28. 34.]
+Test iter reduction: mean 18.81, min -10.0, max 45.0
+Test iter after: quantiles [ 3.    6.   10.   13.7  17.   19.   21.   24.   27.   31.   36.05]
+
+--- MLP, variables [np.int64(50)], constraints [np.int64(200)] ---
+Using device: cuda:1
+Early stopping after 43 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.976915
+Precision of the model on the test data: 0.8447876172472548
+Recall of the model on the test data: 0.9889362057446166
+F1-Score of the model on the test data: 0.911196163598359
+VALIDATION
+Accuracy (node level) of the final model: 0.97506
+Precision of the model on the test data: 0.8366189193010402
+Recall of the model on the test data: 0.984150817482509
+F1-Score of the model on the test data: 0.9044078141192137
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.969025
+Precision of the model on the test data: 0.8369208838191918
+Recall of the model on the test data: 0.9840764331193697
+F1-Score of the model on the test data: 0.9045528029813389
+
+
+Test time before: mean 0.000212056235, min 0.000140669, max 0.000309177
+Test time after: mean 0.0007062476000000001, min 0.000658162, max 0.00077889
+Time reduction: mean -0.000494191365, min -0.000605086, max -0.000405431
+Prediction time: mean 0.00028996343724429607, min 0.00027902424335479736, max 0.00031280331313610077
+Test iter before: mean 42.85, min 28, max 61
+Test iter after: mean 8.875, min 2.0, max 27.0
+Test iter reduction: mean 33.975, min 8.0, max 53.0
+
+Using device: cuda:1
+Early stopping after 43 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.976915
+Precision of the model on the test data: 0.8447876172472548
+Recall of the model on the test data: 0.9889362057446166
+F1-Score of the model on the test data: 0.911196163598359
+VALIDATION
+Accuracy (node level) of the final model: 0.97506
+Precision of the model on the test data: 0.8366189193010402
+Recall of the model on the test data: 0.984150817482509
+F1-Score of the model on the test data: 0.9044078141192137
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.969025
+Precision of the model on the test data: 0.8369208838191918
+Recall of the model on the test data: 0.9840764331193697
+F1-Score of the model on the test data: 0.9045528029813389
+
+
+Test time before: mean 0.0001848853, min 0.000120671, max 0.000266981
+Test time after: mean 0.0007032208199999999, min 0.0006543720000000001, max 0.000803248
+Time reduction: mean -0.00051833552, min -0.0006284069999999999, max -0.000439842
+Prediction time: mean 0.0002903339173644781, min 0.0002789795398712158, max 0.0003359038382768631
+Test iter before: mean 42.85, min 28, max 61
+Test iter after: mean 8.875, min 2.0, max 27.0
+Test iter reduction: mean 33.975, min 8.0, max 53.0
+
+Using device: cuda:1
+Early stopping after 43 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.976915
+Precision of the model on the test data: 0.8447876172472548
+Recall of the model on the test data: 0.9889362057446166
+F1-Score of the model on the test data: 0.911196163598359
+VALIDATION
+Accuracy (node level) of the final model: 0.97506
+Precision of the model on the test data: 0.8366189193010402
+Recall of the model on the test data: 0.984150817482509
+F1-Score of the model on the test data: 0.9044078141192137
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.969025
+Precision of the model on the test data: 0.8369208838191918
+Recall of the model on the test data: 0.9840764331193697
+F1-Score of the model on the test data: 0.9045528029813389
+
+
+Test time before: mean 0.00021120548500000002, min 0.000138787, max 0.000309609
+Test time after: mean 0.000710695805, min 0.000646744, max 0.000786059
+Time reduction: mean -0.00049949032, min -0.0006140140000000001, max -0.00039948999999999996
+Prediction time: mean 0.00028897459618747233, min 0.00027847662568092346, max 0.00030140019953250885
+Test iter before: mean 42.85, min 28, max 61
+Test iter after: mean 8.875, min 2.0, max 27.0
+Test iter reduction: mean 33.975, min 8.0, max 53.0
+
+--- Non-learned model ---
+Average solving time (s): 0.000825168214
+Average solving time (s): 42.8425
+Average solving time (s): 0.000825901263
+Average solving time (s): 42.481
+Average solving time (s): 0.0008280336514999999
+Average solving time (s): 42.7925
+
+--- GNN, variables [np.int64(60)], constraints [np.int64(240)] ---
+Using device: cuda:1
+banded
+(60, 60) (60,) (60, 7) (240, 60) (240,) (240, 7) (60, 7)
+condition number of H 129790.59509236208
+Done generating train data
+class weights:  [0.56472847 4.36228802]
+positive weight 0.11461875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9376645833333334
+Precision of the model on the test data: 0.6525963760184054
+Recall of the model on the test data: 0.9753894250866141
+F1-Score of the model on the test data: 0.7819915869980983
+VALIDATION
+Accuracy (node level) of the final model: 0.9345166666666667
+Precision of the model on the test data: 0.6414662084759054
+Recall of the model on the test data: 0.9749020745669884
+F1-Score of the model on the test data: 0.773792383950438
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9193125
+Precision of the model on the test data: 0.642530858197451
+Recall of the model on the test data: 0.9713488098722137
+F1-Score of the model on the test data: 0.7734425222613471
+
+Test time before: mean 0.0008606613800000002, min 0.000701541, max 0.001688879
+Test time after: mean 0.0013028497, min 0.0011524, max 0.001475863
+Test time reduction: mean -0.00044218832, min -0.0006289230000000001, max 0.00031700299999999973
+Prediction time: mean 0.001588053395971656, min 0.0015394706279039383, max 0.0018462147563695908
+Test iter before: mean 59.8, min 32, max 91
+Test iter before: quantiles [49.   53.   58.   65.25 74.1 ]
+Test iter after: mean 31.215, min 13.0, max 51.0
+Test iter after: quantiles [22.  26.  30.5 36.  41. ]
+Test iter reduction: mean 28.585, min 4.0, max 62.0
+Test iter after: quantiles [10.  13.9 17.  20.  24.  28.  32.  36.  39.  44.2 51. ]
+
+Using device: cuda:1
+banded
+(60, 60) (60,) (60, 7) (240, 60) (240,) (240, 7) (60, 7)
+condition number of H 129790.59509236208
+Done generating train data
+class weights:  [0.56472847 4.36228802]
+positive weight 0.11461875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Early stopping after 44 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9459479166666667
+Precision of the model on the test data: 0.6852758233913677
+Recall of the model on the test data: 0.9772252212950584
+F1-Score of the model on the test data: 0.8056161122713907
+VALIDATION
+Accuracy (node level) of the final model: 0.94145
+Precision of the model on the test data: 0.6666995462609324
+Recall of the model on the test data: 0.9805599883926004
+F1-Score of the model on the test data: 0.7937290774423437
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.928125
+Precision of the model on the test data: 0.6684738955816582
+Recall of the model on the test data: 0.9782544813385567
+F1-Score of the model on the test data: 0.7942264057688625
+
+Test time before: mean 0.0011964968350000002, min 0.000749626, max 0.0016236129999999999
+Test time after: mean 0.001060216615, min 0.000956335, max 0.001295263
+Test time reduction: mean 0.00013628022, min -0.00036435099999999995, max 0.000487597
+Prediction time: mean 0.0019288701191544533, min 0.0018624365329742432, max 0.0021999627351760864
+Test iter before: mean 59.8, min 32, max 91
+Test iter before: quantiles [49.   53.   58.   65.25 74.1 ]
+Test iter after: mean 28.065, min 12.0, max 50.0
+Test iter after: quantiles [18. 23. 28. 34. 38.]
+Test iter reduction: mean 31.735, min 6.0, max 68.0
+Test iter after: quantiles [12.  15.  21.  25.  28.  31.  34.  39.  42.  47.  53.1]
+
+Using device: cuda:1
+banded
+(60, 60) (60,) (60, 7) (240, 60) (240,) (240, 7) (60, 7)
+condition number of H 129790.59509236208
+Done generating train data
+class weights:  [0.56472847 4.36228802]
+positive weight 0.11461875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Early stopping after 30 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9376708333333333
+Precision of the model on the test data: 0.6526461751790286
+Recall of the model on the test data: 0.9752621916860289
+F1-Score of the model on the test data: 0.7819864413086253
+VALIDATION
+Accuracy (node level) of the final model: 0.9343666666666667
+Precision of the model on the test data: 0.6411040015274175
+Recall of the model on the test data: 0.9738865515726478
+F1-Score of the model on the test data: 0.7732089332441213
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9190833333333334
+Precision of the model on the test data: 0.6418446601935516
+Recall of the model on the test data: 0.9713488098722137
+F1-Score of the model on the test data: 0.7729451606467257
+
+Test time before: mean 0.0010713724499999998, min 0.0007185770000000001, max 0.0016220100000000001
+Test time after: mean 0.000715384075, min 0.0006206040000000001, max 0.001392349
+Test time reduction: mean 0.000355988375, min -0.000326839, max 0.0008746419999999998
+Prediction time: mean 0.0012006436008960009, min 0.0011518578976392746, max 0.0017250888049602509
+Test iter before: mean 59.8, min 32, max 91
+Test iter before: quantiles [49.   53.   58.   65.25 74.1 ]
+Test iter after: mean 31.16, min 13.0, max 51.0
+Test iter after: quantiles [21. 26. 31. 36. 41.]
+Test iter reduction: mean 28.64, min 5.0, max 61.0
+Test iter after: quantiles [ 9.95 13.   17.   20.   24.   28.   32.   36.   39.   44.2  51.05]
+
+--- MLP, variables [np.int64(60)], constraints [np.int64(240)] ---
+Using device: cuda:1
+Early stopping after 44 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9776479166666666
+Precision of the model on the test data: 0.8429243968159255
+Recall of the model on the test data: 0.9893487467508245
+F1-Score of the model on the test data: 0.9102858861105393
+VALIDATION
+Accuracy (node level) of the final model: 0.9766666666666667
+Precision of the model on the test data: 0.8376152427770897
+Recall of the model on the test data: 0.9885390976338481
+F1-Score of the model on the test data: 0.9068405593129555
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.96975
+Precision of the model on the test data: 0.8324639841022945
+Recall of the model on the test data: 0.9848662944446299
+F1-Score of the model on the test data: 0.9022748637915202
+
+
+Test time before: mean 0.000343671455, min 0.000201744, max 0.000544459
+Test time after: mean 0.0011592490349999999, min 0.001076018, max 0.001359865
+Time reduction: mean -0.0008155775800000001, min -0.001056646, max -0.0006224910000000001
+Prediction time: mean 0.0002876312006264925, min 0.00027999840676784515, max 0.0003126952797174454
+Test iter before: mean 59.8, min 32, max 91
+Test iter after: mean 10.545, min 3.0, max 53.0
+Test iter reduction: mean 49.255, min 0.0, max 87.0
+
+Using device: cuda:1
+Early stopping after 44 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9776479166666666
+Precision of the model on the test data: 0.8429243968159255
+Recall of the model on the test data: 0.9893487467508245
+F1-Score of the model on the test data: 0.9102858861105393
+VALIDATION
+Accuracy (node level) of the final model: 0.9766666666666667
+Precision of the model on the test data: 0.8376152427770897
+Recall of the model on the test data: 0.9885390976338481
+F1-Score of the model on the test data: 0.9068405593129555
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.96975
+Precision of the model on the test data: 0.8324639841022945
+Recall of the model on the test data: 0.9848662944446299
+F1-Score of the model on the test data: 0.9022748637915202
+
+
+Test time before: mean 0.00036126273, min 0.000212985, max 0.000564731
+Test time after: mean 0.001013739735, min 0.000950858, max 0.001212689
+Time reduction: mean -0.000652477005, min -0.0009566540000000001, max -0.000438969
+Prediction time: mean 0.00036918426863849165, min 0.00034865178167819977, max 0.00038433633744716644
+Test iter before: mean 59.8, min 32, max 91
+Test iter after: mean 10.545, min 3.0, max 53.0
+Test iter reduction: mean 49.255, min 0.0, max 87.0
+
+Using device: cuda:1
+Early stopping after 44 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9776479166666666
+Precision of the model on the test data: 0.8429243968159255
+Recall of the model on the test data: 0.9893487467508245
+F1-Score of the model on the test data: 0.9102858861105393
+VALIDATION
+Accuracy (node level) of the final model: 0.9766666666666667
+Precision of the model on the test data: 0.8376152427770897
+Recall of the model on the test data: 0.9885390976338481
+F1-Score of the model on the test data: 0.9068405593129555
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.96975
+Precision of the model on the test data: 0.8324639841022945
+Recall of the model on the test data: 0.9848662944446299
+F1-Score of the model on the test data: 0.9022748637915202
+
+
+Test time before: mean 0.00036124396000000004, min 0.000211167, max 0.000563873
+Test time after: mean 0.00116479336, min 0.0011013540000000001, max 0.00135662
+Time reduction: mean -0.0008035494, min -0.001036516, max -0.0006034360000000001
+Prediction time: mean 0.0002904926426708698, min 0.0002813376486301422, max 0.0003162473440170288
+Test iter before: mean 59.8, min 32, max 91
+Test iter after: mean 10.545, min 3.0, max 53.0
+Test iter reduction: mean 49.255, min 0.0, max 87.0
+
+--- Non-learned model ---
+Average solving time (s): 0.0014039511
+Average solving time (s): 60.247
+Average solving time (s): 0.0014034421575
+Average solving time (s): 60.5105
+Average solving time (s): 0.0014065447185
+Average solving time (s): 60.889
+
+--- GNN, variables [np.int64(70)], constraints [np.int64(280)] ---
+Using device: cuda:1
+banded
+(70, 70) (70,) (70, 7) (280, 70) (280,) (280, 7) (70, 7)
+condition number of H 95536.39657447563
+Done generating train data
+class weights:  [0.55567022 4.9907315 ]
+positive weight 0.10018571428571428
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9410232142857143
+Precision of the model on the test data: 0.6342482169658014
+Recall of the model on the test data: 0.9716419506628812
+F1-Score of the model on the test data: 0.7675022654999999
+VALIDATION
+Accuracy (node level) of the final model: 0.9383
+Precision of the model on the test data: 0.6201183431947017
+Recall of the model on the test data: 0.9790169588948275
+F1-Score of the model on the test data: 0.7592933129793664
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9244642857142857
+Precision of the model on the test data: 0.6276262440097423
+Recall of the model on the test data: 0.97299999999861
+F1-Score of the model on the test data: 0.7630517541385027
+
+Test time before: mean 0.001372399825, min 0.001070983, max 0.002422319
+Test time after: mean 0.001069946085, min 0.000966281, max 0.001438749
+Test time reduction: mean 0.00030245373999999997, min -0.00030160499999999993, max 0.0013957569999999999
+Prediction time: mean 0.0011805388424545526, min 0.0011488515883684158, max 0.0018070302903652191
+Test iter before: mean 55.42, min 39, max 87
+Test iter before: quantiles [46. 50. 54. 61. 65.]
+Test iter after: mean 34.225, min 16.0, max 63.0
+Test iter after: quantiles [23. 26. 33. 41. 48.]
+Test iter reduction: mean 21.195, min -12.0, max 53.0
+Test iter after: quantiles [ 1.95  5.   12.   15.   19.   22.   25.   28.   31.   36.   40.05]
+
+Using device: cuda:1
+banded
+(70, 70) (70,) (70, 7) (280, 70) (280,) (280, 7) (70, 7)
+condition number of H 95536.39657447563
+Done generating train data
+class weights:  [0.55567022 4.9907315 ]
+positive weight 0.10018571428571428
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9409642857142857
+Precision of the model on the test data: 0.6339798599966704
+Recall of the model on the test data: 0.9717845429914139
+F1-Score of the model on the test data: 0.7673502084482883
+VALIDATION
+Accuracy (node level) of the final model: 0.9383857142857143
+Precision of the model on the test data: 0.6204572365419251
+Recall of the model on the test data: 0.9790169588948275
+F1-Score of the model on the test data: 0.7595472997049015
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9244821428571428
+Precision of the model on the test data: 0.6276370336244793
+Recall of the model on the test data: 0.9732857142843239
+F1-Score of the model on the test data: 0.7631475729415471
+
+Test time before: mean 0.0019623171349999998, min 0.0010842859999999998, max 0.002232104
+Test time after: mean 0.001976415865, min 0.0018305189999999999, max 0.002198262
+Test time reduction: mean -1.409872999999999e-05, min -0.0009049170000000003, max 0.00026751500000000007
+Prediction time: mean 0.0015662051551043987, min 0.0015304330736398697, max 0.001740550622344017
+Test iter before: mean 55.42, min 39, max 87
+Test iter before: quantiles [46. 50. 54. 61. 65.]
+Test iter after: mean 34.225, min 16.0, max 63.0
+Test iter after: quantiles [23. 27. 33. 41. 49.]
+Test iter reduction: mean 21.195, min -12.0, max 54.0
+Test iter after: quantiles [ 1.   5.  11.  15.  18.  22.  25.  27.3 31.  36.  41. ]
+
+Using device: cuda:1
+banded
+(70, 70) (70,) (70, 7) (280, 70) (280,) (280, 7) (70, 7)
+condition number of H 95536.39657447563
+Done generating train data
+class weights:  [0.55567022 4.9907315 ]
+positive weight 0.10018571428571428
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Early stopping after 29 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.941
+Precision of the model on the test data: 0.6341179754372169
+Recall of the model on the test data: 0.9718380151146137
+F1-Score of the model on the test data: 0.767468043191278
+VALIDATION
+Accuracy (node level) of the final model: 0.9381857142857143
+Precision of the model on the test data: 0.6196888363200621
+Recall of the model on the test data: 0.9788732394352129
+F1-Score of the model on the test data: 0.758928069238996
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9246071428571428
+Precision of the model on the test data: 0.6280420353976511
+Recall of the model on the test data: 0.9732857142843239
+F1-Score of the model on the test data: 0.763446880036578
+
+Test time before: mean 0.00155556989, min 0.00106048, max 0.0024560420000000003
+Test time after: mean 0.0019728643749999998, min 0.001789576, max 0.002187747
+Test time reduction: mean -0.00041729448500000003, min -0.0009778380000000002, max 0.0004285090000000001
+Prediction time: mean 0.0015570834558457135, min 0.0015103630721569061, max 0.001764439046382904
+Test iter before: mean 55.42, min 39, max 87
+Test iter before: quantiles [46. 50. 54. 61. 65.]
+Test iter after: mean 34.21, min 16.0, max 63.0
+Test iter after: quantiles [23. 27. 33. 41. 48.]
+Test iter reduction: mean 21.21, min -12.0, max 54.0
+Test iter after: quantiles [ 1.95  5.   11.   15.   18.   22.   25.   28.   31.   37.   41.05]
+
+--- MLP, variables [np.int64(70)], constraints [np.int64(280)] ---
+Using device: cuda:1
+Early stopping after 48 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9814857142857143
+Precision of the model on the test data: 0.8494178406624012
+Recall of the model on the test data: 0.9908562669326625
+F1-Score of the model on the test data: 0.9147017638488008
+VALIDATION
+Accuracy (node level) of the final model: 0.9787428571428571
+Precision of the model on the test data: 0.8336179555979096
+Recall of the model on the test data: 0.9821787870063493
+F1-Score of the model on the test data: 0.9018210559982331
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9744107142857142
+Precision of the model on the test data: 0.8386665044399091
+Recall of the model on the test data: 0.984714285712879
+F1-Score of the model on the test data: 0.9058413775133107
+
+
+Test time before: mean 0.00042981042499999996, min 0.000303659, max 0.000627443
+Test time after: mean 0.00176315775, min 0.0016791579999999998, max 0.001933534
+Time reduction: mean -0.001333347325, min -0.001593262, max -0.0011412039999999998
+Prediction time: mean 0.000290901493281126, min 0.0002816934138536453, max 0.00035649165511131287
+Test iter before: mean 55.42, min 39, max 87
+Test iter after: mean 10.115, min 2.0, max 32.0
+Test iter reduction: mean 45.305, min 13.0, max 74.0
+
+Using device: cuda:1
+Early stopping after 48 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9814857142857143
+Precision of the model on the test data: 0.8494178406624012
+Recall of the model on the test data: 0.9908562669326625
+F1-Score of the model on the test data: 0.9147017638488008
+VALIDATION
+Accuracy (node level) of the final model: 0.9787428571428571
+Precision of the model on the test data: 0.8336179555979096
+Recall of the model on the test data: 0.9821787870063493
+F1-Score of the model on the test data: 0.9018210559982331
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9744107142857142
+Precision of the model on the test data: 0.8386665044399091
+Recall of the model on the test data: 0.984714285712879
+F1-Score of the model on the test data: 0.9058413775133107
+
+
+Test time before: mean 0.00043033342000000003, min 0.000303664, max 0.000623112
+Test time after: mean 0.0017640248699999999, min 0.0016795699999999998, max 0.0019258679999999999
+Time reduction: mean -0.0013336914499999998, min -0.0015549079999999998, max -0.0011549720000000002
+Prediction time: mean 0.00029295435175299647, min 0.00027989596128463745, max 0.0003565773367881775
+Test iter before: mean 55.42, min 39, max 87
+Test iter after: mean 10.115, min 2.0, max 32.0
+Test iter reduction: mean 45.305, min 13.0, max 74.0
+
+Using device: cuda:1
+Early stopping after 48 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9814857142857143
+Precision of the model on the test data: 0.8494178406624012
+Recall of the model on the test data: 0.9908562669326625
+F1-Score of the model on the test data: 0.9147017638488008
+VALIDATION
+Accuracy (node level) of the final model: 0.9787428571428571
+Precision of the model on the test data: 0.8336179555979096
+Recall of the model on the test data: 0.9821787870063493
+F1-Score of the model on the test data: 0.9018210559982331
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9744107142857142
+Precision of the model on the test data: 0.8386665044399091
+Recall of the model on the test data: 0.984714285712879
+F1-Score of the model on the test data: 0.9058413775133107
+
+
+Test time before: mean 0.000430636405, min 0.000303331, max 0.000627107
+Test time after: mean 0.0017635849350000003, min 0.00168641, max 0.0019256330000000002
+Time reduction: mean -0.0013329485299999999, min -0.001592698, max -0.0011492779999999999
+Prediction time: mean 0.00028810757212340834, min 0.0002818554639816284, max 0.00030498206615448
+Test iter before: mean 55.42, min 39, max 87
+Test iter after: mean 10.115, min 2.0, max 32.0
+Test iter reduction: mean 45.305, min 13.0, max 74.0
+
+--- Non-learned model ---
+Average solving time (s): 0.0016658275340000002
+Average solving time (s): 55.881
+Average solving time (s): 0.0011478966740000002
+Average solving time (s): 55.3355
+Average solving time (s): 0.0011420073234999998
+Average solving time (s): 55.1765
+
+--- GNN, variables [np.int64(80)], constraints [np.int64(320)] ---
+Using device: cuda:1
+banded
+(80, 80) (80,) (80, 7) (320, 80) (320,) (320, 7) (80, 7)
+condition number of H 173555.69036484946
+Done generating train data
+class weights:  [0.56477532 4.35949484]
+positive weight 0.1146921875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9439484375
+Precision of the model on the test data: 0.6771252194596404
+Recall of the model on the test data: 0.9772897565493267
+F1-Score of the model on the test data: 0.7999776917827494
+VALIDATION
+Accuracy (node level) of the final model: 0.9419625
+Precision of the model on the test data: 0.6694529442490712
+Recall of the model on the test data: 0.9766986062707135
+F1-Score of the model on the test data: 0.7944028645885246
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.92909375
+Precision of the model on the test data: 0.6736389035711895
+Recall of the model on the test data: 0.9763598555313818
+F1-Score of the model on the test data: 0.7972296645152207
+
+Test time before: mean 0.002560075245, min 0.001633651, max 0.003961634
+Test time after: mean 0.00202487102, min 0.001459986, max 0.0030728680000000003
+Test time reduction: mean 0.000535204225, min -0.001395858, max 0.0021218570000000004
+Prediction time: mean 0.0015200966596603395, min 0.0011604204773902893, max 0.002231508493423462
+Test iter before: mean 72.725, min 54, max 101
+Test iter before: quantiles [62.   67.   72.   77.25 83.  ]
+Test iter after: mean 33.105, min 15.0, max 68.0
+Test iter after: quantiles [24.9 27.  32.  38.  44. ]
+Test iter reduction: mean 39.62, min -8.0, max 70.0
+Test iter after: quantiles [20.95 23.9  29.8  33.   38.   40.   43.   46.   50.   53.2  59.05]
+
+Using device: cuda:1
+banded
+(80, 80) (80,) (80, 7) (320, 80) (320,) (320, 7) (80, 7)
+condition number of H 173555.69036484946
+Done generating train data
+class weights:  [0.56477532 4.35949484]
+positive weight 0.1146921875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9439015625
+Precision of the model on the test data: 0.6769034814604513
+Recall of the model on the test data: 0.9774123673418011
+F1-Score of the model on the test data: 0.799863980939147
+VALIDATION
+Accuracy (node level) of the final model: 0.9419125
+Precision of the model on the test data: 0.6692531522788411
+Recall of the model on the test data: 0.9766986062707135
+F1-Score of the model on the test data: 0.7942621813870557
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.929171875
+Precision of the model on the test data: 0.6737620772941774
+Recall of the model on the test data: 0.9769070810977597
+F1-Score of the model on the test data: 0.7974983199389757
+
+Test time before: mean 0.00254621647, min 0.001633516, max 0.003694724
+Test time after: mean 0.002087822205, min 0.001463757, max 0.003144516
+Test time reduction: mean 0.00045839426499999996, min -0.0012758560000000001, max 0.00196157
+Prediction time: mean 0.0014799591898918153, min 0.0011676400899887085, max 0.0022670961916446686
+Test iter before: mean 72.725, min 54, max 101
+Test iter before: quantiles [62.   67.   72.   77.25 83.  ]
+Test iter after: mean 33.125, min 14.0, max 68.0
+Test iter after: quantiles [24.9 27.  32.  38.  44. ]
+Test iter reduction: mean 39.6, min -8.0, max 73.0
+Test iter after: quantiles [20.95 23.   29.8  33.   38.   40.   43.   46.   50.   55.   59.  ]
+
+Using device: cuda:1
+banded
+(80, 80) (80,) (80, 7) (320, 80) (320,) (320, 7) (80, 7)
+condition number of H 173555.69036484946
+Done generating train data
+class weights:  [0.56477532 4.35949484]
+positive weight 0.1146921875
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Early stopping after 41 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.943971875
+Precision of the model on the test data: 0.6772144131556695
+Recall of the model on the test data: 0.9773170033920988
+F1-Score of the model on the test data: 0.8000490656139607
+VALIDATION
+Accuracy (node level) of the final model: 0.9419625
+Precision of the model on the test data: 0.6695288583583442
+Recall of the model on the test data: 0.976371951218449
+F1-Score of the model on the test data: 0.794348225673141
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.929109375
+Precision of the model on the test data: 0.6736897749579567
+Recall of the model on the test data: 0.9763598555313818
+F1-Score of the model on the test data: 0.7972652885228997
+
+Test time before: mean 0.002687626125, min 0.00166006, max 0.003808148
+Test time after: mean 0.0022576126, min 0.001445928, max 0.00351477
+Test time reduction: mean 0.000430013525, min -0.001772761, max 0.002179511
+Prediction time: mean 0.0016091046668589115, min 0.001164885237812996, max 0.002443278208374977
+Test iter before: mean 72.725, min 54, max 101
+Test iter before: quantiles [62.   67.   72.   77.25 83.  ]
+Test iter after: mean 33.12, min 15.0, max 68.0
+Test iter after: quantiles [24. 27. 32. 38. 44.]
+Test iter reduction: mean 39.605, min -8.0, max 70.0
+Test iter after: quantiles [20.95 23.   30.   32.7  38.   40.   43.   46.   50.   55.   59.  ]
+
+--- MLP, variables [np.int64(80)], constraints [np.int64(320)] ---
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.980803125
+Precision of the model on the test data: 0.8625013345353014
+Recall of the model on the test data: 0.9905317221365625
+F1-Score of the model on the test data: 0.9220935639068351
+VALIDATION
+Accuracy (node level) of the final model: 0.978425
+Precision of the model on the test data: 0.8513284341427818
+Recall of the model on the test data: 0.9838850174205314
+F1-Score of the model on the test data: 0.912819471739983
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972484375
+Precision of the model on the test data: 0.8472039163991271
+Recall of the model on the test data: 0.9848965743668765
+F1-Score of the model on the test data: 0.9108760515079111
+
+
+Test time before: mean 0.0005294571549999999, min 0.000354346, max 0.000942261
+Test time after: mean 0.001639859475, min 0.001368577, max 0.003313057
+Time reduction: mean -0.00111040232, min -0.0025375659999999998, max -0.0004829020000000001
+Prediction time: mean 0.00024094141088426113, min 0.00020559318363666534, max 0.00040859170258045197
+Test iter before: mean 72.725, min 54, max 101
+Test iter after: mean 11.495, min 3.0, max 26.0
+Test iter reduction: mean 61.23, min 41.0, max 90.0
+
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.980803125
+Precision of the model on the test data: 0.8625013345353014
+Recall of the model on the test data: 0.9905317221365625
+F1-Score of the model on the test data: 0.9220935639068351
+VALIDATION
+Accuracy (node level) of the final model: 0.978425
+Precision of the model on the test data: 0.8513284341427818
+Recall of the model on the test data: 0.9838850174205314
+F1-Score of the model on the test data: 0.912819471739983
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972484375
+Precision of the model on the test data: 0.8472039163991271
+Recall of the model on the test data: 0.9848965743668765
+F1-Score of the model on the test data: 0.9108760515079111
+
+
+Test time before: mean 0.0007306469900000001, min 0.00055479, max 0.000987392
+Test time after: mean 0.0022808327000000002, min 0.002194772, max 0.002421352
+Time reduction: mean -0.00155018571, min -0.00176488, max -0.0013059350000000005
+Prediction time: mean 0.00038447030819952486, min 0.0003689732402563095, max 0.0004608072340488434
+Test iter before: mean 72.725, min 54, max 101
+Test iter after: mean 11.495, min 3.0, max 26.0
+Test iter reduction: mean 61.23, min 41.0, max 90.0
+
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.980803125
+Precision of the model on the test data: 0.8625013345353014
+Recall of the model on the test data: 0.9905317221365625
+F1-Score of the model on the test data: 0.9220935639068351
+VALIDATION
+Accuracy (node level) of the final model: 0.978425
+Precision of the model on the test data: 0.8513284341427818
+Recall of the model on the test data: 0.9838850174205314
+F1-Score of the model on the test data: 0.912819471739983
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.972484375
+Precision of the model on the test data: 0.8472039163991271
+Recall of the model on the test data: 0.9848965743668765
+F1-Score of the model on the test data: 0.9108760515079111
+
+
+Test time before: mean 0.00058241883, min 0.000354114, max 0.0010229
+Test time after: mean 0.00218390007, min 0.0013829489999999999, max 0.002792349
+Time reduction: mean -0.00160148124, min -0.002286216, max -0.000546396
+Prediction time: mean 0.0002976528182625771, min 0.00020990893244743347, max 0.00047733262181282043
+Test iter before: mean 72.725, min 54, max 101
+Test iter after: mean 11.495, min 3.0, max 26.0
+Test iter reduction: mean 61.23, min 41.0, max 90.0
+
+--- Non-learned model ---
+Average solving time (s): 0.0027657956290000002
+Average solving time (s): 74.533
+Average solving time (s): 0.0029583507265
+Average solving time (s): 74.705
+Average solving time (s): 0.00298286375
+Average solving time (s): 74.736
+
+--- GNN, variables [np.int64(90)], constraints [np.int64(360)] ---
+Using device: cuda:1
+banded
+(90, 90) (90,) (90, 7) (360, 90) (360,) (360, 7) (90, 7)
+condition number of H 248526.1469104633
+Done generating train data
+class weights:  [0.56191701 4.5376626 ]
+positive weight 0.11018888888888889
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9373013888888889
+Precision of the model on the test data: 0.6412782097790617
+Recall of the model on the test data: 0.9781561964302489
+F1-Score of the model on the test data: 0.7746781817807336
+VALIDATION
+Accuracy (node level) of the final model: 0.9372222222222222
+Precision of the model on the test data: 0.6399920308137601
+Recall of the model on the test data: 0.9767889722268631
+F1-Score of the model on the test data: 0.7733108602460418
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9120833333333334
+Precision of the model on the test data: 0.6121100451104822
+Recall of the model on the test data: 0.9771782127994957
+F1-Score of the model on the test data: 0.7527150511269742
+
+Test time before: mean 0.0039266514, min 0.002311191, max 0.005052153
+Test time after: mean 0.0037031315100000003, min 0.0020181829999999998, max 0.005178014
+Test time reduction: mean 0.00022351989000000003, min -0.002684662, max 0.0026000800000000003
+Prediction time: mean 0.0017624273523688316, min 0.0011598635464906693, max 0.002396928146481514
+Test iter before: mean 78.675, min 59, max 105
+Test iter before: quantiles [66.   71.75 78.   85.25 94.  ]
+Test iter after: mean 43.195, min 21.0, max 72.0
+Test iter after: quantiles [32. 36. 42. 49. 57.]
+Test iter reduction: mean 35.48, min 3.0, max 64.0
+Test iter after: quantiles [16.85 19.   25.   29.   32.   35.   37.4  42.   47.   53.   55.  ]
+
+Using device: cuda:1
+banded
+(90, 90) (90,) (90, 7) (360, 90) (360,) (360, 7) (90, 7)
+condition number of H 248526.1469104633
+Done generating train data
+class weights:  [0.56191701 4.5376626 ]
+positive weight 0.11018888888888889
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Early stopping after 47 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9449736111111111
+Precision of the model on the test data: 0.6722766350599307
+Recall of the model on the test data: 0.9767822930320439
+F1-Score of the model on the test data: 0.7964153348036137
+VALIDATION
+Accuracy (node level) of the final model: 0.9420555555555555
+Precision of the model on the test data: 0.6584451863455348
+Recall of the model on the test data: 0.9795256436235763
+F1-Score of the model on the test data: 0.7875157838073825
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.922625
+Precision of the model on the test data: 0.6428381079276196
+Recall of the model on the test data: 0.9786996652794616
+F1-Score of the model on the test data: 0.7759861627316738
+
+Test time before: mean 0.003755969645, min 0.0022953649999999997, max 0.005021542
+Test time after: mean 0.00406277684, min 0.003710844, max 0.004551534
+Test time reduction: mean -0.000306807195, min -0.0020562820000000004, max 0.0011635310000000002
+Prediction time: mean 0.0016804850567132235, min 0.0015482157468795776, max 0.0018909089267253876
+Test iter before: mean 78.675, min 59, max 105
+Test iter before: quantiles [66.   71.75 78.   85.25 94.  ]
+Test iter after: mean 39.075, min 14.0, max 68.0
+Test iter after: quantiles [26.9 32.  39.  46.  52. ]
+Test iter reduction: mean 39.6, min -6.0, max 74.0
+Test iter after: quantiles [20.9 24.  30.  34.  37.  39.5 42.  46.  50.  55.  60. ]
+
+Using device: cuda:1
+banded
+(90, 90) (90,) (90, 7) (360, 90) (360,) (360, 7) (90, 7)
+condition number of H 248526.1469104633
+Done generating train data
+class weights:  [0.56191701 4.5376626 ]
+positive weight 0.11018888888888889
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9375652777777778
+Precision of the model on the test data: 0.6422560385273653
+Recall of the model on the test data: 0.9783200564685669
+F1-Score of the model on the test data: 0.7754427107031142
+VALIDATION
+Accuracy (node level) of the final model: 0.9372111111111111
+Precision of the model on the test data: 0.6398566593664875
+Recall of the model on the test data: 0.9772957632262544
+F1-Score of the model on the test data: 0.7733707592034443
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9119166666666667
+Precision of the model on the test data: 0.6115728697413796
+Recall of the model on the test data: 0.977685363626151
+F1-Score of the model on the test data: 0.7524590116581997
+
+Test time before: mean 0.003751775755, min 0.002208223, max 0.005729608
+Test time after: mean 0.00317180126, min 0.002065382, max 0.004688391
+Test time reduction: mean 0.000579974495, min -0.0019283759999999999, max 0.0026798520000000004
+Prediction time: mean 0.0016044275648891926, min 0.0011786576360464096, max 0.002329988405108452
+Test iter before: mean 78.675, min 59, max 105
+Test iter before: quantiles [66.   71.75 78.   85.25 94.  ]
+Test iter after: mean 43.145, min 19.0, max 73.0
+Test iter after: quantiles [32. 36. 42. 49. 57.]
+Test iter reduction: mean 35.53, min 3.0, max 67.0
+Test iter after: quantiles [15.9 19.  25.  28.7 32.6 34.  37.  42.  48.  53.  55.1]
+
+--- MLP, variables [np.int64(90)], constraints [np.int64(360)] ---
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9813722222222222
+Precision of the model on the test data: 0.8607924693519198
+Recall of the model on the test data: 0.9912523948773582
+F1-Score of the model on the test data: 0.9214275621616
+VALIDATION
+Accuracy (node level) of the final model: 0.9788666666666667
+Precision of the model on the test data: 0.8474088291739247
+Recall of the model on the test data: 0.9844921954176115
+F1-Score of the model on the test data: 0.9108214503909854
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9740416666666667
+Precision of the model on the test data: 0.8506846910104892
+Recall of the model on the test data: 0.9829597322233664
+F1-Score of the model on the test data: 0.9120511926158625
+
+
+Test time before: mean 0.000965473115, min 0.000694771, max 0.001311157
+Test time after: mean 0.0034398294950000003, min 0.0018656950000000001, max 0.005217984
+Time reduction: mean -0.0024743563800000003, min -0.004240076000000001, max -0.0007549690000000001
+Prediction time: mean 0.00035428742878139017, min 0.00023532286286354065, max 0.0016086064279079437
+Test iter before: mean 78.675, min 59, max 105
+Test iter after: mean 11.955, min 4.0, max 27.0
+Test iter reduction: mean 66.72, min 40.0, max 96.0
+
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9813722222222222
+Precision of the model on the test data: 0.8607924693519198
+Recall of the model on the test data: 0.9912523948773582
+F1-Score of the model on the test data: 0.9214275621616
+VALIDATION
+Accuracy (node level) of the final model: 0.9788666666666667
+Precision of the model on the test data: 0.8474088291739247
+Recall of the model on the test data: 0.9844921954176115
+F1-Score of the model on the test data: 0.9108214503909854
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9740416666666667
+Precision of the model on the test data: 0.8506846910104892
+Recall of the model on the test data: 0.9829597322233664
+F1-Score of the model on the test data: 0.9120511926158625
+
+
+Test time before: mean 0.0007746388100000001, min 0.000449255, max 0.001510986
+Test time after: mean 0.00344630004, min 0.001971532, max 0.004960195000000001
+Time reduction: mean -0.0026716612299999996, min -0.004388652000000001, max -0.0009362009999999998
+Prediction time: mean 0.00036473371088504794, min 0.00022475048899650574, max 0.003351176157593727
+Test iter before: mean 78.675, min 59, max 105
+Test iter after: mean 11.955, min 4.0, max 27.0
+Test iter reduction: mean 66.72, min 40.0, max 96.0
+
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9813722222222222
+Precision of the model on the test data: 0.8607924693519198
+Recall of the model on the test data: 0.9912523948773582
+F1-Score of the model on the test data: 0.9214275621616
+VALIDATION
+Accuracy (node level) of the final model: 0.9788666666666667
+Precision of the model on the test data: 0.8474088291739247
+Recall of the model on the test data: 0.9844921954176115
+F1-Score of the model on the test data: 0.9108214503909854
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9740416666666667
+Precision of the model on the test data: 0.8506846910104892
+Recall of the model on the test data: 0.9829597322233664
+F1-Score of the model on the test data: 0.9120511926158625
+
+
+Test time before: mean 0.000798412075, min 0.000450394, max 0.001207982
+Test time after: mean 0.00327676511, min 0.001954421, max 0.005005814
+Time reduction: mean -0.002478353035, min -0.004132435, max -0.0009626170000000002
+Prediction time: mean 0.00033904378302395343, min 0.00022416561841964722, max 0.0005025211721658707
+Test iter before: mean 78.675, min 59, max 105
+Test iter after: mean 11.955, min 4.0, max 27.0
+Test iter reduction: mean 66.72, min 40.0, max 96.0
+
+--- Non-learned model ---
+Average solving time (s): 0.0032071664109999997
+Average solving time (s): 78.9595
+Average solving time (s): 0.0033854299105
+Average solving time (s): 78.793
+Average solving time (s): 0.0035657759725
+Average solving time (s): 78.598
+
+--- GNN, variables [np.int64(100)], constraints [np.int64(400)] ---
+Using device: cuda:1
+banded
+(100, 100) (100,) (100, 7) (400, 100) (400,) (400, 7) (100, 7)
+condition number of H 309398.20304884145
+Done generating train data
+class weights:  [0.55904727 4.73389588]
+positive weight 0.10562125000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.94052375
+Precision of the model on the test data: 0.644086055080197
+Recall of the model on the test data: 0.9764843722261174
+F1-Score of the model on the test data: 0.7761957798020757
+VALIDATION
+Accuracy (node level) of the final model: 0.93887
+Precision of the model on the test data: 0.6357456275875188
+Recall of the model on the test data: 0.9791547687026658
+F1-Score of the model on the test data: 0.7709371556407065
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9233375
+Precision of the model on the test data: 0.6359819719697253
+Recall of the model on the test data: 0.9775099639390988
+F1-Score of the model on the test data: 0.7706003318608116
+
+Test time before: mean 0.004644450855, min 0.003068661, max 0.007090058
+Test time after: mean 0.00406703399, min 0.002831807, max 0.006042098
+Test time reduction: mean 0.000577416865, min -0.0027105679999999996, max 0.0035053269999999995
+Prediction time: mean 0.001599110933020711, min 0.001170402392745018, max 0.0024059750139713287
+Test iter before: mean 82.01, min 53, max 107
+Test iter before: quantiles [69.   74.75 81.   89.   97.  ]
+Test iter after: mean 47.63, min 28.0, max 83.0
+Test iter after: quantiles [35.   40.   46.   53.25 63.1 ]
+Test iter reduction: mean 34.38, min -8.0, max 70.0
+Test iter after: quantiles [ 5.  12.9 21.  28.  31.  35.  39.  42.  48.  56.  60.1]
+
+Using device: cuda:1
+banded
+(100, 100) (100,) (100, 7) (400, 100) (400,) (400, 7) (100, 7)
+condition number of H 309398.20304884145
+Done generating train data
+class weights:  [0.55904727 4.73389588]
+positive weight 0.10562125000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9402325
+Precision of the model on the test data: 0.6430102999539471
+Recall of the model on the test data: 0.9759873131589316
+F1-Score of the model on the test data: 0.7752573395122476
+VALIDATION
+Accuracy (node level) of the final model: 0.9402
+Precision of the model on the test data: 0.6414021494622335
+Recall of the model on the test data: 0.9770607272025726
+F1-Score of the model on the test data: 0.7744247405935781
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9248125
+Precision of the model on the test data: 0.6410880279489418
+Recall of the model on the test data: 0.9751375972661082
+F1-Score of the model on the test data: 0.7735912926873213
+
+Test time before: mean 0.005046569125, min 0.003031107, max 0.006814251
+Test time after: mean 0.00493906189, min 0.002847193, max 0.006902725
+Test time reduction: mean 0.00010750723499999997, min -0.003346615, max 0.0035911829999999995
+Prediction time: mean 0.0017950540874153375, min 0.0011681746691465378, max 0.0023714471608400345
+Test iter before: mean 82.01, min 53, max 107
+Test iter before: quantiles [69.   74.75 81.   89.   97.  ]
+Test iter after: mean 46.54, min 27.0, max 82.0
+Test iter after: quantiles [33.9  39.   45.   52.25 62.  ]
+Test iter reduction: mean 35.47, min -3.0, max 72.0
+Test iter after: quantiles [ 6.9 15.  22.  28.  32.  36.  40.  43.  49.  57.1 62. ]
+
+Using device: cuda:1
+banded
+(100, 100) (100,) (100, 7) (400, 100) (400,) (400, 7) (100, 7)
+condition number of H 309398.20304884145
+Done generating train data
+class weights:  [0.55904727 4.73389588]
+positive weight 0.10562125000000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Early stopping after 34 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.94039875
+Precision of the model on the test data: 0.6434628094020323
+Recall of the model on the test data: 0.9771234481696419
+F1-Score of the model on the test data: 0.7759446216139572
+VALIDATION
+Accuracy (node level) of the final model: 0.93999
+Precision of the model on the test data: 0.6407372696028486
+Recall of the model on the test data: 0.9761088901570758
+F1-Score of the model on the test data: 0.7736411253114794
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9250875
+Precision of the model on the test data: 0.6418627879389214
+Recall of the model on the test data: 0.9757069652676259
+F1-Score of the model on the test data: 0.7743344456397759
+
+Test time before: mean 0.0046520314, min 0.003063156, max 0.00688843
+Test time after: mean 0.003551793005, min 0.0028141309999999997, max 0.005917317
+Test time reduction: mean 0.001100238395, min -0.002707363, max 0.003881198
+Prediction time: mean 0.0013895327877253294, min 0.0011496786028146744, max 0.0022636521607637405
+Test iter before: mean 82.01, min 53, max 107
+Test iter before: quantiles [69.   74.75 81.   89.   97.  ]
+Test iter after: mean 46.655, min 27.0, max 82.0
+Test iter after: quantiles [33.9 39.  45.  54.  61. ]
+Test iter reduction: mean 35.355, min -10.0, max 70.0
+Test iter after: quantiles [ 7.   14.9  22.   29.   33.   36.   39.   43.   46.2  56.   61.05]
+
+--- MLP, variables [np.int64(100)], constraints [np.int64(400)] ---
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.982385
+Precision of the model on the test data: 0.8622066283220465
+Recall of the model on the test data: 0.9917156822134524
+F1-Score of the model on the test data: 0.9224376071683271
+VALIDATION
+Accuracy (node level) of the final model: 0.98027
+Precision of the model on the test data: 0.8502585994574745
+Recall of the model on the test data: 0.9858176280211443
+F1-Score of the model on the test data: 0.9130338910902751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8527718374725671
+Recall of the model on the test data: 0.9838679066227141
+F1-Score of the model on the test data: 0.9136411652749334
+
+
+Test time before: mean 0.001088215535, min 0.000633423, max 0.001545638
+Test time after: mean 0.00461318538, min 0.0026484409999999996, max 0.0076586779999999995
+Time reduction: mean -0.003524969845, min -0.006622589, max -0.0012211859999999998
+Prediction time: mean 0.0003940615523606539, min 0.0002772081643342972, max 0.0029915571212768555
+Test iter before: mean 82.01, min 53, max 107
+Test iter after: mean 12.39, min 3.0, max 35.0
+Test iter reduction: mean 69.62, min 39.0, max 95.0
+
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.982385
+Precision of the model on the test data: 0.8622066283220465
+Recall of the model on the test data: 0.9917156822134524
+F1-Score of the model on the test data: 0.9224376071683271
+VALIDATION
+Accuracy (node level) of the final model: 0.98027
+Precision of the model on the test data: 0.8502585994574745
+Recall of the model on the test data: 0.9858176280211443
+F1-Score of the model on the test data: 0.9130338910902751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8527718374725671
+Recall of the model on the test data: 0.9838679066227141
+F1-Score of the model on the test data: 0.9136411652749334
+
+
+Test time before: mean 0.0011152049149999999, min 0.000621858, max 0.001622512
+Test time after: mean 0.004380002494999999, min 0.0026132860000000003, max 0.006670734
+Time reduction: mean -0.00326479758, min -0.0053861230000000005, max -0.001314326
+Prediction time: mean 0.00035196798853576183, min 0.0002411678433418274, max 0.0016618967056274414
+Test iter before: mean 82.01, min 53, max 107
+Test iter after: mean 12.39, min 3.0, max 35.0
+Test iter reduction: mean 69.62, min 39.0, max 95.0
+
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.982385
+Precision of the model on the test data: 0.8622066283220465
+Recall of the model on the test data: 0.9917156822134524
+F1-Score of the model on the test data: 0.9224376071683271
+VALIDATION
+Accuracy (node level) of the final model: 0.98027
+Precision of the model on the test data: 0.8502585994574745
+Recall of the model on the test data: 0.9858176280211443
+F1-Score of the model on the test data: 0.9130338910902751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9755
+Precision of the model on the test data: 0.8527718374725671
+Recall of the model on the test data: 0.9838679066227141
+F1-Score of the model on the test data: 0.9136411652749334
+
+
+Test time before: mean 0.001079940145, min 0.000618278, max 0.001677759
+Test time after: mean 0.00425633586, min 0.0026025999999999996, max 0.006378602000000001
+Time reduction: mean -0.003176395715, min -0.00515094, max -0.001410525
+Prediction time: mean 0.00038248696364462376, min 0.00024112127721309662, max 0.001636400818824768
+Test iter before: mean 82.01, min 53, max 107
+Test iter after: mean 12.39, min 3.0, max 35.0
+Test iter reduction: mean 69.62, min 39.0, max 95.0
+
+--- Non-learned model ---
+Average solving time (s): 0.004931480873
+Average solving time (s): 82.844
+Average solving time (s): 0.0045473191915
+Average solving time (s): 83.134
+Average solving time (s): 0.0045750669009999995
+Average solving time (s): 83.1695
+
+--- GNN, variables [np.int64(110)], constraints [np.int64(440)] ---
+Using device: cuda:1
+banded
+(110, 110) (110,) (110, 7) (440, 110) (440,) (440, 7) (110, 7)
+condition number of H 495704.51784075564
+Done generating train data
+class weights:  [0.55865709 4.76205937]
+positive weight 0.10499659090909091
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9403988636363636
+Precision of the model on the test data: 0.6423156394727009
+Recall of the model on the test data: 0.9756702057425051
+F1-Score of the model on the test data: 0.7746523000753971
+VALIDATION
+Accuracy (node level) of the final model: 0.9399181818181818
+Precision of the model on the test data: 0.6401536549538808
+Recall of the model on the test data: 0.9793449140083144
+F1-Score of the model on the test data: 0.7742288067516129
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9248295454545454
+Precision of the model on the test data: 0.641252821670067
+Recall of the model on the test data: 0.9777988124937803
+F1-Score of the model on the test data: 0.7745475566483211
+
+Test time before: mean 0.0069667092699999995, min 0.004107256, max 0.008945483
+Test time after: mean 0.0054841885600000004, min 0.003707194, max 0.009164754
+Test time reduction: mean 0.00148252071, min -0.00452602, max 0.0049449920000000005
+Prediction time: mean 0.001710485154762864, min 0.001197734847664833, max 0.002395518124103546
+Test iter before: mean 101.905, min 70, max 131
+Test iter before: quantiles [ 88.   94.  101.5 109.  117. ]
+Test iter after: mean 55.76, min 28.0, max 88.0
+Test iter after: quantiles [42.   48.   55.   63.25 70.1 ]
+Test iter reduction: mean 46.145, min 9.0, max 91.0
+Test iter after: quantiles [19.95 24.   32.   35.   41.   46.5  51.   55.   60.   69.1  75.  ]
+
+Using device: cuda:1
+banded
+(110, 110) (110,) (110, 7) (440, 110) (440,) (440, 7) (110, 7)
+condition number of H 495704.51784075564
+Done generating train data
+class weights:  [0.55865709 4.76205937]
+positive weight 0.10499659090909091
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9404579545454546
+Precision of the model on the test data: 0.642529325408657
+Recall of the model on the test data: 0.9758000800890748
+F1-Score of the model on the test data: 0.77484863240963
+VALIDATION
+Accuracy (node level) of the final model: 0.9401545454545455
+Precision of the model on the test data: 0.6410793076136209
+Recall of the model on the test data: 0.9794313369622509
+F1-Score of the model on the test data: 0.7749324715414206
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9250681818181818
+Precision of the model on the test data: 0.6419815850417206
+Recall of the model on the test data: 0.9779709147225041
+F1-Score of the model on the test data: 0.7751329920771975
+
+Test time before: mean 0.00688925841, min 0.004047279, max 0.009056340999999999
+Test time after: mean 0.0058588610600000006, min 0.003737916, max 0.008971083
+Test time reduction: mean 0.0010303973499999999, min -0.004319112999999999, max 0.0051376
+Prediction time: mean 0.0017462847009301185, min 0.0012104716151952744, max 0.0024680867791175842
+Test iter before: mean 101.905, min 70, max 131
+Test iter before: quantiles [ 88.   94.  101.5 109.  117. ]
+Test iter after: mean 55.605, min 29.0, max 92.0
+Test iter after: quantiles [41. 47. 54. 64. 71.]
+Test iter reduction: mean 46.3, min 10.0, max 88.0
+Test iter after: quantiles [18.9 22.  30.8 37.  42.6 47.  51.  56.  60.  68.  74. ]
+
+Using device: cuda:1
+banded
+(110, 110) (110,) (110, 7) (440, 110) (440,) (440, 7) (110, 7)
+condition number of H 495704.51784075564
+Done generating train data
+class weights:  [0.55865709 4.76205937]
+positive weight 0.10499659090909091
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9404829545454545
+Precision of the model on the test data: 0.6425914577662042
+Recall of the model on the test data: 0.9760057144711435
+F1-Score of the model on the test data: 0.7749586391633672
+VALIDATION
+Accuracy (node level) of the final model: 0.9404272727272728
+Precision of the model on the test data: 0.6421368683431666
+Recall of the model on the test data: 0.9796041828701239
+F1-Score of the model on the test data: 0.7757588153234249
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9249886363636364
+Precision of the model on the test data: 0.6416318699917382
+Recall of the model on the test data: 0.9784872214086752
+F1-Score of the model on the test data: 0.7750400388376139
+
+Test time before: mean 0.006594658870000001, min 0.004107931, max 0.009052564999999999
+Test time after: mean 0.00575195989, min 0.003661787, max 0.008873122
+Test time reduction: mean 0.0008426989799999998, min -0.004106073, max 0.004772303999999998
+Prediction time: mean 0.0017523599974811077, min 0.001232687383890152, max 0.0033324044197797775
+Test iter before: mean 101.905, min 70, max 131
+Test iter before: quantiles [ 88.   94.  101.5 109.  117. ]
+Test iter after: mean 55.44, min 27.0, max 89.0
+Test iter after: quantiles [40. 47. 54. 64. 72.]
+Test iter reduction: mean 46.465, min 8.0, max 91.0
+Test iter after: quantiles [19.   23.   31.8  35.7  41.   47.5  52.   55.   60.2  71.   75.05]
+
+--- MLP, variables [np.int64(110)], constraints [np.int64(440)] ---
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9797318181818182
+Precision of the model on the test data: 0.8435135956950028
+Recall of the model on the test data: 0.9907680985312304
+F1-Score of the model on the test data: 0.9112301118922393
+VALIDATION
+Accuracy (node level) of the final model: 0.9779909090909091
+Precision of the model on the test data: 0.8360017626315834
+Recall of the model on the test data: 0.9837524846590754
+F1-Score of the model on the test data: 0.9038789802230166
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9730227272727273
+Precision of the model on the test data: 0.8376542759067862
+Recall of the model on the test data: 0.987006281730499
+F1-Score of the model on the test data: 0.9062178981693869
+
+
+Test time before: mean 0.001553057905, min 0.000843943, max 0.002515928
+Test time after: mean 0.005687085865, min 0.0034125690000000003, max 0.010655087
+Time reduction: mean -0.00413402796, min -0.008966018000000001, max -0.0016301990000000001
+Prediction time: mean 0.0004003871511667967, min 0.0002547968178987503, max 0.0015299934893846512
+Test iter before: mean 101.905, min 70, max 131
+Test iter after: mean 16.41, min 5.0, max 42.0
+Test iter reduction: mean 85.495, min 47.0, max 117.0
+
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9797318181818182
+Precision of the model on the test data: 0.8435135956950028
+Recall of the model on the test data: 0.9907680985312304
+F1-Score of the model on the test data: 0.9112301118922393
+VALIDATION
+Accuracy (node level) of the final model: 0.9779909090909091
+Precision of the model on the test data: 0.8360017626315834
+Recall of the model on the test data: 0.9837524846590754
+F1-Score of the model on the test data: 0.9038789802230166
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9730227272727273
+Precision of the model on the test data: 0.8376542759067862
+Recall of the model on the test data: 0.987006281730499
+F1-Score of the model on the test data: 0.9062178981693869
+
+
+Test time before: mean 0.001538182985, min 0.000912443, max 0.002409012
+Test time after: mean 0.005402300949999999, min 0.003489997, max 0.010263053
+Time reduction: mean -0.0038641179650000003, min -0.008488309999999999, max -0.0016587219999999998
+Prediction time: mean 0.00037213241681456567, min 0.00024270452558994293, max 0.0006267577409744263
+Test iter before: mean 101.905, min 70, max 131
+Test iter after: mean 16.41, min 5.0, max 42.0
+Test iter reduction: mean 85.495, min 47.0, max 117.0
+
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9797318181818182
+Precision of the model on the test data: 0.8435135956950028
+Recall of the model on the test data: 0.9907680985312304
+F1-Score of the model on the test data: 0.9112301118922393
+VALIDATION
+Accuracy (node level) of the final model: 0.9779909090909091
+Precision of the model on the test data: 0.8360017626315834
+Recall of the model on the test data: 0.9837524846590754
+F1-Score of the model on the test data: 0.9038789802230166
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9730227272727273
+Precision of the model on the test data: 0.8376542759067862
+Recall of the model on the test data: 0.987006281730499
+F1-Score of the model on the test data: 0.9062178981693869
+
+
+Test time before: mean 0.00162119441, min 0.000890114, max 0.008179114
+Test time after: mean 0.006015851725, min 0.003481556, max 0.011100085
+Time reduction: mean -0.004394657315, min -0.009703402000000002, max 0.0017748539999999993
+Prediction time: mean 0.00042325285263359545, min 0.00028153881430625916, max 0.0020013321191072464
+Test iter before: mean 101.905, min 70, max 131
+Test iter after: mean 16.41, min 5.0, max 42.0
+Test iter reduction: mean 85.495, min 47.0, max 117.0
+
+--- Non-learned model ---
+Average solving time (s): 0.006014508448
+Average solving time (s): 101.3145
+Average solving time (s): 0.006462215242999999
+Average solving time (s): 101.113
+Average solving time (s): 0.0055476662005
+Average solving time (s): 100.8735
+
+--- GNN, variables [np.int64(120)], constraints [np.int64(480)] ---
+Using device: cuda:1
+banded
+(120, 120) (120,) (120, 7) (480, 120) (480,) (480, 7) (120, 7)
+condition number of H 209648.2850799351
+Done generating train data
+class weights:  [0.55612649 4.95422503]
+positive weight 0.10092395833333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Early stopping after 26 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9316885416666667
+Precision of the model on the test data: 0.5992682029753447
+Recall of the model on the test data: 0.9753733731046502
+F1-Score of the model on the test data: 0.7424041809864024
+VALIDATION
+Accuracy (node level) of the final model: 0.9291416666666666
+Precision of the model on the test data: 0.591362126245554
+Recall of the model on the test data: 0.9785034460116684
+F1-Score of the model on the test data: 0.737196719148468
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9132916666666666
+Precision of the model on the test data: 0.593005728067233
+Recall of the model on the test data: 0.9813736903367858
+F1-Score of the model on the test data: 0.7392883942013115
+
+Test time before: mean 0.007883512550000001, min 0.004903974, max 0.013474385
+Test time after: mean 0.0083668116, min 0.007899451, max 0.009386221
+Test time reduction: mean -0.00048329905000000015, min -0.003704397, max 0.004997783
+Prediction time: mean 0.0022764408122748136, min 0.002093292772769928, max 0.0025007128715515137
+Test iter before: mean 94.95, min 72, max 125
+Test iter before: quantiles [ 82.  87.  94. 102. 109.]
+Test iter after: mean 65.445, min 44.0, max 91.0
+Test iter after: quantiles [53.   59.   65.   71.25 78.1 ]
+Test iter reduction: mean 29.505, min -5.0, max 63.0
+Test iter after: quantiles [ 6.95 10.9  18.   21.   26.   29.   32.4  37.3  42.   49.   53.  ]
+
+Using device: cuda:1
+banded
+(120, 120) (120,) (120, 7) (480, 120) (480,) (480, 7) (120, 7)
+condition number of H 209648.2850799351
+Done generating train data
+class weights:  [0.55612649 4.95422503]
+positive weight 0.10092395833333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Early stopping after 26 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9317166666666666
+Precision of the model on the test data: 0.5993846934567795
+Recall of the model on the test data: 0.97525983878116
+F1-Score of the model on the test data: 0.7424606682061244
+VALIDATION
+Accuracy (node level) of the final model: 0.9290083333333333
+Precision of the model on the test data: 0.5909203548592006
+Recall of the model on the test data: 0.9782573022637198
+F1-Score of the model on the test data: 0.7367835577945409
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9133020833333333
+Precision of the model on the test data: 0.5930074848040423
+Recall of the model on the test data: 0.9816231498411927
+F1-Score of the model on the test data: 0.7393605314265898
+
+Test time before: mean 0.008139287835, min 0.005082744, max 0.011300176
+Test time after: mean 0.00727850563, min 0.004951242, max 0.011717746
+Test time reduction: mean 0.000860782205, min -0.006087469, max 0.005095823000000001
+Prediction time: mean 0.0017498219851404429, min 0.0012680403888225555, max 0.0026315636932849884
+Test iter before: mean 94.95, min 72, max 125
+Test iter before: quantiles [ 82.  87.  94. 102. 109.]
+Test iter after: mean 65.625, min 44.0, max 91.0
+Test iter after: quantiles [53.9 59.  65.  72.  78. ]
+Test iter reduction: mean 29.325, min -5.0, max 64.0
+Test iter after: quantiles [ 6.  10.  17.  21.  26.  29.  33.  37.  42.  48.1 53. ]
+
+Using device: cuda:1
+banded
+(120, 120) (120,) (120, 7) (480, 120) (480,) (480, 7) (120, 7)
+condition number of H 209648.2850799351
+Done generating train data
+class weights:  [0.55612649 4.95422503]
+positive weight 0.10092395833333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Early stopping after 26 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9316770833333333
+Precision of the model on the test data: 0.5992440241759673
+Recall of the model on the test data: 0.9752288748747536
+F1-Score of the model on the test data: 0.7423437673816743
+VALIDATION
+Accuracy (node level) of the final model: 0.9291
+Precision of the model on the test data: 0.591179385529935
+Recall of the model on the test data: 0.9788316376755999
+F1-Score of the model on the test data: 0.7371477956009579
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9133854166666666
+Precision of the model on the test data: 0.5932927749004006
+Recall of the model on the test data: 0.9812073840005144
+F1-Score of the model on the test data: 0.7394641970890293
+
+Test time before: mean 0.00815739556, min 0.004829363, max 0.011750248
+Test time after: mean 0.008422818115000001, min 0.0049919660000000005, max 0.010351605
+Test time reduction: mean -0.00026542255499999986, min -0.004719576999999999, max 0.005177599999999999
+Prediction time: mean 0.0017829176038503646, min 0.0013476815074682236, max 0.002321343868970871
+Test iter before: mean 94.95, min 72, max 125
+Test iter before: quantiles [ 82.  87.  94. 102. 109.]
+Test iter after: mean 65.205, min 45.0, max 91.0
+Test iter after: quantiles [53. 59. 65. 71. 78.]
+Test iter reduction: mean 29.745, min -6.0, max 64.0
+Test iter after: quantiles [ 8.   11.   18.   21.7  25.6  29.   33.   37.6  42.   49.   53.05]
+
+--- MLP, variables [np.int64(120)], constraints [np.int64(480)] ---
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9792479166666667
+Precision of the model on the test data: 0.8342729081069088
+Recall of the model on the test data: 0.9912991422996903
+F1-Score of the model on the test data: 0.9060327293418929
+VALIDATION
+Accuracy (node level) of the final model: 0.9771833333333333
+Precision of the model on the test data: 0.8267182962240169
+Recall of the model on the test data: 0.9809648834911544
+F1-Score of the model on the test data: 0.8972607830282265
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9714895833333334
+Precision of the model on the test data: 0.8227364324919583
+Recall of the model on the test data: 0.98453351072594
+F1-Score of the model on the test data: 0.8963924695823036
+
+
+Test time before: mean 0.0017753355250000004, min 0.000954925, max 0.002628396
+Test time after: mean 0.0076839712, min 0.004490357, max 0.010579692
+Time reduction: mean -0.005908635675, min -0.009344373999999999, max -0.0024644169999999996
+Prediction time: mean 0.0004199783783406019, min 0.0002989731729030609, max 0.002082083374261856
+Test iter before: mean 94.95, min 72, max 125
+Test iter after: mean 17.985, min 7.0, max 43.0
+Test iter reduction: mean 76.965, min 41.0, max 107.0
+
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9792479166666667
+Precision of the model on the test data: 0.8342729081069088
+Recall of the model on the test data: 0.9912991422996903
+F1-Score of the model on the test data: 0.9060327293418929
+VALIDATION
+Accuracy (node level) of the final model: 0.9771833333333333
+Precision of the model on the test data: 0.8267182962240169
+Recall of the model on the test data: 0.9809648834911544
+F1-Score of the model on the test data: 0.8972607830282265
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9714895833333334
+Precision of the model on the test data: 0.8227364324919583
+Recall of the model on the test data: 0.98453351072594
+F1-Score of the model on the test data: 0.8963924695823036
+
+
+Test time before: mean 0.0017163550099999999, min 0.001056779, max 0.002498119
+Test time after: mean 0.007595949660000001, min 0.0044258909999999995, max 0.013439838
+Time reduction: mean -0.005879594649999999, min -0.011410125, max -0.0024449029999999996
+Prediction time: mean 0.00040338192135095594, min 0.00026514381170272827, max 0.0006025172770023346
+Test iter before: mean 94.95, min 72, max 125
+Test iter after: mean 17.985, min 7.0, max 43.0
+Test iter reduction: mean 76.965, min 41.0, max 107.0
+
+Using device: cuda:1
+Early stopping after 64 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9792479166666667
+Precision of the model on the test data: 0.8342729081069088
+Recall of the model on the test data: 0.9912991422996903
+F1-Score of the model on the test data: 0.9060327293418929
+VALIDATION
+Accuracy (node level) of the final model: 0.9771833333333333
+Precision of the model on the test data: 0.8267182962240169
+Recall of the model on the test data: 0.9809648834911544
+F1-Score of the model on the test data: 0.8972607830282265
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9714895833333334
+Precision of the model on the test data: 0.8227364324919583
+Recall of the model on the test data: 0.98453351072594
+F1-Score of the model on the test data: 0.8963924695823036
+
+
+Test time before: mean 0.00163013498, min 0.000947804, max 0.00251687
+Test time after: mean 0.007333832760000001, min 0.0045194480000000006, max 0.010305647999999999
+Time reduction: mean -0.00570369778, min -0.009214657, max -0.0023345970000000003
+Prediction time: mean 0.0003963469807058573, min 0.0002774391323328018, max 0.001806020736694336
+Test iter before: mean 94.95, min 72, max 125
+Test iter after: mean 17.985, min 7.0, max 43.0
+Test iter reduction: mean 76.965, min 41.0, max 107.0
+
+--- Non-learned model ---
+Average solving time (s): 0.007884117513
+Average solving time (s): 95.7535
+Average solving time (s): 0.00755501136
+Average solving time (s): 95.743
+Average solving time (s): 0.007395159613500001
+Average solving time (s): 95.7165
+
+--- GNN, variables [np.int64(130)], constraints [np.int64(520)] ---
+Using device: cuda:1
+banded
+(130, 130) (130,) (130, 7) (520, 130) (520,) (520, 7) (130, 7)
+condition number of H 263754.0331778616
+Done generating train data
+class weights:  [0.54995844 5.50415987]
+positive weight 0.09084038461538461
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 39 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9429884615384615
+Precision of the model on the test data: 0.6178073935172369
+Recall of the model on the test data: 0.9764697165356632
+F1-Score of the model on the test data: 0.7567946661636793
+VALIDATION
+Accuracy (node level) of the final model: 0.9408230769230769
+Precision of the model on the test data: 0.6065504490223949
+Recall of the model on the test data: 0.9791080412714427
+F1-Score of the model on the test data: 0.7490621996660438
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9272115384615385
+Precision of the model on the test data: 0.612238410595702
+Recall of the model on the test data: 0.9787414245778108
+F1-Score of the model on the test data: 0.7532755314098156
+
+Test time before: mean 0.01029611182, min 0.006349102, max 0.014077301
+Test time after: mean 0.009130526905, min 0.005972036, max 0.015724224000000002
+Test time reduction: mean 0.001165584915, min -0.006317261, max 0.006918466999999999
+Prediction time: mean 0.0017776801157742739, min 0.0011780988425016403, max 0.003932880237698555
+Test iter before: mean 95.845, min 67, max 124
+Test iter before: quantiles [ 79.9  86.   96.  106.  112. ]
+Test iter after: mean 49.19, min 27.0, max 76.0
+Test iter after: quantiles [38. 43. 49. 55. 60.]
+Test iter reduction: mean 46.655, min 9.0, max 79.0
+Test iter after: quantiles [22.95 27.   33.   38.   41.   47.   51.4  56.   61.   67.   71.05]
+
+Using device: cuda:1
+banded
+(130, 130) (130,) (130, 7) (520, 130) (520,) (520, 7) (130, 7)
+condition number of H 263754.0331778616
+Done generating train data
+class weights:  [0.54995844 5.50415987]
+positive weight 0.09084038461538461
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 39 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9430028846153846
+Precision of the model on the test data: 0.6178505179837394
+Recall of the model on the test data: 0.9765967356096941
+F1-Score of the model on the test data: 0.7568651691844686
+VALIDATION
+Accuracy (node level) of the final model: 0.9403846153846154
+Precision of the model on the test data: 0.6046193507651894
+Recall of the model on the test data: 0.9799607742807367
+F1-Score of the model on the test data: 0.7478362678121024
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9266057692307692
+Precision of the model on the test data: 0.6102249920774214
+Recall of the model on the test data: 0.9785720335385969
+F1-Score of the model on the test data: 0.7516996797287528
+
+Test time before: mean 0.010006082204999999, min 0.006193692000000001, max 0.013744467
+Test time after: mean 0.011265131095, min 0.010507793999999999, max 0.012131366
+Test time reduction: mean -0.00125904889, min -0.005366352, max 0.0025472590000000014
+Prediction time: mean 0.0018735360261052847, min 0.0017282385379076004, max 0.0021270718425512314
+Test iter before: mean 95.845, min 67, max 124
+Test iter before: quantiles [ 79.9  86.   96.  106.  112. ]
+Test iter after: mean 49.645, min 27.0, max 76.0
+Test iter after: quantiles [38.   44.   50.   55.25 61.  ]
+Test iter reduction: mean 46.2, min 9.0, max 79.0
+Test iter after: quantiles [22.95 26.9  33.   38.   41.   46.   51.   55.   60.   67.   72.  ]
+
+Using device: cuda:1
+banded
+(130, 130) (130,) (130, 7) (520, 130) (520,) (520, 7) (130, 7)
+condition number of H 263754.0331778616
+Done generating train data
+class weights:  [0.54995844 5.50415987]
+positive weight 0.09084038461538461
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 39 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9429442307692307
+Precision of the model on the test data: 0.6176281536236128
+Recall of the model on the test data: 0.9763956220758118
+F1-Score of the model on the test data: 0.7566379255805857
+VALIDATION
+Accuracy (node level) of the final model: 0.9407
+Precision of the model on the test data: 0.6059710939969374
+Recall of the model on the test data: 0.9796196810770191
+F1-Score of the model on the test data: 0.7487697524875361
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9269038461538461
+Precision of the model on the test data: 0.6112257313650684
+Recall of the model on the test data: 0.9785720335385969
+F1-Score of the model on the test data: 0.7524584778454293
+
+Test time before: mean 0.010504647445000001, min 0.005997298999999999, max 0.014333963
+Test time after: mean 0.008095497815, min 0.005802356, max 0.012302135
+Test time reduction: mean 0.00240914963, min -0.005470347000000001, max 0.008216855
+Prediction time: mean 0.0017029187548905612, min 0.0013288632035255432, max 0.0025574583560228348
+Test iter before: mean 95.845, min 67, max 124
+Test iter before: quantiles [ 79.9  86.   96.  106.  112. ]
+Test iter after: mean 49.515, min 25.0, max 76.0
+Test iter after: quantiles [38. 44. 50. 55. 61.]
+Test iter reduction: mean 46.33, min 9.0, max 79.0
+Test iter after: quantiles [22.  26.9 33.  38.  41.  47.  51.  56.  60.2 67.  71. ]
+
+--- MLP, variables [np.int64(130)], constraints [np.int64(520)] ---
+Using device: cuda:1
+Early stopping after 68 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9831480769230769
+Precision of the model on the test data: 0.8473950338599686
+Recall of the model on the test data: 0.9933844232274496
+F1-Score of the model on the test data: 0.9146006265364472
+VALIDATION
+Accuracy (node level) of the final model: 0.9814923076923077
+Precision of the model on the test data: 0.8371554655278614
+Recall of the model on the test data: 0.9867826383550893
+F1-Score of the model on the test data: 0.905831697576971
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9765961538461538
+Precision of the model on the test data: 0.8375225063011612
+Recall of the model on the test data: 0.9849241975091174
+F1-Score of the model on the test data: 0.9052623335031235
+
+
+Test time before: mean 0.00203218214, min 0.001057586, max 0.006075454
+Test time after: mean 0.009306862275, min 0.005545637, max 0.012119045
+Time reduction: mean -0.007274680135, min -0.010255203000000001, max -0.003129224
+Prediction time: mean 0.00042531062848865986, min 0.00028371624648571014, max 0.0005990993231534958
+Test iter before: mean 95.845, min 67, max 124
+Test iter after: mean 15.075, min 4.0, max 33.0
+Test iter reduction: mean 80.77, min 50.0, max 110.0
+
+Using device: cuda:1
+Early stopping after 68 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9831480769230769
+Precision of the model on the test data: 0.8473950338599686
+Recall of the model on the test data: 0.9933844232274496
+F1-Score of the model on the test data: 0.9146006265364472
+VALIDATION
+Accuracy (node level) of the final model: 0.9814923076923077
+Precision of the model on the test data: 0.8371554655278614
+Recall of the model on the test data: 0.9867826383550893
+F1-Score of the model on the test data: 0.905831697576971
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9765961538461538
+Precision of the model on the test data: 0.8375225063011612
+Recall of the model on the test data: 0.9849241975091174
+F1-Score of the model on the test data: 0.9052623335031235
+
+
+Test time before: mean 0.00188059779, min 0.001062859, max 0.002832101
+Test time after: mean 0.008955025049999999, min 0.005493969, max 0.013008694000000001
+Time reduction: mean -0.007074427260000001, min -0.011037262, max -0.0033332970000000003
+Prediction time: mean 0.0004385040793567896, min 0.00027506425976753235, max 0.0014736466109752655
+Test iter before: mean 95.845, min 67, max 124
+Test iter after: mean 15.075, min 4.0, max 33.0
+Test iter reduction: mean 80.77, min 50.0, max 110.0
+
+Using device: cuda:1
+Early stopping after 68 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9831480769230769
+Precision of the model on the test data: 0.8473950338599686
+Recall of the model on the test data: 0.9933844232274496
+F1-Score of the model on the test data: 0.9146006265364472
+VALIDATION
+Accuracy (node level) of the final model: 0.9814923076923077
+Precision of the model on the test data: 0.8371554655278614
+Recall of the model on the test data: 0.9867826383550893
+F1-Score of the model on the test data: 0.905831697576971
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9765961538461538
+Precision of the model on the test data: 0.8375225063011612
+Recall of the model on the test data: 0.9849241975091174
+F1-Score of the model on the test data: 0.9052623335031235
+
+
+Test time before: mean 0.001931272675, min 0.00102897, max 0.011122903
+Test time after: mean 0.008741101270000001, min 0.005516223000000001, max 0.012576972
+Time reduction: mean -0.006809828595, min -0.010782755, max 0.004805332000000001
+Prediction time: mean 0.00041207657195627687, min 0.00027872249484062195, max 0.0005584806203842163
+Test iter before: mean 95.845, min 67, max 124
+Test iter after: mean 15.075, min 4.0, max 33.0
+Test iter reduction: mean 80.77, min 50.0, max 110.0
+
+--- Non-learned model ---
+Average solving time (s): 0.009159496542
+Average solving time (s): 95.467
+Average solving time (s): 0.009088942288
+Average solving time (s): 95.2905
+Average solving time (s): 0.0089010429545
+Average solving time (s): 95.506
+
+--- GNN, variables [np.int64(140)], constraints [np.int64(560)] ---
+Using device: cuda:1
+banded
+(140, 140) (140,) (140, 7) (560, 140) (560,) (560, 7) (140, 7)
+condition number of H 508378.6172747931
+Done generating train data
+class weights:  [0.55282761 5.23237344]
+positive weight 0.09555892857142857
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9339125
+Precision of the model on the test data: 0.5942331848806329
+Recall of the model on the test data: 0.9724179171415384
+F1-Score of the model on the test data: 0.7376792337537753
+VALIDATION
+Accuracy (node level) of the final model: 0.9331142857142857
+Precision of the model on the test data: 0.5908491980550725
+Recall of the model on the test data: 0.9731347751246178
+F1-Score of the model on the test data: 0.7352708309875616
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9194107142857143
+Precision of the model on the test data: 0.6001286350895392
+Recall of the model on the test data: 0.975943220021684
+F1-Score of the model on the test data: 0.7432293990162319
+
+Test time before: mean 0.013395771475, min 0.007773327, max 0.017595751
+Test time after: mean 0.011104122655, min 0.007514288, max 0.016284978000000002
+Test time reduction: mean 0.00229164882, min -0.007731738000000002, max 0.009651139999999999
+Prediction time: mean 0.0019386159162968397, min 0.001356935128569603, max 0.0027853157371282578
+Test iter before: mean 111.335, min 88, max 140
+Test iter before: quantiles [ 99. 105. 111. 117. 124.]
+Test iter after: mean 62.27, min 42.0, max 89.0
+Test iter after: quantiles [50.9 56.  62.  69.  74.1]
+Test iter reduction: mean 49.065, min 13.0, max 81.0
+Test iter after: quantiles [25.   31.   36.8  42.   45.   49.   52.4  57.   62.   66.   72.05]
+
+Using device: cuda:1
+banded
+(140, 140) (140,) (140, 7) (560, 140) (560,) (560, 7) (140, 7)
+condition number of H 508378.6172747931
+Done generating train data
+class weights:  [0.55282761 5.23237344]
+positive weight 0.09555892857142857
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9339
+Precision of the model on the test data: 0.5941781603945586
+Recall of the model on the test data: 0.9724833218095629
+F1-Score of the model on the test data: 0.7376556506208044
+VALIDATION
+Accuracy (node level) of the final model: 0.9331071428571428
+Precision of the model on the test data: 0.5908388621282419
+Recall of the model on the test data: 0.9729851081336728
+F1-Score of the model on the test data: 0.7352201033023439
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9194642857142857
+Precision of the model on the test data: 0.6003125430893044
+Recall of the model on the test data: 0.9757937990280344
+F1-Score of the model on the test data: 0.743327068301394
+
+Test time before: mean 0.012679444175, min 0.007926266999999999, max 0.018201216
+Test time after: mean 0.013614855035000002, min 0.012310755, max 0.014699206999999999
+Test time reduction: mean -0.0009354108599999999, min -0.006437286, max 0.005435233999999999
+Prediction time: mean 0.0019698146171867846, min 0.0017570164054632187, max 0.002616260200738907
+Test iter before: mean 111.335, min 88, max 140
+Test iter before: quantiles [ 99. 105. 111. 117. 124.]
+Test iter after: mean 62.135, min 42.0, max 89.0
+Test iter after: quantiles [51.   55.75 62.   68.   74.  ]
+Test iter reduction: mean 49.2, min 13.0, max 82.0
+Test iter after: quantiles [25.  31.  36.8 43.  45.6 49.  52.4 57.  62.  66.1 72. ]
+
+Using device: cuda:1
+banded
+(140, 140) (140,) (140, 7) (560, 140) (560,) (560, 7) (140, 7)
+condition number of H 508378.6172747931
+Done generating train data
+class weights:  [0.55282761 5.23237344]
+positive weight 0.09555892857142857
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Early stopping after 28 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9339267857142857
+Precision of the model on the test data: 0.5942820925690845
+Recall of the model on the test data: 0.9724646347615559
+F1-Score of the model on the test data: 0.7377303610412002
+VALIDATION
+Accuracy (node level) of the final model: 0.9331428571428572
+Precision of the model on the test data: 0.5909318068235923
+Recall of the model on the test data: 0.9733592756110354
+F1-Score of the model on the test data: 0.7353988758321457
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9193928571428571
+Precision of the model on the test data: 0.6000918906498506
+Recall of the model on the test data: 0.9757937990280344
+F1-Score of the model on the test data: 0.7431578900206083
+
+Test time before: mean 0.013401096185, min 0.007791487000000001, max 0.017634137
+Test time after: mean 0.014594991689999998, min 0.013865712, max 0.015425001
+Test time reduction: mean -0.001193895505, min -0.007024527000000001, max 0.0028080449999999986
+Prediction time: mean 0.001993904793635011, min 0.0017917249351739883, max 0.0023553483188152313
+Test iter before: mean 111.335, min 88, max 140
+Test iter before: quantiles [ 99. 105. 111. 117. 124.]
+Test iter after: mean 62.205, min 42.0, max 90.0
+Test iter after: quantiles [50.9  55.75 62.   68.25 74.  ]
+Test iter reduction: mean 49.13, min 13.0, max 81.0
+Test iter after: quantiles [25.  30.9 36.8 42.  45.  49.  52.4 56.3 62.  66.  72. ]
+
+--- MLP, variables [np.int64(140)], constraints [np.int64(560)] ---
+Using device: cuda:1
+Early stopping after 70 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9822258928571429
+Precision of the model on the test data: 0.8477832158339909
+Recall of the model on the test data: 0.9921327527889492
+F1-Score of the model on the test data: 0.9142955498687121
+VALIDATION
+Accuracy (node level) of the final model: 0.9805428571428572
+Precision of the model on the test data: 0.8391889306887462
+Recall of the model on the test data: 0.9848836339138031
+F1-Score of the model on the test data: 0.906217718642099
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9754285714285714
+Precision of the model on the test data: 0.8370633360801134
+Recall of the model on the test data: 0.9864026895771487
+F1-Score of the model on the test data: 0.9056176642832073
+
+
+Test time before: mean 0.0026066852549999995, min 0.001675777, max 0.003981205
+Test time after: mean 0.012128233444999999, min 0.0069725839999999996, max 0.015244435
+Time reduction: mean -0.00952154819, min -0.01268485, max -0.0038365079999999998
+Prediction time: mean 0.0004455942381173372, min 0.00031316280364990234, max 0.001120731234550476
+Test iter before: mean 111.335, min 88, max 140
+Test iter after: mean 17.11, min 7.0, max 36.0
+Test iter reduction: mean 94.225, min 70.0, max 118.0
+
+Using device: cuda:1
+Early stopping after 70 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9822258928571429
+Precision of the model on the test data: 0.8477832158339909
+Recall of the model on the test data: 0.9921327527889492
+F1-Score of the model on the test data: 0.9142955498687121
+VALIDATION
+Accuracy (node level) of the final model: 0.9805428571428572
+Precision of the model on the test data: 0.8391889306887462
+Recall of the model on the test data: 0.9848836339138031
+F1-Score of the model on the test data: 0.906217718642099
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9754285714285714
+Precision of the model on the test data: 0.8370633360801134
+Recall of the model on the test data: 0.9864026895771487
+F1-Score of the model on the test data: 0.9056176642832073
+
+
+Test time before: mean 0.00267357529, min 0.001560785, max 0.003988232
+Test time after: mean 0.010667915080000001, min 0.006587644, max 0.015586769
+Time reduction: mean -0.00799433979, min -0.013555328, max -0.003335594
+Prediction time: mean 0.000422768946737051, min 0.0002138931304216385, max 0.0012473315000534058
+Test iter before: mean 111.335, min 88, max 140
+Test iter after: mean 17.11, min 7.0, max 36.0
+Test iter reduction: mean 94.225, min 70.0, max 118.0
+
+Using device: cuda:1
+Early stopping after 70 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9822258928571429
+Precision of the model on the test data: 0.8477832158339909
+Recall of the model on the test data: 0.9921327527889492
+F1-Score of the model on the test data: 0.9142955498687121
+VALIDATION
+Accuracy (node level) of the final model: 0.9805428571428572
+Precision of the model on the test data: 0.8391889306887462
+Recall of the model on the test data: 0.9848836339138031
+F1-Score of the model on the test data: 0.906217718642099
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9754285714285714
+Precision of the model on the test data: 0.8370633360801134
+Recall of the model on the test data: 0.9864026895771487
+F1-Score of the model on the test data: 0.9056176642832073
+
+
+Test time before: mean 0.0026743158150000002, min 0.001666195, max 0.003474325
+Test time after: mean 0.01273515044, min 0.009528917999999999, max 0.017066911
+Time reduction: mean -0.010060834624999999, min -0.014381788000000001, max -0.006666355999999999
+Prediction time: mean 0.000460797268897295, min 0.00036859698593616486, max 0.001448262482881546
+Test iter before: mean 111.335, min 88, max 140
+Test iter after: mean 17.11, min 7.0, max 36.0
+Test iter reduction: mean 94.225, min 70.0, max 118.0
+
+--- Non-learned model ---
+Average solving time (s): 0.014192579879500001
+Average solving time (s): 112.64
+Average solving time (s): 0.0115541111175
+Average solving time (s): 112.336
+Average solving time (s): 0.011511343241999998
+Average solving time (s): 112.1745
+
+--- GNN, variables [np.int64(150)], constraints [np.int64(600)] ---
+Using device: cuda:1
+banded
+(150, 150) (150,) (150, 7) (600, 150) (600,) (600, 7) (150, 7)
+condition number of H 243051.0715822471
+Done generating train data
+class weights:  [0.55901576 4.73615661]
+positive weight 0.10557083333333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9376258333333334
+Precision of the model on the test data: 0.6320635502970318
+Recall of the model on the test data: 0.9791609109207106
+F1-Score of the model on the test data: 0.7682255734371631
+VALIDATION
+Accuracy (node level) of the final model: 0.93848
+Precision of the model on the test data: 0.6382543191678383
+Recall of the model on the test data: 0.975472406456654
+F1-Score of the model on the test data: 0.7716293755386858
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9218
+Precision of the model on the test data: 0.6340567885114906
+Recall of the model on the test data: 0.9740536475300989
+F1-Score of the model on the test data: 0.7681130722222362
+
+Test time before: mean 0.016554119805, min 0.009964913999999998, max 0.034726833
+Test time after: mean 0.013185366250000002, min 0.009335401, max 0.019849876000000002
+Test time reduction: mean 0.003368753555, min -0.008306565000000004, max 0.024830416
+Prediction time: mean 0.0018123150803148746, min 0.001390807330608368, max 0.0026230718940496445
+Test iter before: mean 118.8, min 89, max 149
+Test iter before: quantiles [106. 112. 119. 125. 132.]
+Test iter after: mean 64.69, min 34.0, max 94.0
+Test iter after: quantiles [52.  58.  64.  72.  78.1]
+Test iter reduction: mean 54.11, min 4.0, max 95.0
+Test iter after: quantiles [28.95 34.9  41.8  46.   50.   54.   58.   62.   67.   76.   81.05]
+
+Using device: cuda:1
+banded
+(150, 150) (150,) (150, 7) (600, 150) (600,) (600, 7) (150, 7)
+condition number of H 243051.0715822471
+Done generating train data
+class weights:  [0.55901576 4.73615661]
+positive weight 0.10557083333333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93763
+Precision of the model on the test data: 0.6320379397995715
+Recall of the model on the test data: 0.9794056123455043
+F1-Score of the model on the test data: 0.7682819553804028
+VALIDATION
+Accuracy (node level) of the final model: 0.9384533333333334
+Precision of the model on the test data: 0.6382516795016229
+Recall of the model on the test data: 0.9749092729314385
+F1-Score of the model on the test data: 0.7714512008419825
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9218583333333333
+Precision of the model on the test data: 0.6342927127982714
+Recall of the model on the test data: 0.9737402857853009
+F1-Score of the model on the test data: 0.7681886679375624
+
+Test time before: mean 0.013997628215, min 0.009363177, max 0.02103101
+Test time after: mean 0.0181077805, min 0.016912172, max 0.019135428
+Test time reduction: mean -0.004110152285000001, min -0.009508192000000002, max 0.0027232179999999995
+Prediction time: mean 0.001970272781327367, min 0.00179293192923069, max 0.0021217018365859985
+Test iter before: mean 118.8, min 89, max 149
+Test iter before: quantiles [106. 112. 119. 125. 132.]
+Test iter after: mean 64.525, min 34.0, max 96.0
+Test iter after: quantiles [51.  58.  64.  71.  78.1]
+Test iter reduction: mean 54.275, min 4.0, max 95.0
+Test iter after: quantiles [28.  35.  42.  46.  50.6 54.5 58.4 63.  67.  76.  83. ]
+
+Using device: cuda:1
+banded
+(150, 150) (150,) (150, 7) (600, 150) (600,) (600, 7) (150, 7)
+condition number of H 243051.0715822471
+Done generating train data
+class weights:  [0.55901576 4.73615661]
+positive weight 0.10557083333333334
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Early stopping after 37 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9376675
+Precision of the model on the test data: 0.6321613057697667
+Recall of the model on the test data: 0.9795319098550752
+F1-Score of the model on the test data: 0.7684119549948096
+VALIDATION
+Accuracy (node level) of the final model: 0.9386
+Precision of the model on the test data: 0.6388501599275654
+Recall of the model on the test data: 0.9747841321480573
+F1-Score of the model on the test data: 0.7718489845147762
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9220166666666667
+Precision of the model on the test data: 0.6348071265116726
+Recall of the model on the test data: 0.9736149410873818
+F1-Score of the model on the test data: 0.7685267588506466
+
+Test time before: mean 0.015916146385, min 0.009937446, max 0.021577979
+Test time after: mean 0.018621333635, min 0.017328528, max 0.019799082
+Test time reduction: mean -0.0027051872499999994, min -0.009139053000000001, max 0.0027164740000000034
+Prediction time: mean 0.002060715015977621, min 0.0017851684242486954, max 0.002214418724179268
+Test iter before: mean 118.8, min 89, max 149
+Test iter before: quantiles [106. 112. 119. 125. 132.]
+Test iter after: mean 64.575, min 34.0, max 93.0
+Test iter after: quantiles [51.  58.  64.  72.  78.1]
+Test iter reduction: mean 54.225, min 4.0, max 92.0
+Test iter after: quantiles [28.  34.  42.  46.  51.  54.  58.  62.3 67.  76.  83. ]
+
+--- MLP, variables [np.int64(150)], constraints [np.int64(600)] ---
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9819791666666666
+Precision of the model on the test data: 0.8593613178633387
+Recall of the model on the test data: 0.9915775348304068
+F1-Score of the model on the test data: 0.9207471886515037
+VALIDATION
+Accuracy (node level) of the final model: 0.9794933333333333
+Precision of the model on the test data: 0.849150524834515
+Recall of the model on the test data: 0.9819797271924777
+F1-Score of the model on the test data: 0.9107474416367377
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9752
+Precision of the model on the test data: 0.8513425725417652
+Recall of the model on the test data: 0.9855853597386652
+F1-Score of the model on the test data: 0.913558726291422
+
+
+Test time before: mean 0.0038148234849999995, min 0.002848743, max 0.004794
+Test time after: mean 0.01647977376, min 0.014431835, max 0.017370605
+Time reduction: mean -0.012664950275, min -0.013878117000000002, max -0.010548356
+Prediction time: mean 0.000431595342233777, min 0.0003551114350557327, max 0.0005211662501096725
+Test iter before: mean 118.8, min 89, max 149
+Test iter after: mean 18.13, min 6.0, max 34.0
+Test iter reduction: mean 100.67, min 64.0, max 132.0
+
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9819791666666666
+Precision of the model on the test data: 0.8593613178633387
+Recall of the model on the test data: 0.9915775348304068
+F1-Score of the model on the test data: 0.9207471886515037
+VALIDATION
+Accuracy (node level) of the final model: 0.9794933333333333
+Precision of the model on the test data: 0.849150524834515
+Recall of the model on the test data: 0.9819797271924777
+F1-Score of the model on the test data: 0.9107474416367377
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9752
+Precision of the model on the test data: 0.8513425725417652
+Recall of the model on the test data: 0.9855853597386652
+F1-Score of the model on the test data: 0.913558726291422
+
+
+Test time before: mean 0.0037486137799999995, min 0.002259867, max 0.004837786
+Test time after: mean 0.013052635210000002, min 0.008694707, max 0.017224992
+Time reduction: mean -0.00930402143, min -0.014537672999999997, max -0.004338081999999999
+Prediction time: mean 0.00042292038910090923, min 0.00031701475381851196, max 0.0005897115916013718
+Test iter before: mean 118.8, min 89, max 149
+Test iter after: mean 18.13, min 6.0, max 34.0
+Test iter reduction: mean 100.67, min 64.0, max 132.0
+
+Using device: cuda:1
+Early stopping after 56 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9819791666666666
+Precision of the model on the test data: 0.8593613178633387
+Recall of the model on the test data: 0.9915775348304068
+F1-Score of the model on the test data: 0.9207471886515037
+VALIDATION
+Accuracy (node level) of the final model: 0.9794933333333333
+Precision of the model on the test data: 0.849150524834515
+Recall of the model on the test data: 0.9819797271924777
+F1-Score of the model on the test data: 0.9107474416367377
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9752
+Precision of the model on the test data: 0.8513425725417652
+Recall of the model on the test data: 0.9855853597386652
+F1-Score of the model on the test data: 0.913558726291422
+
+
+Test time before: mean 0.0035263775549999998, min 0.001982475, max 0.004968013
+Test time after: mean 0.016056270155, min 0.013572975000000001, max 0.017404144
+Time reduction: mean -0.012529892600000002, min -0.015003048, max -0.009293405
+Prediction time: mean 0.00044995673932135105, min 0.0003913547843694687, max 0.0005726981908082962
+Test iter before: mean 118.8, min 89, max 149
+Test iter after: mean 18.13, min 6.0, max 34.0
+Test iter reduction: mean 100.67, min 64.0, max 132.0
+
+--- Non-learned model ---
+Average solving time (s): 0.018505435702
+Average solving time (s): 118.081
+Average solving time (s): 0.010627944117999999
+Average solving time (s): 118.724
+Average solving time (s): 0.0107647206675
+Average solving time (s): 118.0715
+
+--- GNN, variables [np.int64(160)], constraints [np.int64(640)] ---
+Using device: cuda:1
+banded
+(160, 160) (160,) (160, 7) (640, 160) (640,) (640, 7) (160, 7)
+condition number of H 343888.8068038136
+Done generating train data
+class weights:  [0.55503714 5.04238757]
+positive weight 0.09915937500000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93693046875
+Precision of the model on the test data: 0.6145408201216637
+Recall of the model on the test data: 0.9763638082631357
+F1-Score of the model on the test data: 0.7543072048319841
+VALIDATION
+Accuracy (node level) of the final model: 0.93848125
+Precision of the model on the test data: 0.6223137825171181
+Recall of the model on the test data: 0.9689917604874715
+F1-Score of the model on the test data: 0.7578895537168286
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9251640625
+Precision of the model on the test data: 0.6273367816557539
+Recall of the model on the test data: 0.9729029813030742
+F1-Score of the model on the test data: 0.7628079684901842
+
+Test time before: mean 0.019128686689999997, min 0.011908597, max 0.029793068
+Test time after: mean 0.0179569617, min 0.011022587, max 0.024596066
+Test time reduction: mean 0.0011717249900000002, min -0.008895466999999999, max 0.014523519000000002
+Prediction time: mean 0.0017965973913669586, min 0.0013679563999176025, max 0.002355016767978668
+Test iter before: mean 122.71, min 90, max 156
+Test iter before: quantiles [106.9  114.75 122.   131.25 138.1 ]
+Test iter after: mean 71.11, min 42.0, max 99.0
+Test iter after: quantiles [57.9 64.  71.  79.  83.1]
+Test iter reduction: mean 51.6, min 12.0, max 101.0
+Test iter after: quantiles [23.   28.   36.8  42.   48.   53.   57.   60.   65.   72.   81.05]
+
+Using device: cuda:1
+banded
+(160, 160) (160,) (160, 7) (640, 160) (640,) (640, 7) (160, 7)
+condition number of H 343888.8068038136
+Done generating train data
+class weights:  [0.55503714 5.04238757]
+positive weight 0.09915937500000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93690703125
+Precision of the model on the test data: 0.6144482732974383
+Recall of the model on the test data: 0.9763716869937147
+F1-Score of the model on the test data: 0.7542398365290767
+VALIDATION
+Accuracy (node level) of the final model: 0.93816875
+Precision of the model on the test data: 0.6209424083767132
+Recall of the model on the test data: 0.9697465249380653
+F1-Score of the model on the test data: 0.7571018145825271
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.925046875
+Precision of the model on the test data: 0.6269434269431717
+Recall of the model on the test data: 0.9729661445168184
+F1-Score of the model on the test data: 0.7625365033271586
+
+Test time before: mean 0.012264897084999999, min 0.011071507000000001, max 0.021504669
+Test time after: mean 0.01185828455, min 0.010304364, max 0.02140105
+Test time reduction: mean 0.000406612535, min -0.009273888000000001, max 0.010555397000000001
+Prediction time: mean 0.0012449488695710897, min 0.0011121593415737152, max 0.0017422493547201157
+Test iter before: mean 122.71, min 90, max 156
+Test iter before: quantiles [106.9  114.75 122.   131.25 138.1 ]
+Test iter after: mean 71.4, min 44.0, max 99.0
+Test iter after: quantiles [57. 64. 72. 79. 84.]
+Test iter reduction: mean 51.31, min 12.0, max 101.0
+Test iter after: quantiles [22.95 26.   36.8  42.   48.   53.   56.   60.   65.   72.   80.15]
+
+Using device: cuda:1
+banded
+(160, 160) (160,) (160, 7) (640, 160) (640,) (640, 7) (160, 7)
+condition number of H 343888.8068038136
+Done generating train data
+class weights:  [0.55503714 5.04238757]
+positive weight 0.09915937500000001
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Early stopping after 32 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.93689296875
+Precision of the model on the test data: 0.6143775621991358
+Recall of the model on the test data: 0.9764819892218196
+F1-Score of the model on the test data: 0.7542194655241701
+VALIDATION
+Accuracy (node level) of the final model: 0.93839375
+Precision of the model on the test data: 0.621912832929531
+Recall of the model on the test data: 0.969306245675219
+F1-Score of the model on the test data: 0.7576882373284569
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9251328125
+Precision of the model on the test data: 0.6271931610011694
+Recall of the model on the test data: 0.9731556341580513
+F1-Score of the model on the test data: 0.7627794095462341
+
+Test time before: mean 0.01183720611, min 0.011100029, max 0.013025364999999999
+Test time after: mean 0.012839117254999999, min 0.010445922, max 0.021465376
+Test time reduction: mean -0.001001911145, min -0.009854622, max 0.0019947099999999985
+Prediction time: mean 0.0012348703388124704, min 0.001110440120100975, max 0.001964973285794258
+Test iter before: mean 122.71, min 90, max 156
+Test iter before: quantiles [106.9  114.75 122.   131.25 138.1 ]
+Test iter after: mean 71.14, min 43.0, max 99.0
+Test iter after: quantiles [57.  64.  71.5 79.  84. ]
+Test iter reduction: mean 51.57, min 12.0, max 101.0
+Test iter after: quantiles [23.   26.9  36.   42.7  48.   53.   56.   60.   65.   72.   80.05]
+
+--- MLP, variables [np.int64(160)], constraints [np.int64(640)] ---
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.98044765625
+Precision of the model on the test data: 0.8402941510428976
+Recall of the model on the test data: 0.991207336673837
+F1-Score of the model on the test data: 0.9095332201651883
+VALIDATION
+Accuracy (node level) of the final model: 0.97935625
+Precision of the model on the test data: 0.8364316239311771
+Recall of the model on the test data: 0.9848418139499434
+F1-Score of the model on the test data: 0.9045899600807731
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9729765625
+Precision of the model on the test data: 0.8290866535449603
+Recall of the model on the test data: 0.9844618494182765
+F1-Score of the model on the test data: 0.9001183860731131
+
+
+Test time before: mean 0.0029730578599999995, min 0.002140705, max 0.004972198
+Test time after: mean 0.01139324828, min 0.010118752, max 0.020338415
+Time reduction: mean -0.00842019042, min -0.017373832, max -0.005373792999999999
+Prediction time: mean 0.00023894380778074264, min 0.0002113543450832367, max 0.0004137493669986725
+Test iter before: mean 122.71, min 90, max 156
+Test iter after: mean 21.955, min 9.0, max 46.0
+Test iter reduction: mean 100.755, min 59.0, max 134.0
+
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.98044765625
+Precision of the model on the test data: 0.8402941510428976
+Recall of the model on the test data: 0.991207336673837
+F1-Score of the model on the test data: 0.9095332201651883
+VALIDATION
+Accuracy (node level) of the final model: 0.97935625
+Precision of the model on the test data: 0.8364316239311771
+Recall of the model on the test data: 0.9848418139499434
+F1-Score of the model on the test data: 0.9045899600807731
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9729765625
+Precision of the model on the test data: 0.8290866535449603
+Recall of the model on the test data: 0.9844618494182765
+F1-Score of the model on the test data: 0.9001183860731131
+
+
+Test time before: mean 0.0028514506549999997, min 0.002141798, max 0.003600426
+Test time after: mean 0.010693152365, min 0.010234686, max 0.017502736999999997
+Time reduction: mean -0.00784170171, min -0.014742976999999997, max -0.007128546999999999
+Prediction time: mean 0.00025979166850447654, min 0.0002185143530368805, max 0.0002941526472568512
+Test iter before: mean 122.71, min 90, max 156
+Test iter after: mean 21.955, min 9.0, max 46.0
+Test iter reduction: mean 100.755, min 59.0, max 134.0
+
+Using device: cuda:1
+Early stopping after 54 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.98044765625
+Precision of the model on the test data: 0.8402941510428976
+Recall of the model on the test data: 0.991207336673837
+F1-Score of the model on the test data: 0.9095332201651883
+VALIDATION
+Accuracy (node level) of the final model: 0.97935625
+Precision of the model on the test data: 0.8364316239311771
+Recall of the model on the test data: 0.9848418139499434
+F1-Score of the model on the test data: 0.9045899600807731
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9729765625
+Precision of the model on the test data: 0.8290866535449603
+Recall of the model on the test data: 0.9844618494182765
+F1-Score of the model on the test data: 0.9001183860731131
+
+
+Test time before: mean 0.0028509245849999997, min 0.002141665, max 0.003598189
+Test time after: mean 0.010313744695, min 0.009723132, max 0.013637112
+Time reduction: mean -0.007462820110000001, min -0.010677815, max -0.006579978
+Prediction time: mean 0.0002577081974595785, min 0.0002111494541168213, max 0.00028575025498867035
+Test iter before: mean 122.71, min 90, max 156
+Test iter after: mean 21.955, min 9.0, max 46.0
+Test iter reduction: mean 100.755, min 59.0, max 134.0
+
+--- Non-learned model ---
+Average solving time (s): 0.011766257825499999
+Average solving time (s): 123.305
+Average solving time (s): 0.011767773215000001
+Average solving time (s): 123.2855
+Average solving time (s): 0.011757444943
+Average solving time (s): 122.8775
+
+--- GNN, variables [np.int64(170)], constraints [np.int64(680)] ---
+Using device: cuda:1
+banded
+(170, 170) (170,) (170, 7) (680, 170) (680,) (680, 7) (170, 7)
+condition number of H 258077.6297489295
+Done generating train data
+class weights:  [0.55306631 5.21108735]
+positive weight 0.09594926470588236
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9274632352941177
+Precision of the model on the test data: 0.5713792531417734
+Recall of the model on the test data: 0.9766267405414185
+F1-Score of the model on the test data: 0.7209587770087783
+VALIDATION
+Accuracy (node level) of the final model: 0.9282117647058824
+Precision of the model on the test data: 0.5726743134202075
+Recall of the model on the test data: 0.9757104987356046
+F1-Score of the model on the test data: 0.721738332699922
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9051544117647059
+Precision of the model on the test data: 0.5594420374086585
+Recall of the model on the test data: 0.9759124984632076
+F1-Score of the model on the test data: 0.7111927052168902
+
+Test time before: mean 0.014223943325000002, min 0.012964259, max 0.025014134
+Test time after: mean 0.015014574170000001, min 0.012680887, max 0.025551570000000003
+Test time reduction: mean -0.000790630845, min -0.011604924000000003, max 0.011118348
+Prediction time: mean 0.00125466113910079, min 0.001111142337322235, max 0.00617910735309124
+Test iter before: mean 116.88, min 88, max 152
+Test iter before: quantiles [103.   109.   116.   124.25 132.1 ]
+Test iter after: mean 75.75, min 49.0, max 113.0
+Test iter after: quantiles [63.  69.  75.  82.  88.1]
+Test iter reduction: mean 41.13, min -1.0, max 83.0
+Test iter after: quantiles [13.  19.  26.8 33.  37.6 42.  45.  50.  55.  61.  69. ]
+
+Using device: cuda:1
+banded
+(170, 170) (170,) (170, 7) (680, 170) (680,) (680, 7) (170, 7)
+condition number of H 258077.6297489295
+Done generating train data
+class weights:  [0.55306631 5.21108735]
+positive weight 0.09594926470588236
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.92745
+Precision of the model on the test data: 0.5713248313422878
+Recall of the model on the test data: 0.9767263642702579
+F1-Score of the model on the test data: 0.7209425932567469
+VALIDATION
+Accuracy (node level) of the final model: 0.9282117647058824
+Precision of the model on the test data: 0.5726743134202075
+Recall of the model on the test data: 0.9757104987356046
+F1-Score of the model on the test data: 0.721738332699922
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9051691176470589
+Precision of the model on the test data: 0.5594772623197155
+Recall of the model on the test data: 0.975973946171208
+F1-Score of the model on the test data: 0.7112374850122464
+
+Test time before: mean 0.014551251245, min 0.012994679, max 0.025561689000000002
+Test time after: mean 0.0148290583, min 0.012689260999999999, max 0.025216414000000003
+Test time reduction: mean -0.00027780705499999987, min -0.011334282, max 0.012567869
+Prediction time: mean 0.0012206348776817322, min 0.0011211391538381577, max 0.0016839075833559036
+Test iter before: mean 116.88, min 88, max 152
+Test iter before: quantiles [103.   109.   116.   124.25 132.1 ]
+Test iter after: mean 75.915, min 49.0, max 113.0
+Test iter after: quantiles [63.  69.  75.  82.  88.1]
+Test iter reduction: mean 40.965, min -1.0, max 84.0
+Test iter after: quantiles [13.   19.9  26.   33.   37.   41.5  45.   50.   55.2  61.   69.05]
+
+Using device: cuda:1
+banded
+(170, 170) (170,) (170, 7) (680, 170) (680,) (680, 7) (170, 7)
+condition number of H 258077.6297489295
+Done generating train data
+class weights:  [0.55306631 5.21108735]
+positive weight 0.09594926470588236
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Early stopping after 25 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9274507352941177
+Precision of the model on the test data: 0.5713331480368782
+Recall of the model on the test data: 0.976657393996446
+F1-Score of the model on the test data: 0.7209304252310074
+VALIDATION
+Accuracy (node level) of the final model: 0.9282529411764706
+Precision of the model on the test data: 0.5728563151793986
+Recall of the model on the test data: 0.9752789593730501
+F1-Score of the model on the test data: 0.7217647146385625
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.905375
+Precision of the model on the test data: 0.5600465559198109
+Recall of the model on the test data: 0.9757281553392062
+F1-Score of the model on the test data: 0.7116319670423202
+
+Test time before: mean 0.014344153715, min 0.012962946999999999, max 0.024610138
+Test time after: mean 0.013283323185, min 0.012617918, max 0.014274723
+Test time reduction: mean 0.0010608305299999999, min -0.0003268899999999981, max 0.011604526
+Prediction time: mean 0.0011382188275456428, min 0.0011070258915424347, max 0.0012509115040302277
+Test iter before: mean 116.88, min 88, max 152
+Test iter before: quantiles [103.   109.   116.   124.25 132.1 ]
+Test iter after: mean 75.63, min 49.0, max 113.0
+Test iter after: quantiles [63. 69. 75. 82. 88.]
+Test iter reduction: mean 41.25, min -1.0, max 83.0
+Test iter after: quantiles [13.95 20.8  27.   33.   37.   42.   45.   50.   55.   61.   69.05]
+
+--- MLP, variables [np.int64(170)], constraints [np.int64(680)] ---
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784279411764706
+Precision of the model on the test data: 0.8215841244205412
+Recall of the model on the test data: 0.990206221118622
+F1-Score of the model on the test data: 0.8980483958161025
+VALIDATION
+Accuracy (node level) of the final model: 0.976664705882353
+Precision of the model on the test data: 0.8107628322170771
+Recall of the model on the test data: 0.9854509586332622
+F1-Score of the model on the test data: 0.8896123722624792
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9710514705882353
+Precision of the model on the test data: 0.8128835911738205
+Recall of the model on the test data: 0.9847609684152729
+F1-Score of the model on the test data: 0.890605457825508
+
+
+Test time before: mean 0.0033119826400000003, min 0.002294597, max 0.005420646
+Test time after: mean 0.012707004360000001, min 0.012184677, max 0.020390941
+Time reduction: mean -0.00939502172, min -0.017394489, max -0.007243287
+Prediction time: mean 0.00026486960239708424, min 0.000257318839430809, max 0.0004634615033864975
+Test iter before: mean 116.88, min 88, max 152
+Test iter after: mean 22.725, min 12.0, max 40.0
+Test iter reduction: mean 94.155, min 59.0, max 132.0
+
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784279411764706
+Precision of the model on the test data: 0.8215841244205412
+Recall of the model on the test data: 0.990206221118622
+F1-Score of the model on the test data: 0.8980483958161025
+VALIDATION
+Accuracy (node level) of the final model: 0.976664705882353
+Precision of the model on the test data: 0.8107628322170771
+Recall of the model on the test data: 0.9854509586332622
+F1-Score of the model on the test data: 0.8896123722624792
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9710514705882353
+Precision of the model on the test data: 0.8128835911738205
+Recall of the model on the test data: 0.9847609684152729
+F1-Score of the model on the test data: 0.890605457825508
+
+
+Test time before: mean 0.002965422255, min 0.00218564, max 0.005386706
+Test time after: mean 0.011924617139999998, min 0.011577648000000001, max 0.012397192
+Time reduction: mean -0.008959194885, min -0.009675370999999999, max -0.006689595999999999
+Prediction time: mean 0.00025349212810397146, min 0.0002483949065208435, max 0.00026257336139678955
+Test iter before: mean 116.88, min 88, max 152
+Test iter after: mean 22.725, min 12.0, max 40.0
+Test iter reduction: mean 94.155, min 59.0, max 132.0
+
+Using device: cuda:1
+Early stopping after 49 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9784279411764706
+Precision of the model on the test data: 0.8215841244205412
+Recall of the model on the test data: 0.990206221118622
+F1-Score of the model on the test data: 0.8980483958161025
+VALIDATION
+Accuracy (node level) of the final model: 0.976664705882353
+Precision of the model on the test data: 0.8107628322170771
+Recall of the model on the test data: 0.9854509586332622
+F1-Score of the model on the test data: 0.8896123722624792
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9710514705882353
+Precision of the model on the test data: 0.8128835911738205
+Recall of the model on the test data: 0.9847609684152729
+F1-Score of the model on the test data: 0.890605457825508
+
+
+Test time before: mean 0.003038352385, min 0.002180782, max 0.003951126
+Test time after: mean 0.01199275426, min 0.011479135, max 0.021362885
+Time reduction: mean -0.008954401875, min -0.017899239, max -0.007957628000000001
+Prediction time: mean 0.00023158150725066662, min 0.0002041887491941452, max 0.00045833736658096313
+Test iter before: mean 116.88, min 88, max 152
+Test iter after: mean 22.725, min 12.0, max 40.0
+Test iter reduction: mean 94.155, min 59.0, max 132.0
+
+--- Non-learned model ---
+Average solving time (s): 0.014014141421499999
+Average solving time (s): 117.2225
+Average solving time (s): 0.014157780266500001
+Average solving time (s): 117.326
+Average solving time (s): 0.0137416053075
+Average solving time (s): 117.752
+
+--- GNN, variables [np.int64(180)], constraints [np.int64(720)] ---
+Using device: cuda:1
+banded
+(180, 180) (180,) (180, 7) (720, 180) (720,) (720, 7) (180, 7)
+condition number of H 536694.8236806242
+Done generating train data
+class weights:  [0.5604827  4.63341335]
+positive weight 0.10791180555555556
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 40 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9398138888888888
+Precision of the model on the test data: 0.6461058978098191
+Recall of the model on the test data: 0.9778883218677173
+F1-Score of the model on the test data: 0.7781054890614165
+VALIDATION
+Accuracy (node level) of the final model: 0.94005
+Precision of the model on the test data: 0.6472456541782564
+Recall of the model on the test data: 0.9762027402900091
+F1-Score of the model on the test data: 0.7783961344389797
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.92525
+Precision of the model on the test data: 0.6461845455168767
+Recall of the model on the test data: 0.9750804693173216
+F1-Score of the model on the test data: 0.7772719700440497
+
+Test time before: mean 0.018737580805, min 0.01627689, max 0.031486
+Test time after: mean 0.015732870965, min 0.014393904, max 0.028762332999999998
+Test time reduction: mean 0.00300470984, min -0.0018980809999999994, max 0.015808066
+Prediction time: mean 0.0011792541481554508, min 0.001113077625632286, max 0.0015155281871557236
+Test iter before: mean 150.44, min 114, max 190
+Test iter before: quantiles [134.  141.  150.  159.  169.1]
+Test iter after: mean 69.62, min 39.0, max 99.0
+Test iter after: quantiles [55. 62. 69. 77. 84.]
+Test iter reduction: mean 80.82, min 37.0, max 132.0
+Test iter after: quantiles [ 56.95  60.    67.    72.    76.    80.    84.    89.    95.   102.
+ 108.  ]
+
+Using device: cuda:1
+banded
+(180, 180) (180,) (180, 7) (720, 180) (720,) (720, 7) (180, 7)
+condition number of H 536694.8236806242
+Done generating train data
+class weights:  [0.5604827  4.63341335]
+positive weight 0.10791180555555556
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 40 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9398069444444445
+Precision of the model on the test data: 0.6460871229032189
+Recall of the model on the test data: 0.9778432747935248
+F1-Score of the model on the test data: 0.7780776135076704
+VALIDATION
+Accuracy (node level) of the final model: 0.9399777777777778
+Precision of the model on the test data: 0.6469283276448304
+Recall of the model on the test data: 0.9763572679504603
+F1-Score of the model on the test data: 0.7782157032156206
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9252152777777778
+Precision of the model on the test data: 0.646083456603032
+Recall of the model on the test data: 0.9750285536284005
+F1-Score of the model on the test data: 0.7771823419395275
+
+Test time before: mean 0.020029573359999997, min 0.017006623000000002, max 0.032519252
+Test time after: mean 0.023347326610000003, min 0.015176430999999999, max 0.029569783
+Test time reduction: mean -0.0033177532499999995, min -0.011920589000000002, max 0.005285648
+Prediction time: mean 0.0014052824955433608, min 0.001151280477643013, max 0.0017413347959518433
+Test iter before: mean 150.44, min 114, max 190
+Test iter before: quantiles [134.  141.  150.  159.  169.1]
+Test iter after: mean 69.175, min 39.0, max 94.0
+Test iter after: quantiles [55.  61.  69.  76.  83.1]
+Test iter reduction: mean 81.265, min 36.0, max 132.0
+Test iter after: quantiles [ 56.95  61.    68.    73.    77.    81.    84.    89.    95.   102.
+ 108.  ]
+
+Using device: cuda:1
+banded
+(180, 180) (180,) (180, 7) (720, 180) (720,) (720, 7) (180, 7)
+condition number of H 536694.8236806242
+Done generating train data
+class weights:  [0.5604827  4.63341335]
+positive weight 0.10791180555555556
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Early stopping after 40 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9397826388888889
+Precision of the model on the test data: 0.6459934698319567
+Recall of the model on the test data: 0.9778304042008984
+F1-Score of the model on the test data: 0.7780056223192519
+VALIDATION
+Accuracy (node level) of the final model: 0.9401
+Precision of the model on the test data: 0.6474245115450719
+Recall of the model on the test data: 0.9763057587303099
+F1-Score of the model on the test data: 0.778558220713124
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9252569444444444
+Precision of the model on the test data: 0.6462973801078782
+Recall of the model on the test data: 0.9746132281170311
+F1-Score of the model on the test data: 0.7772050708635911
+
+Test time before: mean 0.025787900925000003, min 0.016400897, max 0.032743378000000004
+Test time after: mean 0.025390657215, min 0.022960192, max 0.029618686
+Test time reduction: mean 0.00039724370999999996, min -0.009210613000000003, max 0.008246477000000002
+Prediction time: mean 0.001869147615507245, min 0.0014729052782058716, max 0.0021708570420742035
+Test iter before: mean 150.44, min 114, max 190
+Test iter before: quantiles [134.  141.  150.  159.  169.1]
+Test iter after: mean 69.275, min 39.0, max 99.0
+Test iter after: quantiles [55.9 61.  69.  77.  83. ]
+Test iter reduction: mean 81.165, min 37.0, max 132.0
+Test iter after: quantiles [ 56.95  61.    68.    73.    76.    80.    83.    88.3   95.   102.
+ 107.05]
+
+--- MLP, variables [np.int64(180)], constraints [np.int64(720)] ---
+Using device: cuda:1
+Early stopping after 51 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9796722222222223
+Precision of the model on the test data: 0.8468769768144973
+Recall of the model on the test data: 0.9907653497904673
+F1-Score of the model on the test data: 0.9131878902107375
+VALIDATION
+Accuracy (node level) of the final model: 0.9782
+Precision of the model on the test data: 0.8406491907103973
+Recall of the model on the test data: 0.9844957247342204
+F1-Score of the model on the test data: 0.9069039096213751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9728194444444445
+Precision of the model on the test data: 0.8385090427874554
+Recall of the model on the test data: 0.9868653307024261
+F1-Score of the model on the test data: 0.906658394345769
+
+
+Test time before: mean 0.00450574461, min 0.003542073, max 0.006353511
+Test time after: mean 0.026127767865, min 0.025237653, max 0.027563183
+Time reduction: mean -0.021622023255, min -0.023135984000000002, max -0.020310682000000004
+Prediction time: mean 0.0002815306559205055, min 0.00027333199977874756, max 0.00030584633350372314
+Test iter before: mean 150.44, min 114, max 190
+Test iter after: mean 23.78, min 9.0, max 40.0
+Test iter reduction: mean 126.66, min 90.0, max 171.0
+
+Using device: cuda:1
+Early stopping after 51 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9796722222222223
+Precision of the model on the test data: 0.8468769768144973
+Recall of the model on the test data: 0.9907653497904673
+F1-Score of the model on the test data: 0.9131878902107375
+VALIDATION
+Accuracy (node level) of the final model: 0.9782
+Precision of the model on the test data: 0.8406491907103973
+Recall of the model on the test data: 0.9844957247342204
+F1-Score of the model on the test data: 0.9069039096213751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9728194444444445
+Precision of the model on the test data: 0.8385090427874554
+Recall of the model on the test data: 0.9868653307024261
+F1-Score of the model on the test data: 0.906658394345769
+
+
+Test time before: mean 0.006087896335000001, min 0.004757797, max 0.00774889
+Test time after: mean 0.026096447085, min 0.025246445, max 0.027534012
+Time reduction: mean -0.020008550749999996, min -0.021687780000000004, max -0.018212259
+Prediction time: mean 0.0002830617967993021, min 0.0002755727618932724, max 0.0003086719661951065
+Test iter before: mean 150.44, min 114, max 190
+Test iter after: mean 23.78, min 9.0, max 40.0
+Test iter reduction: mean 126.66, min 90.0, max 171.0
+
+Using device: cuda:1
+Early stopping after 51 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9796722222222223
+Precision of the model on the test data: 0.8468769768144973
+Recall of the model on the test data: 0.9907653497904673
+F1-Score of the model on the test data: 0.9131878902107375
+VALIDATION
+Accuracy (node level) of the final model: 0.9782
+Precision of the model on the test data: 0.8406491907103973
+Recall of the model on the test data: 0.9844957247342204
+F1-Score of the model on the test data: 0.9069039096213751
+Using device: cuda:1
+0
+TESTING
+Accuracy (node level) of the model on the test data: 0.9728194444444445
+Precision of the model on the test data: 0.8385090427874554
+Recall of the model on the test data: 0.9868653307024261
+F1-Score of the model on the test data: 0.906658394345769
+
+
+Test time before: mean 0.006397477110000001, min 0.005006504, max 0.008148677
+Test time after: mean 0.02747866824, min 0.026527374, max 0.029380266999999998
+Time reduction: mean -0.02108119113, min -0.022967860000000003, max -0.019531483000000002
+Prediction time: mean 0.0002916468866169453, min 0.00028325989842414856, max 0.0003236010670661926
+Test iter before: mean 150.44, min 114, max 190
+Test iter after: mean 23.78, min 9.0, max 40.0
+Test iter reduction: mean 126.66, min 90.0, max 171.0
+
+--- Non-learned model ---
+Average solving time (s): 0.026436340749000004
+Average solving time (s): 151.922
+Average solving time (s): 0.026060700925500002
+Average solving time (s): 151.737
+Average solving time (s): 0.026475547985
+Average solving time (s): 151.6655
+
+--- GNN, variables [np.int64(190)], constraints [np.int64(760)] ---
+Using device: cuda:1
+banded
+(190, 190) (190,) (190, 7) (760, 190) (760,) (760, 7) (190, 7)
+condition number of H 355526.3652386265
+Done generating train data
+class weights:  [0.55542482 5.01061459]
+positive weight 0.09978815789473684
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Epoch 45
+Epoch 46
+Epoch 47
+Epoch 48
+Epoch 49
+Epoch 51
+Epoch 52
+Early stopping after 52 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9422078947368421
+Precision of the model on the test data: 0.6373908776279492
+Recall of the model on the test data: 0.9762193594324176
+F1-Score of the model on the test data: 0.7712312380261485
+VALIDATION
+Accuracy (node level) of the final model: 0.9396526315789474
+Precision of the model on the test data: 0.6262081595277151
+Recall of the model on the test data: 0.9765191178798579
+F1-Score of the model on the test data: 0.7630795885933754
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9247960526315789
+Precision of the model on the test data: 0.6263081247669501
+Recall of the model on the test data: 0.978983589200117
+F1-Score of the model on the test data: 0.7639052351360933
+
+Test time before: mean 0.029092998085, min 0.019136016999999998, max 0.037477738000000003
+Test time after: mean 0.02775999777, min 0.018479568999999998, max 0.032506453
+Test time reduction: mean 0.0013330003149999998, min -0.010734437, max 0.017775212000000006
+Prediction time: mean 0.001803513215854764, min 0.0011546798050403595, max 0.0019842050969600677
+Test iter before: mean 148.93, min 111, max 200
+Test iter before: quantiles [130.9  139.   149.5  157.25 167.  ]
+Test iter after: mean 76.5, min 50.0, max 115.0
+Test iter after: quantiles [62. 69. 75. 84. 92.]
+Test iter reduction: mean 72.43, min 27.0, max 120.0
+Test iter after: quantiles [ 41.95  48.    55.8   62.7   69.    74.    78.    81.3   88.    96.
+ 101.  ]
+
+Using device: cuda:1
+banded
+(190, 190) (190,) (190, 7) (760, 190) (760,) (760, 7) (190, 7)
+condition number of H 355526.3652386265
+Done generating train data
+class weights:  [0.55542482 5.01061459]
+positive weight 0.09978815789473684
+Epoch 1
+Epoch 2
+Epoch 3
+Epoch 4
+Epoch 5
+Epoch 6
+Epoch 7
+Epoch 8
+Epoch 9
+Epoch 11
+Epoch 12
+Epoch 13
+Epoch 14
+Epoch 15
+Epoch 16
+Epoch 17
+Epoch 18
+Epoch 19
+Epoch 21
+Epoch 22
+Epoch 23
+Epoch 24
+Epoch 25
+Epoch 26
+Epoch 27
+Epoch 28
+Epoch 29
+Epoch 31
+Epoch 32
+Epoch 33
+Epoch 34
+Epoch 35
+Epoch 36
+Epoch 37
+Epoch 38
+Epoch 39
+Epoch 41
+Epoch 42
+Epoch 43
+Epoch 44
+Early stopping after 44 epochs.
+TRAINING
+Accuracy (node level) of the final model: 0.9387138157894737
+Precision of the model on the test data: 0.6231342498495355
+Recall of the model on the test data: 0.9762852885717785
+F1-Score of the model on the test data: 0.7607219775871604
+VALIDATION
+Accuracy (node level) of the final model: 0.9401263157894737
+Precision of the model on the test data: 0.628888204496243
+Recall of the model on the test data: 0.9719181342212851
+F1-Score of the model on the test data: 0.7636499578321168
+Using device: cuda:1
+warm-up done
+TESTING
+Accuracy (node level) of the model on the test data: 0.9246776315789473
+Precision of the model on the test data: 0.6269751885599034
+Recall of the model on the test data: 0.9725251455791569
+F1-Score of the model on the test data: 0.7624245143341187
+
+Test time before: mean 0.02155515249, min 0.019356516, max 0.033196173
+Test time after: mean 0.027867791694999998, min 0.018392633, max 0.042112694
+Test time reduction: mean -0.006312639205000001, min -0.021063095999999996, max 0.012044205999999998
+Prediction time: mean 0.001825172109529376, min 0.0011632852256298065, max 0.00248691625893116
+Test iter before: mean 148.93, min 111, max 200
+Test iter before: quantiles [130.9  139.   149.5  157.25 167.  ]
+Test iter after: mean 76.655, min 50.0, max 126.0
+Test iter after: quantiles [63.   68.75 76.   83.   91.  ]
+Test iter reduction: mean 72.275, min 33.0, max 128.0
