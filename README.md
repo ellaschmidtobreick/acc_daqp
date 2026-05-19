@@ -8,7 +8,7 @@ This repository contains the code for the paper [Warm-starting active-set solver
 
 This repository contains implementations and experiments for learning-based warm-starting of active-set methods for quadratic programming (QP) problems using graph neural networks (GNNs).
 
-![Warm-starting pipeline](plots/flowchart.pdf)
+![Warm-starting pipeline](plots/flowchart.png)
 
 Quadratic programs are represented as graphs, where variables and constraints form nodes and the optimization structure is encoded through edges and node features. A GNN is trained to predict active-set related quantities that can be used to initialize the solver and improve optimization performance.
 
