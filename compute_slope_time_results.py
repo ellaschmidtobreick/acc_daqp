@@ -1,145 +1,106 @@
 import numpy as np
 import pickle
-import re
-from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-from utils import plot_scaling2 
 import matplotlib
 
 # Load data
-with open("./data/scaling_data_big_test.pkl", "rb") as f:
-    points_loaded, label_vector_loaded = pickle.load(f)
+with open(".\data\scaling_data_std_server_sparse.pkl", "rb") as f:
+    points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f)
 
-
-# points = np.array(points_loaded)
-# labels = np.array(label_vector_loaded)[:, 0]
-# lengths = np.unique(np.array(label_vector_loaded)[:, 1])[1:]
-# #length_vector =  np.unique(lengths)[1:]
-# model_types = np.unique(labels)
-
-# # Sum variables and constraints to get graph size
-# def sum_numbers(s):
-#     numbers = list(map(int, re.findall(r'\d+', s)))
-#     return sum(numbers)
-
-# graph_sizes = np.sort(np.array([sum_numbers(s) for s in lengths]))
-
-# def linear(x, a, b):
-#     return a*x + b
-
-# def exp_func(x, a, b):
-#     return a*np.exp(b*x.astype(np.float64))
-
-
-# fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
-# x_scaled = graph_sizes/ np.max(graph_sizes)  # scales x to [0, 1]
-# colors = ["blue", "orange"]
-
-# for ax, model in zip(axes, model_types):
-
-#     model_mask = labels == model
-#     model_points = points[model_mask]
-
-#     print(model)
-
-#     if len(model_types) == 1:
-#         axes = [axes]
-
-
-#     ax.set_title(model)
-#     ax.set_xlabel("Total graph size")
-
-#     # params_l, covariance_l = curve_fit(linear, x_scaled, model_points[:,0])
-#     # print("Fitted parameters (a, b):", params_l)
-#     params_e, covariance_e = curve_fit(exp_func, x_scaled, model_points[:,0])
-#     print("Parameters fitted to scaled x")
-#     print("Fitted exponential parameters for solving time (a, b):", params_e)
-
-#     ax.scatter(graph_sizes, model_points[:,0], label="Solving time", color =colors[1])
-#     ax.plot(graph_sizes, exp_func(x_scaled, *params_e), label="Fitted solving time", color="red")
-
-#     if model != "Non-learned":
-
-#         # Fit linear model
-#         params_pred_l, covariance_pred_l = curve_fit(linear, x_scaled, model_points[:,1])
-#         print("Fitted linear parameters for prediction time (a, b):", params_pred_l)
-#         # params_pred_e, covariance_pred_e = curve_fit(exp_func, x_scaled, model_points[:,1])
-#         # print("Fitted parameters (a, b):", params_pred_e)
-
-#         ax.scatter(graph_sizes, model_points[:,1], label="Prediction time",color =colors[0])
-#         ax.plot(graph_sizes, linear(x_scaled, *params_pred_l), label="Fitted prediction time", color="green")
-#     print()
-#     ax.legend()
-
-
-
-# axes[0].set_ylabel("Time (seconds)")
-# axes[0].legend(loc="upper left")
-
-# plt.tight_layout()
-# plt.savefig("./plots/scaling_plot_slopes.png")
-# plt.savefig("./plots/scaling_plot_slopes.pdf")
-# plt.show() 
-
-plt.rcParams.update({'font.size': 14})
+matplotlib.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman"],
+    "axes.labelsize": 22,
+    "font.size": 22,
+    "legend.fontsize": 18,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18    })
 
 points = np.array(points_loaded)
-labels = np.array(label_vector_loaded)[:, 0]
+labels = np.array(labels_loaded)[:, 0]
 
 model_types = np.unique(labels)
-colors = ["blue", "orange"]
+model_types = [model_types[i] for i in [1, 2, 0]]
+colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+#fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(5 * 2, 5), sharey=True)
 
-fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
 if len(model_types) == 1:
     axes = [axes]
 
 x = np.arange(0,201,10)[1:]*5
 
-for ax, model in zip(axes, model_types):
-    ax.set_title(model)
-    ax.set_xlabel("Total graph size")
-    ax.set_yscale("log")
-    ax.set_xscale("log")
-    ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+enum = ["(a)","(b)","(c)"]
+for i, model in enumerate(model_types):
+    #ax = axes[i]
+    model_description = model
+    model_description = model_description.replace("Non-learned","Cold-started")
 
-    # use ax, not plt
-    ax.set_yticks([1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2])
-    ax.grid(which="major", linestyle="-", linewidth=0.7)
-    ax.grid(which="minor", visible=False)
+    #ax.set_title(model)
 
     model_mask = labels == model
     model_points = points[model_mask]
+    x_points = np.arange(len(model_points)+1)[1:] * 50
 
-    ax.scatter(np.arange(len(model_points)) * 50, model_points[:, 0], color=colors[1], label="Solving Time")
-    if model != "Non-learned":
-        ax.scatter(np.arange(len(model_points)) * 50, model_points[:, 1], color=colors[0], label="Prediction Time")
-    if model =="GNN":
-        ax.plot(x,[0.001 for i in range(len(x))],color = "blue", label ="x^0")
-        ax.plot(x,0.00000001 * x**2,color = "yellow", label ="x^2")
-        ax.plot(x,0.0000000001 * x**3,color = "red", label ="x^3")
+    # ax.plot(x,model_points[0, 1]*(x/x_points[0]),color = "yellow", label ="$x^2$")
+    # ax.plot(x,[model_points[0, 1] for b in range(len(x))],color = "cyan", label ="$x$")
 
-    if model == "MLP":
-        ax.plot(x,[0.0001 for i in range(len(x))],color = "green", label ="x^0")
-        ax.plot(x,0.0000000001 * x**3,color = "red", label ="x^3")
-        ax.plot(x,0.00000001 * x**2,color = "yellow", label ="x^2")
+    #ax.plot(x,model_points[0, 0]*(x/x_points[0]),color = "red", label ="x^3")
+    #ax.plot(x,model_points[0, 0]*(x/x_points[0]),color = "orange", label ="x^2.5")
 
-    if model == "Non-learned":
-        ax.plot(x,0.00000001 * x**2,color = "yellow", label ="x^2")
-        ax.plot(x,0.0000000001 * x**3,color = "red", label ="x^3")
-        ax.plot(x,0.0000000001 * x**(2.5),color = "orange", label ="x^2.5")
-    # ax.plot(x,x**20,color = "red", label ="x^20")
-    # ax.plot(x,0.0001 * x,color = "purple", label ="x")
-    # ax.plot(x,0.0000001 * x**2,color = "yellow", label ="x^2")
-    # ax.plot(x,0.0001 * x**5,color = "orange", label ="x^4")
-    # ax.plot(x,0.0001 * x**3,color = "red", label ="x^3")
-    # ax.plot(x,0.001 * x**(1/2),color = "green", label ="x^(1/2)")
-    # ax.plot(x,0.0001 * x**(1/2),color = "green", label ="x^(1/2)")
-    # ax.plot(x,0.0001 * x**(1/3),color = "blue", label ="x^(1/3)")
-    # ax.plot(x,0.001 * x**(1/3),color = "blue", label ="x^(1/3)")
-axes[0].set_ylabel("Time (seconds)")
-axes[0].legend(loc="upper left")
+    # ax.plot(x, model_points[0, 0]*(x/x_points[0]),color = "green", label ="$x$")
+    # ax.plot(x, model_points[0, 0]*(x/x_points[0])**2,color = "orange", label ="$x^2$")
+    # ax.plot(x,model_points[0, 0]*(x/x_points[0])**3,color = "blue", label ="$x^3$")
+    # ax.plot(x,model_points[0, 0]*(x/x_points[0])**2.5,color = "pink", label ="$x^2.5$")
+
+    if i == 0:
+        axes[0].set_ylabel("Time (seconds)")
+        axes[0].text(0.5,-0.35, f"{enum[0]} Solve Time",ha="center", transform=axes[0].transAxes)          
+        axes[1].text(0.5,-0.35, f"{enum[1]} Prediction Time",ha="center", transform=axes[1].transAxes)
+
+    for j,ax in enumerate(axes):
+        if j==0:
+            # Solve time
+            axes[j].plot(x_points, model_points[:, 0], color=colors[0+i], label="Solve Time")
+            axes[j].fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[3+i], alpha=0.3)
+
+
+        if j==1:
+            # Prediction time 
+            if model != "Cold-started":
+                axes[j].plot(x_points, model_points[:, 1],'--', color=colors[0+i], label="Prediction Time")
+                axes[j].fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3],color=colors[3+i], alpha=0.3)
+            
+
+
+        axes[j].set_xlabel("Total graph size")
+        axes[j].set_yscale("log")
+        #axes[j].set_xscale("log")
+
+        axes[j].set_yticks([ 1e-5, 1e-4, 1e-3, 1e-2,1e-1])
+        axes[j].set_xlim(0,1000)
+
+        axes[j].yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+        axes[j].grid(which="major", linestyle="-", linewidth=0.7)
+        axes[j].grid(which="minor", visible=False)
 
 plt.tight_layout()
-plt.savefig("./plots/scaling_plot_slopes_log_log_server.png")
-plt.savefig("./plots/scaling_plot_slopes_log_log_server.pdf")
-plt.show() 
+
+# Add shared legend above the plots
+legend_elements = [
+    matplotlib.lines.Line2D([0], [0], color=colors[0], label='Graph Neural Network'),
+    matplotlib.lines.Line2D([0], [0], color=colors[1], label='Multilayer Perceptron'),
+    matplotlib.lines.Line2D([0], [0], color=colors[2], label='Cold-started'),
+
+]
+fig.legend(handles=legend_elements, loc='upper center', ncol=3,
+           bbox_to_anchor=(0.51, 1.06), fontsize=18, framealpha=0.8)
+
+plt.savefig("./plots/scaling_plot_std_log_camera_ready.pdf", bbox_inches='tight')
+plt.savefig("./plots/scaling_plot_std_log_camera_ready.png", bbox_inches='tight')
+plt.show()
+# plt.savefig("./plots/scaling_plot_slopes_time_log_log_server1.pdf")
+# plt.savefig("./plots/scaling_plot_slopes_time_log_log_server1.png")
+plt.show()
+

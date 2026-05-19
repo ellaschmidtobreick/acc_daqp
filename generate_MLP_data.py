@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import TensorDataset
 import os
       
-               
+# Generate data for the MLP model               
 def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A_flexible = False,dataset_type="standard",sparsity = "dense"):
 
     #spit generated problems into train, test, val
@@ -21,8 +21,7 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
     if dataset_type == "standard":
         # Generate general matrices
         if sparsity == "dense":
-            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)# generate_qp_block_sparse(n, m, num_blocks=4, inter_block_prob=0.05, given_seed=seed, nth=nth)#generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
-        elif sparsity =="banded":
+            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
             H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
         else:
             print("This sparsity pattern does not exist.")
@@ -31,10 +30,10 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
         # Load given lmpc data
         data = np.load(f'data/mpc_mpqp_N{n}.npz')
         H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
+
         # dimension reduction for daqp solver
         f = f.squeeze()
         b = b.squeeze()
-
 
     # Generate training data
     x_train = np.zeros((iter_train,n*n+m*n+n+m))
@@ -59,7 +58,6 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
     
         # save data
         x_train[i,:] = torch.cat([torch.tensor(H.flatten(), dtype=torch.float32),torch.tensor(A.flatten(), dtype=torch.float32),torch.tensor(ftot, dtype=torch.float32),torch.tensor(btot, dtype=torch.float32)], dim=0)
-        #y_train[i,:] = (lambda_train != 0).astype(int)
         train_active_set = (lambda_train != 0).astype(int)
         y_train[i,:] = torch.tensor((np.hstack((np.zeros((n)),train_active_set)))) 
 
@@ -91,10 +89,8 @@ def generate_qp_MLP_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False, A
     
         # save data
         x_val[i,:] = torch.cat([torch.tensor(H.flatten(), dtype=torch.float32),torch.tensor(A.flatten(), dtype=torch.float32),torch.tensor(ftot, dtype=torch.float32),torch.tensor(btot, dtype=torch.float32)], dim=0)
-        #y_val[i,:] = (lambda_val != 0).astype(int)
         val_active_set = (lambda_val != 0).astype(int)
         y_val[i,:] = torch.tensor((np.hstack((np.zeros((n)),val_active_set)))) 
-        #print(y_val[i,:])
         
     x_val = torch.tensor(x_val, dtype=torch.float32)
     y_val = torch.tensor(y_val, dtype=torch.long)
@@ -119,7 +115,7 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
             T = data["T"]
         else:
             if sparsity == "dense":
-                H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) # generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#generate_qp(n,m,seed,nth)
+                H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
             elif sparsity == "banded":
                 H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
             print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
@@ -127,6 +123,7 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
         # Load given lmpc data
         data = np.load(f'data/mpc_mpqp_N{n}.npz')
         H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
+
         # dimension reduction for daqp solver
         f = f.squeeze()
         b = b.squeeze()
@@ -137,7 +134,6 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
     # Generate test set
     np.random.seed(seed+2)
     x_test = np.zeros((iter_test,n))
-    #lambda_test = np.zeros((iter_test,m))
     test_iterations = []
     test_time = []
     f_test = []
@@ -146,8 +142,6 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
     A_test = []
     blower_test = []
     sense_test = []
-    # Generate the graph from the training data
-    graph_test = []
     
     # Generate test set
     x_test = np.zeros((iter_test,n*n+m*n+n+m))
@@ -183,8 +177,6 @@ def generate_MLP_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible = False
         x_test[i,:] = torch.cat([torch.tensor(H.flatten(), dtype=torch.float32),torch.tensor(A.flatten(), dtype=torch.float32),torch.tensor(ftot, dtype=torch.float32),torch.tensor(btot, dtype=torch.float32)], dim=0)
         test_active_set = (lambda_test != 0).astype(int)
         y_test[i,:] = torch.tensor((np.hstack((np.zeros((n)),test_active_set)))) 
-        #print(y_test[i,:])
-        #y_test[i,:] = (lambda_test[i,:] != 0).astype(int)
     
     x_test = torch.tensor(x_test, dtype=torch.float32)
     y_test = torch.tensor(y_test, dtype=torch.long)

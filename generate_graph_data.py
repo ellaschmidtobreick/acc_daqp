@@ -24,7 +24,7 @@ def generate_qp_graphs_train_val(n,m,nth,seed,number_of_graphs, H_flexible=False
     np.random.seed(seed)
     print(sparsity)
     if sparsity =="dense":
-        H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) #generate_sparse_qp(n, m, seed, density=0.1, nth=nth)# #generate_qp(n,m,seed,nth)
+        H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
     elif sparsity =="banded":
         H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
     else:
@@ -178,7 +178,7 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         T = data["T"]
     else:
         if sparsity =="dense":
-            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth) #generate_banded_qp(n, m, seed, bandwidth=10, nth = nth) #generate_sparse_qp(n, m, seed, density=0.1, nth=nth)#generate_qp(n,m,seed,nth)
+            H,f,F,A,b,B,T = generate_qp(n,m,seed,nth)
         elif sparsity =="banded":
             H,f,F,A,b,B,T = generate_banded_qp(n, m, seed, bandwidth=10, nth = nth)
         print(H.shape, f.shape,F.shape,A.shape,b.shape,B.shape)
@@ -233,7 +233,6 @@ def generate_qp_graphs_test_data_only(n,m,nth,seed,number_of_graphs,H_flexible =
         # graph structure does not change, only vertex features
         #combine H and A
         edge_matrix = np.block([[H,A.T],[A,np.zeros((np.shape(A)[0],np.shape(A)[0]))]])
-        #print("edge matrix shape",edge_matrix.shape)
 
         # create edge_index and edge_attributes
         edge_index = torch.tensor([])
@@ -273,11 +272,6 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, scale=0.01,
     data = np.load(f'data/mpc_mpqp_N{n}_R_00001.npz') #test #_more_constraints
 
     H,f,F,A,b,B = data["H"], data["f"], data["f_theta"], data["A"], data["b"], data["W"]
-    
-    # indices = np.random.permutation(len(b))
-    # A = A[indices]
-    # b = b[indices]
-    # B = B[indices]
 
     # Scale objective function
     H = H*scale
@@ -318,13 +312,9 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, scale=0.01,
 
     # Create training data
     for i in range(iter_train):
-        #print()
         theta = np.random.randn(nth)
-        # print("training", theta)
         btot = b + B @ theta
-        ftot = f + F @ theta
-        # print("btot train",btot)
-        # print("ftof train",ftot)        
+        ftot = f + F @ theta   
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -382,12 +372,6 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, scale=0.01,
         data_point = Data(x= x_train, edge_index=edge_index, edge_attr=edge_attr,y=y_train[i,:])
         graph_train.append(data_point)
 
-        #print("x_train shape",x_train.shape)
-        #print("features shape",features.shape)
-        # print("y_train.shape",y_train[i,:].shape)
-        #print(data_point)
-        # list of graph elements
-
     ###############
     # VALIDATION
     ###############
@@ -406,12 +390,9 @@ def generate_qp_graphs_train_val_lmpc(n,m,nth,seed,number_of_graphs, scale=0.01,
     # Create training data
     for i in range(iter_val):
         theta = np.random.randn(nth)
-        # print("validation", theta)
         btot = b + B @ theta
         ftot = f + F @ theta
-        
-        # print("btot val",btot)
-        # print("ftof val",ftot)
+
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -510,11 +491,8 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
     # Create test data    
     for i in range(iter_test):
         theta = np.random.randn(nth)
-        # print("test",theta)
         btot = b + B @ theta
         ftot = f + F @ theta
-        # print("btot test",btot)
-        # print("ftof test",ftot)
         if two_sided == True:
             bupper = btot[:m_half]
             blower = btot[m_half:]*(-1)
@@ -541,12 +519,6 @@ def generate_qp_graphs_test_data_only_lmpc(n,m,nth,seed,number_of_graphs,H_flexi
         test_time.append(list(info.values())[0]+list(info.values())[1])
         test_active_set = (lambda_test != 0).astype(int)
         y_test = torch.tensor((np.hstack((np.zeros((iter_test,n)),test_active_set))))
-
-        # print("lambda_test",lambda_test[i,:])
-        # print("y_test",y_test[i,:])
-        # print(np.where(lambda_test[i,:] !=0)[0])
-        # print(np.where(lambda_test[i,:] !=0)[0] +50)
-        # print(np.where(y_test[i,:] != 0)[0])
 
         # edge adjacency matrix
         if two_sided == True:

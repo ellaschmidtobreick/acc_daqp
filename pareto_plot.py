@@ -7,22 +7,22 @@ import daqp
 from generate_mpqp_v2 import generate_qp
 
 # Parameters
-n = [200] #[250]
-m = [800] #[1000]
+n = [200]
+m = [800]
 nth = 7
 seed = 123
-data_points = 20#00 #5000
+data_points = 2000
 lr = 0.001
 number_of_max_epochs = 100
-layer_width = 128 # vary
-number_of_layers = 3     # vary
+layer_width = 128 
+number_of_layers = 3
 track_on_wandb = False #True
-t = 0.9 #0.6 # vary
+t = 0.9
 A_flexible = False
 H_flexible = False
 
 conv_types = ["GAT", "LEConv"]
-layer_width = [64, 128] #,256]
+layer_width = [64, 128]
 number_of_layers = [3, 4,5]
 
 
@@ -104,4 +104,5 @@ with open("./data/pareto_data_200_800.pkl", "wb") as f:
 with open("./data/pareto_data_200_800.pkl", "rb") as f:
     points_loaded, label_vector_loaded = pickle.load(f)
 
+# Plot pareto front
 plot_pareto(points_loaded, label_vector_loaded,"plots/pareto_plot_200_800.pdf")

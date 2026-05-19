@@ -6,9 +6,8 @@ import matplotlib.pyplot as plt
 import matplotlib
 
 # Load data
-with open("./data/scaling_data_std.pkl", "rb") as f:
-    points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f) # ,iterations_after_loaded
-
+with open(".\data\scaling_data_std_server_sparse.pkl", "rb") as f:
+    points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f)
 
 matplotlib.rcParams.update({
     "text.usetex": True,
@@ -52,16 +51,16 @@ for i, model in enumerate(model_types):
     ax.fill_between(x_points, model_iterations[:, 0] - model_iterations[:, 1], model_iterations[:, 0] + model_iterations[:, 1], color=colors[i+3], alpha=0.3)
     
 
-    ax.plot(x, x,color = "green", label ="x")
-    ax.plot(x, 0.01*x**2,color = "orange", label ="x^2")
-    ax.plot(x,x**0.5,color = "red", label ="x^1/2")
-    ax.plot(x,x**0.66,color = "pink", label ="x^2/3")
+    ax.plot(x, model_iterations[0, 0]*(x/x_points[0]),color = "green", label ="x")
+    ax.plot(x, model_iterations[0, 0]*(x/x_points[0])**2,color = "orange", label ="x^2")
+    ax.plot(x,model_iterations[0, 0]*(x/x_points[0])**0.5,color = "red", label ="x^1/2")
+    ax.plot(x,model_iterations[0, 0]*(x/x_points[0])**0.66,color = "pink", label ="x^2/3")
 
 
 
 
 
 plt.tight_layout()
-plt.savefig("./plots/scaling_plot_slopes_iter_log_log_server.png")
-plt.savefig("./plots/scaling_plot_slopes_iter_log_log_server.pdf")
+plt.savefig("./plots/scaling_plot_slopes_iter_log_log_server1.png")
+plt.savefig("./plots/scaling_plot_slopes_iter_log_log_server1.pdf")
 plt.show() 

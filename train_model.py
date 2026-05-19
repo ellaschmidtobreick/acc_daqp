@@ -52,9 +52,9 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
     # Compute class weights for imbalanced classes
     all_labels = torch.cat([data.y for data in graph_train]).to(device)
     unique_classes = torch.unique(all_labels)
-    class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy()) # torch.unique(all_labels).numpy()
+    class_weights_np = compute_class_weight('balanced', classes=unique_classes.cpu().numpy(), y=all_labels.cpu().numpy())
     #class_weights_np[1] = class_weights_np[1]*0.5
-    class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device) # torch.tensor(class_weights, dtype=torch.float32).to(device)
+    class_weights = torch.tensor(class_weights_np, dtype=torch.float32, device=device)
     print("class weights: ", class_weights_np)
 
     # Instantiate model and optimizer
@@ -62,7 +62,7 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         input_size = 4
     else : 
         input_size = 6
-    model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type = conv_type) #Input dimensions: # features 4 # Output dimension 1 for binary classification
+    model = GNN(input_dim=input_size, output_dim=1,layer_width = layer_width,conv_type = conv_type) #Input dimensions: number of features; Output dimension=1 for binary classification
     p_pos = (all_labels.sum() / len(all_labels)).item()
     print("positive weight", p_pos)
     model.init_weights(p_pos)
@@ -162,12 +162,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_num_wrong_nodes = 0
         val_total_nodes = 0
 
-        # best_f1 = 0.0
-        # best_threshold = 0.0
-        # thresholds = np.linspace(0, 1, 11)        
-        # for t in thresholds:
-        #     val_correct = val_total = val_TP = val_FP = val_FN = 0
-
         with torch.no_grad():
             for i,batch in enumerate(val_loader):
                 batch = batch.to(device)
@@ -203,12 +197,6 @@ def train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,num
         val_prec = val_TP / (val_TP + val_FP + 1e-8)
         val_rec = val_TP / (val_TP + val_FN + 1e-8)
         val_f1 = 2 * val_prec * val_rec / (val_prec + val_rec + 1e-8)
-
-        #     if val_f1 > best_f1:
-        #         best_f1 = val_f1
-        #         best_threshold = t
-
-        # print(f"Best threshold: {best_threshold:.2f}, F1: {best_f1:.4f}")
 
         # Log metrics to wandb.
         if track_on_wandb == True:

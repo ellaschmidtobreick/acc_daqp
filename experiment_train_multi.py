@@ -50,41 +50,39 @@ m_test = [200] #[400]
 print("---- GNN ----")
 total_start_time = time.time()
 test_time_before_vector,test_time_after_vector,test_iterations_before_vector, test_iterations_after_vector, test_iterations_difference_vector = [], [], [],[], []
-for i in range(runs):
-    # Train
-    train_time_start = time.time()
-    train_GNN(n_train,m_train,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,dataset_type="standard",cuda = cuda)
+# for i in range(runs):
+#     # Train
+#     train_time_start = time.time()
+#     train_GNN(n_train,m_train,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,dataset_type="standard",cuda = cuda)
 
+#     #train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,scale_H=scale,dataset_type="lmpc",cuda = cuda)
+#     train_time_end = time.time()
+#     print(f"Training time: {train_time_end - train_time_start} seconds")
+#     # Test
+#     print("--- Testing on larger problem ---")
+#     _,test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference = test_GNN(n_test,m_test,nth,seed, data_points,layer_width,number_of_layers,t, False,False,model_name,dataset_type="standard",cuda = cuda)
+#     test_time_before_vector.append(test_time_before)
+#     test_time_after_vector.append(test_time_after)
+#     test_iterations_before_vector.append(test_iterations_before)
+#     test_iterations_after_vector.append(test_iterations_after)
+#     test_iterations_difference_vector.append(test_iterations_difference)
 
+# test_time_before_vector = np.stack(test_time_before_vector)
+# test_time_after_vector = np.stack(test_time_after_vector)
+# test_iterations_before_vector = np.stack(test_iterations_before_vector)
+# test_iterations_after_vector = np.stack(test_iterations_after_vector)
+# test_iterations_difference = np.stack(test_iterations_difference_vector)
 
-    #train_GNN(n,m,nth,seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,model_name,scale_H=scale,dataset_type="lmpc",cuda = cuda)
-    train_time_end = time.time()
-    print(f"Training time: {train_time_end - train_time_start} seconds")
-    # Test
-    print("--- Testing on larger problem ---")
-    _,test_time_before, test_time_after, test_iterations_before,test_iterations_after, test_iterations_difference = test_GNN(n_test,m_test,nth,seed, data_points,layer_width,number_of_layers,t, False,False,model_name,dataset_type="standard",cuda = cuda)
-    test_time_before_vector.append(test_time_before)
-    test_time_after_vector.append(test_time_after)
-    test_iterations_before_vector.append(test_iterations_before)
-    test_iterations_after_vector.append(test_iterations_after)
-    test_iterations_difference_vector.append(test_iterations_difference)
+# # Compute average (elementwise mean across runs)
+# test_time_before_avg = test_time_before_vector.mean(axis=0)
+# test_time_after_avg = test_time_after_vector.mean(axis=0)
+# test_iterations_before_avg = test_iterations_before_vector.mean(axis=0)
+# test_iterations_after_avg = test_iterations_after_vector.mean(axis=0)
+# test_iterations_diff_avg = test_iterations_difference.mean(axis=0)
 
-test_time_before_vector = np.stack(test_time_before_vector)
-test_time_after_vector = np.stack(test_time_after_vector)
-test_iterations_before_vector = np.stack(test_iterations_before_vector)
-test_iterations_after_vector = np.stack(test_iterations_after_vector)
-test_iterations_difference = np.stack(test_iterations_difference_vector)
-
-# Compute average (elementwise mean across runs)
-test_time_before_avg = test_time_before_vector.mean(axis=0)
-test_time_after_avg = test_time_after_vector.mean(axis=0)
-test_iterations_before_avg = test_iterations_before_vector.mean(axis=0)
-test_iterations_after_avg = test_iterations_after_vector.mean(axis=0)
-test_iterations_diff_avg = test_iterations_difference.mean(axis=0)
-
-# Save data 
-with open(f"data/multi_experiment_{n_train}v_{m_train}c_test_{n_test}v_{m_test}c.pkl", "wb") as f:
-    pickle.dump((f"layer width: {layer_width}, data points: {data_points}, t: {t}", test_time_before_avg,test_time_after_avg,test_iterations_before_avg,test_iterations_after_avg,test_iterations_diff_avg), f)
+# # Save data 
+# with open(f"data/multi_experiment_{n_train}v_{m_train}c_test_{n_test}v_{m_test}c.pkl", "wb") as f:
+#     pickle.dump((f"layer width: {layer_width}, data points: {data_points}, t: {t}", test_time_before_avg,test_time_after_avg,test_iterations_before_avg,test_iterations_after_avg,test_iterations_diff_avg), f)
 
 
 
@@ -101,10 +99,10 @@ print(f'Test iter reduction: mean {np.mean(test_iterations_diff_avg)}, min {np.m
 print(f"Test iter after: quantiles {np.percentile(test_iterations_diff_avg, [5,10,20,30,40, 50, 60,70,80,90,95])}")
 
 # Plot average results
-#histogram_time(test_time_before_avg, test_time_after_avg, f"{model_name}_test", save=True)
+histogram_time(test_time_before_avg, test_time_after_avg, f"{model_name}_test", save=True)
 # barplot_iter_reduction(test_iterations_diff_avg, model_name, save=True)
 #barplot_iterations(test_iterations_before_avg, test_iterations_after_avg, model_name, save=True)
-#histogram_iterations(test_iterations_before_avg, test_iterations_after_avg, f"{model_name}_test", save=True)
+histogram_iterations(test_iterations_before_avg, test_iterations_after_avg, f"{model_name}_test", save=True)
 total_end_time = time.time()
 # print(f"Training time: {total_end_time-total_start_time} seconds")
 

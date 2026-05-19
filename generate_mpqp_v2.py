@@ -62,7 +62,7 @@ def generate_rhs(f,F,b,B,nth,given_seed):
     ftot = f + F @ theta
     return ftot,btot
 
-## Try this out
+# Sparsity pattern: banded
 def banded_matrix(n, bandwidth):
     M = np.zeros((n, n))
     for i in range(n):
@@ -70,6 +70,7 @@ def banded_matrix(n, bandwidth):
             M[i, j] = np.random.randn()
     return M
 
+# Create QP with M, A being banded matrices
 def generate_banded_qp(n, m, given_seed, bandwidth=3, nth=2):
     np.random.seed(given_seed)
 
@@ -87,6 +88,7 @@ def generate_banded_qp(n, m, given_seed, bandwidth=3, nth=2):
     B = A @ (-T)
     return H, f, F, A, b, B, T
 
+# Create matrix with random sparsity pattern
 def generate_sparse_qp(n, m, given_seed, density=0.1, nth=2):
     np.random.seed(given_seed)
 
@@ -97,7 +99,7 @@ def generate_sparse_qp(n, m, given_seed, density=0.1, nth=2):
     F = np.random.randn(n, nth)
 
     # Constraints with sparsity
-    mask = np.random.rand(m, n) < density   # keep ~density fraction of entries
+    mask = np.random.rand(m, n) < density
     A = np.random.randn(m, n) * mask
     b = np.random.rand(m)
 

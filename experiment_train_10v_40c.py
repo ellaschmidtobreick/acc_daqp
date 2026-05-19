@@ -17,8 +17,8 @@ runs = 5
 layer_width = 128
 data_points = 2000
 t = 0.8 # threshold 
-# to get the final results on an average of 5 runs
 
+# to get the final results on an average of 5 runs
 train_acc_vector , train_prec_vector, train_recall_vector, train_f1_vector = [], [], [], []
 test_acc_vector , test_prec_vector, test_recall_vector, test_f1_vector= [], [], [], []
 

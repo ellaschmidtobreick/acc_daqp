@@ -3,7 +3,7 @@ import torch_geometric.nn as pyg_nn
 from train_model import train_GNN, train_MLP
 from test_model import test_GNN, test_MLP
 import numpy as np
-from utils import plot_scaling,plot_scaling_iterations
+from utils import plot_scaling,plot_scaling_iterations,plot_scaling_one_plot
 import matplotlib.pyplot as plt
 import pickle
 import daqp
@@ -12,8 +12,8 @@ import time
 import torch
 
 # Parameters
-n = np.arange(0,501,10)[1:]
-m = np.arange(0,501,10)[1:]*4
+n = np.arange(0,201,10)[1:]
+m = np.arange(0,201,10)[1:]*4
 
 nth = 7
 seed = 123
@@ -23,21 +23,24 @@ number_of_max_epochs = 100
 layer_width = 128
 number_of_layers = 3
 track_on_wandb = False #True
-t =  0.6 #0.9 
+t =  0.6  
 A_flexible = False
 H_flexible = False
 conv_type = "LEConv"
-num_runs = 3 #5
+num_runs = 3
 sparsity = "banded"
-cuda = 1
 relu_slope = 0.1
+cuda = 1
 
 torch.cuda.empty_cache()
 start_time = time.time()
+
 # Run experiments
 prediction_time_mean, solving_time_mean, label_vector, iterations_after_mean = [], [], [], []
 prediction_time_std, solving_time_std, iterations_after_std = [], [], []
 print("cuda",cuda)
+train_GNN(n,m,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling_GNN",dataset_type="standard", conv_type=conv_type,cuda = cuda, sparsity =sparsity,relu_slope = relu_slope)
+
 for n_i,m_i in zip(n,m):
     n_i= [n_i]
     m_i= [m_i]
@@ -48,7 +51,7 @@ for n_i,m_i in zip(n,m):
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
         train_GNN(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard", conv_type=conv_type,cuda = cuda, sparsity =sparsity,relu_slope = relu_slope)
-        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",conv_type=conv_type,cuda = cuda,sparsity =sparsity,relu_slope = relu_slope) 
+        prediction_time,_, test_time_after,_, iterations_after,_ = test_GNN(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling_GNN",dataset_type="standard",conv_type=conv_type,cuda = cuda,sparsity =sparsity,relu_slope = relu_slope) 
         prediction_time_vector.append(prediction_time)
         solving_time_vector.append(test_time_after)
         iterations_after_vector.append(iterations_after)
@@ -68,8 +71,8 @@ for n_i,m_i in zip(n,m):
     print(f"--- MLP, variables {n_i}, constraints {m_i} ---")
     prediction_time_vector, solving_time_vector, iterations_after_vector = [], [], []
     for i in range(num_runs):
-        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope =relu_slope)
-        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope = relu_slope)
+        train_MLP(n_i,m_i,nth, seed, data_points,lr,number_of_max_epochs,layer_width,number_of_layers, track_on_wandb,t, False,False,"model_scaling_MLP",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope =relu_slope)
+        prediction_time, test_time_after, iterations_after = test_MLP(n_i,m_i,nth, seed, data_points,layer_width,number_of_layers,t, False,False,"model_scaling_MLP",dataset_type="standard",cuda = cuda,sparsity =sparsity,relu_slope = relu_slope)
         prediction_time_vector.append(np.mean(prediction_time))
         solving_time_vector.append(np.mean(test_time_after))
         iterations_after_vector.append(np.mean(iterations_after))
@@ -94,7 +97,8 @@ for n_i,m_i in zip(n,m):
 
     n_i = n_i[0]
     m_i = m_i[0]
-
+    
+    # Data generation
     if sparsity == "dense":
         H,f,F,A,b,B,T = generate_qp(n_i,m_i,seed,nth)
     elif sparsity =="banded":
@@ -129,6 +133,7 @@ for n_i,m_i in zip(n,m):
                 M = np.random.randn(n,n)
                 H = M @ M.T 
 
+            # Solve
             _,_,_,info = daqp.solve(H,ftot,A,btot,blower,sense)
             daqp_time[j]= list(info.values())[0]+ list(info.values())[1]
             daqp_iterations[j] = list(info.values())[2]
@@ -155,18 +160,18 @@ for n_i,m_i in zip(n,m):
     # Save data 
     points = list(zip(solving_time_mean,prediction_time_mean, solving_time_std,prediction_time_std))
     iterations = list(zip(iterations_after_mean,iterations_after_std))
-    # print("final list of iterations",iterations)
-    # print("final solving time",solving_time_mean)
-    with open("./data/scaling_data_std_server_sparse1.pkl", "wb") as f:
+    with open("./data/scaling_data_std_one_GNN.pkl", "wb") as f:
         pickle.dump((points, label_vector,iterations), f)
 
 end_time = time.time()
 print("Total time for experiments(s):", end_time - start_time)
 
-# # Load data
-# with open("./data/scaling_data_std_server_sparse.pkl", "rb") as f:
-#     points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f) # ,iterations_after_loaded
+# Load data
+with open("./data/scaling_data_std_one_GNN.pkl", "rb") as f:
+    points_loaded, labels_loaded,iterations_after_loaded = pickle.load(f)
 
-# plot_scaling(points_loaded, labels_loaded,"plots/scaling_plot_std_test")
-# plot_scaling_iterations(iterations_after_loaded, labels_loaded,"plots/scaling_plot_iterations_std_test")
-# print("Done")
+plot_scaling(points_loaded, labels_loaded,"plots/scaling_plot_std_test1")
+plot_scaling_one_plot(points_loaded, labels_loaded,"plots/scaling_plot_std_log_log_one_plot")
+
+plot_scaling_iterations(iterations_after_loaded, labels_loaded,"plots/scaling_plot_iterations_std_test1")
+print("Done")

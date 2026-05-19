@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from collections import Counter
 import numpy as np
-from matplotlib.ticker import ScalarFormatter
+from matplotlib.ticker import ScalarFormatter, MaxNLocator, MultipleLocator
 import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 import matplotlib
@@ -28,11 +28,11 @@ def barplot_iterations(iterations_before, iterations_after, model_name, save):
     "text.usetex": True,
     "font.family": "serif",
     "font.serif": ["Computer Modern Roman"],
-    "axes.labelsize": 22,
-    "font.size": 22,
-    "legend.fontsize": 18,
-    "xtick.labelsize": 18,
-    "ytick.labelsize": 18})
+    "axes.labelsize": 26,
+    "font.size": 26,
+    "legend.fontsize": 26,
+    "xtick.labelsize": 22,
+    "ytick.labelsize": 22})
     
     # cmap = plt.get_cmap("viridis")
     # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
@@ -101,11 +101,11 @@ def barplot_iter_reduction(iterations_reduction, model_name, save):
     "text.usetex": True,
     "font.family": "serif",
     "font.serif": ["Computer Modern Roman"],
-    "axes.labelsize": 22,
-    "font.size": 22,
-    "legend.fontsize": 18,
-    "xtick.labelsize": 18,
-    "ytick.labelsize": 18    })
+    "axes.labelsize": 26,
+    "font.size": 26,
+    "legend.fontsize": 26,
+    "xtick.labelsize": 22,
+    "ytick.labelsize": 22    })
 
     # Count occurrences of each iteration count
     red_counts = Counter(iterations_reduction)
@@ -135,99 +135,224 @@ def barplot_iter_reduction(iterations_reduction, model_name, save):
         plt.savefig(f"plots/bar_it_red_{model_name}.pdf")
     plt.show()
 
-def histogram_time(time_before, time_after, model_name,save):
-    matplotlib.rcParams.update({
-    "text.usetex": True,
-    "font.family": "serif",
-    "font.serif": ["Computer Modern Roman"],
-    "axes.labelsize": 22,
-    "font.size": 22,
-    "legend.fontsize": 18,
-    "xtick.labelsize": 18,
-    "ytick.labelsize": 18    })
-    # cmap = plt.get_cmap("viridis")
-    # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
+# def histogram_time(time_before, time_after, model_name,save):
+#     matplotlib.rcParams.update({
+#     "text.usetex": True,
+#     "font.family": "serif",
+#     "font.serif": ["Computer Modern Roman"],
+#     "axes.labelsize": 26,
+#     "font.size": 26,
+#     "legend.fontsize": 26,
+#     "xtick.labelsize": 22,
+#     "ytick.labelsize": 22    })
+#     # cmap = plt.get_cmap("viridis")
+#     # colors = [cmap(i) for i in np.linspace(0, 1, 4)]
 
-    max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
-    min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
-    print(f"max val: {max_val}, min val: {min_val}") # max = 0.003 for 50v
-    plt.hist(time_before, bins=30,range=(0.000007,0.00003),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
-    plt.hist(time_after, bins=30,range=(0.000007,0.00003),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
+#     max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001 # 10v40c: 0.00005 #25v100c: 0.0003
+#     min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
+#     print(f"max val: {max_val}, min val: {min_val}") # max =  for 50v #0.000007,0.00003
+#     plt.hist(time_before, bins=30,range=(0.004,0.008),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+#     plt.hist(time_after, bins=30,range=(0.004,0.008),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
 
-    # Calculate quartiles
-    q2_bef = np.percentile(time_before, 50)
-    q2_aft = np.percentile(time_after, 50)
-    q3_bef = np.percentile(time_before, 90)
-    q3_aft = np.percentile(time_after, 90)
+#     # Calculate quartiles
+#     q2_bef = np.percentile(time_before, 50)
+#     q2_aft = np.percentile(time_after, 50)
+#     q3_bef = np.percentile(time_before, 90)
+#     q3_aft = np.percentile(time_after, 90)
 
-    # Quartiles and percentiles
-    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
-    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+#     # Quartiles and percentiles
+#     plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+#     plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
   
-    plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
-    plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
+#     #plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
+#     #plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
   
-    plt.xlabel('Time in seconds')
-    plt.ylabel('Frequency')
-    plt.ylim(0, 40)
-    #plt.title('Histogram of Time without GNN vs with GNN')
-    plt.legend()
+#     plt.xlabel('Time in seconds')
+#     plt.ylabel('Frequency')
+#     plt.ylim(0, 40)
+#     #plt.title('Histogram of Time without GNN vs with GNN')
+#     plt.legend()
     
-    formatter = ScalarFormatter(useMathText=True)
-    formatter.set_scientific(True)
-    formatter.set_powerlimits((-3, 3))
-    plt.gca().xaxis.set_major_formatter(formatter)
-    plt.tight_layout()
+#     formatter = ScalarFormatter(useMathText=True)
+#     formatter.set_scientific(True)
+#     formatter.set_powerlimits((-3, 3))
+#     plt.gca().xaxis.set_major_formatter(formatter)
+#     plt.tight_layout()
 
-    if save == True:
-        plt.savefig(f"plots/histo_time_{model_name}.pdf")
-    plt.show()
+#     if save == True:
+#         plt.savefig(f"plots/histo_time_{model_name}.pdf")
+#     plt.show()
 
-def histogram_iterations(iterations_before, iterations_after, model_name, save):
+# def histogram_iterations(iterations_before, iterations_after, model_name, save):
+#     matplotlib.rcParams.update({
+#     "text.usetex": True,
+#     "font.family": "serif",
+#     "font.serif": ["Computer Modern Roman"],
+#     "axes.labelsize": 26,
+#     "font.size": 26,
+#     "legend.fontsize": 26,
+#     "xtick.labelsize": 22,
+#     "ytick.labelsize": 22    })
+
+#     max_val = np.max([np.max(iterations_before), np.max(iterations_after)]) + 2
+#     min_val = np.min([np.min(iterations_before), np.min(iterations_after)])
+#     print(f"max val: {max_val}, min val: {min_val}")
+#     plt.hist(iterations_before, bins=19,range=(min_val,max_val),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
+#     plt.hist(iterations_after, bins=19,range=(min_val,max_val),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
+
+#     # Calculate quartiles
+#     q2_bef = np.mean(iterations_before)
+#     q2_aft = np.mean(iterations_after)
+#     q3_bef = np.percentile(iterations_before, 90)
+#     q3_aft = np.percentile(iterations_after, 90)
+
+#     # Quartiles and percentiles
+#     plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
+#     plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
+#     #plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
+#     #plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
+
+#     plt.xlabel('Number of iterations')
+#     plt.ylabel('Frequency')
+#     plt.ylim(0, 40)
+#     #plt.title('Histogram of Time without GNN vs with GNN')
+#     plt.legend()
+    
+#     formatter = ScalarFormatter(useMathText=True)
+#     formatter.set_scientific(True)
+#     formatter.set_powerlimits((-3, 3))
+#     plt.gca().xaxis.set_major_formatter(formatter)
+#     plt.tight_layout()
+
+#     if save == True:
+#         plt.savefig(f"plots/histo_iter_{model_name}.pdf")
+#     plt.show()
+        
+def histogram_iterations(iterations_before, iterations_after, model_name, save, ax=None,y_ax_limit=40,quantile=50):
     matplotlib.rcParams.update({
-    "text.usetex": True,
-    "font.family": "serif",
-    "font.serif": ["Computer Modern Roman"],
-    "axes.labelsize": 22,
-    "font.size": 22,
-    "legend.fontsize": 18,
-    "xtick.labelsize": 18,
-    "ytick.labelsize": 18    })
+        "text.usetex": True,
+        "font.family": "serif",
+        "font.serif": ["Computer Modern Roman"],
+        "mathtext.fontset": "cm",
+        "axes.labelsize": 26,
+        "axes.titlesize": 26,
+        "font.size": 26,
+        "legend.fontsize": 26,
+        "xtick.labelsize": 22,
+        "ytick.labelsize": 22
+    })
+
+    colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+
+    standalone = ax is None
+    if standalone:
+        fig, ax = plt.subplots()
 
     max_val = np.max([np.max(iterations_before), np.max(iterations_after)]) + 2
     min_val = np.min([np.min(iterations_before), np.min(iterations_after)])
     print(f"max val: {max_val}, min val: {min_val}")
-    plt.hist(iterations_before, bins=20,range=(min_val,max_val),  alpha=0.9, label='Cold-starting', color="#6A3D9A")
-    plt.hist(iterations_after, bins=20,range=(min_val,max_val),  alpha=0.7, label='Warm-starting with GNN', color="#33A02C")
 
-    # Calculate quartiles
-    q2_bef = np.mean(iterations_before)
-    q2_aft = np.mean(iterations_after)
-    q3_bef = np.percentile(iterations_before, 90)
-    q3_aft = np.percentile(iterations_after, 90)
+    ax.grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
+    ax.grid(which="minor", visible=False)
 
-    # Quartiles and percentiles
-    # plt.axvline(x=q2_bef, color="#CAB2D6", linestyle='--')
-    # plt.axvline(x=q2_aft, color="#B2DF8A", linestyle='--')
-    plt.axvline(x=q3_bef, color="#CAB2D6", linestyle='-.')
-    plt.axvline(x=q3_aft, color="#B2DF8A", linestyle='-.')
+    ax.hist(iterations_before, bins=20, range=(min_val, max_val), alpha=0.7,
+            label='Cold-starting', color=colors[2])
+    ax.hist(iterations_after,  bins=20, range=(min_val, max_val), alpha=0.7,
+            label='Warm-starting with GNN', color=colors[0])
 
-    plt.xlabel('Number of iterations')
-    plt.ylabel('Frequency')
-    plt.ylim(0, 40)
-    #plt.title('Histogram of Time without GNN vs with GNN')
-    plt.legend()
+    if quantile == 50:
+        q2_bef = np.mean(iterations_before)
+        q2_aft = np.mean(iterations_after)
+        ax.axvline(x=q2_bef, color=colors[5], linestyle='--', linewidth=3)
+        ax.axvline(x=q2_aft, color=colors[3], linestyle='--', linewidth=3)
+
+    if quantile == 90:
+        q3_bef = np.percentile(iterations_before, 90)
+        q3_aft = np.percentile(iterations_after, 90)
+        ax.axvline(x=q3_bef, color=colors[5], linestyle='-.', linewidth=3)
+        ax.axvline(x=q3_aft, color=colors[3], linestyle='-.', linewidth=3)
     
+    ax.set_xlabel('Number of iterations')
+    ax.set_ylabel('Frequency')
+    ax.set_ylim(0, y_ax_limit)
+
     formatter = ScalarFormatter(useMathText=True)
     formatter.set_scientific(True)
     formatter.set_powerlimits((-3, 3))
-    plt.gca().xaxis.set_major_formatter(formatter)
-    plt.tight_layout()
+    ax.xaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True, nbins=5))#, steps=[5, 10]))
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5)) #, steps=[20]))
+    #ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5, steps=[5, 10]))
 
-    if save == True:
-        plt.savefig(f"plots/histo_iter_{model_name}.pdf")
-    plt.show()
-        
+    if standalone:
+        ax.legend()
+        plt.tight_layout()
+        if save:
+            plt.savefig(f"plots/histo_iter_{model_name}.pdf")
+        plt.show()
+
+def histogram_time(time_before, time_after, model_name, save, ax=None,y_ax_limit=40):
+    matplotlib.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",
+        "font.serif": ["Computer Modern Roman"],
+        "mathtext.fontset": "cm",
+        "axes.labelsize": 26,
+        "axes.titlesize": 26,
+        "font.size": 26,
+        "legend.fontsize": 26,
+        "xtick.labelsize": 22,
+        "ytick.labelsize": 22
+    })
+
+    colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+
+    standalone = ax is None
+    if standalone:
+        fig, ax = plt.subplots()
+
+    max_val = np.max([np.max(time_before), np.max(time_after)]) + 0.000001
+    min_val = np.min([np.min(time_before), np.min(time_after)]) - 0.000001
+    print(f"max val: {max_val}, min val: {min_val}")
+
+    ax.grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
+    ax.grid(which="minor", visible=False)
+
+    ax.hist(time_before, bins=30, range=(min_val, max_val), alpha=0.7,
+            label='Cold-starting', color=colors[2])
+    ax.hist(time_after, bins=30, range=(min_val, max_val), alpha=0.7,
+            label='Warm-starting with GNN', color=colors[0])
+
+
+
+    q2_bef = np.percentile(time_before, 50)
+    q2_aft = np.percentile(time_after, 50)
+    ax.axvline(x=q2_bef, color=colors[5], linestyle='--',linewidth=3)
+    ax.axvline(x=q2_aft, color=colors[3], linestyle='--',linewidth=3)
+
+    q3_bef = np.percentile(time_before, 90)
+    q3_aft = np.percentile(time_after, 90)
+    # ax.axvline(x=q3_bef, color=colors[5], linestyle='-.',linewidth=3)
+    # ax.axvline(x=q3_aft, color=colors[3], linestyle='-.',linewidth=3)
+
+
+    ax.set_xlabel('Time in seconds')
+    ax.set_ylabel('Frequency')
+    ax.set_ylim(0, y_ax_limit)
+    #ax.set_xlim(0, )
+    formatter = ScalarFormatter(useMathText=True)
+    formatter.set_scientific(True)
+    formatter.set_powerlimits((-3, 3))
+    ax.xaxis.set_major_formatter(formatter)
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5, steps=[5, 10]))
+
+    if standalone:
+        ax.legend()
+        plt.tight_layout()
+        if save:
+            plt.savefig(f"plots/histo_time_{model_name}.pdf")
+        plt.show()
+
 def map_train_acc(train_acc_fixedHA,train_acc_fixedH,train_acc_fixedA,train_acc_flex,figure_name,save = False):
     plt.rcParams.update({'font.size': 12})
     cmap = plt.get_cmap("viridis")
@@ -341,34 +466,37 @@ def plot_pareto(points, labels, file_name="plots/pareto_plot_test.pdf"):
     plt.show()
 
 
-def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
+def plot_scaling(points, labels, file_name="plots/scaling_plot_test",save = False):
     matplotlib.rcParams.update({
         "text.usetex": True,
         "font.family": "serif",
         "font.serif": ["Computer Modern Roman"],
-        "axes.labelsize": 22,
-        "font.size": 22,
-        "legend.fontsize": 18,
-        "xtick.labelsize": 18,
-        "ytick.labelsize": 18    })
+        "axes.labelsize": 24,
+        "font.size": 24,
+        "legend.fontsize": 24,
+        "xtick.labelsize": 22,
+        "ytick.labelsize": 22    })
 
     points = np.array(points)
     labels = np.array(labels)[:, 0]
 
     model_types = np.unique(labels)
     model_types = [model_types[i] for i in [1, 2, 0]]
-    # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
-    colors = ['#e31a1c','#fb9a99','#6a3d9a','#cab2d6']
+
+    colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
 
     fig, axes = plt.subplots(1, len(model_types), figsize=(5 * len(model_types), 5), sharey=True)
     if len(model_types) == 1:
         axes = [axes]
-
+    #fig, ax = plt.subplots(figsize=(7, 6))
     enum = ["(a)","(b)","(c)"]
     for i, model in enumerate(model_types):
         ax = axes[i]
         model_description = model
-        model_description = model_description.replace("Non-learned","Cold-started")
+        model_description = model_description.replace("Non-learned","Cold-starting")
+
+        ax.grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
+        ax.grid(which="minor", visible=False)
 
         #ax.set_title(model)
         ax.text(0.5,-0.35, f"{enum[i]} {model}",ha="center", transform=ax.transAxes)
@@ -377,60 +505,65 @@ def plot_scaling(points, labels, file_name="plots/scaling_plot_test"):
         model_points = points[model_mask]
         x_points = np.arange(len(model_points)+1)[1:] * 50
 
-        # Solving time
-        ax.plot(x_points, model_points[:, 0], color=colors[0], label="Solving Time")
-        ax.fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[1], alpha=0.3)
+        # Solve time
+        ax.plot(x_points, model_points[:, 0], color=colors[i], label="Solve Time")
+        ax.fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[i+3], alpha=0.3)
 
         # Prediction time 
-        if model != "Cold-started":
-            ax.plot(x_points, model_points[:, 1], color=colors[2], label="Prediction Time")
-            ax.fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3], color=colors[3], alpha=0.3)
+        if model != "Cold-starting":
+            ax.plot(x_points, model_points[:, 1],"--", color=colors[i], label="Prediction Time")
+            ax.fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3], color=colors[i+3], alpha=0.3)
         
         ax.set_xlabel("Total graph size")
         ax.set_yscale("log")
+        ax.set_xscale("log")
+
         ax.set_yticks([ 1e-5, 1e-4, 1e-3, 1e-2,1e-1])
+        #ax.set_xlim(0,1000)
 
         ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
-        ax.grid(which="major", linestyle="-", linewidth=0.7)
-        ax.grid(which="minor", visible=False)
 
         if i == 0:
             ax.set_ylabel("Time (seconds)")
             ax.legend(loc="lower right")
 
     plt.tight_layout()
-    plt.savefig(f"{file_name}.pdf")
-    plt.savefig(f"{file_name}.png")
+    if save:
+        plt.savefig(f"{file_name}.pdf")
+        plt.savefig(f"{file_name}.png")
     plt.show()
 
-def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test"):
+def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_iterations_test", save=False):
     matplotlib.rcParams.update({
         "text.usetex": True,
         "font.family": "serif",
         "font.serif": ["Computer Modern Roman"],
-        "axes.labelsize": 20,
-        "font.size": 20,
-        "legend.fontsize": 16,
-        "xtick.labelsize": 16,
-        "ytick.labelsize": 16    })
+        "axes.labelsize": 22,
+        "font.size": 26,
+        "legend.fontsize": 20,
+        "xtick.labelsize": 20,
+        "ytick.labelsize": 20    })
 
     iterations = np.array(iterations)
     labels = np.array(labels)[:, 0]
     model_types = np.unique(labels)
-    # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
+    model_types = [model_types[i] for i in [1, 2, 0]]
+
     colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+
     fig, ax = plt.subplots(1, 1,figsize=(6.4, 4.8),  sharey=True)
 
     #ax.set_title("Iterations after prediction")
     ax.set_xlabel("Total graph size")
     ax.set_yscale("log")
-    
-    ax.grid(which="major", linestyle="-", linewidth=0.7)
+    ax.set_xscale("log")
+
+    ax.grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
     ax.grid(which="minor", visible=False)
     mapping = {
-        'Cold-started': 'Cold-start',
-        'GNN': 'Warm-start GNN',
-        'MLP': 'Warm-start MLP'
+        'Cold-started': 'Cold-starting',
+        'GNN': 'Warm-starting with GNN',
+        'MLP': 'Warm-starting with MLP'
     }
 
     legend_labels = [mapping[m] for m in model_types]
@@ -444,11 +577,101 @@ def plot_scaling_iterations(iterations, labels, file_name="plots/scaling_plot_it
         ax.fill_between(x_points, model_iterations[:, 0] - model_iterations[:, 1], model_iterations[:, 0] + model_iterations[:, 1], color=colors[i+3], alpha=0.3)
         
     ax.set_ylabel("Iterations")
-    ax.legend(loc="lower right",)
+    handles, labels_list = ax.get_legend_handles_labels()
+    fig.legend(handles, labels_list, loc='upper center', bbox_to_anchor=(0.54, 1.05))
     ax.set_yticks([1e1,1e2,1e3])
+
     ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    #ax.set_xlim(0,1000)
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    if save:
+        plt.savefig(f"{file_name}.pdf", bbox_inches='tight',pad_inches=0.1)
+        plt.savefig(f"{file_name}.png", bbox_inches='tight',pad_inches=0.1)
+    plt.show()
+
+def plot_scaling_one_plot(points, labels, file_name="plots/scaling_plot_test", save=False):
+    matplotlib.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",
+        "font.serif": ["Computer Modern Roman"],
+        "axes.labelsize": 28,
+        "font.size": 32,
+        "legend.fontsize": 28,
+        "xtick.labelsize": 24,
+        "ytick.labelsize": 24    })
+
+    points = np.array(points)
+    labels = np.array(labels)[:, 0]
+
+    model_types = np.unique(labels)
+    model_types = [model_types[i] for i in [1, 2, 0]]
+    
+    # Map short names to full names
+    model_name_map = {
+        "Cold-started": "Cold-starting",
+        "GNN": "Graph Neural Network",
+        "MLP": "Multilayer Perceptron"
+    }
+    
+    # colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a']
+    #colors = ['#e31a1c','#fb9a99','#6a3d9a','#cab2d6']
+    colors = ['#1f78b4','#33a02c','#ff7f00','#a6cee3','#b2df8a','#fdbf6f']
+
+    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+    axes[0].grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
+    axes[0].grid(which="minor", visible=False)
+    
+
+    # Left plot: Solve time
+    for i, model in enumerate(model_types):
+        model_mask = labels == model
+        model_points = points[model_mask]
+        x_points = np.arange(len(model_points)+1)[1:] * 50
+        model_display_name = model_name_map.get(model, model)
+        
+        axes[0].plot(x_points, model_points[:, 0], color=colors[i], label=model_display_name)
+        axes[0].fill_between(x_points, model_points[:, 0] - model_points[:, 2], model_points[:, 0] + model_points[:, 2], color=colors[i+3], alpha=0.3)
+    
+    axes[0].text(0.5, -0.32, "(a) Solve time", transform=axes[0].transAxes, ha="center", fontsize=32)
+    axes[0].set_xlabel("Total graph size")
+    axes[0].set_ylabel("Time (seconds)")
+    axes[0].set_yscale("log")
+    axes[0].set_yticks([ 1e-5, 1e-4, 1e-3, 1e-2,1e-1])
+    # axes[0].set_xlim(0,1000)
+    axes[0].yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+
+    axes[1].grid(which="major", linestyle="-", linewidth=0.7,alpha=0.7)
+    axes[1].grid(which="minor", visible=False)
+
+
+    # Right plot: Prediction time
+    for i, model in enumerate(model_types):
+        if model != "Cold-started":
+            model_mask = labels == model
+            model_points = points[model_mask]
+            x_points = np.arange(len(model_points)+1)[1:] * 50
+            model_display_name = model_name_map.get(model, model)
+
+            axes[1].plot(x_points, model_points[:, 1], color=colors[i], linestyle='--', label=model_display_name)
+            axes[1].fill_between(x_points, model_points[:, 1] - model_points[:, 3], model_points[:, 1] + model_points[:, 3], color=colors[i+3], alpha=0.3)
+    
+    axes[1].text(0.5, -0.32, "(b) Prediction time", transform=axes[1].transAxes, ha="center", fontsize=32)
+    axes[1].set_xlabel("Total graph size")
+    axes[1].set_yscale("log")
+    axes[1].set_yticks([ 1e-5, 1e-4, 1e-3, 1e-2,1e-1])
+    axes[1].set_yticklabels([])
+    # axes[1].set_xlim(0,1000)
+    axes[1].yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+
+    axes[0].set_xscale("log")
+    axes[1].set_xscale("log")
+
+    # Get handles and labels from left plot for shared legend
+    handles, labels_list = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels_list, loc='upper center', ncol=3, bbox_to_anchor=(0.53, 1.08))
 
     plt.tight_layout()
-    plt.savefig(f"{file_name}.pdf")
-    plt.savefig(f"{file_name}.png")
+    if save:
+        plt.savefig(f"{file_name}.pdf", bbox_inches='tight',pad_inches=0.1)
+        plt.savefig(f"{file_name}.png", bbox_inches='tight',pad_inches=0.1)
     plt.show()
